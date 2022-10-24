@@ -8,7 +8,6 @@ public class KkalongApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KkalongApplication.class, args);
-        System.out.println("hello kkalong world");
     }
 
 }
