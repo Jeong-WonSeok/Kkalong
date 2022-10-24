@@ -7,7 +7,6 @@ import styled from 'styled-components'
 function App() {
   return (
     <div className="App">
-      <TestBlock>var 화면</TestBlock>
       <Router>
         <Routes>
 
