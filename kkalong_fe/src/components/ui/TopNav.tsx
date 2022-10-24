@@ -28,6 +28,9 @@ const TopContainer = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 10px;
+    font-family: var(--base-font-400);
+    font-size: 20px;
+    text-align: center;
 `
 
 const LogoImg = styled.img`
