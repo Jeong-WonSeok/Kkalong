@@ -1,13 +1,17 @@
 import {useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import BestDresser from '../../components/Community/BestDresser';
 import HelpCodi from '../../components/Community/HelpCodi';
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
+import { getData } from '../../redux/modules/Community';
 
 
 export interface BestDresserArticle {
-  post_img: string;
+  post_id: number,
+  post_img: string,
   post_user: {
     nickname: string,
     profile: string,
@@ -26,6 +30,9 @@ export interface HelpCodiArticle {
 
 
 export default function MainCommunity() {
+  const {data} = useAppSelector(state => state.Community)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [Best3, setBest3] = useState([
     `https://m.rodenty.com/web/product/big/202204/88ead4b44cfbd86c80b237e0bbc4fc39.jpg`,
     `https://static.lookpin.co.kr/20210830111703-9bf7/376bff1f9197214c2f17f2881ae8c68c.jpg?resize=880`,
@@ -34,9 +41,16 @@ export default function MainCommunity() {
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
+  const goBestDress = () => {
+    navigate('/community/BestDress')
+  }
+
   useEffect(() => {
+    dispatch(getData)
+
     setBestArticles([
       {
+        post_id: 1,
         post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
         post_user: {
           nickname: 'loki535',
@@ -44,32 +58,7 @@ export default function MainCommunity() {
         },
         post_like: 13
       },
-      {
-        post_img: 'https://i.pinimg.com/474x/e3/0a/73/e30a73291a0f8c2403c95472157d4b7e.jpg',
-        post_user: {
-          nickname: 'hans',
-          profile: ''
-        },
-        post_like: 10
-      },
-      {
-        post_img: 'https://www.ultrafashion.net/shopimages/girlsje/031001001172.jpg?1646365806',
-        post_user: {
-          nickname: 'jane13',
-          profile: ''
-        },
-        post_like: 5
-      },
-      {
-        post_img: 'https://sitem.ssgcdn.com/21/01/16/item/1000049160121_i1_1200.jpg',
-        post_user: {
-          nickname: 'likeme',
-          profile: ''
-        },
-        post_like: 2
-      },
     ])
-
     setHelpArticles([
       {
         help_img: 'https://i3.codibook.net/files/1978121543118/a553319d9394abde/70936325.jpg?class=big',
@@ -117,7 +106,7 @@ export default function MainCommunity() {
       <List>
         <Category>오늘의 깔롱쟁이 🏆</Category>
         {Best3.map((Best, index) => {
-          if (index == 1) {
+          if (index === 1) {
             return (
               <Best3Container style={{margin: '0 20px'}} src={Best}/>
             )
@@ -130,11 +119,13 @@ export default function MainCommunity() {
       </List>
 
       <List>
-        <Category>도전! 베스트 드레서 ✨</Category>
+        <Category onClick={goBestDress}>도전! 베스트 드레서 ✨</Category>
         <ArticleList>
-          {BestArticles.map(BestArticle => {
+          {BestArticles.map((BestArticle, index) => {
             return (
-              <BestDresser article={BestArticle}/>
+              <div key={index}>
+                <BestDresser article={BestArticle}/>
+              </div>
             )
           })}
         </ArticleList>
@@ -143,9 +134,11 @@ export default function MainCommunity() {
       <List>
         <Category>도와주세요 패알못 😂</Category>
         <ArticleList>
-          {HelpArticles.map(HelpArticle => {
+          {HelpArticles.map((HelpArticle, index) => {
             return (
-              <HelpCodi article={HelpArticle}/>
+              <div key={index}>
+                <HelpCodi article={HelpArticle}/>
+              </div>
             )
           })}
         </ArticleList>
@@ -158,7 +151,7 @@ export default function MainCommunity() {
   )
 }
 
-const Container = styled.div`
+export const Container = styled.div`
   maring-bottom: 70px;
   padding: 10px;
 `
@@ -184,7 +177,7 @@ const ArticleList = styled.div`
 
 const Best3Container = styled.img`
   width: 100px;
-  height: 100px;
+  height: 120px;
   border-radius: 20px;
   margin-top: 10px;
 `

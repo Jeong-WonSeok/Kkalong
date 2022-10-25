@@ -48,11 +48,13 @@ const ProfileImg = styled.img`
 `
 
 const TitleContainer = styled.div`
-  height: 23px;
-  width: 150px;
+  height: 20px;
+  width: 142px;
   background-color: var(--primary-color-500);
+  font-family: var(--base-font-300);
   font-size: 7px;
   color: white;
-  padding: 3px 4px 0 6px;
-  border-radius: 0 0 30px 30px; 
+  text-align: start;
+  padding: 3px 9px;
+  border-radius: 0 0 20px 20px; 
 `

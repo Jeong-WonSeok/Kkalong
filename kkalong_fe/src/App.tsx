@@ -4,6 +4,8 @@ import './styles/common.scss'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
 import MainCommunity from './pages/Community/MainCommunity';
+import MainBestDress from './pages/Community/MainBestDress';
+import DetailBestDress from './pages/Community/DetailBestDress';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Router>
         <Routes>
           <Route path='/community' element={<MainCommunity/>}></Route>
+          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
+          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
         </Routes>
       </Router>
     </AppDiv>
