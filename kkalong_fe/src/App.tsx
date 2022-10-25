@@ -3,14 +3,17 @@ import './App.css';
 import './styles/common.scss'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
+import FooterBar from './components/ui/FooterBar';
+import Login from './pages/Login/Login'
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      <Router>                       
         <Routes>
-
+          <Route path="/login" element={<Login/>}></Route>
         </Routes>
+        <FooterBar/>
       </Router>
     </div>
   );
