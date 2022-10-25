@@ -24,6 +24,7 @@ function App() {
 export default App;
 
 // 사용 방법
+// Nav, Footer 크기만큼 margin 지정
 const AppDiv = styled.div`
   font-family: var(--base-font-300);
   margin-top: 60px;
