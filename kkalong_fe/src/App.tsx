@@ -26,4 +26,6 @@ export default App;
 // 사용 방법
 const AppDiv = styled.div`
   font-family: var(--base-font-300);
+  margin-top: 60px;
+  margin-bottom: 70px;
 `;

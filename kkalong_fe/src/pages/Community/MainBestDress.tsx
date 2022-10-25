@@ -57,7 +57,7 @@ export default function MainBestDress() {
     <div>
       <TopNav type={""}>
         <BackArrow src={backArrow} onClick={()=>navigate('/community')}/>
-        <CategoryText>도전! 베스트 드레서 ✨</CategoryText>
+        <CategoryText>도전! 베스트 드레서✨</CategoryText>
         <div style={{ width: '30px', height: '30px'}}></div>
       </TopNav>
 

@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { BestDresserArticle } from '../../pages/Community/MainCommunity'
 import like from '../../assets/icon/Community/like.png'
-import defaultProfile from '../../assets/icon/Community/defaultProfile.png'
 import { useNavigate } from 'react-router-dom'
+import Profile from  './Profile'
 
 export default function BestDresser({article} : {article:BestDresserArticle}) {
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ export default function BestDresser({article} : {article:BestDresserArticle}) {
   return (
     <Container style={{backgroundImage: `url(${article.post_img})`}} onClick={()=>navigate(`/community/BestDress/${article.post_id}`)}>
       <ProfileContainer>
-        <ProfileImg src={article.post_user.profile ? article.post_user.profile : defaultProfile}/>
+        <Profile Image={article.post_user.profile} Size={17}/>
         <span>{article.post_user.nickname}</span>
       </ProfileContainer>
       <LikeContainer>
@@ -42,13 +42,6 @@ const ProfileContainer = styled.div`
   font-size: 12px;
   display: flex;
   flex-direction: row;
-`
-
-const ProfileImg = styled.img`
-  width: 17px;
-  height: 17px;
-  border-radius: 8px;
-  margin-right: 4px;
 `
 
 const LikeContainer = styled.div`

@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import { HelpCodiArticle } from '../../pages/Community/MainCommunity'
-import defaultProfile from '../../assets/icon/Community/defaultProfile.png'
+import Profile from './Profile'
 
 export default function HelpCodi({article} : {article: HelpCodiArticle}) {
   return (
     <div>
     <Container style={{backgroundImage: `url(${article.help_img})`}}>
       <ProfileContainer>
-        <ProfileImg src={article.user_id.profile ? article.user_id.profile : defaultProfile}/>
+      <Profile Image={article.user_id.profile} Size={17}/>
         <span>{article.user_id.nickname}</span>
       </ProfileContainer>
       
