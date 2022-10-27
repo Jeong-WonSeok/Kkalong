@@ -4,8 +4,8 @@
   margin: auto;
   justify-content: center;
   position: relative;
-  border: none;
   overflow: auto;
+  font-family: var(--base-font-300);
   border: solid 1px;
 }
 
