@@ -1,0 +1,14 @@
+.App {
+  width: 400px;
+  height: 740px;
+  margin: auto;
+  justify-content: center;
+  position: relative;
+  border: none;
+  overflow: auto;
+  border: solid 1px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

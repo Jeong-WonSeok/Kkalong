@@ -1,17 +1,23 @@
-import React from 'react';
-import './App.css';
-import './styles/common.scss'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components'
+
+import React from "react";
+import "./App.css";
+import "./styles/common.scss";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
+import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from './pages/Community/MainCommunity';
 import MainBestDress from './pages/Community/MainBestDress';
 import DetailBestDress from './pages/Community/DetailBestDress';
+
 
 function App() {
   return (
     <AppDiv>
       <Router>
         <Routes>
+
+          <Route path="/closet" element={<MainCloset />}></Route>
+
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
@@ -30,3 +36,4 @@ const AppDiv = styled.div`
   margin-top: 60px;
   margin-bottom: 70px;
 `;
+

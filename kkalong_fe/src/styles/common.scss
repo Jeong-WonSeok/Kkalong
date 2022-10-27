@@ -1,50 +1,50 @@
 @font-face {
-    font-family: 'IBMSans-Bold';
-    src: url('../assets/fonts/IBMPlexSansKR-Bold.ttf');
-  };
-  
-  @font-face {
-    font-family: 'IBMSans-ExtraLight';
-    src: url('../assets/fonts/IBMPlexSansKR-ExtraLight.ttf');
-  };
-  
-  @font-face {
-    font-family: 'IBMSans-Light';
-    src: url('../assets/fonts/IBMPlexSansKR-Light.ttf');
-  };
+  font-family: "IBMSans-Bold";
+  src: url("../assets/fonts/IBMPlexSansKR-Bold.ttf");
+}
 
-  @font-face {
-    font-family: 'IBMSans-Medium';
-    src: url('../assets/fonts/IBMPlexSansKR-Medium.ttf');
-  };
+@font-face {
+  font-family: "IBMSans-ExtraLight";
+  src: url("../assets/fonts/IBMPlexSansKR-ExtraLight.ttf");
+}
 
-  @font-face {
-    font-family: 'IBMSans-Regular';
-    src: url('../assets/fonts/IBMPlexSansKR-Regular.ttf');
-  };
+@font-face {
+  font-family: "IBMSans-Light";
+  src: url("../assets/fonts/IBMPlexSansKR-Light.ttf");
+}
 
-  @font-face {
-    font-family: 'IBMSans-SemiBold';
-    src: url('../assets/fonts/IBMPlexSansKR-SemiBold.ttf');
-  };
+@font-face {
+  font-family: "IBMSans-Medium";
+  src: url("../assets/fonts/IBMPlexSansKR-Medium.ttf");
+}
+
+@font-face {
+  font-family: "IBMSans-Regular";
+  src: url("../assets/fonts/IBMPlexSansKR-Regular.ttf");
+}
+
+@font-face {
+  font-family: "IBMSans-SemiBold";
+  src: url("../assets/fonts/IBMPlexSansKR-SemiBold.ttf");
+}
 
 :root {
-    // 색깔 설정
-    --primary-color-100: #FFF5F4;
-    --primary-color-200: #F9E9CB;
-    --primary-color-300: #D09E6D;
-    --primary-color-400: #CBA171;
-    --primary-color-500: #B79B7E;
-    --primary-color-600: #AA8B77;
-    --primary-color-700: #947F6C;
-    --primary-color-800: #947F6C;
+  // 색깔 설정
+  --primary-color-100: #fff5f4;
+  --primary-color-200: #f9e9cb;
+  --primary-color-300: #d09e6d;
+  --primary-color-400: #cba171;
+  --primary-color-500: #b79b7e;
+  --primary-color-600: #aa8b77;
+  --primary-color-700: #947f6c;
+  --primary-color-800: #e5ddce;
+  --primary-color-900: #67564e;
 
-    // 폰트 설정
-    --base-font-100: 'IBMSans-ExtraLight';
-    --base-font-200: 'IBMSans-Light';
-    --base-font-300: 'IBMSans-Regular';
-    --base-font-400: 'IBMSans-Medium';
-    --base-font-500: 'IBMSans-SemiBold';
-    --base-font-600: 'IBMSans-Bold';
-  }
-
+  // 폰트 설정
+  --base-font-100: "IBMSans-ExtraLight";
+  --base-font-200: "IBMSans-Light";
+  --base-font-300: "IBMSans-Regular";
+  --base-font-400: "IBMSans-Medium";
+  --base-font-500: "IBMSans-SemiBold";
+  --base-font-600: "IBMSans-Bold";
+}
