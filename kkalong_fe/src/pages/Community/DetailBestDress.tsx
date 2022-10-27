@@ -119,7 +119,7 @@ const NavText = styled.p`
   line-height: 0;
 `
 
-const ContentContainer = styled.div`
+export const ContentContainer = styled.div`
   padding: 0px 10px 10px 10px;
 `
 
@@ -154,7 +154,7 @@ const CustomText = styled.p`
   font-family: var(--base-font-400);
 `
 
-const LineDiv = styled.div`
+export const LineDiv = styled.div`
   position: relative;
   left: -10px;
   background-color: var(--primary-color-700);

@@ -8,6 +8,8 @@ import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
 import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddBestDress from './pages/Community/AddBestDress';
+import MainHelpCodi from "./pages/Community/MainHelpCodi";
+import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
           <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
+          <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
         </Routes>
       </Router>
