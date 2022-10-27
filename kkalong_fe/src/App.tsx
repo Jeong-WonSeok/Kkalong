@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
 import FooterBar from './components/ui/FooterBar';
 import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
 import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
@@ -19,6 +20,7 @@ function App() {
       <Router>                       
         <Routes>
           <Route path="/login" element={<Login/>}></Route>
+          <Route path="/signup" element={<Signup/>}></Route>
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
           <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
