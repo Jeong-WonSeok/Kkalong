@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import example from "./modules/example";
+import Community from "./modules/Community";
 
 // 타입 오류를 위해서 state의 타입을 가져온다.
 export interface rootState {
@@ -9,7 +10,8 @@ export interface rootState {
 
 // redux 스토어 등록
 const rootReducer = combineReducers({
-    example
+    example,
+    Community
 })
 
 // 리덕스에서 관리하는 상태에 대한 타입
