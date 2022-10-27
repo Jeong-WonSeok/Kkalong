@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './App.css';
 import './styles/common.scss'
@@ -5,6 +6,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
 import FooterBar from './components/ui/FooterBar';
 import Login from './pages/Login/Login'
+import MainCloset from "./pages/Closet/MainCloset";
+import MainCommunity from "./pages/Community/MainCommunity";
+import MainBestDress from "./pages/Community/MainBestDress";
+import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddBestDress from './pages/Community/AddBestDress';
+
 
 function App() {
   return (
@@ -12,6 +19,11 @@ function App() {
       <Router>                       
         <Routes>
           <Route path="/login" element={<Login/>}></Route>
+          <Route path='/community' element={<MainCommunity/>}></Route>
+          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
+          <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
+          <Route path="/closet" element={<MainCloset />}></Route>
         </Routes>
         <FooterBar/>
       </Router>
@@ -20,9 +32,3 @@ function App() {
 }
 
 export default App;
-
-// 사용 방법
-const TestBlock = styled.article`
-  background: var(--primary-color-500);
-  font-family: var(--base-font-300);
-`;
