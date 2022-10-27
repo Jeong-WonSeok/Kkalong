@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import MainCommunity from './pages/Community/MainCommunity';
 import MainBestDress from './pages/Community/MainBestDress';
 import DetailBestDress from './pages/Community/DetailBestDress';
+import AddBestDress from './pages/Community/AddBestDress';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
+          <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
         </Routes>
       </Router>
