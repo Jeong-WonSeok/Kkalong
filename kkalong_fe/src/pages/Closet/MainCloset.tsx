@@ -57,7 +57,11 @@ export default function MainCloset() {
           <SelectColor1 />
           <SelectText1>옷장</SelectText1>
         </SelectBtn1>
-        <SelectBtn2>
+        <SelectBtn2
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <SelectColor2 />
           <SelectText2>코디</SelectText2>
         </SelectBtn2>
