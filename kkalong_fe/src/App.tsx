@@ -7,23 +7,18 @@ import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
 import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddBestDress from './pages/Community/AddBestDress';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
+          <Route path='/community' element={<MainCommunity/>}></Route>
+          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
+          <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
-
-          <Route path="/community" element={<MainCommunity />}></Route>
-          <Route
-            path="/community/BestDress"
-            element={<MainBestDress />}
-          ></Route>
-          <Route
-            path="/community/BestDress/:BestDressId"
-            element={<DetailBestDress />}
-          ></Route>
         </Routes>
       </Router>
     </div>
