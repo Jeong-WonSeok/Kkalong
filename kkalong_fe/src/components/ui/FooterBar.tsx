@@ -48,7 +48,8 @@ const FooterDiv = styled.div`
     justify-content:space-around;
     align-items: center;
     height: 70px;
-`;
+    background-color: white;
+`
 
 const FooterImgContainer = styled.div`
     display: flex;
@@ -63,14 +64,14 @@ const MirrorContainer = styled(FooterImgContainer)`
     background: #DED6C6;
     color: white;
     padding: 8px;
-    border-radius: 50%
+    border-radius: 50%;
 `
 
 const FooterImg = styled.img`
     height: 24px;
     width: 24px;
     margin: 0 auto;
-`;
+`
 
 const MirrorImg = styled(FooterImg)`
     width: 20px;

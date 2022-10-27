@@ -10,27 +10,44 @@ export default function TopNav({ children, type }: {children: any, type: string}
   if (type === 'menu') {
     return (
       <TopContainer>
-        <LogoImg src={logo}/>
+        <InnerContainer>
+          <LogoImg src={logo}/>
           {children}
+        </InnerContainer>
         </TopContainer>
     )         
   } else {
     return (
       <TopContainer>
-        {children}
+        <InnerContainer>
+          {children}
+        </InnerContainer>
       </TopContainer>
     )
   }
 }
 
 const TopContainer = styled.div`
+    width: 100%;
     height: 40px;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 10px 0;
+    font-family: var(--base-font-400);
+    font-size: 20px;
+    background-color: white;
+`
+
+const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  padding: 0 10px;
 `
 
 const LogoImg = styled.img`
-    width: 54px;
-    height: 38px;
+  width: 54px;
+  height: 38px;
 `
