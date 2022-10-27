@@ -32,9 +32,10 @@ export default function TopNav({
 }
 
 const TopContainer = styled.div`
-  width: 400px;
-  height: 40px;
-  margin-top: 5px;
+  width: 100%;
+  max-width: 400px;
+  height: 45px;
+  padding-top: 5px;
   position: fixed;
   left: auto;
   top: 0;
