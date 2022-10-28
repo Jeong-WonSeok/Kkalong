@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
+import { getData } from '../../redux/modules/Community';
+
 import BestDresser from '../../components/Community/BestDresser';
 import HelpCodi from '../../components/Community/HelpCodi';
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
-import { getData } from '../../redux/modules/Community';
-
 
 export interface BestDresserArticle {
   post_id: number,
@@ -149,7 +149,6 @@ export default function MainCommunity() {
         </ArticleList>
       </List>
 
-     
     </Container>
     <FooterBar/>
     </div>

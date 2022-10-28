@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+
 import TopNav from '../../components/ui/TopNav'
+import FooterBar from '../../components/ui/FooterBar'
+import HelpCodi from '../../components/Community/HelpCodi'
+import { Container, HelpCodiArticle } from './MainCommunity'
+import { CategoryText } from './MainBestDress'
+import { PlusImg } from './MainBestDress'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
-import { useNavigate } from 'react-router-dom'
-import FooterBar from '../../components/ui/FooterBar'
-import { Container, HelpCodiArticle } from './MainCommunity'
-import HelpCodi from '../../components/Community/HelpCodi'
+import AddArticle from '../../assets/icon/Community/addArticle.png'
+
+
 
 type ButtonType = {
   tap?: boolean;
@@ -101,7 +107,8 @@ export default function MainHelpCodi() {
             )
           })}
         </ClosetContainer>}
-
+        
+        <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  
       <FooterBar/>
     </div>
   )
@@ -112,15 +119,11 @@ const BackArrow = styled.img`
   height: 30px;
   margin: auto 0;
 `
-
-const CategoryText = styled.p`
-  line-height: 0;
-  font-family: var(--base-font-600);
-`
 const CodiContainer = styled(Container)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  z-index: 1;
 `
 
 const ClosetContainer = styled(Container)`

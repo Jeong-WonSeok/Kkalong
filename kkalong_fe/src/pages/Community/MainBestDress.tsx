@@ -10,9 +10,6 @@ import { BestDresserArticle, Container } from './MainCommunity'
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddArticle from '../../assets/icon/Community/addArticle.png'
 
-
-
-
 export default function MainBestDress() {
   const navigate = useNavigate()
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>)
@@ -87,18 +84,18 @@ const BestContainer = styled(Container)`
   flex-wrap: wrap;
 `
 
-const BackArrow = styled.img`
+export const BackArrow = styled.img`
   width: 30px;
   height: 30px;
   margin: auto 0;
 `
 
-const CategoryText = styled.p`
+export const CategoryText = styled.p`
   line-height: 0;
   font-family: var(--base-font-600);
 `
 
-const PlusImg = styled.img`
+export const PlusImg = styled.img`
   width: 40px;
   height: 40px;
   position: fixed;

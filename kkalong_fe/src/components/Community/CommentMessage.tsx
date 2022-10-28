@@ -16,7 +16,7 @@ export default function CommentMessage({comment}: {comment: commentType}) {
             {comment.content}
           </Message>
           <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-            <CodiSave src={codiSave}/>
+            {comment.codi_img ? <CodiSave src={codiSave}/> : null}
             <Date>
               {comment.create_at.slice(11,16)}
             </Date>
