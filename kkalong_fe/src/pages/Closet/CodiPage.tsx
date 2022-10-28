@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import logo from "../../assets/icon/logo/kkalongLogo.png";
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
@@ -12,20 +11,18 @@ import outer from "../../assets/icon/Closet/outer.png";
 import pants from "../../assets/icon/Closet/pants.png";
 import shoes from "../../assets/icon/Closet/shoes.png";
 import shirt from "../../assets/icon/Closet/shirt.png";
-import img1 from "../../img/img1.png";
-import img2 from "../../img/img2.png";
-import img3 from "../../img/img3.png";
-import img4 from "../../img/img4.png";
-import img5 from "../../img/img5.png";
-import img6 from "../../img/img6.png";
-import img7 from "../../img/img7.png";
+import codi1 from "../../img/codi1.png";
+import codi2 from "../../img/codi2.png";
+import codi3 from "../../img/codi3.png";
+import add_codi from "../../assets/icon/Closet/add_codi.png";
 import Bar from "../../assets/icon/Closet/Bar.png";
 import camera from "../../assets/icon/Closet/add_clothes.png";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 
-export default function MainCloset() {
+export default function CodiPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const settings = {
@@ -46,22 +43,14 @@ export default function MainCloset() {
     "악세서리",
   ]);
   let [btn, setBtn] = useState(false);
-  let [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-  ]);
+  let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   useEffect(() => {}, []);
 
   return (
     <div>
       <TopNav type={""}>
         <Logo src={logo} />
-        <CategoryText1>옷장</CategoryText1>
+        <CategoryText1>코디</CategoryText1>
         <div style={{ width: "30px", height: "30px" }}></div>
         <MenuIcon src={menu} />
       </TopNav>
@@ -97,34 +86,30 @@ export default function MainCloset() {
           <SelectText2>코디</SelectText2>
         </SelectBtn2>
       </>
-      {clothes.map(function (a, i) {
+      {/* {clothes.map(function (a, i) {
         return (
           <ClothesBtn>
             <img src={clothes[i]} />
             <ClothesText>{cltext[i]}</ClothesText>
           </ClothesBtn>
         );
-      })}
-      {sortclothes.map(function (a, i) {
-        return (
-          <SortClothes>
-            <img src={sortclothes[i]} />
-          </SortClothes>
-        );
-      })}
-      <AddClothes>
-        <img src={camera} />
-      </AddClothes>
-      <FooterBar />
+      })} */}
+      <>
+        {codi.map(function (a, i) {
+          return (
+            <ClothesCodi>
+              <img src={codi[i]} />
+            </ClothesCodi>
+          );
+        })}
+        <CodiPlus>
+          <img src={add_codi} />
+        </CodiPlus>
+        <FooterBar />
+      </>
     </div>
   );
 }
-
-// const BestContainer = styled(Container)`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// `;
 
 const Logo = styled.img`
   width: 50px;
@@ -193,29 +178,12 @@ const SelectBtn2 = styled.button`
   border: none;
 `;
 
-const ClothesBtn = styled.button`
+//코디 버튼
+const ClothesCodi = styled.button`
+  height: 150px;
+  width: 150px;
   margin-top: 20px;
-  margin-left: 10px;
-  height: 55px;
-  width: 55px;
-  border-radius: 50px;
-  border: solid 1.5px #67564e;
-  background-color: white;
-`;
-
-const ClothesText = styled.p`
-  line-height: 0;
-  margin: auto;
-  font-family: var(--base-font-500);
-  margin-top: 5px;
-  font-size: 10px;
-  color: var(--primary-color-900);
-`;
-const SortClothes = styled.button`
-  height: 100px;
-  width: 100px;
-  margin-top: 20px;
-  margin-left: 25px;
+  margin-left: 40px;
   margin-right: auto;
   background-color: white;
   border-radius: 20px;
@@ -234,4 +202,15 @@ const AddClothes = styled.button`
   background-color: white;
   background-size: auto;
   background-image: url("../../assets/icon/Closet/arrow-left.png");
+`;
+
+const CodiPlus = styled.button`
+  height: 150px;
+  width: 150px;
+  margin-top: 20px;
+  margin-left: 40px;
+  margin-right: auto;
+  background-color: white;
+  border-radius: 20px;
+  border: dotted 1px #e5ddce;
 `;

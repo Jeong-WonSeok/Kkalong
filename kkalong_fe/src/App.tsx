@@ -7,6 +7,9 @@ import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
 import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddCloset from "./pages/Closet/AddCloset";
+import CodiPage from "./pages/Closet/CodiPage";
+import PlusCodi from "./pages/Closet/PlusCodi";
 
 function App() {
   return (
@@ -14,7 +17,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/closet" element={<MainCloset />}></Route>
-
+          <Route path="/addcloset" element={<AddCloset />}></Route>
+          <Route path="/codi" element={<CodiPage />}></Route>
+          <Route path="/pluscodi" element={<PlusCodi />}></Route>
           <Route path="/community" element={<MainCommunity />}></Route>
           <Route
             path="/community/BestDress"
