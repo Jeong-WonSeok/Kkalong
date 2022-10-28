@@ -103,7 +103,7 @@ export default function MainCommunity() {
   return (
     <div>
     <TopNav type="menu">
-      커뮤니티
+      <CategoryText>커뮤니티</CategoryText>
       <div style={{width: '50px', height: '30px'}}></div>
     </TopNav>
 
@@ -183,4 +183,9 @@ const Best3Container = styled.img`
   height: 120px;
   border-radius: 20px;
   margin-top: 10px;
+`
+
+const CategoryText = styled.p`
+  line-height: 0;
+  font-family: var(--base-font-600);
 `
