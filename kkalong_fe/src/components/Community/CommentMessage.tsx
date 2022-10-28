@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { commentType } from '../../pages/Community/DetailBestDress'
+import { commentType } from '../../pages/Community/DetailHelpCodi'
 import Profile from './Profile'
+import codiSave from '../../assets/icon/Community/codiSave.png'
 
 export default function CommentMessage({comment}: {comment: commentType}) {
   return (
@@ -10,8 +11,16 @@ export default function CommentMessage({comment}: {comment: commentType}) {
       <MessageContainer>
         <NickName>{comment.user_id.nickname}</NickName>
         <MessageContextContainer>
-          <Message>{comment.content}</Message>
-          <Date>{comment.create_at.slice(11,16)}</Date>
+          <Message>
+            {comment.codi_img ? <CodiImg src={comment.codi_img}/> : null}
+            {comment.content}
+          </Message>
+          <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
+            <CodiSave src={codiSave}/>
+            <Date>
+              {comment.create_at.slice(11,16)}
+            </Date>
+          </MessageContainer>
         </MessageContextContainer>
       </MessageContainer>
     </Container>
@@ -42,6 +51,8 @@ const MessageContextContainer = styled.div`
 `
 
 const Message = styled.div`
+  display:flex;
+  flex-direction: column;
   background-color: var(--primary-color-100);
   border-radius: 10px;
   padding: 3px 7px;
@@ -51,9 +62,18 @@ const Message = styled.div`
 `
 
 const Date = styled.p`
-  margin-top: auto;
-  margin-bottom: 0;
-  margin-left: 6px;
+  margin: 0;
   font-size: 5px;
   color: #B5B5B5;
+`
+
+const CodiImg = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+`
+
+const CodiSave = styled.img`
+  width: 21px;
+  height: 21px;
 `

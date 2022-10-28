@@ -22,6 +22,7 @@ export interface commentType {
   },
   content: string,
   create_at: string,
+  codi_img: string | null,
 }
 
 export interface ArticleType extends BestDresserArticle{
@@ -60,6 +61,7 @@ export default function DetailBestDress() {
         },
         content: '정말 이쁘세요',
         create_at: '2022-10-25 14:23:00',
+        codi_img: null,
       },
       {
         user_id: {
@@ -68,6 +70,7 @@ export default function DetailBestDress() {
         },
         content: '저도 거기서 찍고싶네요!',
         create_at: '2022-10-25 14:57:00',
+        codi_img: null,
       }]
     })
     
