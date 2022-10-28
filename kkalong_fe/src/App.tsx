@@ -13,7 +13,7 @@ import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
 import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddBestDress from './pages/Community/AddBestDress';
-
+import MyPage from './pages/MyPage/MyPage'
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
           <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
+          <Route path="/myPage" element={<MyPage/>}></Route>
         </Routes>
         <FooterBar/>
       </Router>
