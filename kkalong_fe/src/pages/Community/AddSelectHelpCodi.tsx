@@ -18,7 +18,7 @@ export default function AddSelectHelpCodi() {
   return (
     <div>
       <TopNav type={''}>
-        <BackArrow src={BackArrowImg}/>
+        <BackArrow src={BackArrowImg} onClick={()=>navigate('/community/HelpCodi')}/>
         <CategoryText>도와주세요 패알못😂</CategoryText>
         <div style={{ width: '30px', height: '30px'}}></div>
       </TopNav>
@@ -63,7 +63,7 @@ const Container = styled.div`
   align-items: center;
 `
 
-const CodiBackground = styled.div`
+export const CodiBackground = styled.div`
   background-image: url(${AddCodiExample});
   position: relative;
   width: 140px;
@@ -74,7 +74,7 @@ const CodiBackground = styled.div`
   overflow: hidden;
 `
 
-const SelectContainer = styled.div`
+export const SelectContainer = styled.div`
   width: 140px;
   height: 210px;
   border-radius: 10px;
@@ -85,18 +85,18 @@ const SelectContainer = styled.div`
   align-items: center;
 `
 
-const ImgContainer = styled.div`
+export const ImgContainer = styled.div`
   display: flex;
   flex-direction: column;
 ` 
 
-const SelectImg = styled.img`
+export const SelectImg = styled.img`
   margin: 0 auto;
   width: 40px;
   height: 40px;
 `
 
-const SelectSpan = styled.p`
+export const SelectSpan = styled.p`
   font-size: 15px;
   font-family: var(--font-base-400);
   color: var(--primary-color-300);

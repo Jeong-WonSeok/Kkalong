@@ -6,8 +6,7 @@ import TopNav from '../../components/ui/TopNav'
 import { Container } from './MainCommunity'
 
 import AddPictureIcon from '../../assets/icon/Community/pictureAdd.png'
-import Close from '../../assets/icon/Nav/close.png'
-import Menu from '../../assets/icon/Nav/menu.png'
+import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddExample from '../../assets/icon/Community/AddExample.png'
 import FooterBar from '../../components/ui/FooterBar'
 
@@ -56,7 +55,9 @@ export default function AddBestDress() {
   return (
     <div>
       <TopNav type={""}>
-        <MenuImg style={{width:'40px', height: '40px'}} src={Close} onClick={()=>navigate('/community/BestDress')}/>
+        <div style={{width: '60px', height: '40px'}}>
+        <MenuImg src={BackArrow} onClick={()=>navigate('/community/BestDress')}/>
+        </div>
         <CategoryText>도전! 베스트 드레서✨</CategoryText>
         <SubmitBtn>작성</SubmitBtn>
       </TopNav>
@@ -91,16 +92,17 @@ const AddContainer = styled(Container)`
 const MenuImg = styled.img`
   width: 30px;
   height: 30px;
-  margin: auto 0;
+  padding-right: 30px;
+  margin: 5px 0;
 `
 
-const SubmitBtn = styled.button`
+export const SubmitBtn = styled.button`
   width: 60px;
   height: 30px;
   border-radius: 10px;
   border: none;
   background-color: var(--primary-color-500);
-  margin: auto 0;
+  margin: 5px 0;
   font-family: var(--base-font-600);
   &:hover {
     background-color: var(--primary-color-700);
@@ -111,7 +113,9 @@ const SubmitBtn = styled.button`
 const CategoryText = styled.p `
   font-size: 20px;
   font-family: var(--base-font-600);
-  margin: auto 0;
+  margin: 0;
+  line-height: 40px;
+  height: 40px;
 `
 
 const PictureDiv = styled.div`
