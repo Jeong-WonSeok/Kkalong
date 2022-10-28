@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { commentType } from '../../pages/Community/DetailBestDress'
+import { commentType } from '../../pages/Community/DetailHelpCodi'
 import CommentInput from './CommentInput'
 import CommentMessage from './CommentMessage'
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
 import Profile from '../../components/Community/Profile'
@@ -8,6 +8,7 @@ import CommentContainer from '../../components/Community/CommentContainer'
 import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import Menu from '../../assets/icon/Nav/menu.png'
 import like from '../../assets/icon/Community/like.png'
+import AlreadyLike from '../../assets/icon/Community/alreadyLike.png'
 
 import { BestDresserArticle, Container } from './MainCommunity'
 
@@ -22,6 +23,7 @@ export interface commentType {
   },
   content: string,
   create_at: string,
+  codi_img: string | null,
 }
 
 export interface ArticleType extends BestDresserArticle{
@@ -29,8 +31,13 @@ export interface ArticleType extends BestDresserArticle{
   comment: Array<commentType>
 }
 
+type LikeType = {
+  Like: boolean
+}
+
 export default function DetailBestDress() {
   // undefined 값을 없애주기 위해서 설정
+  const [Like, setLike] = useState(false)
   const defaultComment: Array<commentType> = []
   const navigate = useNavigate()
   const pramas = useParams()
@@ -60,6 +67,7 @@ export default function DetailBestDress() {
         },
         content: '정말 이쁘세요',
         create_at: '2022-10-25 14:23:00',
+        codi_img: null,
       },
       {
         user_id: {
@@ -68,6 +76,7 @@ export default function DetailBestDress() {
         },
         content: '저도 거기서 찍고싶네요!',
         create_at: '2022-10-25 14:57:00',
+        codi_img: null,
       }]
     })
     
@@ -91,7 +100,8 @@ export default function DetailBestDress() {
               <CustomText>{Article?.post_user.nickname}</CustomText>
             </ProfileContainer>
             <LikeContainer>
-              <Likeimg src={like}/>
+              {!!!Like && <Likeimg Like={Like} src={like} onClick={()=> setLike(!!!Like)}/>}
+              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=> setLike(!!!Like)}/>}
               <CustomText style={{fontSize: '13px'}}>{Article?.post_like}</CustomText>
             </LikeContainer>
           </div>
@@ -142,7 +152,7 @@ const LikeContainer = styled.div`
   display: flex;
 `
 
-const Likeimg = styled.img`
+const Likeimg = styled.img<LikeType>`
   width: 20px;
   height: 20px;
   margin-right: 3px;
@@ -161,4 +171,5 @@ export const LineDiv = styled.div`
   width: 100vw;
   margin: 10px 0; 
   height: 2px;
+  z-index: 3;
 `

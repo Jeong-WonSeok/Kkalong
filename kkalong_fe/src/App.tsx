@@ -13,6 +13,8 @@ import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddBestDress from './pages/Community/AddBestDress';
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
+import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
+import AddHelpCodi from './pages/Community/AddHelpCodi';
 
 
 function App() {
@@ -26,10 +28,11 @@ function App() {
           <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
           <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/Add' element={<AddSelectHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/Add/:Category' element={<AddHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
         </Routes>
-        <FooterBar/>
       </Router>
     </div>
   );
