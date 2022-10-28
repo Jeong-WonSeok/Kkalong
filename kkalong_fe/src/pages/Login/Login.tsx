@@ -27,7 +27,7 @@ export default function index() {
           </SocialLoginLinkTag>
           <SocialLoginLinkTag>
             <GoogleLogin src={GoogleLoginLogo}></GoogleLogin>        
-          </SocialLoginLinkTag>          
+          </SocialLoginLinkTag>
         </SocialLoginButton>
         <RegisterDiv>
           <RegisterSpan>아직 회원이 아니신가요?</RegisterSpan>
