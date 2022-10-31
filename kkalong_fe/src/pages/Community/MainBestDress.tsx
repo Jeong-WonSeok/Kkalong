@@ -1,12 +1,14 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
-import { BestDresserArticle, Container } from './MainCommunity'
-import backArrow from '../../assets/icon/Nav/BackArrow.png'
-import { useNavigate } from 'react-router-dom'
 import BestDresser from '../../components/Community/BestDresser'
+import { BestDresserArticle, Container } from './MainCommunity'
 
+import backArrow from '../../assets/icon/Nav/BackArrow.png'
+import AddArticle from '../../assets/icon/Community/addArticle.png'
 
 export default function MainBestDress() {
   const navigate = useNavigate()
@@ -69,6 +71,8 @@ export default function MainBestDress() {
         })}
       </BestContainer>
 
+      <PlusImg src={AddArticle} onClick={()=> navigate('/community/BestDress/Add')}/>
+
       <FooterBar/>
     </div>
   )
@@ -80,13 +84,22 @@ const BestContainer = styled(Container)`
   flex-wrap: wrap;
 `
 
-const BackArrow = styled.img`
+export const BackArrow = styled.img`
   width: 30px;
   height: 30px;
   margin: auto 0;
 `
 
-const CategoryText = styled.p`
+export const CategoryText = styled.p`
   line-height: 0;
   font-family: var(--base-font-600);
+`
+
+export const PlusImg = styled.img`
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.23));
 `

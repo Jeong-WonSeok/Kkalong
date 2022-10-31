@@ -1,10 +1,12 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { HelpCodiArticle } from '../../pages/Community/MainCommunity'
 import Profile from './Profile'
 
 export default function HelpCodi({article} : {article: HelpCodiArticle}) {
+  const navigate = useNavigate()
   return (
-    <div>
+    <div  onClick={()=>navigate(`/community/HelpCodi/${article.help_id}`)}>
     <Container style={{backgroundImage: `url(${article.help_img})`}}>
       <ProfileContainer>
       <Profile Image={article.user_id.profile} Size={17}/>
@@ -21,6 +23,7 @@ export default function HelpCodi({article} : {article: HelpCodiArticle}) {
 
 const Container = styled.div`
   min-width: 140px;
+  width: 140px;
   height: 180px;
   padding: 10px;
   border-radius: 30px;
@@ -28,13 +31,14 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin: 0 10px 0 0;
+  background-position: center;
   background-size: cover;
-  overflow: hidden
+  overflow: hidden;
 `
 
 const ProfileContainer = styled.div`
-  font-family: var(--base-font-300);
-  color: black;
+  font-family: var(--base-font-400);
+  color: #AB9D9D;
   font-size: 12px;
   display: flex;
   flex-direction: row;
