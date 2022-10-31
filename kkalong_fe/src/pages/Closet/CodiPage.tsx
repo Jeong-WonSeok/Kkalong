@@ -74,7 +74,11 @@ export default function CodiPage() {
       </TopNav>
       <Carousel sortclothes={sortclothes} />
       <>
-        <SelectBtn1>
+        <SelectBtn1
+          onClick={() => {
+            navigate("/closet");
+          }}
+        >
           <SelectColor1 />
           <SelectText1>옷장</SelectText1>
         </SelectBtn1>

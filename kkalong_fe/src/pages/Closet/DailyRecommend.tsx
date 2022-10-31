@@ -1,11 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import left from "../../assets/icon/Closet/arrow-left.png";
-import codi2 from "../../img/codi2.png";
+
 import add_codi from "../../assets/icon/Closet/add_codi.png";
+import codi1 from "../../img/codi1.png";
+import codi2 from "../../img/codi2.png";
+import codi3 from "../../img/codi3.png";
 import FooterBar from "../../components/ui/FooterBar";
+import { useState } from "react";
+
 export default function DailyRecommend() {
+  const location = useLocation();
+  const i = location.state.i;
+  console.log(i);
+  let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   const navigate = useNavigate();
   return (
     <div>
@@ -17,7 +26,7 @@ export default function DailyRecommend() {
         <img src={left}></img>
       </BackBtn>
       <DateText>오늘의 추천 코디</DateText>
-      <Codi src={codi2} />
+      <Codi src={codi[i]} />
       <PlusBtn>
         <PlusImg src={add_codi} />
         <BtnText>내 옷장에 추가</BtnText>

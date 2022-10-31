@@ -75,12 +75,20 @@ export default function MainCloset() {
 
       <>
         <Carousel sortclothes={sortclothes} />
-        <SelectBtn1>
+        <SelectBtn1
+          onClick={() => {
+            navigate("/closet");
+          }}
+        >
           <SelectColor1 />
           <SelectText1>옷장</SelectText1>
         </SelectBtn1>
         <img src={Bar} />
-        <SelectBtn2>
+        <SelectBtn2
+          onClick={() => {
+            navigate("/codi");
+          }}
+        >
           <SelectColor2 />
           <SelectText2>코디</SelectText2>
         </SelectBtn2>
@@ -187,7 +195,7 @@ const ClothesBtn = styled.button`
   height: 55px;
   width: 55px;
   border-radius: 50px;
-  border: solid 1.5px #67564e;
+  border: solid 2px #67564e;
   background-color: white;
 `;
 
@@ -207,7 +215,7 @@ const SortClothes = styled.button`
   margin-right: auto;
   background-color: white;
   border-radius: 20px;
-  border: solid 1px #e5ddce;
+  border: solid 2px #e5ddce;
 `;
 
 const AddClothes = styled.button`

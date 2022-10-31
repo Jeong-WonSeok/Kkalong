@@ -10,9 +10,11 @@ import codi2 from "../../img/codi2.png";
 import codi3 from "../../img/codi3.png";
 import plus from "../../assets/icon/Closet/plus.png";
 import FooterBar from "../../components/ui/FooterBar";
+import { useNavigate } from "react-router-dom";
 
 export default function WeatherPage() {
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
+  const navigate = useNavigate();
   return (
     <div>
       <TopNav type={""}>
@@ -28,7 +30,11 @@ export default function WeatherPage() {
       <CodiBack>
         {codi.map(function (a, i) {
           return (
-            <ClothesCodi>
+            <ClothesCodi
+              onClick={() => {
+                navigate("/daily", { state: { i } });
+              }}
+            >
               <img src={codi[i]} />
               {/* <PlusBtn>
                 <Plus src={plus} />
