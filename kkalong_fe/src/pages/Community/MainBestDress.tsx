@@ -71,9 +71,9 @@ export default function MainBestDress() {
         })}
       </BestContainer>
 
-      <PlusImg src={AddArticle} onClick={()=> navigate('/community/BestDress/Add')}/>
-
       <FooterBar/>
+      
+      <PlusImg src={AddArticle} onClick={()=> navigate('/community/BestDress/Add')}/>
     </div>
   )
 }
@@ -99,7 +99,7 @@ export const PlusImg = styled.img`
   width: 40px;
   height: 40px;
   position: fixed;
+  right: 30px;
   bottom: 80px;
-  right: 20px;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.23));
 `

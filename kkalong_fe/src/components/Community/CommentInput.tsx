@@ -18,6 +18,7 @@ export default function CommentInput() {
 
 const Container = styled.div`
   width: 100%;
+  max-width: 360px;
   display: flex;
   flex-direction: row;
   position: fixed;
