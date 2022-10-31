@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
 import list from "../../assets/icon/Closet/list.png";
@@ -18,6 +19,7 @@ import img7 from "../../img/img7.png";
 import left from "../../assets/icon/Closet/arrow-left.png";
 
 export default function AddCloset() {
+  const navigate = useNavigate();
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
   let [cltext, setCltext] = useState([
     "전체",
@@ -38,7 +40,13 @@ export default function AddCloset() {
   ]);
   return (
     <div>
-      <img src={left} width="30px" height="30px"></img>
+      <BackBtn
+        onClick={() => {
+          navigate("/closet");
+        }}
+      >
+        <img src={left}></img>
+      </BackBtn>
       <ClosetName placeholder="이름을 입력해주세요" />
       <ClosetEnter>
         <EnterText>저장</EnterText>
@@ -62,7 +70,14 @@ export default function AddCloset() {
     </div>
   );
 }
-
+const BackBtn = styled.button`
+  height: 30px;
+  width: 40px;
+  position: absolute;
+  border: none;
+  background-color: white;
+  margin-top: 10px;
+`;
 const ClothesBtn = styled.button`
   margin-top: 20px;
   margin-left: 10px;
@@ -96,7 +111,8 @@ const ClosetImg = styled.div`
   height: 150px;
   display: flex;
   margin: 20px auto;
-  border: dotted 1px #e5ddce;
+  border-radius: 20px;
+  border: dotted 3px #e5ddce;
 `;
 
 const ClosetName = styled.input`
@@ -106,7 +122,8 @@ const ClosetName = styled.input`
   border-left: none;
   border-right: none;
   border-bottom: solid 1px;
-  margin-left: 15px;
+  margin-left: 45px;
+  margin-top: 10px;
 `;
 
 const ClosetEnter = styled.button`

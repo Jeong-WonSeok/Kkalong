@@ -21,12 +21,21 @@ import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import Carousel from "../../components/closet/Carousel";
+import img1 from "../../img/img1.png";
+import img2 from "../../img/img2.png";
+import img3 from "../../img/img3.png";
+import img4 from "../../img/img4.png";
+import img5 from "../../img/img5.png";
+import img6 from "../../img/img6.png";
+import img7 from "../../img/img7.png";
 
 export default function CodiPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const settings = {
     className: "center",
+    dots: true,
     centerMode: true,
     infinite: true,
     centerPadding: "60px",
@@ -42,6 +51,15 @@ export default function CodiPage() {
     "신발",
     "악세서리",
   ]);
+  let [sortclothes, setSortclothes] = useState([
+    img1,
+    img2,
+    img3,
+    img4,
+    img5,
+    img6,
+    img7,
+  ]);
   let [btn, setBtn] = useState(false);
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   useEffect(() => {}, []);
@@ -54,46 +72,19 @@ export default function CodiPage() {
         <div style={{ width: "30px", height: "30px" }}></div>
         <MenuIcon src={menu} />
       </TopNav>
-      <Slider {...settings}>
-        <div>
-          <img src={camera} alt="no" />
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-      </Slider>
+      <Carousel sortclothes={sortclothes} />
       <>
         <SelectBtn1>
           <SelectColor1 />
           <SelectText1>옷장</SelectText1>
         </SelectBtn1>
         <img src={Bar} />
+
         <SelectBtn2>
           <SelectColor2 />
           <SelectText2>코디</SelectText2>
         </SelectBtn2>
       </>
-      {/* {clothes.map(function (a, i) {
-        return (
-          <ClothesBtn>
-            <img src={clothes[i]} />
-            <ClothesText>{cltext[i]}</ClothesText>
-          </ClothesBtn>
-        );
-      })} */}
       <>
         {codi.map(function (a, i) {
           return (
@@ -102,7 +93,11 @@ export default function CodiPage() {
             </ClothesCodi>
           );
         })}
-        <CodiPlus>
+        <CodiPlus
+          onClick={() => {
+            navigate("/pluscodi");
+          }}
+        >
           <img src={add_codi} />
         </CodiPlus>
         <FooterBar />
@@ -146,7 +141,7 @@ const MenuIcon = styled.img`
 `;
 
 const SelectBtn1 = styled.button`
-  margin-top: 300px;
+  margin-top: 20px;
   width: 190px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
@@ -169,7 +164,7 @@ const SelectColor2 = styled.div`
   border-radius: 10px 10px 0px 0px;
 `;
 const SelectBtn2 = styled.button`
-  margin-top: 300px;
+  margin-top: 20px;
   width: 190px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
@@ -187,7 +182,7 @@ const ClothesCodi = styled.button`
   margin-right: auto;
   background-color: white;
   border-radius: 20px;
-  border: solid 1px #e5ddce;
+  border: solid 2px #e5ddce;
 `;
 
 const AddClothes = styled.button`
@@ -212,5 +207,10 @@ const CodiPlus = styled.button`
   margin-right: auto;
   background-color: white;
   border-radius: 20px;
-  border: dotted 1px #e5ddce;
+  border: dotted 2px #e5ddce;
+`;
+
+const BtnBar = styled.div`
+  width: 1px;
+  border: solid black 1px;
 `;

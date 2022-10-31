@@ -10,6 +10,8 @@ import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddCloset from "./pages/Closet/AddCloset";
 import CodiPage from "./pages/Closet/CodiPage";
 import PlusCodi from "./pages/Closet/PlusCodi";
+import WeatherPage from "./pages/Closet/WeatherPage";
+import DailyRecommend from "./pages/Closet/DailyRecommend";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/codi" element={<CodiPage />}></Route>
           <Route path="/pluscodi" element={<PlusCodi />}></Route>
           <Route path="/community" element={<MainCommunity />}></Route>
+          <Route path="/weather" element={<WeatherPage />}></Route>
+          <Route path="/daily" element={<DailyRecommend />}></Route>
           <Route
             path="/community/BestDress"
             element={<MainBestDress />}

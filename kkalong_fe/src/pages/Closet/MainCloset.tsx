@@ -24,7 +24,11 @@ import camera from "../../assets/icon/Closet/add_clothes.png";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import Carousel from "../../components/closet/Carousel";
+// import { ClothesProps } from "../../components/closet/Carousel";
+export interface ClothesProps {
+  sortclothes: string[];
+}
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -55,6 +59,9 @@ export default function MainCloset() {
     img6,
     img7,
   ]);
+  let [sls, setSls] = useState("");
+
+  const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
   useEffect(() => {}, []);
 
   return (
@@ -65,28 +72,9 @@ export default function MainCloset() {
         <div style={{ width: "30px", height: "30px" }}></div>
         <MenuIcon src={menu} />
       </TopNav>
-      <Slider {...settings}>
-        <div>
-          <img src={camera} alt="no" />
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-      </Slider>
+
       <>
+        <Carousel sortclothes={sortclothes} />
         <SelectBtn1>
           <SelectColor1 />
           <SelectText1>옷장</SelectText1>
@@ -161,7 +149,7 @@ const MenuIcon = styled.img`
 `;
 
 const SelectBtn1 = styled.button`
-  margin-top: 300px;
+  margin-top: 20px;
   width: 190px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
@@ -184,7 +172,7 @@ const SelectColor2 = styled.div`
   border-radius: 10px 10px 0px 0px;
 `;
 const SelectBtn2 = styled.button`
-  margin-top: 300px;
+  margin-top: 20px;
   width: 190px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
