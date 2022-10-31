@@ -1,30 +1,89 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import Search from '../../components/ui/Search';
 import SpaoIcon from '../../assets/icon/Brand/spao.png'
 import HnMIcon from '../../assets/icon/Brand/h&m.png'
 import EightSecondsIcon from '../../assets/icon/Brand/eight.png'
 import ZaraIcon from '../../assets/icon/Brand/zara.png'
+import { stringify } from 'querystring';
+import { notInitialized } from 'react-redux/es/utils/useSyncExternalStore';
 
 
 
 export default function VirtualBrandChoice() {
+
+
+  interface BrandType {
+    img : string,
+    brand_id : number,
+  }
+
+  const navigate = useNavigate();
+
+  const [Brand, setBrand] = useState(Array<BrandType>);
+
+  const [currentBrand, setCurrentBrand] = useState(0);
+
+  const onClickBrandButton = (event: any) => {
+    console.log(event);
+    navigate(`/VirtualFitting/VirtualBrandChoice/${event.brand_id}`)
+  }
+
+  useEffect(() => {
+
+    setBrand([{
+      img : SpaoIcon,
+      brand_id : 1
+    }, {
+      img : HnMIcon,
+      brand_id : 2
+    }, {
+      img : ZaraIcon,
+      brand_id : 3
+    }, {
+      img : EightSecondsIcon,
+      brand_id : 4
+    },{
+      img : SpaoIcon,
+      brand_id : 1
+    }, {
+      img : HnMIcon,
+      brand_id : 2
+    }, {
+      img : ZaraIcon,
+      brand_id : 3
+    }, {
+      img : EightSecondsIcon,
+      brand_id : 4
+    }])
+  },[])
+
+
   return (
     <VirtualBrandChoiceDiv>
       <VirtualBrandChoiceText>브랜드 선택</VirtualBrandChoiceText>
       <VirtualUserSearch>유저검색</VirtualUserSearch>
       <Search></Search>
       <VirtualLine></VirtualLine>
-      <VirtualBrandButtonDiv></VirtualBrandButtonDiv>
+      <VirtualBrandButtonDiv>
+        {Brand.map((logo) => {
+          return (
+          <VirtualBrandButton src={logo.img} onClick={onClickBrandButton}>
+          </VirtualBrandButton>
+          )
+        })}
+      </VirtualBrandButtonDiv>
     </VirtualBrandChoiceDiv>
     );
-}
+  }
 
 
 //가상피팅 브랜드 선택 div
 const VirtualBrandChoiceDiv = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 100%;
 `
 
 
@@ -44,5 +103,16 @@ const VirtualLine = styled.hr`
 
 
 const VirtualBrandButtonDiv = styled.div`
-  
+  display : flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
+
+const VirtualBrandButton = styled.img`
+  width : 20%;
+  height :30px;
+  padding : 3px;
+  margin : 3px;
+  border : 1px solid #000000;
+  border-radius: 50px;
 `

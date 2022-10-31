@@ -7,7 +7,7 @@ import EmailLogo from '../../assets/icon/Login/email.png';
 import PasswordLogo from '../../assets/icon/Login/password.png';
 
 
-export default function index() {
+export default function Login() {
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo" ></LogoImg>
@@ -127,7 +127,7 @@ const SocialLoginDiv = styled.div`
   
   &::before {
     content: "";
-    flex-grow: 1;
+    flex : 1;
     background: rgba(0, 0, 0, 0.35);
     height: 1px;
     font-size :0px;
@@ -137,7 +137,8 @@ const SocialLoginDiv = styled.div`
   
   &::after {
     content: "";
-    flex-grow: 1;
+    flex : 1;
+
     background: rgba(0, 0, 0, 0.35);
     height: 1px;
     font-size :0px;
