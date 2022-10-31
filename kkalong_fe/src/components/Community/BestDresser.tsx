@@ -33,7 +33,7 @@ const Container = styled.div`
   justify-content: space-between;
   margin: 0 5px 10px 5px;
   background-size: cover;
-  overflow: hidden
+  overflow: hidden;
 `
 
 const ProfileContainer = styled.div`

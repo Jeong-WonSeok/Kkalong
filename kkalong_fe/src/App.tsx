@@ -19,7 +19,8 @@ import AddHelpCodi from './pages/Community/AddHelpCodi';
 
 function App() {
   return (
-    <div className="App">
+    <div className='container'>
+      <div className="App">
       <Router>                       
         <Routes>
           <Route path="/login" element={<Login/>}></Route>
@@ -35,6 +36,8 @@ function App() {
         </Routes>
       </Router>
     </div>
+  </div>
+    
   );
 }
 

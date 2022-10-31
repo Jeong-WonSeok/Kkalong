@@ -169,6 +169,7 @@ export const LineDiv = styled.div`
   left: -10px;
   background-color: var(--primary-color-700);
   width: 100vw;
+  max-width: 360px;
   margin: 10px 0; 
   height: 2px;
   z-index: 3;
