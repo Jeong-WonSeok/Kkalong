@@ -23,12 +23,12 @@ export default function VirtualBrandChoice() {
 
   const [Brand, setBrand] = useState(Array<BrandType>);
 
-  const [currentBrand, setCurrentBrand] = useState(0);
 
-  const onClickBrandButton = (event: any) => {
-    console.log(event);
-    navigate(`/VirtualFitting/VirtualBrandChoice/${event.brand_id}`)
-  }
+  
+  // const onClickBrandButton = (event: any) => {
+
+  //   navigate(`/VirtualFitting/VirtualBrandChoice/${event.brand_id}`)
+  // }
 
   useEffect(() => {
 
@@ -69,8 +69,8 @@ export default function VirtualBrandChoice() {
       <VirtualBrandButtonDiv>
         {Brand.map((logo) => {
           return (
-          <VirtualBrandButton src={logo.img} onClick={onClickBrandButton}>
-          </VirtualBrandButton>
+              <VirtualBrandButton src={logo.img} onClick={() => navigate(`${logo.brand_id}`, {state : logo})}></VirtualBrandButton>
+            
           )
         })}
       </VirtualBrandButtonDiv>

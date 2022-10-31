@@ -22,6 +22,7 @@ import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
 import AddHelpCodi from './pages/Community/AddHelpCodi';
 import VirtualBrandChoice from './pages/VirturalFitting/VirtualBrandChoice';
 import VirtualBrand from './pages/VirturalFitting/VirtualBrand';
+import VirtualBrandProduct from './pages/VirturalFitting/VirtualBrandProduct';
 
 function App() {
   return (
@@ -44,7 +45,9 @@ function App() {
           <Route path="/myPage/Friend/" element={<MyPageFriend/>}></Route>
           <Route path="/myPage/Update/" element={<MyPageUpdate/>}></Route>
           <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice/>}></Route>
-          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand/>}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct/>}></Route>
+          
         </Routes>
       </Router>
     </div>
