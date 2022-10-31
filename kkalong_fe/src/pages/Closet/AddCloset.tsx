@@ -51,7 +51,7 @@ export default function AddCloset() {
       <ClosetEnter>
         <EnterText>저장</EnterText>
       </ClosetEnter>
-      <ClosetImg />
+      <ClosetImg src={sortclothes[0]} />
       {clothes.map(function (a, i) {
         return (
           <ClothesBtn>
@@ -81,8 +81,8 @@ const BackBtn = styled.button`
 const ClothesBtn = styled.button`
   margin-top: 20px;
   margin-left: 10px;
-  height: 55px;
-  width: 55px;
+  height: 50px;
+  width: 50px;
   border-radius: 50px;
   border: solid 1px #67564e;
   background-color: white;
@@ -97,8 +97,8 @@ const ClothesText = styled.p`
   color: var(--primary-color-900);
 `;
 const SortClothes = styled.button`
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   margin-top: 20px;
   margin-left: 25px;
   margin-right: auto;
@@ -106,7 +106,7 @@ const SortClothes = styled.button`
   border-radius: 20px;
   border: solid 1px #e5ddce;
 `;
-const ClosetImg = styled.div`
+const ClosetImg = styled.img`
   width: 150px;
   height: 150px;
   display: flex;
@@ -117,7 +117,7 @@ const ClosetImg = styled.div`
 
 const ClosetName = styled.input`
   height: 30px;
-  width: 270px;
+  width: 240px;
   border-top: none;
   border-left: none;
   border-right: none;
