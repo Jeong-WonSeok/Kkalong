@@ -158,7 +158,7 @@ const MenuIcon = styled.img`
 
 const SelectBtn1 = styled.button`
   margin-top: 20px;
-  width: 190px;
+  width: 170px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
   background-color: white;
@@ -167,7 +167,7 @@ const SelectBtn1 = styled.button`
 `;
 const SelectColor1 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-500);
   border-radius: 10px 10px 0px 0px;
   margin-left: 0px;
@@ -175,13 +175,13 @@ const SelectColor1 = styled.div`
 `;
 const SelectColor2 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-800);
   border-radius: 10px 10px 0px 0px;
 `;
 const SelectBtn2 = styled.button`
   margin-top: 20px;
-  width: 190px;
+  width: 170px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
   background-color: white;
@@ -192,8 +192,8 @@ const SelectBtn2 = styled.button`
 const ClothesBtn = styled.button`
   margin-top: 20px;
   margin-left: 10px;
-  height: 55px;
-  width: 55px;
+  height: 50px;
+  width: 50px;
   border-radius: 50px;
   border: solid 2px #67564e;
   background-color: white;
@@ -208,8 +208,8 @@ const ClothesText = styled.p`
   color: var(--primary-color-900);
 `;
 const SortClothes = styled.button`
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   margin-top: 20px;
   margin-left: 25px;
   margin-right: auto;

@@ -102,7 +102,7 @@ const Codi = styled.div`
 const Modal = styled.div`
   background: white;
   height: 400px;
-  width: 355px;
+  width: 320px;
   margin-top: 300px;
   padding: 20px;
   text-align: center;
@@ -115,7 +115,7 @@ const Modal = styled.div`
 `;
 
 const ModalBar = styled.div`
-  width: 80px;
+  width: 60px;
   height: 10px;
   position: absolute;
   display: flex;
@@ -158,7 +158,7 @@ const BtnText = styled.span`
 `;
 
 const SortBorder = styled.div`
-  max-width: 400px;
+  width: 360px;
   height: 300px;
 `;
 const SortClothes = styled.button`
@@ -172,7 +172,7 @@ const SortClothes = styled.button`
 `;
 const ClosetName = styled.input`
   height: 30px;
-  width: 270px;
+  width: 230px;
   border-top: none;
   border-left: none;
   border-right: none;

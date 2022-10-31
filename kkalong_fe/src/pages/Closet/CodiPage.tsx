@@ -146,30 +146,30 @@ const MenuIcon = styled.img`
 
 const SelectBtn1 = styled.button`
   margin-top: 20px;
-  width: 190px;
+  width: 170px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
   background-color: white;
   border: none;
   margin-right: 10px;
 `;
-const SelectColor1 = styled.div`
+const SelectColor2 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-500);
   border-radius: 10px 10px 0px 0px;
   margin-left: 0px;
   padding: 0px;
 `;
-const SelectColor2 = styled.div`
+const SelectColor1 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-800);
   border-radius: 10px 10px 0px 0px;
 `;
 const SelectBtn2 = styled.button`
   margin-top: 20px;
-  width: 190px;
+  width: 160px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
   background-color: white;
@@ -179,8 +179,8 @@ const SelectBtn2 = styled.button`
 
 //코디 버튼
 const ClothesCodi = styled.button`
-  height: 150px;
-  width: 150px;
+  height: 130px;
+  width: 130px;
   margin-top: 20px;
   margin-left: 40px;
   margin-right: auto;
@@ -204,8 +204,8 @@ const AddClothes = styled.button`
 `;
 
 const CodiPlus = styled.button`
-  height: 150px;
-  width: 150px;
+  height: 130px;
+  width: 130px;
   margin-top: 20px;
   margin-left: 40px;
   margin-right: auto;
