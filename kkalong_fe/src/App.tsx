@@ -12,12 +12,18 @@ import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
 import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddCloset from "./pages/Closet/AddCloset";
+import CodiPage from "./pages/Closet/CodiPage";
+import PlusCodi from "./pages/Closet/PlusCodi";
+import WeatherPage from "./pages/Closet/WeatherPage";
+import DailyRecommend from "./pages/Closet/DailyRecommend";
 import AddBestDress from './pages/Community/AddBestDress';
 import MyPage from './pages/MyPage/MyPage'
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
 import AddHelpCodi from './pages/Community/AddHelpCodi';
+
 
 function App() {
   return (
@@ -36,6 +42,20 @@ function App() {
           <Route path='/community/HelpCodi/Add/:Category' element={<AddHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
+          <Route path="/addcloset" element={<AddCloset />}></Route>
+          <Route path="/codi" element={<CodiPage />}></Route>
+          <Route path="/pluscodi" element={<PlusCodi />}></Route>
+          <Route path="/community" element={<MainCommunity />}></Route>
+          <Route path="/weather" element={<WeatherPage />}></Route>
+          <Route path="/daily" element={<DailyRecommend />}></Route>
+          <Route
+            path="/community/BestDress"
+            element={<MainBestDress />}
+          ></Route>
+          <Route
+            path="/community/BestDress/:BestDressId"
+            element={<DetailBestDress />}
+          ></Route>
           <Route path="/myPage" element={<MyPage/>}></Route>
         </Routes>
       </Router>
