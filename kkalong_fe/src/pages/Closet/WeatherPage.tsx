@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import dfs_xy_conv from '../../hooks/chagneLatLon'
+
 import TopNav from "../../components/ui/TopNav";
+import FooterBar from "../../components/ui/FooterBar";
+
 import logo from "../../assets/icon/logo/kkalongLogo.png";
 import menu from "../../assets/icon/Nav/menu.png";
 import sun from "../../assets/icon/Closet/sun.png";
@@ -9,12 +15,50 @@ import codi1 from "../../img/codi1.png";
 import codi2 from "../../img/codi2.png";
 import codi3 from "../../img/codi3.png";
 import plus from "../../assets/icon/Closet/plus.png";
-import FooterBar from "../../components/ui/FooterBar";
-import { useNavigate } from "react-router-dom";
+
+type LocationType = {
+  lat: number,
+  lon: number,
+  x: number,
+  y: number
+}
 
 export default function WeatherPage() {
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    console.log(getLocation())
+  },[])
+
+  const getLocation = async () => {
+    if (navigator.geolocation) { // GPS를 지원하면
+      // 이것으로 현재 위치를 가져온다.
+      var getPosition = function () {
+        return new Promise(function (reslove, reject) {
+          navigator.geolocation.getCurrentPosition(reslove, reject)
+        })
+      }
+      
+      // 이거 왜 안됨?
+      await getPosition()
+        .then(async (position: any) => {
+          const result  = new Promise((reslove, reject) => {
+            reslove(dfs_xy_conv('toXY', position.coords.latitude , position.coords.longitude))
+          })
+          
+          await result.then((res) => {
+            return res
+          })
+        })
+        .catch((error) => {
+          console.error(error.message)
+        });
+    } else {
+      alert('GPS 정보를 불러드리지 못했습니다.\n 새로고침을 해주세요');
+    }
+  }
+
   return (
     <div>
       <TopNav type={""}>
@@ -86,15 +130,17 @@ const DailyText = styled.p`
 `;
 
 const CodiBack = styled.div`
-  height: 400px;
+  min-height: 400px;
   background-color: #e5ddce;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
+
 const ClothesCodi = styled.button`
   height: 150px;
   width: 150px;
-  margin-top: 20px;
-  margin-left: 40px;
-  margin-right: auto;
+  margin: 10px;
   background-color: white;
   border-radius: 20px;
   border: solid 2px #67564e;

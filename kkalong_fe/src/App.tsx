@@ -23,14 +23,17 @@ import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
 import AddHelpCodi from './pages/Community/AddHelpCodi';
+import StartPage from './pages/StartPage';
+import AddClothes from './pages/Closet/AddClothes';
 
 
 function App() {
   return (
-    <div className='container'>
-      <div className="App">
+    <div id='container'>
+      <div id="App">
       <Router>                       
         <Routes>
+          <Route path="/" element={<StartPage/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/signup" element={<Signup/>}></Route>
           <Route path="/signupNext" element={<SignupNext/>}></Route>
@@ -44,6 +47,7 @@ function App() {
           <Route path='/community/HelpCodi/Add/:Category/:Id' element={<AddHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
+          <Route path="/closet/Add" element={<AddClothes/>}></Route>
           <Route path="/addcloset" element={<AddCloset />}></Route>
           <Route path="/codi" element={<CodiPage />}></Route>
           <Route path="/pluscodi" element={<PlusCodi />}></Route>

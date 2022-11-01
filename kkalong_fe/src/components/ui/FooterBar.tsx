@@ -76,7 +76,7 @@ export default function FooterBar() {
         커뮤니티
       </FooterImgContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="profile" ? selcetMyPage : MyPage} onClick={()=>GoNavigate('profile')}/>
+        <FooterImg src={SelectCategory==="profile" ? selcetMyPage : MyPage} onClick={()=>GoNavigate('myPage')}/>
         프로필
       </FooterImgContainer>
     </FooterDiv>

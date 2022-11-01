@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components';
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
 import MyImg from '../../assets/icon/MyPage/My.png'
@@ -6,6 +6,7 @@ import ArticleIcon from '../../assets/icon/MyPage/article.png'
 import FriendIcon from '../../assets/icon/MyPage/friend.png'
 import MemberUpdateIcon from '../../assets/icon/MyPage/memberUpdate.png'
 import MoveIcon from '../../assets/icon/MyPage/move.png'
+import FooterBar from '../../components/ui/FooterBar';
 
 
 
@@ -13,6 +14,11 @@ export default function MyPage() {
   
   const follow = 120;
   const follower = 90;
+
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.marginTop = '0'
+  },[])
   
   return (
     <div>
@@ -59,6 +65,8 @@ export default function MyPage() {
         <MyPageButtonMove src={MoveIcon}/>
         </MyPageUnderButton>
       </MyPageUnderDiv>
+
+      <FooterBar/>
     </div>
 
   )
@@ -71,8 +79,7 @@ const MyPageDiv = styled.div`
   align-items: center;
   background-color: #947F6C;
   height :50%;
-  font-family: var(--base-font-600)
-
+  font-family: var(--base-font-600);
 `
 
 

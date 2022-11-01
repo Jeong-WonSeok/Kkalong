@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import Logo from '../../assets/icon/logo/kkalongLogo.png';
 import KakaoLoginLogo from '../../assets/icon/Login/SocialLogin/kakao.png';
@@ -7,7 +7,13 @@ import EmailLogo from '../../assets/icon/Login/email.png';
 import PasswordLogo from '../../assets/icon/Login/password.png';
 
 
-export default function index() {
+export default function Login() {
+  // 화면의 상하단 margin 제거
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.margin = '0'
+  },[])
+  
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo" ></LogoImg>
@@ -52,49 +58,47 @@ const LoginDiv = styled.div`
 const LogoImg = styled.img`
   padding-top: 15%;
   padding-bottom : 15%;
-  width:70px;
-  height:70px;
+  width:107px;
+  height:82px;
   
 `
 
 //로그인 input을 담는 div
 const LoginInputDiv = styled.div`
   width : 70%;
-  position: relative;
-
+  max-width: 260px;
+  display: flex;
+  flex-direction: row;
+  background-color: #F0F0F0;
+  border-radius : 10px;
+  padding: 0 6px;
+  margin-bottom: 10px;
 `
 const LoginInputImg = styled.img`
-  position : absolute;
-  top:10px;
-  left:5px;
+  width: 20px;
+  height: 20px;
+  margin: auto 0;
 `
 
 
 //이메일 입력
 const EmailInput = styled.input`
-  margin : 3px;
   border : none;
   background-color: #F0F0F0;
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent : 20px;
-
-  border-radius : 10px;
+  text-indent: 10px;
 `
 
 //패스워드 입력
 const PasswordInput = styled.input`
-  margin :3px;
   border : none;
   background-color: #F0F0F0;
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent : 20px;
-  border-radius : 10px;
-  
-
+  text-indent: 10px;
 `
 //로그인 버튼
 const LoginButton = styled.button`

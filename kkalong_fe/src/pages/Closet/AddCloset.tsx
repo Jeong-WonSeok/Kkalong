@@ -22,6 +22,12 @@ import { Category, ClothesImg, SortClothes, SortClothesContainer } from "./MainC
 
 export default function AddCloset() {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.marginBottom = '0'
+  },[])
+
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
   let [cltext, setCltext] = useState([
     "전체",
