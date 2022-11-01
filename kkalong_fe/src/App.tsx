@@ -16,6 +16,7 @@ import AddBestDress from './pages/Community/AddBestDress';
 import MyPage from './pages/MyPage/MyPage'
 import MyPageFriend from './pages/MyPage/MyPageFriend'
 import MyPageUpdate from './pages/MyPage/MyPageUpdate'
+import MyPageArticle from './pages/MyPage/MyPageArticle'
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
@@ -44,6 +45,7 @@ function App() {
           <Route path="/myPage" element={<MyPage />}></Route>
           <Route path="/myPage/Friend/" element={<MyPageFriend/>}></Route>
           <Route path="/myPage/Update/" element={<MyPageUpdate/>}></Route>
+          <Route path="/myPage/Article/" element={<MyPageArticle/>}></Route>
           <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice/>}></Route>
           <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
           <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct/>}></Route>

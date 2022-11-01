@@ -1,34 +1,48 @@
 import React from "react";
 import styled from "styled-components";
-import EmailIcon from '../../assets/icon/User/mail.png'
 import AgeIcon from '../../assets/icon/User/age.png'
 import HeightIcon from '../../assets/icon/User/height.png'
 import WeightIcon from '../../assets/icon/User/weight.png'
+import NicknameIcon from '../../assets/icon/User/nickname.png'
+import FooterBar from "../../components/ui/FooterBar";
+import backArrow from '../../assets/icon/Nav/BackArrow.png';
+import TopNav from "../../components/ui/TopNav";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPageUpdate() {
+
+  const navigate = useNavigate();
+
   return (
     <SignupDiv>
-      <SignupText>회원가입</SignupText>
-      <SignupLine></SignupLine>
+      <TopNav type={""}>
+        <img src={backArrow} style={{width:"30px", height:"30px"}} onClick={()=>navigate(-1)}></img>
+        <SignupText>회원가입</SignupText>
+        <div style={{width:"30px", height:"30px"}}></div>
+
+      </TopNav>
+      <SignupInputText>닉네임</SignupInputText>
       <SignupNicknameDiv>
-        <SignupNicknameInput placeholder='닉네임'></SignupNicknameInput>
+        <SignupNicknameInput ></SignupNicknameInput>
         <SignupNicknameCheck>중복확인</SignupNicknameCheck>
-        <SignupNicknameIcon src={EmailIcon}></SignupNicknameIcon>
+        <SignupNicknameIcon src={NicknameIcon}></SignupNicknameIcon>
       </SignupNicknameDiv>
+      <SignupInputText>나이</SignupInputText>
       <SignupInputDiv>
-        <SignupAgeInput placeholder='나이'/>
+        <SignupAgeInput />
         <SignupAgeIcon src={AgeIcon}></SignupAgeIcon>
       </SignupInputDiv>
+      <HeightWeightDiv>
+        <SignupInputText>키</SignupInputText>
+        <SignupInputText>몸무게</SignupInputText>
+      </HeightWeightDiv>
       <SignupInputDiv>
-        <SignupBodyInfoInput placeholder='키'></SignupBodyInfoInput>
+        <SignupBodyInfoInput ></SignupBodyInfoInput>
         <SignupHeightIcon src={HeightIcon}></SignupHeightIcon>
-        <SignupBodyInfoInput placeholder='몸무게'></SignupBodyInfoInput>
+        <SignupBodyInfoInput ></SignupBodyInfoInput>
         <SignupWeightIcon src={WeightIcon}></SignupWeightIcon>
-
       </SignupInputDiv>
-
-
-
+      <FooterBar/>
     </SignupDiv>   
   )
 }
@@ -51,15 +65,22 @@ const SignupText = styled.span`
   
 `
 
+//각 인풋 위에 text
+const SignupInputText = styled.span`
+  font-family: var(--base-font-400);
+  margin : auto 50px;
+  
+`
+
 //닉네임 input, button 담는 div
 const SignupNicknameDiv = styled.div`
   position : relative;
 `
-//이메일 input
+//닉네임 input
 const SignupNicknameInput = styled.input`
   border:none;
   border-radius: 10px;
-  margin-top : 20px;
+  margin-bottom : 20px;
   margin-right: 15px;
   padding : 5px;
   background-color: #F0F0F0;
@@ -81,19 +102,26 @@ const SignupNicknameCheck = styled.button`
 //닉네임 아이콘
 const SignupNicknameIcon = styled.img`
   position : absolute;
-  top : 26px;
+  top : 3px;
   left : 3px;
 `
 
 //input 담을 div
 const SignupInputDiv = styled.div`
-  margin-top : 20px;
+  margin-bottom : 20px;
   width : 67%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position : relative;
   
+`
+
+// 키 몸무메 나눌 div
+const HeightWeightDiv = styled.div`
+  display : flex;
+  flex-direction: row;
+  justify-content: space-between;
 `
 
 //age Input
