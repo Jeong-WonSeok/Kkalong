@@ -9,29 +9,18 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class ClosetClothing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="review_id", nullable = false)
+    @Column(name="closetclothing_id", nullable = false)
     private int id;
 
-    private String gender;
-
-    private String weight;
-
-    private String height;
-
-    private String size;
-
-    private String color;
-
-    private String brightness;
-
-    private String thickness;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="closet_id")
+    private Closet closet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="clothing_id")
     private Clothing clothing;
-
 }

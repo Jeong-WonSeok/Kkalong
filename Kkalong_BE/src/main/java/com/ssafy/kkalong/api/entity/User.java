@@ -1,62 +1,65 @@
 package com.ssafy.kkalong.api.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Controller;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="USER")
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long id;
+    @Column(name="user_id", nullable = false)
+    private int id;
 
-    @Setter
     @Column(nullable=false, unique = true, length = 50)
     private String email;
 
-    @Setter
     @Column(nullable=false, unique = true)
     private String nickname;
 
-    @Setter
-    @Column(nullable = true)
+    @Column(nullable=false, unique = true)
     private String password;
 
-    @Setter
     @Column(nullable = false)
-    private Character gender;
+    private String gender;
 
-    @Setter
     @Column(nullable = false)
     private String age;
 
-    @Setter
     @Column(nullable = false)
     private String height;
 
-    @Setter
     @Column(nullable = false)
     private String weight;
 
-    @Setter
     @Column(nullable = false)
     private String provider;
 
-    @Setter
-    @Column(nullable = true)
     private String img;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Closet> closets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Fitting> fittings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<Help> helps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<PostLike> likeposts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
+    private List<ReplyLike> likereplys = new ArrayList<>();
 }

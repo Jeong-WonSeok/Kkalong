@@ -3,25 +3,28 @@ package com.ssafy.kkalong.api.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="BRAND")
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Long id;
+    @Column(name="brand_id", nullable = false)
+    private int id;
 
-    @Setter
     @Column(nullable=false, unique = true)
     private String name;
 
-    @Setter
     @Column(nullable = false)
     private String img;
+
+    @OneToMany(mappedBy = "brand")
+    private List<Clothing> clothings = new ArrayList<>();
+
 }
