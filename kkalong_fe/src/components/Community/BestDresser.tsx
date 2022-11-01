@@ -41,7 +41,7 @@ const Container = styled.div`
   margin: 0 5px 10px 5px;
   background-size: cover;
   overflow: hidden;
-`;
+`
 
 const ProfileContainer = styled.div`
   font-family: var(--base-font-300);

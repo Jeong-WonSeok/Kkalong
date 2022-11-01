@@ -87,7 +87,7 @@ const FooterDiv = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-width: 400px;
+  max-width: 360px;
   font-family: var(--base-font-300);
   display: flex;
   justify-content: space-around;

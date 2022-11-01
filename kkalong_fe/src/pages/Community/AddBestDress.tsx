@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import TopNav from '../../components/ui/TopNav'
 import { Container } from './MainCommunity'
@@ -16,8 +16,16 @@ interface SendType {
 }
 
 export default function AddBestDress() {
+  const params = useParams()
   const [ SendData, setSendData ] = useState<SendType>()
   const navigate = useNavigate()
+
+  // 만약 Edit 상태라면 미리 데이터를 받아온다.
+  useEffect(()=>{
+    if (params.Id) {
+
+    }
+  }, [])
 
   const SelectPicture = () => {
     document.getElementById("file")?.click()
@@ -56,7 +64,7 @@ export default function AddBestDress() {
     <div>
       <TopNav type={""}>
         <div style={{width: '60px', height: '40px'}}>
-        <MenuImg src={BackArrow} onClick={()=>navigate('/community/BestDress')}/>
+        <MenuImg src={BackArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도전! 베스트 드레서✨</CategoryText>
         <SubmitBtn>작성</SubmitBtn>
@@ -184,6 +192,7 @@ const LineDiv = styled.div`
   left: -10px;
   background-color: var(--primary-color-700);
   width: 100vw;
+  max-width: 360px;
   margin: 10px 0; 
   height: 2px;
 `

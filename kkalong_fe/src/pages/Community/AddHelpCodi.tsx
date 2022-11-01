@@ -81,7 +81,7 @@ export default function AddHelpCodi() {
     <div>
       <TopNav type={''}>
         <div style={{width: '60px'}}>
-        <AdjustBackArrow src={backArrow} onClick={()=>navigate('/community/HelpCodi/Add')}/>
+        <AdjustBackArrow src={backArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도와주세요 패알못😂</CategoryText>
         <SubmitBtn>작성</SubmitBtn>

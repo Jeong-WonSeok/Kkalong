@@ -1,5 +1,12 @@
 server:
   port: 8080
+    servlet:
+      context-path: /api/v1
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
+
 
 jwt:
   header: Authorization
@@ -60,7 +67,7 @@ spring:
     generate-ddl: true
     hibernate:
       #format_sql: true
-      ddl-auto: update
+      ddl-auto: create
 
 
 

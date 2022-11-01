@@ -71,9 +71,11 @@ export default function MainBestDress() {
         })}
       </BestContainer>
 
-      <PlusImg src={AddArticle} onClick={()=> navigate('/community/BestDress/Add')}/>
-
       <FooterBar/>
+      
+      <PlusDiv>
+        <PlusImg src={AddArticle} onClick={()=> navigate('/community/BestDress/Add')}/>
+      </PlusDiv>
     </div>
   )
 }
@@ -95,11 +97,20 @@ export const CategoryText = styled.p`
   font-family: var(--base-font-600);
 `
 
+export const PlusDiv = styled.div`
+  position: fixed;
+  width:100%;
+  height: 60px;
+  max-width: 360px;
+  left: auto;
+  bottom: 70px;
+`
+
 export const PlusImg = styled.img`
   width: 40px;
   height: 40px;
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.23));
 `
