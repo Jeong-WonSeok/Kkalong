@@ -32,6 +32,7 @@ export default function TopNav({
 }
 
 const TopContainer = styled.div`
+  z-index: 5;
   width: 100%;
   max-width: 360px;
   height: 45px;
