@@ -19,10 +19,16 @@ import WeatherPage from "./pages/Closet/WeatherPage";
 import DailyRecommend from "./pages/Closet/DailyRecommend";
 import AddBestDress from './pages/Community/AddBestDress';
 import MyPage from './pages/MyPage/MyPage'
+import MyPageFriend from './pages/MyPage/MyPageFriend'
+import MyPageUpdate from './pages/MyPage/MyPageUpdate'
+import MyPageArticle from './pages/MyPage/MyPageArticle'
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
 import AddHelpCodi from './pages/Community/AddHelpCodi';
+import VirtualBrandChoice from './pages/VirturalFitting/VirtualBrandChoice';
+import VirtualBrand from './pages/VirturalFitting/VirtualBrand';
+import VirtualBrandProduct from './pages/VirturalFitting/VirtualBrandProduct';
 
 
 function App() {
@@ -44,21 +50,18 @@ function App() {
           <Route path='/community/HelpCodi/Add/:Category/:Id' element={<AddHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
+          <Route path="/myPage" element={<MyPage />}></Route>
+          <Route path="/myPage/Friend/" element={<MyPageFriend/>}></Route>
+          <Route path="/myPage/Update/" element={<MyPageUpdate/>}></Route>
+          <Route path="/myPage/Article/" element={<MyPageArticle/>}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice/>}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct/>}></Route>
           <Route path="/addcloset" element={<AddCloset />}></Route>
           <Route path="/codi" element={<CodiPage />}></Route>
           <Route path="/pluscodi" element={<PlusCodi />}></Route>
-          <Route path="/community" element={<MainCommunity />}></Route>
           <Route path="/weather" element={<WeatherPage />}></Route>
           <Route path="/daily" element={<DailyRecommend />}></Route>
-          <Route
-            path="/community/BestDress"
-            element={<MainBestDress />}
-          ></Route>
-          <Route
-            path="/community/BestDress/:BestDressId"
-            element={<DetailBestDress />}
-          ></Route>
-          <Route path="/myPage" element={<MyPage/>}></Route>
         </Routes>
       </Router>
     </div>

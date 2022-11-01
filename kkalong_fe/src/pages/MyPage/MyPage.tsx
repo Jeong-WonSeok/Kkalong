@@ -6,13 +6,30 @@ import ArticleIcon from '../../assets/icon/MyPage/article.png'
 import FriendIcon from '../../assets/icon/MyPage/friend.png'
 import MemberUpdateIcon from '../../assets/icon/MyPage/memberUpdate.png'
 import MoveIcon from '../../assets/icon/MyPage/move.png'
-
+import { useNavigate } from 'react-router-dom';
+import FooterBar from '../../components/ui/FooterBar';
 
 
 export default function MyPage() {
   
+  //state로 바꿔서 사용
   const follow = 120;
   const follower = 90;
+
+  const navigate = useNavigate();
+
+  const handleArticle = () => {
+    navigate(`Article`)
+  }
+
+  const handleFriend = () => {
+    navigate(`Friend`)
+
+  }
+
+  const handleUpdate = () => {
+    navigate('Update')
+  }
   
   return (
     <div>
@@ -37,14 +54,14 @@ export default function MyPage() {
       <MyPageUnderDiv>
         
       <MyPageUnderButton>
-        <MyPageIconTextDiv>
+        <MyPageIconTextDiv onClick={handleArticle}>
           <MyPageButtonIcon src={ArticleIcon}/>
           <MyPageButtonText>게시물</MyPageButtonText>
         </MyPageIconTextDiv>
         <MyPageButtonMove src={MoveIcon}/>
       </MyPageUnderButton>
       <MyPageUnderButton>
-        <MyPageIconTextDiv>
+        <MyPageIconTextDiv onClick={handleFriend}>
           <MyPageButtonIcon src={FriendIcon}/>
           <MyPageButtonText>친구</MyPageButtonText>
         </MyPageIconTextDiv>
@@ -52,13 +69,14 @@ export default function MyPage() {
         </MyPageUnderButton>
       <MyPageUnderButton>
           
-      <MyPageIconTextDiv> 
+      <MyPageIconTextDiv onClick={handleUpdate}> 
         <MyPageButtonIcon src={MemberUpdateIcon}/>
         <MyPageButtonText>회원정보 수정</MyPageButtonText>
       </MyPageIconTextDiv>
         <MyPageButtonMove src={MoveIcon}/>
         </MyPageUnderButton>
       </MyPageUnderDiv>
+      <FooterBar/>
     </div>
 
   )
