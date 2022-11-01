@@ -19,11 +19,13 @@ export default function CommentInput() {
 const Container = styled.div`
   width: 100%;
   max-width: 360px;
+  height: 30px;
+  background-color: white;
   display: flex;
   flex-direction: row;
   position: fixed;
-  bottom: 75px;
-  margin: 0 auto;
+  left: auto;
+  bottom: 70px;
   font-family: var(--base-font-400);
 `
 

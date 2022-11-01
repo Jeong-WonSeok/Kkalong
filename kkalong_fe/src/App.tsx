@@ -36,11 +36,12 @@ function App() {
           <Route path="/signupNext" element={<SignupNext/>}></Route>
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
-          <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/Add/' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/Add/:Id' element={<AddBestDress/>}></Route>
           <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
           <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/Add' element={<AddSelectHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/Add/:Category' element={<AddHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/Add/:Category/:Id' element={<AddHelpCodi/>}></Route>
           <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
           <Route path="/closet" element={<MainCloset />}></Route>
           <Route path="/addcloset" element={<AddCloset />}></Route>

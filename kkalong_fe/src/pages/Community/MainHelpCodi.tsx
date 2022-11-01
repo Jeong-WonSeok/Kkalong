@@ -6,7 +6,7 @@ import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
 import HelpCodi from '../../components/Community/HelpCodi'
 import { Container, HelpCodiArticle } from './MainCommunity'
-import { CategoryText } from './MainBestDress'
+import { CategoryText, PlusDiv } from './MainBestDress'
 import { PlusImg } from './MainBestDress'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
@@ -108,7 +108,9 @@ export default function MainHelpCodi() {
           })}
         </ClosetContainer>}
         
-        <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  
+        <PlusDiv>
+          <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  
+        </PlusDiv>
       <FooterBar/>
     </div>
   )
