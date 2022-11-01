@@ -22,6 +22,10 @@ public class Reply {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="cody_id", nullable = true)
+    private Cody cody;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "help_id")
     private Help help;
 
