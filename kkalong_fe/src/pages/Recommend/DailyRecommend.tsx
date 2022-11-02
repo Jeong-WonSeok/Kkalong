@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import left from "../../assets/icon/Closet/arrow-left.png";
-
+import TopNav from "../../components/ui/TopNav";
 import add_codi from "../../assets/icon/Closet/add_codi.png";
 import codi1 from "../../img/codi1.png";
 import codi2 from "../../img/codi2.png";
@@ -18,14 +18,17 @@ export default function DailyRecommend() {
   const navigate = useNavigate();
   return (
     <div>
-      <BackBtn
-        onClick={() => {
-          navigate("/closet");
-        }}
-      >
-        <img src={left}></img>
-      </BackBtn>
-      <DateText>오늘의 추천 코디</DateText>
+      <TopNav type={""}>
+        <BackBtn
+          onClick={() => {
+            navigate("/closet");
+          }}
+        >
+          <img src={left}></img>
+        </BackBtn>
+        <DateText>오늘의 추천 코디</DateText>
+      </TopNav>
+
       <Codi src={codi[i]} />
       <PlusBtn>
         <PlusImg src={add_codi} />
@@ -42,12 +45,11 @@ const BackBtn = styled.button`
   position: absolute;
   border: none;
   background-color: white;
-  margin-left: 10px;
 `;
 const DateText = styled.p`
+  /* line-height: 0; */
+  margin: auto;
   font-family: var(--base-font-400);
-  font-size: 20px;
-  text-align: center;
 `;
 const Codi = styled.img`
   width: 300px;

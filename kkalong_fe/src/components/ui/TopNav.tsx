@@ -43,6 +43,7 @@ const TopContainer = styled.div`
   font-family: var(--base-font-400);
   font-size: 20px;
   background-color: white;
+  z-index: 9999;
 `;
 
 const InnerContainer = styled.div`

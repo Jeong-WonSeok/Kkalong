@@ -49,7 +49,7 @@ export default function AddCloset() {
   return (
     <div>
       <TopNav type={""}>
-      <BackBtn
+        <BackBtn
           onClick={() => {
             navigate("/closet");
           }}
