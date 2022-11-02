@@ -25,7 +25,8 @@ spring:
       mail.smtp.ssl.enable: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
+#    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://k7b302.p.ssafy.io:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
     username: ssafy
     password: ssafy
   security:
@@ -34,7 +35,8 @@ spring:
         registration:
           kakao:
             client-id: b310110cf0e516893f60c0bd3b188feb
-            redirect-uri: http://localhost:8080/api/v1/login/oauth2/code/kakao
+#            redirect-uri: http://localhost:8080/api/v1/login/oauth2/code/kakao
+            redirect-uri: http://k7b302.p.ssafy.io:8080/api/v1/login/oauth2/code/kakao
             client-authentication-method: POST
             client-secret: S0iTNkdfRPIFPdligZNTxOxQs1bYX4L9
             authorization-grant-type: authorization_code
