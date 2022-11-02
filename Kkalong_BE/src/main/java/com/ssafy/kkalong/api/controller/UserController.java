@@ -1,6 +1,7 @@
 package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.SignupDto;
+import com.ssafy.kkalong.api.dto.UserInfoDto;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
@@ -29,8 +30,20 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
 
         User user = userService.signUp(signupDto);
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .height(user.getHeight())
+                .weight(user.getWeight())
+                .provider(user.getProvider())
+                .followers(userService.getFollowerListByReceiverId(user.getId()))
+                .followings(userService.getFollowingListBySenderId(user.getId()))
+                .build();
         result.put("token", jwtProvider.generateJwtTokenFromUser(user));
-        result.put("user", user);
+        result.put("user", userInfoDto);
         return ResponseEntity.ok().body(result);
     }
 

@@ -1,12 +1,17 @@
 package com.ssafy.kkalong.api.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignupDto {
+public class UserInfoDto {
     private String email;
     private String password;
     private String nickname;
@@ -15,4 +20,6 @@ public class SignupDto {
     private int height;
     private int weight;
     private String provider;
+    private List<Integer> followers;
+    private List<Integer> followings;
 }

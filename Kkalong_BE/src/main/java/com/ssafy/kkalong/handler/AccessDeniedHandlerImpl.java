@@ -15,7 +15,7 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        ApiResponse.error(response, ApiResponseType.FORBIDDEN_RESPONSE);
+        ApiResponse.error(response, ApiResponseType.UNAUTHORIZED_RESPONSE, "접근 거부");
     }
 
 }

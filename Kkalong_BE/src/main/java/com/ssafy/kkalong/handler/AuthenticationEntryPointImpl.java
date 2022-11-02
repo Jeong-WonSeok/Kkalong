@@ -15,7 +15,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        ApiResponse.error(response, ApiResponseType.UNAUTHORIZED_RESPONSE);
+        ApiResponse.error(response, ApiResponseType.UNAUTHORIZED_RESPONSE, "인증 실패");
     }
 
 }

@@ -34,8 +34,15 @@ public class AuthenticationProviderImpl  implements AuthenticationProvider {
         // 해당 회원 Database 조회
         UserDetailsImpl userDetail = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
 
+        //이메일 확인
+        if(userDetail.getId() ==-1){
+            System.out.println("Invalid email");
+            throw new BadCredentialsException(email + "Invalid email");
+        }
+
         // 비밀번호 확인
         if (!passwordEncoder.matches(password, userDetail.getPassword())){
+            System.out.println("Invalid password");
             throw new BadCredentialsException(userDetail.getUsername() + "Invalid password");
         }
 
