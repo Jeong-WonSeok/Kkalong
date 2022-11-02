@@ -38,6 +38,8 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public boolean isNicknameDuplicated(String nickname) { return userRepository.existsByNickname(nickname); }
+
     public boolean isAuthEmailDuplicated(String email){
         return authCodeRepository.existsByEmail(email);
     }
@@ -120,4 +122,5 @@ public class UserService {
         }
         return followerList;
     }
+
 }

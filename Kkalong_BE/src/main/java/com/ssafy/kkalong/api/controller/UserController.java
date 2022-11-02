@@ -1,6 +1,7 @@
 package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.SignupDto;
+import com.ssafy.kkalong.api.dto.StringDto;
 import com.ssafy.kkalong.api.dto.UserInfoDto;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.UserService;
@@ -47,14 +48,25 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/signup/{email}")
-    public ResponseEntity<?> authorizeEmail(@PathVariable String email){
+    @PostMapping("/signup/email")
+    public ResponseEntity<?> authorizeEmail(@RequestBody final StringDto stringDto){
         Map<String, Object> result = new HashMap<>();
 
-        if(userService.isEmailDuplicated(email)){
-            result.put("provider", userService.getProvider(email));
+        if(userService.isEmailDuplicated(stringDto.getValue())){
+            result.put("provider", userService.getProvider(stringDto.getValue()));
         } else{
-            result.put("security",  userService.sendEmail(email));
+            result.put("security",  userService.sendEmail(stringDto.getValue()));
+        }
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/check/nickname")
+    public ResponseEntity<?> checkNickname(@RequestBody final StringDto stringDto){
+        Map<String, Object> result = new HashMap<>();
+        if(userService.isNicknameDuplicated(stringDto.getValue())){
+            result.put("usable", false);
+        } else{
+            result.put("usable", true);
         }
         return ResponseEntity.ok().body(result);
     }
