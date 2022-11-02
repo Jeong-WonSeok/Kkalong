@@ -17,7 +17,7 @@ import img5 from "../../img/img5.png";
 import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import left from "../../assets/icon/Closet/arrow-left.png";
-
+import TopNav from "../../components/ui/TopNav";
 export default function AddCloset() {
   const navigate = useNavigate();
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
@@ -40,17 +40,19 @@ export default function AddCloset() {
   ]);
   return (
     <div>
-      <BackBtn
-        onClick={() => {
-          navigate("/closet");
-        }}
-      >
-        <img src={left}></img>
-      </BackBtn>
-      <ClosetName placeholder="이름을 입력해주세요" />
-      <ClosetEnter>
-        <EnterText>저장</EnterText>
-      </ClosetEnter>
+      <TopNav type={""}>
+        <BackBtn
+          onClick={() => {
+            navigate("/closet");
+          }}
+        >
+          <img src={left}></img>
+        </BackBtn>
+        <ClosetName placeholder="이름을 입력해주세요" />
+        <ClosetEnter>
+          <EnterText>저장</EnterText>
+        </ClosetEnter>
+      </TopNav>
       <ClosetImg src={sortclothes[0]} />
       {clothes.map(function (a, i) {
         return (
@@ -81,8 +83,8 @@ const BackBtn = styled.button`
 const ClothesBtn = styled.button`
   margin-top: 20px;
   margin-left: 10px;
-  height: 50px;
-  width: 50px;
+  height: 48px;
+  width: 48px;
   border-radius: 50px;
   border: solid 1px #67564e;
   background-color: white;

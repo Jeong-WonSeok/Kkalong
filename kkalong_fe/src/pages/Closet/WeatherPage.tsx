@@ -90,8 +90,8 @@ const CodiBack = styled.div`
   background-color: #e5ddce;
 `;
 const ClothesCodi = styled.button`
-  height: 150px;
-  width: 150px;
+  height: 130px;
+  width: 130px;
   margin-top: 20px;
   margin-left: 40px;
   margin-right: auto;
