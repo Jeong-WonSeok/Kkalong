@@ -1,20 +1,31 @@
-import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import dfs_xy_conv from '../../hooks/chagneLatLon'
+import {TimeChange, nowDate} from "../../hooks/TimeChange";
+import weather, { saveType } from "../../hooks/weatherCondition";
 
 import TopNav from "../../components/ui/TopNav";
 import FooterBar from "../../components/ui/FooterBar";
+import WeatherText from "../../components/closet/WeatherText";
 
 import logo from "../../assets/icon/logo/kkalongLogo.png";
 import menu from "../../assets/icon/Nav/menu.png";
+
 import sun from "../../assets/icon/Closet/sun.png";
+import rain from "../../assets/icon/Closet/rainy.png";
+import sunCloud from "../../assets/icon/Closet/sunCloud.png";
+import cloudy from "../../assets/icon/Closet/cloudy.png";
+import snow from '../../assets/icon/Closet/snow.png'
+
 import codi1 from "../../img/codi1.png";
 import codi2 from "../../img/codi2.png";
 import codi3 from "../../img/codi3.png";
 import plus from "../../assets/icon/Closet/plus.png";
+
+
 
 type LocationType = {
   lat: number,
@@ -25,10 +36,42 @@ type LocationType = {
 
 export default function WeatherPage() {
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
+  const now = new Date()
   const navigate = useNavigate();
+  let location: LocationType = {
+    lat: 0,
+    lon: 0,
+    x: 0,
+    y: 0
+  }
+  const [nowWeather, setNowWeather] = useState<saveType>()
+  const [imgWeather, setImgWeather] = useState({img: '', text: ''})
+  const [message, setMessage] = useState(Array<String>)
 
   useEffect(()=>{
-    console.log(getLocation())
+    const nowDay = String(now.getFullYear()) + String(now.getMonth() + 1) + (now.getDate() < 10 ? '0' + String(now.getDate()) : String(now.getDate()))
+    const nowTime = TimeChange()
+
+    const start = async() => {
+      await getLocation()
+      const res = await axios.get(process.env.REACT_APP_WEATHER_URL as string, {
+        params: {
+          serviceKey: process.env.REACT_APP_WEATHER_DECODING_KEY,
+          pageNo: 1,
+          numOfRows: 1000,
+          dataType: "JSON",
+          base_date: nowDay,
+          base_time: nowTime,
+          nx: location.x,
+          ny: location.y,
+        }
+      })
+      const result = await weather(res.data.response.body.items.item)
+      setNowWeather(result.SaveNow)
+      
+      HandleWeather(result.SaveNow, result.SaveAfter)
+    }
+    start()
   },[])
 
   const getLocation = async () => {
@@ -40,14 +83,15 @@ export default function WeatherPage() {
         })
       }
       
-      // 이거 왜 안됨?
-      await getPosition()
+      // 위치 변환
+      return await getPosition()
         .then(async (position: any) => {
           const result  = new Promise((reslove, reject) => {
             reslove(dfs_xy_conv('toXY', position.coords.latitude , position.coords.longitude))
           })
           
-          await result.then((res) => {
+          await result.then((res: any) => {
+            location = res
             return res
           })
         })
@@ -59,6 +103,56 @@ export default function WeatherPage() {
     }
   }
 
+  // 날씨 이미지 및 메세제 정의
+  const HandleWeather = (Now:saveType, After: saveType) => {
+    const result = {
+      img: '',
+      text: Now.sky
+    }
+    const msg:string[] = []
+    if (After.temp - Now.temp >= 10) {
+      msg.push('일교차가 커요. 여분의 옷을 입고가세요')
+    }
+    if (Now.rainy.includes('비') || Now.rainy.includes('빗방울')) {
+      result.img = rain
+      result.text = "비"
+      setImgWeather(result)
+      msg.push('밖에 비가 오고 있어요. 우산 챙기세요!')
+    } else if (Now.rainy.includes('눈')) {
+      result.img = snow
+      result.text = "눈"
+      setImgWeather(result)
+      msg.push('눈이 오고있어요. 빙판길 조심하세요')
+    } else {
+      if (Now.sky === "맑음") {
+        result.img = sun
+        setImgWeather(result)
+      } else if (Now.sky === "구름많음") {
+        result.img = sunCloud
+        setImgWeather(result)
+      } else if (Now.sky === "흐림") {
+        result.img = cloudy
+        setImgWeather(result)
+      }
+    }
+
+    if (Now.rainy === "없음" && (Now.rainy.includes('비') || Now.rainy.includes('빗방울'))) {
+      msg.push('뒤늦게 비예보가 있어요. 우산을 챙겨가세요')
+    }
+    if (1.6 <= Now.wind  && Now.wind < 3.3 ) {
+      msg.push('바람이 약간 부는 날씨에요')
+    }  else if (3.3 <= Now.wind) {
+      msg.push('바람이 많이 부는 날씨에요. 옷 단단히 입고가세요')
+    }
+
+    if (Now.temp < 25 && Now.temp > 15) {
+      msg.push('포근한 날씨에요')
+    } else if (10 <= Now.temp && Now.temp <= 15) {
+      msg.push('쌀쌀한 날씨에요')
+    }
+    setMessage(msg)
+  } 
+
   return (
     <div>
       <TopNav type={""}>
@@ -67,9 +161,20 @@ export default function WeatherPage() {
         <div style={{ width: "30px", height: "30px" }}></div>
         <MenuIcon src={menu} />
       </TopNav>
-      <DateText>10월 18일 화요일</DateText>
-      <WeatherImg src={sun} />
-      <DateText>맑음 13°C</DateText>
+      <DateText>{nowDate()}</DateText>
+      <WeatherContainer>
+      <WeatherImg src={imgWeather.img} />
+      <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
+        <WeatherContainer style={{justifyContent: 'space-between'}}>
+          <WeatherInfoP>{imgWeather.text} </WeatherInfoP>
+          <WeatherInfoP>{nowWeather?.temp}°C</WeatherInfoP>
+        </WeatherContainer>
+        {message.length > 0 && <WeatherText message={message}/>}
+      </div>
+
+      </WeatherContainer>
+      
+
       <DailyText>오늘의 추천 코디</DailyText>
       <CodiBack>
         {codi.map(function (a, i) {
@@ -107,19 +212,27 @@ const MenuIcon = styled.img`
   margin: auto 0;
 `;
 
+const WeatherContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+`
+
+const WeatherInfoP = styled.p`
+  font-family: var(--base-font-400);
+  font-size: 20px;
+  margin: 0;
+`
+
 const DateText = styled.p`
   font-family: var(--base-font-400);
   font-size: 20px;
-  margin-top: 50px;
-  margin-top: 60px auto;
-
+  margin: 20px 0;
   text-align: center;
 `;
 const WeatherImg = styled.img`
-  width: 150px;
-  height: 150px;
-  display: flex;
-  margin: auto;
+  width: 100px;
+  height: 100px;
 `;
 
 const DailyText = styled.p`

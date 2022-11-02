@@ -7,7 +7,7 @@ var OLAT = 38.0; // 기준점 위도(degree)
 var XO = 43; // 기준점 X좌표(GRID)
 var YO = 136; // 기1준점 Y좌표(GRID)
 
-export default function dfs_xy_conv(code:string, v1:number, v2:number) {
+export default async function dfs_xy_conv(code:string, v1:number, v2:number) {
   var DEGRAD = Math.PI / 180.0;
   var RADDEG = 180.0 / Math.PI;
 
