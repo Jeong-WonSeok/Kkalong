@@ -48,6 +48,28 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PostMapping("/signupNext")
+    public ResponseEntity<?> signUpNext(@RequestBody final SignupDto signupDto) {
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.signUpNext(signupDto);
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .height(user.getHeight())
+                .weight(user.getWeight())
+                .provider(user.getProvider())
+                .followers(userService.getFollowerListByReceiverId(user.getId()))
+                .followings(userService.getFollowingListBySenderId(user.getId()))
+                .build();
+        result.put("token", jwtProvider.generateJwtTokenFromUser(user));
+        result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
+    }
+
     @PostMapping("/signup/email")
     public ResponseEntity<?> authorizeEmail(@RequestBody final StringDto stringDto){
         Map<String, Object> result = new HashMap<>();

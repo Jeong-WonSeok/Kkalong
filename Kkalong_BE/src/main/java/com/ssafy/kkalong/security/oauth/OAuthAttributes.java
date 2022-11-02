@@ -8,8 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Map;
 
 import static com.ssafy.kkalong.common.UserRole.ROLE_GUEST;
+import static com.ssafy.kkalong.common.UserRole.ROLE_USER;
 
 @Getter
+@Builder
 @Slf4j
 public class OAuthAttributes {
 
@@ -17,15 +19,6 @@ public class OAuthAttributes {
     private String nameAttributeKey;
     private String email;
     private String provider;
-
-    @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String email, String provider){
-        System.out.println("OAuthAttributes-OauthAttributes의 builder");
-        this.attributes = attributes;
-        this.nameAttributeKey = nameAttributeKey;
-        this.email = email;
-        this.provider = provider;
-    }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         System.out.println("OAuthAttributes-Of: [registrationId]: "+registrationId+ " [userNameAttributeName]: "+ userNameAttributeName + " [attributes]: "+ attributes.toString());
@@ -58,11 +51,7 @@ public class OAuthAttributes {
     }
 
     public User toEntity(){
-        final BCryptPasswordEncoder passwordEncoder = passwordEncoder();
-        return User.builder().email(email).password(passwordEncoder.encode(email)).role(ROLE_GUEST).provider(provider).build();
+        return User.builder().email(email).password(new BCryptPasswordEncoder().encode(email)).role(ROLE_USER).provider(provider).build();
     }
 
-    private BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

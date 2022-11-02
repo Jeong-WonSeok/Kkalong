@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        System.out.println("loadUserByUsername: "+email);
+        System.out.println("loadUserByUsername - kkalong : "+email);
         User user = userRepository.findByEmail(email);
         if(user==null){
             return new UserDetailsImpl(email, "invalid", -1, "invalid", "invalid", null);
