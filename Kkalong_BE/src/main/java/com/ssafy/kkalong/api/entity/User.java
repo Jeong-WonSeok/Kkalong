@@ -1,12 +1,8 @@
 package com.ssafy.kkalong.api.entity;
 
 import com.ssafy.kkalong.api.dto.SignupDto;
-import com.ssafy.kkalong.common.BaseEntity;
 import com.ssafy.kkalong.common.UserRole;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id", "email", "nickname", "password", "age", "gender", "height", "weight"})
+@ToString(of = {"id", "email", "password"})
 public class User {
 
     @Id
@@ -27,25 +23,19 @@ public class User {
     @Column(nullable=false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable=false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
-    @Column(nullable=false, unique = true)
     private String password;
 
-    @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
     private int age;
 
-    @Column(nullable = false)
     private int height;
 
-    @Column(nullable = false)
     private int weight;
 
-    @Column(nullable = false)
     private String provider;
 
     private String img;
@@ -72,6 +62,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<ReplyLike> likereplys = new ArrayList<>();
 
-    public User orElse(Object o) {
+    public void setUserInfo(SignupDto signupDto){
+        this.nickname = signupDto.getNickname();
+        this.gender = signupDto.getGender();
+        this.age = signupDto.getAge();
+        this.height = signupDto.getHeight();
+        this.weight = signupDto.getWeight();
     }
 }

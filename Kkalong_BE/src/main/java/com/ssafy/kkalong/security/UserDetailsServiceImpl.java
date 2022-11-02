@@ -5,6 +5,7 @@ import com.ssafy.kkalong.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -21,19 +22,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        System.out.println("loadUserByUsername: "+email);
+        System.out.println("loadUserByUsername - kkalong : "+email);
         User user = userRepository.findByEmail(email);
-        if(user != null){
-
+        if(user==null){
+            return new UserDetailsImpl(email, "invalid", -1, "invalid", "invalid", null);
+        } else {
+            return new UserDetailsImpl(
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getId(),
+                    user.getNickname(),
+                    user.getProvider(),
+                    Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()))
+            );
         }
-        return new UserDetailsImpl(
-                user.getEmail(),
-                user.getPassword(),
-                user.getId(),
-                user.getNickname(),
-                user.getProvider(),
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()))
-        );
     }
 
 }

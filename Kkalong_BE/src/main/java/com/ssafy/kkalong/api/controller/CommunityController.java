@@ -56,7 +56,7 @@ public class CommunityController {
 
         result.put("Best", post);
         result.put("user", user);
-        comment.put("content", commentdto.getContent())
+        comment.put("content", commentdto.getContent());
         comment.put("user", comment_user);
         result.put("comment", comment);
         return ResponseEntity.ok().body(result);

@@ -2,8 +2,10 @@ package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.SignupDto;
 import com.ssafy.kkalong.api.entity.AuthCode;
+import com.ssafy.kkalong.api.entity.Follow;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.repository.AuthCodeRepository;
+import com.ssafy.kkalong.api.repository.FollowRepository;
 import com.ssafy.kkalong.api.repository.UserRepository;
 import com.ssafy.kkalong.common.UserRole;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +30,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthCodeRepository authCodeRepository;
+    private final FollowRepository followRepository;
     private final JavaMailSender javaMailSender;
 
 
     public boolean isEmailDuplicated(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public boolean isNicknameDuplicated(String nickname) { return userRepository.existsByNickname(nickname); }
 
     public boolean isAuthEmailDuplicated(String email){
         return authCodeRepository.existsByEmail(email);
@@ -84,6 +93,13 @@ public class UserService {
         return user;
     }
 
+    public User signUpNext(SignupDto signupDto) {
+        User user = userRepository.findByEmail(signupDto.getEmail());
+        user.setUserInfo(signupDto);
+        userRepository.save(user);
+        return user;
+    }
+
     public String createCode() {
         char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
         String str = "";
@@ -94,4 +110,25 @@ public class UserService {
         }
         return str;
     }
+
+    public List<Integer> getFollowingListBySenderId(int senderId){
+        User user = userRepository.findById(senderId).orElse(null);
+        List<Follow> list = followRepository.findAllBySender(user);
+        List<Integer> followingList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            followingList.add(list.get(i).getReceiver().getId());
+        }
+        return followingList;
+    }
+    public List<Integer> getFollowerListByReceiverId(int receiverId){
+        User user = userRepository.findById(receiverId).orElse(null);
+        List<Follow> list = followRepository.findAllByReceiver(user);
+        List<Integer> followerList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            followerList.add(list.get(i).getSender().getId());
+        }
+        return followerList;
+    }
+
+
 }

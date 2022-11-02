@@ -2,6 +2,7 @@ package com.ssafy.kkalong.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import java.util.Collection;
 import java.util.Map;
 
-@AllArgsConstructor
+
 @Getter
 @ToString
+@AllArgsConstructor
 //회원 데이터를 조회하고 해당 정보와 권한을 저장하는 UserDetails를 구현
 public class UserDetailsImpl implements UserDetails, OAuth2User {
 
