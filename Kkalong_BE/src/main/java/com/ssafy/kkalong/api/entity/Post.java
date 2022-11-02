@@ -1,5 +1,6 @@
 package com.ssafy.kkalong.api.entity;
 
+import com.ssafy.kkalong.common.BaseEntity;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

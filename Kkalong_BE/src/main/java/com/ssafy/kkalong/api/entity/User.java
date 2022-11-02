@@ -69,5 +69,4 @@ public class User {
         this.height = signupDto.getHeight();
         this.weight = signupDto.getWeight();
     }
-
 }
