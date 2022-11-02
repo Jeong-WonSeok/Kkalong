@@ -1,6 +1,7 @@
 package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.BestDressRequestDto;
+import com.ssafy.kkalong.api.dto.BestDressResponseDto;
 import com.ssafy.kkalong.api.dto.CommentDto;
 import com.ssafy.kkalong.api.entity.Comment;
 import com.ssafy.kkalong.api.entity.Post;
@@ -26,26 +27,25 @@ public class CommunityService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public Post selectPost(int post_id){
-        return postRepository.findById(post_id);
+    public List<BestDressResponseDto> selectBestDress(){
+        System.out.println(postRepository.findByBestDress());
+        return postRepository.findByBestDress();
     }
 
-    public Post insertBestDress(BestDressRequestDto bestReq){
+    public List<BestDressResponseDto> selectPost(){
+        return postRepository.findAllByPost();
+    }
+
+    public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
         Post post = Post.builder()
                 .img(bestReq.getPost_img())
                 .content(bestReq.getContent())
-                //user_id 입력
+                .user(userInfo)
                 .build();
         postRepository.save(post);
         return post;
     }
 
-
-    public int selectCntLike(int post_id){
-        int countLike = postLikeRepository.countByPost(post_id);
-
-        return countLike;
-    }
 
     public CommentDto selectComment(int post_id) {
         Comment comment = commentRepository.findByPost(post_id);
@@ -53,9 +53,8 @@ public class CommunityService {
         commentDto.setContent(comment.getContent());
         return commentDto;
     }
-//    public User selectUser(int user_id){
-//        User user = userRepository.findById(user_id);
-//
-//        return user;
-//    }
+    public User selectUser(int post_id){
+        User user = postRepository.findById(post_id).getUser();
+        return user;
+    }
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BestDressResponseDto extends BaseEntity {
     private int post_id;
-    private String post_img;
-    private String content;
+    private String img;
     private int like;
+    private String content;
 }

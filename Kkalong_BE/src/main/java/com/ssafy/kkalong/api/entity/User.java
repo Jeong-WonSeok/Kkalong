@@ -72,6 +72,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<ReplyLike> likereplys = new ArrayList<>();
 
-    public User orElse(Object o) {
-    }
 }
