@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
 import Profile from '../../components/Community/Profile'
@@ -15,6 +15,8 @@ import { BestDresserArticle, Container } from './MainCommunity'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import MenuModal from '../../components/Community/MenuModal'
+import Modal from '../../components/Community/Modal'
 
 export interface commentType {
   user_id: {
@@ -38,9 +40,11 @@ type LikeType = {
 export default function DetailBestDress() {
   // undefined 값을 없애주기 위해서 설정
   const [Like, setLike] = useState(false)
+  const [IsMenu, setIsMenu] = useState(false)
+  const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
   const navigate = useNavigate()
-  const pramas = useParams()
+  const params = useParams()
   // 객체 타입지정
   const [Article, setArticle] = useState<ArticleType>()
 
@@ -52,7 +56,7 @@ export default function DetailBestDress() {
     // }
     // getDetail()
     setArticle({
-      post_id : Number(pramas.BestDressId),
+      post_id : Number(params.BestDressId),
       post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
       post_user: {
         nickname: 'loki535',
@@ -81,13 +85,26 @@ export default function DetailBestDress() {
     })
     
   }, [])
+
+  const ModalChange = () => {
+    setIsMenu(false)
+    setIsModal(true)
+  }
+
   return (
     <div>
       <TopNav type="">
         <IconImg src={BackArrow} onClick={()=>navigate(-1)}/>
         <NavText>도전! 베스트 드레서✨</NavText>
-        <IconImg src={Menu}/>
+        <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/>
       </TopNav>
+
+      {IsMenu && <MenuModal 
+      Page={"BestDress"} 
+      Id={Number(params.BestDressId)} 
+      openModal={ModalChange}
+      closeModal={()=> setIsMenu(false)}/>}
+      {IsModal && <Modal Page={"BestDress"} Id={Number(params.BestDressId)} CloseModal={()=>setIsModal(false)}/>}
 
       <Container>
         <ContentContainer>
@@ -152,10 +169,43 @@ const LikeContainer = styled.div`
   display: flex;
 `
 
+const LikeJello = keyframes` 
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+            transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+            transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+            transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+            transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+            transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+`
+  
+
 const Likeimg = styled.img<LikeType>`
   width: 20px;
   height: 20px;
   margin-right: 3px;
+  animation: ${(props) => props.Like && css`${LikeJello} 0.9s both`};
 `
 
 const CustomText = styled.p`

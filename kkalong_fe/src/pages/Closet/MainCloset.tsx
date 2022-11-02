@@ -4,7 +4,6 @@ import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import logo from "../../assets/icon/logo/kkalongLogo.png";
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
 import list from "../../assets/icon/Closet/list.png";
@@ -66,33 +65,37 @@ export default function MainCloset() {
 
   return (
     <div>
-      <TopNav type={""}>
-        <Logo src={logo} />
+      <TopNav type={"menu"}>
         <CategoryText1>옷장</CategoryText1>
-        <div style={{ width: "30px", height: "30px" }}></div>
-        <MenuIcon src={menu} />
+        <div style={{width: "54px", height: "38px"}}>
+          <MenuIcon src={menu} />
+        </div>
       </TopNav>
 
       <>
         <Carousel sortclothes={sortclothes} />
-        <SelectBtn1
+        <SelectBtnContainer>
+        <SelectBtn
           onClick={() => {
             navigate("/closet");
           }}
         >
           <SelectColor1 />
-          <SelectText1>옷장</SelectText1>
-        </SelectBtn1>
+          <SelectText>옷장</SelectText>
+        </SelectBtn>
         <img src={Bar} />
-        <SelectBtn2
+        <SelectBtn
           onClick={() => {
             navigate("/codi");
           }}
         >
           <SelectColor2 />
-          <SelectText2>코디</SelectText2>
-        </SelectBtn2>
+          <SelectText>코디</SelectText>
+        </SelectBtn>
+        </SelectBtnContainer>
       </>
+
+      <Category>
       {clothes.map(function (a, i) {
         return (
           <ClothesBtn>
@@ -101,13 +104,18 @@ export default function MainCloset() {
           </ClothesBtn>
         );
       })}
+      </Category>
+      
+      <SortClothesContainer>
       {sortclothes.map(function (a, i) {
         return (
           <SortClothes>
-            <img src={sortclothes[i]} />
+            <ClothesImg src={sortclothes[i]}/>
           </SortClothes>
         );
       })}
+      </SortClothesContainer>
+
       <AddClothes>
         <img src={camera} />
       </AddClothes>
@@ -122,42 +130,44 @@ export default function MainCloset() {
 //   flex-wrap: wrap;
 // `;
 
-const Logo = styled.img`
-  width: 50px;
-  height: 30px;
-  margin: auto 0;
-`;
-
 const CategoryText1 = styled.p`
-  line-height: 0;
-  margin: auto;
-  font-family: var(--base-font-400);
+  margin: auto 0;
+  font-family: var(--base-font-600);
 `;
 
-const SelectText1 = styled.p`
-  line-height: 0;
-  margin-top: 10px;
+const SelectText = styled.p`
+  margin: 0;
   font-size: 15px;
   font-family: var(--base-font-400);
   color: #6b6060;
 `;
 
-const SelectText2 = styled.p`
-  line-height: 0;
-  margin-top: 10px;
-  font-size: 15px;
-  font-family: var(--base-font-400);
-  color: #6b6060;
-`;
+
+export const Category = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+`
 
 const MenuIcon = styled.img`
   width: 30px;
   height: 30px;
-  margin: auto 0;
+  padding: 4px 0;
 `;
 
-const SelectBtn1 = styled.button`
-  margin-top: 20px;
+export const SelectBtnContainer = styled.div`
+  width: 100%;
+  max-width: 360px;
+  margin-top: 10px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+`
+
+const SelectBtn = styled.button`
   width: 170px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
@@ -165,6 +175,7 @@ const SelectBtn1 = styled.button`
   border: none;
   margin-right: 10px;
 `;
+
 const SelectColor1 = styled.div`
   height: 12px;
   width: 170px;
@@ -173,50 +184,59 @@ const SelectColor1 = styled.div`
   margin-left: 0px;
   padding: 0px;
 `;
+
 const SelectColor2 = styled.div`
   height: 12px;
   width: 170px;
   background-color: var(--primary-color-800);
   border-radius: 10px 10px 0px 0px;
 `;
-const SelectBtn2 = styled.button`
-  margin-top: 20px;
-  width: 170px;
-  height: 30px;
-  border-radius: 10px 10px 0px 0px;
-  background-color: white;
-  margin-left: 5px;
-  border: none;
-`;
 
 const ClothesBtn = styled.button`
-  margin-top: 20px;
-  margin-left: 10px;
-  height: 50px;
-  width: 50px;
-  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
   border: solid 2px #67564e;
   background-color: white;
 `;
 
 const ClothesText = styled.p`
-  line-height: 0;
-  margin: auto;
+  width: 170px;
+  line-height: 1;
+  margin: 0;
   font-family: var(--base-font-500);
-  margin-top: 5px;
   font-size: 10px;
   color: var(--primary-color-900);
 `;
-const SortClothes = styled.button`
-  height: 80px;
-  width: 80px;
+
+export const SortClothesContainer = styled.div`
   margin-top: 20px;
-  margin-left: 25px;
-  margin-right: auto;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+`
+
+export const SortClothes = styled.button`
+  padding: 0;
+  height: 90px;
+  width: 90px;
+  margin: 15px;
   background-color: white;
   border-radius: 20px;
   border: solid 2px #e5ddce;
 `;
+
+export const ClothesImg = styled.img`
+  max-width: 80px;
+  max-height: 80px;
+`
 
 const AddClothes = styled.button`
   height: 70px;

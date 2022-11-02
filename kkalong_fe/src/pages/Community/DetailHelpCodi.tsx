@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
@@ -12,6 +12,8 @@ import CommentContainer from '../../components/Community/CommentContainer'
 import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import Menu from '../../assets/icon/Nav/menu.png'
 import Closet from '../../assets/icon/Footer/select_closet.png'
+import MenuModal from '../../components/Community/MenuModal'
+import Modal from '../../components/Community/Modal'
 
 
 
@@ -32,8 +34,11 @@ export interface ArticleType extends HelpCodiArticle{
 }
 
 export default function DetailHelpCodi() {
-  const defaultComment: Array<commentType> = []
   const navigate = useNavigate()
+  const params = useParams()
+  const [IsMenu, setIsMenu] = useState(false)
+  const [IsModal, setIsModal] = useState(false)
+  const defaultComment: Array<commentType> = []
   const [Article, setArticle] = useState<ArticleType>()
 
   useEffect(()=>{
@@ -44,7 +49,7 @@ export default function DetailHelpCodi() {
         nickname: 'infp2',
         profile: ''
       },
-      open: true,
+      open: false,
       help_title: '20대 남자인데 데이트 코디 어떤가요?',
       help_content: '같은 대학교 동기랑 내일 영화 약속 잡아놨는데 이정도면 무난할까요?',
       comment: [{
@@ -68,13 +73,26 @@ export default function DetailHelpCodi() {
     })
   },[])
 
+  const ModalChange = () => {
+    setIsMenu(false)
+    setIsModal(true)
+  }
+
   return (
     <div>
       <TopNav type={''}>
         <MenuImg src={BackArrow} onClick={()=>navigate('/community/HelpCodi')}/>
         <NavText>도와주세요 패알못😂</NavText>
-        <MenuImg src={Menu}/>
+        <MenuImg src={Menu} onClick={()=>setIsMenu(true)}/>
       </TopNav>
+
+      {IsMenu && <MenuModal 
+      Page={"Helpcodi"}
+      Category={Article?.open? "Closet" : "Codi"} 
+      Id={Number(params.HelpCodiId)} 
+      openModal={ModalChange}
+      closeModal={()=> setIsMenu(false)}/>}
+      {IsModal && <Modal Page={"BestDress"} Id={Number(params.BestDressId)} CloseModal={()=>setIsModal(false)}/>}
 
       <Container >
         <ImgContainer>
@@ -127,7 +145,6 @@ const TitleText = styled.p`
 const CodiImg = styled.img`
   border-radius: 20px;
   max-width: 320px;
-  padding: 0 10px;
 `
 
 const ProfileContainer = styled.div`

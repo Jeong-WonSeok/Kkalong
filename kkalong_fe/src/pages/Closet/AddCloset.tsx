@@ -18,6 +18,8 @@ import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
+import { Category, ClothesImg, SortClothes, SortClothesContainer } from "./MainCloset";
+
 export default function AddCloset() {
   const navigate = useNavigate();
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
@@ -53,7 +55,11 @@ export default function AddCloset() {
           <EnterText>저장</EnterText>
         </ClosetEnter>
       </TopNav>
-      <ClosetImg src={sortclothes[0]} />
+      
+
+    <ClosetImg src={sortclothes[0]} />
+
+    <Category>
       {clothes.map(function (a, i) {
         return (
           <ClothesBtn>
@@ -62,52 +68,45 @@ export default function AddCloset() {
           </ClothesBtn>
         );
       })}
+    </Category>
+    <SortClothesContainer>
       {sortclothes.map(function (a, i) {
         return (
           <SortClothes>
-            <img src={sortclothes[i]} />
+            <ClothesImg src={sortclothes[i]} />
           </SortClothes>
         );
       })}
+    </SortClothesContainer>
     </div>
   );
 }
+
 const BackBtn = styled.button`
   height: 30px;
-  width: 40px;
-  position: absolute;
+  width: 30px;
+  padding: 0;
   border: none;
   background-color: white;
-  margin-top: 10px;
+  margin: auto 0;
 `;
+
 const ClothesBtn = styled.button`
-  margin-top: 20px;
-  margin-left: 10px;
-  height: 48px;
-  width: 48px;
+  height: 50px;
+  width: 50px;
   border-radius: 50px;
   border: solid 1px #67564e;
   background-color: white;
 `;
 
 const ClothesText = styled.p`
-  line-height: 0;
-  margin: auto;
+  line-height: 1;
   font-family: var(--base-font-500);
-  margin-top: 5px;
+  margin: 0;
   font-size: 10px;
   color: var(--primary-color-900);
 `;
-const SortClothes = styled.button`
-  height: 80px;
-  width: 80px;
-  margin-top: 20px;
-  margin-left: 25px;
-  margin-right: auto;
-  background-color: white;
-  border-radius: 20px;
-  border: solid 1px #e5ddce;
-`;
+
 const ClosetImg = styled.img`
   width: 150px;
   height: 150px;
@@ -119,13 +118,11 @@ const ClosetImg = styled.img`
 
 const ClosetName = styled.input`
   height: 30px;
-  width: 240px;
+  width: 200px;
   border-top: none;
   border-left: none;
   border-right: none;
   border-bottom: solid 1px;
-  margin-left: 45px;
-  margin-top: 10px;
 `;
 
 const ClosetEnter = styled.button`

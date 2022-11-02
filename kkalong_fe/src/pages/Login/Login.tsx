@@ -5,9 +5,18 @@ import KakaoLoginLogo from '../../assets/icon/Login/SocialLogin/kakao.png';
 import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
 import EmailLogo from '../../assets/icon/Login/email.png';
 import PasswordLogo from '../../assets/icon/Login/password.png';
+import { useNavigate } from 'react-router-dom';
 
 
-export default function index() {
+export default function Login() {
+
+  const navigate = useNavigate();
+
+  const handleSignup = () => {
+    navigate('Signup');
+  }
+
+
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo" ></LogoImg>
@@ -31,7 +40,7 @@ export default function index() {
         </SocialLoginButton>
         <RegisterDiv>
           <RegisterSpan>아직 회원이 아니신가요?</RegisterSpan>
-          <RegisterLink>회원가입</RegisterLink>
+          <RegisterLink onClick={handleSignup}>회원가입</RegisterLink>
                    
         </RegisterDiv>
     </LoginDiv>
@@ -127,7 +136,7 @@ const SocialLoginDiv = styled.div`
   
   &::before {
     content: "";
-    flex-grow: 1;
+    flex : 1;
     background: rgba(0, 0, 0, 0.35);
     height: 1px;
     font-size :0px;
@@ -137,7 +146,8 @@ const SocialLoginDiv = styled.div`
   
   &::after {
     content: "";
-    flex-grow: 1;
+    flex : 1;
+
     background: rgba(0, 0, 0, 0.35);
     height: 1px;
     font-size :0px;
