@@ -73,6 +73,5 @@ public class User {
     private List<ReplyLike> likereplys = new ArrayList<>();
 
     public User orElse(Object o) {
-        return null;
     }
 }
