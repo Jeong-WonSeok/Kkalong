@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -24,7 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthCodeRepository authCodeRepository;
-    private final JavaMailSender javaMailSender;
+//    private final JavaMailSender javaMailSender;
 
 
     public boolean isEmailDuplicated(String email) {
@@ -48,13 +48,13 @@ public class UserService {
         }
         authCodeRepository.save(authCode);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("깔롱 서비스 회원가입 이메일 인증 번호");
-        message.setText("깔롱 서비스 회원가입 이메일 인증 번호 안내\n 회원님의 이메일 인증 코드는 [ " + code + " ]입니다.\n 위 코드를 입력하여 이메일을 인증하시기 바랍니다.");
-        message.setFrom(mailSender);
-        message.setReplyTo(email);
-        javaMailSender.send(message);
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(email);
+//        message.setSubject("깔롱 서비스 회원가입 이메일 인증 번호");
+//        message.setText("깔롱 서비스 회원가입 이메일 인증 번호 안내\n 회원님의 이메일 인증 코드는 [ " + code + " ]입니다.\n 위 코드를 입력하여 이메일을 인증하시기 바랍니다.");
+//        message.setFrom(mailSender);
+//        message.setReplyTo(email);
+//        javaMailSender.send(message);
 
         return code;
     }

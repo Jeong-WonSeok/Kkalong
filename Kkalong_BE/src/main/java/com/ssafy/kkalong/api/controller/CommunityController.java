@@ -1,5 +1,8 @@
 package com.ssafy.kkalong.api.controller;
 
+import com.ssafy.kkalong.api.dto.BestDressRequestDto;
+import com.ssafy.kkalong.api.dto.BestDressUserDto;
+import com.ssafy.kkalong.api.dto.CommentDto;
 import com.ssafy.kkalong.api.entity.Post;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.CommunityService;
@@ -21,35 +24,43 @@ public class CommunityController {
 //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CommunityService communityService;
 
-//    @GetMapping(value="/best")
-    @GetMapping(value="/check")
-    public void check(){
-        System.out.println('a');
+    @GetMapping(value="/best")
+    public ResponseEntity best(){
+        Map<String, Object> result = new HashMap<>();
+
+        return ResponseEntity.ok().body(result);
     }
 
 
     @GetMapping(value = "/bestdress")
     public ResponseEntity<?> bestDress(){
-        System.out.println("a");
-        List<Post> bestDress = communityService.selectBestPost();
-        List<Integer> cntLike = new ArrayList<>();
-        List<User> userList = new ArrayList<>();
         Map<String, Object> result = new HashMap<>();
-
-
-        for( Post post : bestDress){
-            System.out.println(post);
-//            cntLike.add(communityService.selectCntLike(post.getId()));
-//            userList.add(communityService.selectUser(post.getUser().getId()));
-        }
-
-        result.put("Best", bestDress);
-        result.put("LikeCnt", cntLike);
-        result.put("user_id", userList);
 
         return ResponseEntity.ok().body(result);
     }
 
-//    @PostMapping(value="/bestdress")
+    @PostMapping(value="/bestdress")
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal User userInfo, @RequestBody final BestDressRequestDto bestReq){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> comment = new HashMap<>();
+
+        BestDressUserDto user = new BestDressUserDto();
+        user.setNickname(userInfo.getNickname());
+        user.setProfile_image(userInfo.getImg());
+
+        Post post = communityService.insertBestDress(bestReq);
+        CommentDto commentdto = communityService.selectComment(post.getId());
+
+
+        BestDressUserDto comment_user = new BestDressUserDto();
+
+        result.put("Best", post);
+        result.put("user", user);
+        comment.put("content", commentdto.getContent())
+        comment.put("user", comment_user);
+        result.put("comment", comment);
+        return ResponseEntity.ok().body(result);
+    }
+
 
 }
