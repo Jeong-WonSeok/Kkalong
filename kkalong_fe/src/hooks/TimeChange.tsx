@@ -1,13 +1,10 @@
 export function TimeChange () {
   const now = new Date()
 
+  // 1시간전 예보로 받아옴
+  // 바로바로 업데이트가 안되서 받아지지 않는 경우가 있음
   let nowHours = now.getHours() - 1
-  let nowMinites = "00"
-  if (now.getMinutes() > 45) {
-    nowMinites = "30"
-    nowHours += 1
-  } 
-
+  let nowMinites = "30"
   const strNowHours = nowHours < 10 ? '0' + String(nowHours) : String(nowHours)
 
   return strNowHours + nowMinites

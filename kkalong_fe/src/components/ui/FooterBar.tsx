@@ -44,7 +44,7 @@ export default function FooterBar() {
         NewWord = 'recommend'
         return NewWord
       })
-    } else if (url.includes('profile')) {
+    } else if (url.includes('myPage')) {
       return setSelectCategory(current => {
         let NewWord = current
         NewWord = 'profile'
@@ -64,7 +64,7 @@ export default function FooterBar() {
         옷장
       </FooterImgContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend')}/>
+        <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend/weather')}/>
         추천
       </FooterImgContainer>
       <MirrorContainer>

@@ -66,6 +66,7 @@ export default function WeatherPage() {
           ny: location.y,
         }
       })
+      console.log(res.data)
       const result = await weather(res.data.response.body.items.item)
       setNowWeather(result.SaveNow)
       
@@ -163,7 +164,7 @@ export default function WeatherPage() {
       </TopNav>
       <DateText>{nowDate()}</DateText>
       <WeatherContainer>
-      <WeatherImg src={imgWeather.img} />
+      <WeatherImg src={imgWeather.img ? imgWeather.img : sun} />
       <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
         <WeatherContainer style={{justifyContent: 'space-between'}}>
           <WeatherInfoP>{imgWeather.text} </WeatherInfoP>
@@ -184,7 +185,7 @@ export default function WeatherPage() {
                 navigate("/daily", { state: { i } });
               }}
             >
-              <img src={codi[i]} />
+              <CodiImg src={codi[i]} />
               {/* <PlusBtn>
                 <Plus src={plus} />
               </PlusBtn> */}
@@ -253,11 +254,16 @@ const CodiBack = styled.div`
 const ClothesCodi = styled.button`
   height: 150px;
   width: 150px;
-  margin: 10px;
+  margin: auto;
   background-color: white;
   border-radius: 20px;
   border: solid 2px #67564e;
 `;
+
+const CodiImg = styled.img`
+  max-width: 130px;
+  max-height: 130px;
+`
 
 // const PlusBtn = styled.button`
 //   width: 30px;

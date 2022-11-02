@@ -15,8 +15,8 @@ import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddCloset from "./pages/Closet/AddCloset";
 import CodiPage from "./pages/Closet/CodiPage";
 import PlusCodi from "./pages/Closet/PlusCodi";
-import WeatherPage from "./pages/Closet/WeatherPage";
-import DailyRecommend from "./pages/Closet/DailyRecommend";
+import WeatherPage from "./pages/Recommend/WeatherPage";
+import DailyRecommend from "./pages/Recommend/DailyRecommend";
 import AddBestDress from './pages/Community/AddBestDress';
 import MyPage from './pages/MyPage/MyPage'
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
@@ -51,9 +51,8 @@ function App() {
           <Route path="/addcloset" element={<AddCloset />}></Route>
           <Route path="/codi" element={<CodiPage />}></Route>
           <Route path="/pluscodi" element={<PlusCodi />}></Route>
-          <Route path="/community" element={<MainCommunity />}></Route>
-          <Route path="/weather" element={<WeatherPage />}></Route>
-          <Route path="/daily" element={<DailyRecommend />}></Route>
+          <Route path="/recommend/weather" element={<WeatherPage />}></Route>
+          <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
           <Route
             path="/community/BestDress"
             element={<MainBestDress />}
