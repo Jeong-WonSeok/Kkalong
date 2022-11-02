@@ -23,6 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         System.out.println("loadUserByUsername: "+email);
         User user = userRepository.findByEmail(email);
+        if(user != null){
+
+        }
         return new UserDetailsImpl(
                 user.getEmail(),
                 user.getPassword(),

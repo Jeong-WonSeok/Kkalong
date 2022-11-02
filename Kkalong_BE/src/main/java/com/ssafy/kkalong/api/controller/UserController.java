@@ -45,4 +45,11 @@ public class UserController {
         }
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/test/{testValue}")
+    public ResponseEntity<?> Test(@PathVariable String testValue){
+        Map<String, Object> result = new HashMap<>();
+        result.put("test", testValue);
+        return ResponseEntity.ok().body(result);
+    }
 }

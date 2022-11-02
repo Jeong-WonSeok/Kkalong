@@ -82,7 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login", "/user/signup", "/user/signup/*").permitAll() //로그인, 회원가입, 이메일 인증 요청은 허용
-                .antMatchers("/**").authenticated() //나머지 요청에 대해서는 인증을 요구
+//                .antMatchers("/**").authenticated() //나머지 요청에 대해서는 인증을 요구
+                .antMatchers("/**").permitAll()
                 .and()
                 .formLogin().disable() //기본 로그인 페이지 사용X
                 .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
