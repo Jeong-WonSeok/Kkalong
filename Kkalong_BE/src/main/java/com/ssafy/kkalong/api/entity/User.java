@@ -1,7 +1,11 @@
 package com.ssafy.kkalong.api.entity;
 
+import com.ssafy.kkalong.api.dto.SignupDto;
+import com.ssafy.kkalong.common.BaseEntity;
+import com.ssafy.kkalong.common.UserRole;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"id", "email", "nickname", "password", "age", "gender", "height", "weight"})
 public class User {
 
     @Id
@@ -32,18 +37,22 @@ public class User {
     private String gender;
 
     @Column(nullable = false)
-    private String age;
+    private int age;
 
     @Column(nullable = false)
-    private String height;
+    private int height;
 
     @Column(nullable = false)
-    private String weight;
+    private int weight;
 
     @Column(nullable = false)
     private String provider;
 
     private String img;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @OneToMany(mappedBy = "user")
     private List<Closet> closets = new ArrayList<>();
@@ -62,4 +71,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<ReplyLike> likereplys = new ArrayList<>();
+
 }
