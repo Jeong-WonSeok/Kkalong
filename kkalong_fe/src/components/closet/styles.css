@@ -34,3 +34,9 @@ body {
   margin: auto;
   background-size: contain;
 }
+
+.sample-canvas {
+  height: 400px;
+  border: black solid 1px;
+  border-radius: 20px;
+}

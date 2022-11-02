@@ -11,68 +11,76 @@ import selectRecommend from "../../assets/icon/Footer/select_recommend.png";
 import MyPage from "../../assets/icon/Footer/MyPage.png";
 import selcetMyPage from "../../assets/icon/Footer/select_MyPage.png";
 
-
 export default function FooterBar() {
-  const navigate = useNavigate()
-  const [SelectCategory, setSelectCategory] = useState('closet')
-  let url = window.location.href
+  const navigate = useNavigate();
+  const [SelectCategory, setSelectCategory] = useState("closet");
+  let url = window.location.href;
 
-  useEffect(()=> {
+  useEffect(() => {
     // url 포함 여부로 체크
-    url = window.location.href
-    if (url.includes('community')) {
-      return setSelectCategory(current => {
-        let NewWord = current
-        NewWord = 'community'
-        return NewWord
-      })
-    } else if (url.includes('closet')) {
-      return setSelectCategory(current => {
-        let NewWord = current
-        NewWord = 'closet'
-        return NewWord
-      })
-    } else if (url.includes('mirror')) {
-      return setSelectCategory(current => {
-        let NewWord = current
-        NewWord = 'mirror'
-        return NewWord
-      })
-    } else if (url.includes('recommend')) {
-      return setSelectCategory(current => {
-        let NewWord = current
-        NewWord = 'recommend'
-        return NewWord
-      })
-    } else if (url.includes('profile')) {
-      return setSelectCategory(current => {
-        let NewWord = current
-        NewWord = 'profile'
-        return NewWord
-      })
-    } 
-  },[url, selectCloset])
+    url = window.location.href;
+    if (url.includes("community")) {
+      return setSelectCategory((current) => {
+        let NewWord = current;
+        NewWord = "community";
+        return NewWord;
+      });
+    } else if (url.includes("closet")) {
+      return setSelectCategory((current) => {
+        let NewWord = current;
+        NewWord = "closet";
+        return NewWord;
+      });
+    } else if (url.includes("mirror")) {
+      return setSelectCategory((current) => {
+        let NewWord = current;
+        NewWord = "mirror";
+        return NewWord;
+      });
+    } else if (url.includes("recommend")) {
+      return setSelectCategory((current) => {
+        let NewWord = current;
+        NewWord = "recommend";
+        return NewWord;
+      });
+    } else if (url.includes("profile")) {
+      return setSelectCategory((current) => {
+        let NewWord = current;
+        NewWord = "profile";
+        return NewWord;
+      });
+    }
+  }, [url, selectCloset]);
 
   const GoNavigate = (type: string) => {
-    navigate(`/${type}`)
-  }
-  
+    navigate(`/${type}`);
+  };
+
   return (
     <FooterDiv>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="closet" ? selectCloset : closet} onClick={()=>GoNavigate('closet')}/>
+        <FooterImg
+          src={SelectCategory === "closet" ? selectCloset : closet}
+          onClick={() => GoNavigate("closet")}
+        />
         옷장
       </FooterImgContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend')}/>
+        <FooterImg
+          src={SelectCategory === "recommend" ? selectRecommend : recommend}
+          onClick={() => GoNavigate("recommend")}
+        />
         추천
       </FooterImgContainer>
       <MirrorContainer>
-        <MirrorImg src={mirror} onClick={()=>GoNavigate('mirror')}/>
+        <MirrorImg src={mirror} onClick={() => GoNavigate("mirror")} />
         가상피팅
       </MirrorContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="community" ? selectCommunity : community} onClick={()=>GoNavigate('community')}/>
+        <FooterImg
+          src={SelectCategory === "community" ? selectCommunity : community}
+          onClick={() => GoNavigate("community")}
+        />
         커뮤니티
       </FooterImgContainer>
       <FooterImgContainer>
@@ -94,6 +102,7 @@ const FooterDiv = styled.div`
   align-items: center;
   height: 70px;
   background-color: white;
+  z-index: 9999;
 `;
 
 const FooterImgContainer = styled.div`

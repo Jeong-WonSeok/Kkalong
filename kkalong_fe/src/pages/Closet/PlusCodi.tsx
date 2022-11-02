@@ -11,7 +11,9 @@ import img5 from "../../img/img5.png";
 import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import left from "../../assets/icon/Closet/arrow-left.png";
-
+import TopNav from "../../components/ui/TopNav";
+import CodiEdit from "../../components/closet/CodiEdit";
+import CanvasDraw from "react-canvas-draw";
 export default function PlusCodi() {
   const navigate = useNavigate();
   let [modal, setModal] = useState(false);
@@ -30,19 +32,23 @@ export default function PlusCodi() {
   return (
     <div>
       <div>
-        <BackBtn
-          onClick={() => {
-            navigate("/closet");
-          }}
-        >
-          <img src={left}></img>
-        </BackBtn>
-        <ClosetName placeholder="이름을 입력해주세요" />
-        <ClosetEnter>
-          <EnterText>저장</EnterText>
-        </ClosetEnter>
+        <TopNav type={""}>
+          <BackBtn
+            onClick={() => {
+              navigate("/closet");
+            }}
+          >
+            <img src={left}></img>
+          </BackBtn>
+
+          <ClosetName placeholder="이름을 입력해주세요" />
+          <ClosetEnter>
+            <EnterText>저장</EnterText>
+          </ClosetEnter>
+        </TopNav>
       </div>
-      <Codi />
+      <CodiEdit />
+      {/* <Codi /> */}
       <PlusBtn onClick={modalClose}>
         <BtnText>코디 추가하기</BtnText>
       </PlusBtn>
@@ -133,7 +139,7 @@ const SelectBtn = styled.button`
   border: none;
   position: absolute;
   bottom: 10px;
-  left: 150px;
+  left: 130px;
   right: auto;
   font-size: 13px;
   font-weight: 900;
@@ -162,8 +168,8 @@ const SortBorder = styled.div`
   height: 300px;
 `;
 const SortClothes = styled.button`
-  height: 90px;
-  width: 90px;
+  height: 80px;
+  width: 85px;
   margin-top: 20px;
   margin-left: 20px;
   background-color: white;

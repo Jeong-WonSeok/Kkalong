@@ -1,13 +1,12 @@
-
-import React from 'react';
-import './App.css';
-import './styles/common.scss'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components'
-import FooterBar from './components/ui/FooterBar';
-import Login from './pages/Login/Login'
-import Signup from './pages/Signup/Signup'
-import SignupNext from './pages/Signup/SignupNext'
+import React from "react";
+import "./App.css";
+import "./styles/common.scss";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
+import FooterBar from "./components/ui/FooterBar";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import SignupNext from "./pages/Signup/SignupNext";
 import MainCloset from "./pages/Closet/MainCloset";
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
@@ -33,7 +32,7 @@ import VirtualBrandProduct from './pages/VirturalFitting/VirtualBrandProduct';
 
 function App() {
   return (
-    <div className='container'>
+    <div className="container">
       <div className="App">
       <Router>                       
         <Routes>
@@ -65,8 +64,6 @@ function App() {
         </Routes>
       </Router>
     </div>
-  </div>
-    
   );
 }
 
