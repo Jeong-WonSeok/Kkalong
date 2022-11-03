@@ -6,8 +6,11 @@ import com.ssafy.kkalong.api.dto.UserInfoDto;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
+import com.ssafy.kkalong.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -93,10 +96,11 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/test/{testValue}")
-    public ResponseEntity<?> Test(@PathVariable String testValue){
+    @GetMapping("/test")
+    public ResponseEntity<?> Test(@AuthenticationPrincipal UserDetailsImpl user){
         Map<String, Object> result = new HashMap<>();
-        result.put("test", testValue);
+        result.put("id", user.getId());
+        result.put("email", user.getEmail());
         return ResponseEntity.ok().body(result);
     }
 }
