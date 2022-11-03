@@ -13,7 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleSignup = () => {
-    navigate('Signup');
+    navigate('/signup');
   }
 
   // 화면의 상하단 margin 제거
@@ -131,7 +131,7 @@ const SocialLoginDiv = styled.div`
   display: flex;
   flex-direction: row;
   width:90vw;
-
+  max-width: 324px;
   color : rgba(0, 0, 0, 0.35);
   font-size : 12px;
   margin : 40px 0px 10px;
