@@ -131,4 +131,19 @@ public class UserService {
     }
 
 
+    public void sendFollowRequest(int sender_id, int receiver_id) {
+        User sender = userRepository.findById(sender_id).orElse(null);
+        User receiver = userRepository.findById(receiver_id).orElse(null);
+        if(sender != null && receiver != null){
+            Follow follow = followRepository.findBySenderAndReceiver(sender, receiver).orElse(null);
+            if(follow!=null){
+                followRepository.deleteById(follow.getId());
+            } else{
+                Follow newFollow = Follow.builder().sender(sender).receiver(receiver).build();
+                followRepository.save(newFollow);
+            }
+
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.kkalong.api.controller;
 
+import com.ssafy.kkalong.api.dto.IntegerDto;
 import com.ssafy.kkalong.api.dto.SignupDto;
 import com.ssafy.kkalong.api.dto.StringDto;
 import com.ssafy.kkalong.api.dto.UserInfoDto;
@@ -94,6 +95,11 @@ public class UserController {
             result.put("usable", true);
         }
         return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/follow")
+    public void sendFollowRequest(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody IntegerDto integerDto){
+        userService.sendFollowRequest(user.getId(), integerDto.getValue());
     }
 
     @GetMapping("/test")
