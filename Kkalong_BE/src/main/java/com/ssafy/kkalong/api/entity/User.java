@@ -1,5 +1,6 @@
 package com.ssafy.kkalong.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.kkalong.api.dto.SignupDto;
 import com.ssafy.kkalong.common.UserRole;
 import lombok.*;
@@ -56,15 +57,19 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Fitting> fittings = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Post> posts = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<Help> helps = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<PostLike> likeposts = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE})
     private List<ReplyLike> likereplys = new ArrayList<>();
 

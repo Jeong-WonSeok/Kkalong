@@ -1,9 +1,6 @@
 package com.ssafy.kkalong.api.service;
 
-import com.ssafy.kkalong.api.dto.BestDressRequestDto;
-import com.ssafy.kkalong.api.dto.BestDressResponseDto;
-import com.ssafy.kkalong.api.dto.BestDressResponseInterface;
-import com.ssafy.kkalong.api.dto.CommentDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.Comment;
 import com.ssafy.kkalong.api.entity.Post;
 import com.ssafy.kkalong.api.entity.User;
@@ -12,6 +9,7 @@ import com.ssafy.kkalong.api.repository.PostLikeRepository;
 import com.ssafy.kkalong.api.repository.PostRepository;
 import com.ssafy.kkalong.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,14 +21,17 @@ import java.util.Map;
 @Service
 public class CommunityService {
 
-    private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
-    private final UserRepository userRepository;
-    private final CommentRepository commentRepository;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    PostLikeRepository postLikeRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     //좋아요 많은 순 3개 출력
     public List<BestDressResponseInterface> selectBestDress(){
-        System.out.println(postRepository.findByBestDress());
         return postRepository.findByBestDress();
     }
 
@@ -41,8 +42,12 @@ public class CommunityService {
     public BestDressResponseInterface selectPost(int post_id){
         return postRepository.findByDressPost(post_id);
     }
+    public Post getPost(int post_id){
+        return postRepository.findById(post_id);
+    }
 
 
+    // 도전 베스트드레서 등록
     public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
         Post post = Post.builder()
                 .img(bestReq.getPost_img())
@@ -54,12 +59,12 @@ public class CommunityService {
     }
 
 
-    public CommentDto selectComment(int post_id) {
-        Comment comment = commentRepository.findByPost(post_id);
-        CommentDto commentDto = new CommentDto();
-        commentDto.setContent(comment.getContent());
-        commentDto.setUser(comment.getUser());
-        return commentDto;
+    public void deletePost(int post_id){
+        postRepository.deleteById(post_id);
+    }
+
+    public void updatePost(BestDressRequestDto bestReq, int post_id) {
+        postRepository.updatePost(bestReq.getContent(), bestReq.getPost_img(), post_id);
     }
 
     public User selectUser(int post_id){
@@ -70,5 +75,47 @@ public class CommunityService {
     public User getUser(String user_email){
         User user = userRepository.findByEmail(user_email);
         return user;
+    }
+
+//    ========================================================================
+//    COMMENT
+//    ========================================================================
+    public List<CommentDto> selectComment(int post_id) {
+
+        List<Comment> comment = commentRepository.findByPost(post_id);
+        List<CommentDto> commentDto = new ArrayList<>();
+        System.out.println("4" + post_id);
+        System.out.println(comment.size());
+        for(Comment com : comment) {
+            CommentDto commentDtoCheck = new CommentDto();
+            commentDtoCheck.setContent(com.getContent());
+            System.out.println(5);
+            commentDtoCheck.setUser(com.getUser());
+            commentDto.add(commentDtoCheck);
+        }
+        return commentDto;
+    }
+
+    public Comment getComment(int comment_id){
+        return commentRepository.findById(comment_id);
+    }
+
+    public Comment insertComment(CommentRequestDto commentInfo, User userInfo, Post post) {
+        Comment comment = Comment.builder()
+                .content(commentInfo.getContent())
+                .user(userInfo)
+                .post(post)
+                .build();
+        commentRepository.save(comment);
+        return comment;
+    }
+
+    public void deleteComment(int comment_id){
+        commentRepository.deleteById(comment_id);
+    }
+
+
+    public void updateComment(int content_id, CommentRequestDto commentInfo) {
+        commentRepository.updateComment(content_id, commentInfo.getContent());
     }
 }
