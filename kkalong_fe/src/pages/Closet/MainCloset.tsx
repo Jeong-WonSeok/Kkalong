@@ -61,10 +61,9 @@ export default function MainCloset() {
   let [sls, setSls] = useState("");
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  useEffect(() => {}, []);
 
   return (
-    <div>
+    <div style={{marginBottom: '70px'}}>
       <TopNav type={"menu"}>
         <CategoryText1>옷장</CategoryText1>
         <div style={{width: "54px", height: "38px"}}>
@@ -115,10 +114,12 @@ export default function MainCloset() {
         );
       })}
       </SortClothesContainer>
-
-      <AddClothes>
-        <img src={camera} />
-      </AddClothes>
+      
+      <AddClothesContainer>
+        <AddClothes onClick={()=>navigate('/closet/add')}>
+          <img src={camera} />
+        </AddClothes>
+      </AddClothesContainer>
       <FooterBar />
     </div>
   );
@@ -238,9 +239,18 @@ export const ClothesImg = styled.img`
   max-height: 80px;
 `
 
-const AddClothes = styled.button`
+const AddClothesContainer = styled.div`
+  width: 100%;
+  max-width: 360px;
   height: 70px;
-  width: 70px;
+  position: fixed;
+  bottom: 70px;
+  left: auto;
+`
+
+const AddClothes = styled.button`
+  height: 60px;
+  width: 60px;
   border-radius: 50px;
   box-shadow: 2px 2px 3px 2px grey;
   position: absolute;

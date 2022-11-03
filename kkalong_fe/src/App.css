@@ -1,14 +1,14 @@
-.container {
+#container {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.App {
+#App {
   width: 100%;
   max-width: 360px;
-  min-height: 740px;
+  min-height: 610px;
   margin: 60px 0 70px 0;
   font-family: var(--base-font-300);
   border: solid 1px;
