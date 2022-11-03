@@ -25,7 +25,8 @@ spring:
       mail.smtp.ssl.enable: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
+#    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://k7b302.p.ssafy.io:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
     username: ssafy
     password: ssafy
   security:
@@ -33,16 +34,17 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 6284a45a782edf525bc50afe13191872
-            redirect-uri: http://i7b210.p.ssafy.io/login/oauth2/code/kakao
+            client-id: b310110cf0e516893f60c0bd3b188feb
+#            redirect-uri: http://localhost:8080/api/v1/login/oauth2/code/kakao
+            redirect-uri: http://k7b302.p.ssafy.io:8080/api/v1/login/oauth2/code/kakao
             client-authentication-method: POST
-            client-secret: 13MKoSLs8rRtKpy5Dc4EEbN7XcB7vIWR
+            client-secret: S0iTNkdfRPIFPdligZNTxOxQs1bYX4L9
             authorization-grant-type: authorization_code
             scope: account_email
             client_name: kakao
           google:
-            client-id: 103305653148-2b6ib34sgmaee95s80omkjpl8nl83g3q.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 581005534805-85ude3qo37r0op5up6a3iulh747j0shq.apps.googleusercontent.com
+            client-secret: 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
             scope: email
         provider:
           kakao:
@@ -63,7 +65,7 @@ spring:
     generate-ddl: true
     hibernate:
       #format_sql: true
-      ddl-auto: update
+      ddl-auto: create
 
 logging:
   level:

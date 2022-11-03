@@ -33,24 +33,38 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        User user = saveOrUpdate(attributes);
+        System.out.println("loadUserByUsername - oauth2: "+attributes.getEmail());
 
-        return new UserDetailsImpl(
-                user.getEmail(),
-                user.getPassword(),
-                user.getId(),
-                user.getNickname(),
-                user.getProvider(),
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())));
-
-        //return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), attributes.getAttributes(), attributes.getNameAttributeKey());
-    }
-
-    private User saveOrUpdate(OAuthAttributes attributes){
         User user = userRepository.findByEmail(attributes.getEmail());
-        if(user==null){
-            user = attributes.toEntity();
+        if(user==null){ //회원가입 한 적 없음
+            System.out.println("회원가입한적 없는 사용자입니다");
+            user = userRepository.save(attributes.toEntity());
+            return new UserDetailsImpl(
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getId(),
+                    user.getNickname(),
+                    user.getProvider(),
+                    Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()))
+            );
+        } else {
+            if(!user.getProvider().equals(attributes.getProvider())){ //다른 계정으로 회원가입 한적 있음
+                System.out.println(attributes.getProvider()+" 회원가입한적 있는 사용자입니다");
+                return new UserDetailsImpl(attributes.getEmail(), "invalid", -1, "invalid", attributes.getProvider(), null);
+            } else{ //로그인 처리
+                System.out.println("로그인으로 안내합니다");
+                return new UserDetailsImpl(
+                        user.getEmail(),
+                        user.getPassword(),
+                        user.getId(),
+                        user.getNickname(),
+                        user.getProvider(),
+                        Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue()))
+                );
+            }
         }
-        return userRepository.save(user);
+
+
     }
+
 }

@@ -14,7 +14,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-        ApiResponse.error(response, ApiResponseType.UNAUTHORIZED_RESPONSE);
+        ApiResponse.error(response, ApiResponseType.FORBIDDEN_RESPONSE, "로그인 실패");
     }
 
 }

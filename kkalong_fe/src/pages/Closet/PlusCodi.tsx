@@ -14,6 +14,7 @@ import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
 import CodiEdit from "../../components/closet/CodiEdit";
 import CanvasDraw from "react-canvas-draw";
+
 export default function PlusCodi() {
   const navigate = useNavigate();
   let [modal, setModal] = useState(false);

@@ -27,7 +27,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         final LoginDto loginDto;
         System.out.println("CustomAuthenticationFilter-attemptAuthentication");
         try {
-            // 사용자 요청 정보로 UserPasswordAuthenticationToken 발급
             loginDto = new ObjectMapper().readValue(request.getInputStream(), LoginDto.class);
             authRequest = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         } catch (IOException e) {

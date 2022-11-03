@@ -34,6 +34,7 @@ export default function DailyRecommend() {
         <PlusImg src={add_codi} />
         <BtnText>내 옷장에 추가</BtnText>
       </PlusBtn>
+      
       <FooterBar />
     </div>
   );
