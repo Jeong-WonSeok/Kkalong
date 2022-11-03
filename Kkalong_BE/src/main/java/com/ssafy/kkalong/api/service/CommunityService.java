@@ -1,13 +1,8 @@
 package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.*;
-import com.ssafy.kkalong.api.entity.Comment;
-import com.ssafy.kkalong.api.entity.Post;
-import com.ssafy.kkalong.api.entity.User;
-import com.ssafy.kkalong.api.repository.CommentRepository;
-import com.ssafy.kkalong.api.repository.PostLikeRepository;
-import com.ssafy.kkalong.api.repository.PostRepository;
-import com.ssafy.kkalong.api.repository.UserRepository;
+import com.ssafy.kkalong.api.entity.*;
+import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +24,11 @@ public class CommunityService {
     UserRepository userRepository;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    HelpRepository helpRepository;
+    @Autowired
+    ReplyRepository replyRepository;
+
 
     //좋아요 많은 순 3개 출력
     public List<BestDressResponseInterface> selectBestDress(){
@@ -77,6 +77,11 @@ public class CommunityService {
         return user;
     }
 
+    public User selectUserHelp(int help_id){
+        User user = helpRepository.findById(help_id).getUser();
+        return user;
+    }
+
 //    ========================================================================
 //    COMMENT
 //    ========================================================================
@@ -84,12 +89,10 @@ public class CommunityService {
 
         List<Comment> comment = commentRepository.findByPost(post_id);
         List<CommentDto> commentDto = new ArrayList<>();
-        System.out.println("4" + post_id);
-        System.out.println(comment.size());
+
         for(Comment com : comment) {
             CommentDto commentDtoCheck = new CommentDto();
             commentDtoCheck.setContent(com.getContent());
-            System.out.println(5);
             commentDtoCheck.setUser(com.getUser());
             commentDto.add(commentDtoCheck);
         }
@@ -116,6 +119,87 @@ public class CommunityService {
 
 
     public void updateComment(int content_id, CommentRequestDto commentInfo) {
+        System.out.println(commentInfo.getContent());
         commentRepository.updateComment(content_id, commentInfo.getContent());
+    }
+
+    //=============================================================================
+    //도와주세요 패알못
+    //=============================================================================
+
+    public List<HelpResponseDto> selectAllHelp() {
+        List<Help> help = helpRepository.findAll();
+        List<HelpResponseDto> helpAll = new ArrayList<>();
+        for (Help h : help) {
+            HelpResponseDto helpTemp = new HelpResponseDto(h.getId(), h.getOpen(), h.getImg(), h.getOpenrange(), h.getTitle());
+            helpAll.add(helpTemp);
+        }
+
+        return helpAll;
+    }
+
+    public HelpResponseDto selectHelp(int help_id) {
+        Help help = helpRepository.findById(help_id);
+
+        HelpResponseDto helpDto = new HelpResponseDto();
+        helpDto.setHelp_id(help.getId());
+        helpDto.setRange(help.getOpenrange());
+        helpDto.setOpen(help.getOpen());
+        helpDto.setHelp_img(help.getImg());
+        helpDto.setTitle(help.getTitle());
+
+        return helpDto;
+    }
+
+    public int insertHelp(HelpRequestDto helpDto, User user) {
+        Help help = Help.builder()
+                .content(helpDto.getContent())
+                .openrange(helpDto.getRange())
+                .title(helpDto.getTitle())
+                .open(helpDto.getOpen())
+                .user(user)
+                .build();
+        helpRepository.save(help);
+        return help.getId();
+    }
+
+    public void deleteHelp(int help_id) { helpRepository.deleteById(help_id); }
+
+    public List<ReplyDto> selectReply(int help_id) {
+
+        List<Reply> reply = replyRepository.findByHelp(help_id);
+        List<ReplyDto> replyDto = new ArrayList<>();
+
+        for(Reply rpl : reply) {
+            ReplyDto replyDtoCheck = new ReplyDto();
+            replyDtoCheck.setContent(rpl.getContent());
+            replyDtoCheck.setUser(rpl.getUser());
+            replyDto.add(replyDtoCheck);
+        }
+        return replyDto;
+    }
+
+    public Reply getReply(int reply_id){
+        return replyRepository.findById(reply_id);
+    }
+
+    public Help getHelp(int help_id){
+        return helpRepository.findById(help_id);
+    }
+
+    public Reply insertReply(ReplyRequestDto replyInfo, User userInfo, Help help) {
+        Reply reply = Reply.builder()
+                .content(replyInfo.getContent())
+                .user(userInfo)
+                .help(help)
+                .build();
+        replyRepository.save(reply);
+        return reply;
+    }
+
+    public void deleteReply(int reply_id) { replyRepository.deleteById(reply_id); }
+
+    public void updateReply(int reply_id, ReplyRequestDto replyInfo) {
+        replyRepository.updateReply(reply_id, replyInfo.getContent());
     }
 }

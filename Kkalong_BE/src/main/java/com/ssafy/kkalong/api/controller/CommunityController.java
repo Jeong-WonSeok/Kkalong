@@ -1,9 +1,7 @@
 package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.*;
-import com.ssafy.kkalong.api.entity.Comment;
-import com.ssafy.kkalong.api.entity.Post;
-import com.ssafy.kkalong.api.entity.User;
+import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.CommunityService;
 import com.ssafy.kkalong.common.BaseEntity;
 import com.ssafy.kkalong.security.UserDetailsImpl;
@@ -244,12 +242,159 @@ public class CommunityController {
         userMap.put("profile_img", user.getImg());
         result.put("content", comment.getContent());
         result.put("user_id", userMap);
-        result.put("updateAt", comment.getUpdatedAt());
 
         return ResponseEntity.ok().body(result);
     }
 
+    //==================================================================
+    // 도와줘요 패알못!
+    //==================================================================
 
+    //모든 목록 불러오기
+    @GetMapping("/helpcodi")
+    public ResponseEntity<?> selectAllHelp(){
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        List<HelpResponseDto> help = communityService.selectAllHelp();
+        for(HelpResponseDto h : help) {
+            Map<String, Object> temp = new HashMap<>();
+
+            BestDressUserDto userDto = new BestDressUserDto();
+            User user = communityService.selectUserHelp(h.getHelp_id());
+            userDto.setNickname(user.getNickname());
+            userDto.setProfile_image(user.getImg());
+
+            temp.put("Help", help);
+            temp.put("user_id", userDto);
+
+            result.add(temp);
+        }
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/helpcodi/help_id")
+    public ResponseEntity<?> selectHelp(@RequestParam int help_id){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> comment = new HashMap<>();
+        Map<String, Object> commentUser = new HashMap<>();
+
+        List<ReplyDto> replyList = communityService.selectReply(help_id);
+        List<Map<String, Object>> commentArr = new ArrayList<>();
+
+        HelpResponseDto helpDto = communityService.selectHelp(help_id);
+        BestDressUserDto userDto = new BestDressUserDto();
+        User user = communityService.selectUserHelp(help_id);
+        userDto.setNickname((user.getNickname()));
+        userDto.setProfile_image(user.getImg());
+
+        for(ReplyDto rpl : replyList) {
+            Map<String, Object> reply = new HashMap<>();
+            User temp_user = rpl.getUser();
+            BestDressUserDto comment_user = new BestDressUserDto();
+
+            comment_user.setNickname(temp_user.getNickname());
+            comment_user.setProfile_image(temp_user.getImg());
+
+            comment.put("content", rpl.getContent());
+            comment.put("user_id", comment_user);
+
+            commentArr.add(comment);
+        }
+
+
+        result.put("Help", helpDto);
+        result.put("user_id", userDto);
+        result.put("comment", commentArr);
+
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("helpcodi/help_id")
+    public void deleteHelp(@RequestParam int help_id){
+        communityService.deleteHelp(help_id);
+    }
+
+
+    @PostMapping("/helpcodi")
+    public ResponseEntity<?> insertHelp(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody HelpRequestDto helpInfo){
+        System.out.println(helpInfo.getContent());
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> comment = new HashMap<>();
+        Map<String, Object> commentUser = new HashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
+        Map<String, Object> codi = new HashMap<>();
+
+        User user = communityService.getUser(userInfo.getEmail());
+        int help_id = communityService.insertHelp(helpInfo, user);
+
+        HelpResponseDto help = new HelpResponseDto();
+        help.setHelp_id(help_id);
+        help.setOpen(helpInfo.getOpen());
+        help.setTitle(helpInfo.getTitle());
+        help.setRange(helpInfo.getRange());
+
+        result.put("Help", help);
+        comment.put("content", null);
+        commentUser.put("nickname", null);
+        commentUser.put("profile_img", null);
+        comment.put("user_id",commentUser);
+        userMap.put("nickname", null);
+        userMap.put("profile_img",null);
+        result.put("comment", comment);
+        result.put("user_id", userMap);
+
+        return ResponseEntity.ok().body(result);
+
+    }
+
+    //=====================================================================
+    //패알못 댓글
+    //=====================================================================
+
+    @PostMapping("helpcodi/help_id/reply")
+    public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @RequestParam int help_id){
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> user_id = new HashMap<>();
+
+        Help help = communityService.getHelp(help_id);
+        User user = communityService.getUser(userInfo.getEmail());
+        Reply reply = communityService.insertReply(replyInfo, user, help);
+
+        user_id.put("nickname", user.getNickname());
+        user_id.put("profile_img", user.getImg());
+        //createAt 넣어야 댐
+
+        result.put("content", reply.getContent());
+        result.put("user_id", user_id);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/helpcodi/help_id/reply")
+    public ResponseEntity<?> deleteReply(@RequestParam int reply_id){
+        communityService.deleteReply(reply_id);
+        return ResponseEntity.ok().body("삭제 성공");
+    }
+
+    @PutMapping("/helpcodi/help_id/reply")
+    public ResponseEntity<?> updateReply(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestParam int reply_id, @RequestBody ReplyRequestDto replyInfo){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> userMap = new HashMap<>();
+
+        communityService.updateReply(reply_id, replyInfo);
+        Reply reply = communityService.getReply(reply_id);
+        User user = communityService.getUser(userInfo.getEmail());
+
+        userMap.put("nickname", user.getNickname());
+        userMap.put("profile_img", user.getImg());
+        result.put("content", reply.getContent());
+        result.put("user_id", userMap);
+
+        return ResponseEntity.ok().body(result);
+    }
 
 
 

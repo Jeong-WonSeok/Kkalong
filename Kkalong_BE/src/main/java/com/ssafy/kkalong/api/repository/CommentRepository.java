@@ -21,6 +21,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "update comment set content = :content where comment_id = :content_id")
-    void updateComment(int content_id, String content);
+    @Query(nativeQuery = true, value = "update comment set content = :content where comment_id = :comment_id")
+    void updateComment(int comment_id, String content);
 }
