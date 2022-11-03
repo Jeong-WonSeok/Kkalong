@@ -55,10 +55,6 @@ public class ApiResponse {
         httpServletResponse.getWriter().write(Objects.requireNonNull(objectMapper.writeValueAsString(new DataApiResponse<Map>(result))));
     }
 
-    public static void error(HttpServletResponse response, String provider) {
-
-    }
-
     @Getter
     @AllArgsConstructor
     public static class ReplaceString {

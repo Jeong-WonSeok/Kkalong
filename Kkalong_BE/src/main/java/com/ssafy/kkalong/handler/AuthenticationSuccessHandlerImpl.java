@@ -1,13 +1,16 @@
 package com.ssafy.kkalong.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkalong.api.dto.UserInfoDto;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.repository.UserRepository;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.common.ApiResponse;
+import com.ssafy.kkalong.common.DataApiResponse;
 import com.ssafy.kkalong.jwt.JwtProvider;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -35,48 +39,42 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
 
         System.out.println("AuthenticationSuccessHandlerImpl-onAuthenticationSuccess: authentication="+authentication.toString());
 
+        // 전달받은 인증정보 SecurityContextHolder에 저장
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // JWT Token 발급
+        final String token = jwtProvider.generateJwtToken(authentication);
+
         // Response
         if(authentication instanceof OAuth2AuthenticationToken){
             User user = extractUserInfos(authentication);
-            if(user.getId() ==-1){
-                System.out.println("이미 회원가입된 유저입니다");
-                throw new BadCredentialsException(user.getProvider());
-//                ApiResponse.error(response, user.getProvider());
-            } else {
-                // 전달받은 인증정보 SecurityContextHolder에 저장
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                // JWT Token 발급
-                final String token = jwtProvider.generateJwtToken(authentication);
 
-//                String url = makeRedirectUrl(token);
-//                getRedirectStrategy().sendRedirect(request, response, url);
+            String url = UriComponentsBuilder.fromUriString("http://localhost:8080/signup").build().toUriString();
 
-                Map<String, Object> result = new HashMap<>();
-                UserInfoDto userInfoDto = UserInfoDto.builder()
-                        .email(user.getEmail())
-                        .password(user.getPassword())
-                        .nickname(user.getNickname())
-                        .gender(user.getGender())
-                        .age(user.getAge())
-                        .height(user.getHeight())
-                        .weight(user.getWeight())
-                        .provider(user.getProvider())
-                        .followers(userService.getFollowerListByReceiverId(user.getId()))
-                        .followings(userService.getFollowingListBySenderId(user.getId()))
-                        .build();
-                result.put("token", token);
-                result.put("user", userInfoDto);
+            Map<String, Object> result = new HashMap<>();
+            UserInfoDto userInfoDto = UserInfoDto.builder()
+                    .email(user.getEmail())
+                    .password(user.getPassword())
+                    .nickname(user.getNickname())
+                    .gender(user.getGender())
+                    .age(user.getAge())
+                    .height(user.getHeight())
+                    .weight(user.getWeight())
+                    .provider(user.getProvider())
+                    .followers(userService.getFollowerListByReceiverId(user.getId()))
+                    .followings(userService.getFollowingListBySenderId(user.getId()))
+                    .build();
+            result.put("token", token);
+            result.put("user", userInfoDto);
 
-                ApiResponse.success(response, result);
-            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(Objects.requireNonNull(objectMapper.writeValueAsString(new DataApiResponse<Map>(result))));
 
+            getRedirectStrategy().sendRedirect(request, response, url);
 
+//            ApiResponse.success(response, result);
         } else{
-            // 전달받은 인증정보 SecurityContextHolder에 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            // JWT Token 발급
-            final String token = jwtProvider.generateJwtToken(authentication);
-
             Map<String, Object> result = new HashMap<>();
             User user = extractUserInfos(authentication);
             UserInfoDto userInfoDto = UserInfoDto.builder()
@@ -97,10 +95,6 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
             ApiResponse.success(response, result);
         }
 
-    }
-
-    private String makeRedirectUrl(String token) {
-        return UriComponentsBuilder.fromUriString("http://localhost:8080/api/v1/oauth2/redirect?token="+token).build().toUriString();
     }
 
     private User extractUserInfos(Authentication authentication) {
