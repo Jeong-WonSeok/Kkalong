@@ -6,20 +6,25 @@ import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
 import EmailLogo from '../../assets/icon/Login/email.png';
 import PasswordLogo from '../../assets/icon/Login/password.png';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/reduxHook';
+import { getData } from '../../redux/modules/BestDress';
 
 
 export default function Login() {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
 
   const handleSignup = () => {
-    navigate('Signup');
+    navigate('/signup');
   }
 
   // 화면의 상하단 margin 제거
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.margin = '0'
+
+    dispatch(getData())
   },[])
   
   return (
@@ -131,7 +136,7 @@ const SocialLoginDiv = styled.div`
   display: flex;
   flex-direction: row;
   width:90vw;
-
+  max-width: 324px;
   color : rgba(0, 0, 0, 0.35);
   font-size : 12px;
   margin : 40px 0px 10px;

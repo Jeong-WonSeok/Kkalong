@@ -8,11 +8,7 @@ import store from "./redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// const root = ReactDOM.createRoot(
-//   document.getElementById("root") as HTMLElement
-// );
-
-ReactDOM.render(
+const render = () => ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
@@ -20,6 +16,9 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+render()
+store.subscribe(render);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
