@@ -22,4 +22,5 @@ public class UserInfoDto {
     private String provider;
     private List<Integer> followers;
     private List<Integer> followings;
+
 }
