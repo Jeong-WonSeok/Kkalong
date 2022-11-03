@@ -2,9 +2,9 @@ import { handleActions } from "redux-actions";
 import { Dispatch } from 'redux';
 import { BestDresserArticle } from "../../pages/Community/MainCommunity";
 
-const GET_DATA_PENDING = 'Community/GET_DATA_PENDING'
-const GET_DATA_SUCCESS = 'Community/GET_DATA_SUCCESS'
-const GET_DATA_FAILURE = 'Community/GET_DATA_FAILURE'
+const GET_DATA_PENDING = 'Community/GET_DATA_PENDING' 
+const GET_DATA_SUCCESS = 'Community/GET_DATA_SUCCESS' 
+const GET_DATA_FAILURE = 'Community/GET_DATA_FAILURE' 
 
 interface stateType {
   pending: boolean,
@@ -20,7 +20,6 @@ const initialState: stateType = {
 }
 
 export const getData = () => (dispatch: Dispatch) => {
-  console.log('실행')
   dispatch({type: GET_DATA_PENDING})
 
   const BestDress: Array<BestDresserArticle> = [
@@ -62,8 +61,6 @@ export const getData = () => (dispatch: Dispatch) => {
     },
   ]
 
-  console.log('데이터', BestDress)
-
   dispatch({type: GET_DATA_SUCCESS, payload: BestDress})
 }
 
@@ -77,12 +74,12 @@ export default handleActions({
       data: [],
     }
   },
-  [GET_DATA_SUCCESS]: (state, action) => {
-    console.log(action.payload)
+  [GET_DATA_SUCCESS]: (state, {payload}) => {
+    console.log(payload)
     return {
       ...state,
       pending: false,
-      // data: state.data.push(action.payload)
+      data: state.data.concat(payload)
     };
   },
   [GET_DATA_FAILURE]: (state, action) => {

@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
+
+import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import EmailIcon from "../../assets/icon/User/mail.png";
 import AgeIcon from '../../assets/icon/User/age.png'
 import HeightIcon from '../../assets/icon/User/height.png'
@@ -7,9 +9,12 @@ import WeightIcon from '../../assets/icon/User/weight.png'
 import nickname from '../../assets/icon/User/nickname.png'
 import PasswordIcon from "../../assets/icon/User/password.png";
 import PasswordCheckIcon from "../../assets/icon/User/passwordCheck.png";
+
 import TopNav from "../../components/ui/TopNav";
 import requests from '../../api/requests'
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 interface userType {
   email: string,
@@ -27,6 +32,7 @@ type nickname = {
 }
 
 export default function Signup() {
+  const navigate = useNavigate()
   const [EmailCheck, setEmailCheck] = useState({
     Input: '',
     Check: '',
@@ -77,7 +83,7 @@ export default function Signup() {
     return (
       <div>
         <TopNav type={"Line"}>
-          <div style={{width: "30px", height: "30px"}}></div>
+          <BackArrowImg src={BackArrow} onClick={()=>navigate('/login')}/>
           <SignupText>회원가입</SignupText>
           <div style={{width: "30px", height: "30px"}}></div>
         </TopNav>
@@ -145,8 +151,8 @@ export default function Signup() {
   } else {
     return (
       <div>
-      <TopNav type={"Line"}>
-          <div style={{width: "30px", height: "30px"}}></div>
+        <TopNav type={"Line"}>
+          <BackArrowImg src={BackArrow} onClick={()=>navigate('/login')}/>
           <SignupText>회원가입</SignupText>
           <div style={{width: "30px", height: "30px"}}></div>
         </TopNav>
@@ -186,8 +192,14 @@ export default function Signup() {
   
 }
 
+const BackArrowImg = styled.img`
+  width: 30px;
+  height: 30px;
+`
+
 //회원가입 Div
 const SignupDiv = styled.div`
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
