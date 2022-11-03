@@ -67,7 +67,7 @@ export default function PlusCodi() {
             </SortBorder>
           </Modal>
 
-          <SelectBtn onClick={modalClose}>확인</SelectBtn>
+          {/* <SelectBtn onClick={modalClose}>확인</SelectBtn> */}
         </>
       ) : null}
     </div>
@@ -107,7 +107,7 @@ const Codi = styled.div`
 
 const Modal = styled.div`
   background: white;
-  height: 400px;
+  height: 200px;
   width: 320px;
   margin-top: 300px;
   padding: 20px;

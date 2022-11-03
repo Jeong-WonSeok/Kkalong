@@ -29,7 +29,9 @@ import VirtualBrandChoice from "./pages/VirturalFitting/VirtualBrandChoice";
 import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
 import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
 import CodiEdit from "./components/closet/CodiEdit";
-
+import ClosetAsset from "./components/closet/ClosetAsset";
+// import Example from "./components/closet/Example";
+// import Scene from "../public/Scene";
 function App() {
   return (
     <div className="container">
@@ -95,6 +97,8 @@ function App() {
             <Route path="/weather" element={<WeatherPage />}></Route>
             <Route path="/daily" element={<DailyRecommend />}></Route>
             <Route path="/codiedit" element={<CodiEdit />}></Route>
+            <Route path="/closetasset" element={<ClosetAsset />}></Route>
+            {/* <Route path="/scene" element={<Scene />}></Route> */}
           </Routes>
         </Router>
       </div>
