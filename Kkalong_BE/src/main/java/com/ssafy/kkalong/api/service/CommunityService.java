@@ -2,6 +2,7 @@ package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.BestDressRequestDto;
 import com.ssafy.kkalong.api.dto.BestDressResponseDto;
+import com.ssafy.kkalong.api.dto.BestDressResponseInterface;
 import com.ssafy.kkalong.api.dto.CommentDto;
 import com.ssafy.kkalong.api.entity.Comment;
 import com.ssafy.kkalong.api.entity.Post;
@@ -27,14 +28,20 @@ public class CommunityService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public List<BestDressResponseDto> selectBestDress(){
+    //좋아요 많은 순 3개 출력
+    public List<BestDressResponseInterface> selectBestDress(){
         System.out.println(postRepository.findByBestDress());
         return postRepository.findByBestDress();
     }
 
-    public List<BestDressResponseDto> selectPost(){
-        return postRepository.findAllByPost();
+    public List<BestDressResponseInterface> selectAllPost(){
+        return postRepository.findByAllBestDress();
     }
+
+    public BestDressResponseInterface selectPost(int post_id){
+        return postRepository.findByDressPost(post_id);
+    }
+
 
     public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
         Post post = Post.builder()
@@ -51,10 +58,17 @@ public class CommunityService {
         Comment comment = commentRepository.findByPost(post_id);
         CommentDto commentDto = new CommentDto();
         commentDto.setContent(comment.getContent());
+        commentDto.setUser(comment.getUser());
         return commentDto;
     }
+
     public User selectUser(int post_id){
         User user = postRepository.findById(post_id).getUser();
+        return user;
+    }
+
+    public User getUser(String user_email){
+        User user = userRepository.findByEmail(user_email);
         return user;
     }
 }

@@ -1,12 +1,10 @@
 package com.ssafy.kkalong.api.controller;
 
-import com.ssafy.kkalong.api.dto.BestDressRequestDto;
-import com.ssafy.kkalong.api.dto.BestDressResponseDto;
-import com.ssafy.kkalong.api.dto.BestDressUserDto;
-import com.ssafy.kkalong.api.dto.CommentDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.Post;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.CommunityService;
+import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +27,15 @@ public class CommunityController {
     //좋아요 가장 많은 게시글 보여주기(3개 까지)
     @GetMapping("/best")
     public ResponseEntity selectBestDressTop(){
-        System.out.println('a');
         List<Map<String, Object>> result = new ArrayList<>();
-        List<BestDressResponseDto> post = communityService.selectBestDress();
-        Map<String, Object> a = new HashMap<>();
-        a.put("aaa", "qwer");
-        for(BestDressResponseDto bd : post){
+        List<BestDressResponseInterface> post = communityService.selectBestDress();
+
+        for(BestDressResponseInterface bd : post){
 
             Map<String, Object> temp = new HashMap<>();
             Map<String, Object> temp_u = new HashMap<>();
-            User user = communityService.selectUser(bd.getPost_id());
+            System.out.println("+++" + bd.getId());
+            User user = communityService.selectUser(bd.getId());
 
             String nick = user.getNickname();
             String profile_img = user.getImg();
@@ -50,34 +47,53 @@ public class CommunityController {
             result.add(temp);
         }
 
-        return ResponseEntity.ok().body(a);
-    }
-
-
-    @GetMapping(value = "/bestdress")
-    public ResponseEntity<?> selectBestDress(){
-        Map<String, Object> result = new HashMap<>();
-        result.put("String", "String");
         return ResponseEntity.ok().body(result);
     }
 
+    //bestdress 목록 전부 다 가져오기
+    @GetMapping(value = "/bestdress")
+    public ResponseEntity<?> selectBestDress(){
+        Map<String, Object> result = new HashMap<>();
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    //일일히 가져오기
+    @GetMapping(value="/bestdress/post_id")
+    public ResponseEntity<?> selectPost(@RequestParam int post_id){
+
+    }
+
+
+
+    @GetMapping(value="/check")
+    public ResponseEntity<?> check(@AuthenticationPrincipal UserDetailsImpl userInfo){
+        System.out.println("check" +  userInfo.getEmail());
+
+        return ResponseEntity.ok().body(userInfo.getEmail());
+    }
+
     @PostMapping(value="/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal User userInfo, @RequestBody final BestDressRequestDto bestReq){
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> comment = new HashMap<>();
+        System.out.println(userInfo.getEmail());
+        User user = communityService.getUser(userInfo.getEmail());
 
-        BestDressUserDto user = new BestDressUserDto();
-        user.setNickname(userInfo.getNickname());
-        user.setProfile_image(userInfo.getImg());
+        BestDressUserDto post_user = new BestDressUserDto();
+        post_user.setNickname(user.getNickname());
+        post_user.setProfile_image(user.getImg());
 
-        Post post = communityService.insertBestDress(bestReq, userInfo);
+        Post post = communityService.insertBestDress(bestReq, user);
         CommentDto commentdto = communityService.selectComment(post.getId());
 
-
         BestDressUserDto comment_user = new BestDressUserDto();
+        comment_user.setNickname(commentdto.getUser().getNickname());
+        comment_user.setProfile_image(commentdto.getUser().getImg());
+
 
         result.put("Best", post);
-        result.put("user", user);
+        result.put("user", post_user);
         comment.put("content", commentdto.getContent());
         comment.put("user", comment_user);
         result.put("comment", comment);
