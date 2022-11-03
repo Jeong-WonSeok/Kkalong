@@ -43,19 +43,13 @@ export default function MainCommunity() {
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
   useEffect(() => {
-    setBestArticles([
-      {
-        post_id: 1,
-        post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-        post_user: {
-          nickname: 'loki535',
-          profile: ''
-        },
-        post_like: 13
-      },
-    ])
-    dispatch(getData())
-    setBestArticles(data)
+    const start = () => {
+      dispatch(getData())
+      console.log(data)
+      setBestArticles([...data])
+    }
+    start()
+    
     
     // setHelpArticles([
     //   {
@@ -127,7 +121,7 @@ export default function MainCommunity() {
       <List>
         <Category onClick={()=>navigate('/community/BestDress')}>도전! 베스트 드레서✨</Category>
         <ArticleList>
-          {BestArticles.map((BestArticle, index) => {
+          {BestArticles.length > 0 && BestArticles.map((BestArticle, index) => {
             return (
               <div key={index}>
                 <BestDresser article={BestArticle}/>

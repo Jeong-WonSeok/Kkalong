@@ -75,11 +75,11 @@ export default handleActions({
     }
   },
   [GET_DATA_SUCCESS]: (state, {payload}) => {
-    console.log(payload)
+    const adjust: Array<BestDresserArticle> = payload as unknown as Array<BestDresserArticle>
     return {
       ...state,
       pending: false,
-      data: state.data.concat(payload)
+      data: state.data.concat(adjust)
     };
   },
   [GET_DATA_FAILURE]: (state, action) => {
