@@ -1,0 +1,79 @@
+import React from "react";
+import "./App.css";
+import "./styles/common.scss";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
+import FooterBar from "./components/ui/FooterBar";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import SignupNext from "./pages/Signup/SignupNext";
+import MainCloset from "./pages/Closet/MainCloset";
+import MainCommunity from "./pages/Community/MainCommunity";
+import MainBestDress from "./pages/Community/MainBestDress";
+import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddCloset from "./pages/Closet/AddCloset";
+import CodiPage from "./pages/Closet/CodiPage";
+import PlusCodi from "./pages/Closet/PlusCodi";
+import WeatherPage from "./pages/Recommend/WeatherPage";
+import DailyRecommend from "./pages/Recommend/DailyRecommend";
+import AddBestDress from './pages/Community/AddBestDress';
+import MyPage from './pages/MyPage/MyPage'
+import MainHelpCodi from "./pages/Community/MainHelpCodi";
+import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
+import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
+import AddHelpCodi from './pages/Community/AddHelpCodi';
+import StartPage from './pages/StartPage';
+import AddClothes from './pages/Closet/AddClothes';
+import VirtualBrandChoice from "./pages/VirturalFitting/VirtualBrandChoice";
+import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
+import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
+import CodiEdit from "./components/closet/CodiEdit";
+import MyPageFriend from "./pages/MyPage/MyPageFriend";
+import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
+import MyPageArticle from "./pages/MyPage/MyPageArticle";
+
+
+function App() {
+  return (
+    <div id='container'>
+      <div id="App">
+      <Router>                       
+        <Routes>
+          <Route path="/" element={<StartPage/>}></Route>
+          <Route path="/login" element={<Login/>}></Route>
+          <Route path="/signup" element={<Signup/>}></Route>
+          <Route path="/signupNext" element={<SignupNext/>}></Route>
+          <Route path='/community' element={<MainCommunity/>}></Route>
+          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
+          <Route path='/community/BestDress/Add/' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/Add/:Id' element={<AddBestDress/>}></Route>
+          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
+          <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/Add' element={<AddSelectHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/Add/:Category/:Id' element={<AddHelpCodi/>}></Route>
+          <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
+          <Route path="/closet" element={<MainCloset />}></Route>
+          <Route path="/closet/Add" element={<AddClothes/>}></Route>
+          <Route path="/addcloset" element={<AddCloset />}></Route>
+          <Route path="/codi" element={<CodiPage />}></Route>
+          <Route path="/pluscodi" element={<PlusCodi />}></Route>
+          <Route path="/codiedit" element={<CodiEdit />}></Route>
+          <Route path="/recommend/weather" element={<WeatherPage />}></Route>
+          <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
+          <Route path="/community/BestDress" element={<MainBestDress />}></Route>
+          <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
+          <Route path="/myPage" element={<MyPage/>}></Route>
+          <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
+          <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
+          <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
+        </Routes>
+      </Router>
+    </div>
+  </div>
+  );
+}
+
+export default App;
