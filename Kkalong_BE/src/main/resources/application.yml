@@ -77,10 +77,3 @@ logging:
 #app:
 #  firebase-configuration-file: ./serviceAccountKey.json
 #  firebase-bucket: dipping-f118c.appspot.com
-
-#springdoc swagger
-    springdoc:
-      swagger-ui:
-        path: /api/v1/swagger-ui.html # 접속 path 설정
-        display-request-duration: true  # try it out 을 했을 때 request duration 을 추가로 찍어줌
-      version: 'v1'
