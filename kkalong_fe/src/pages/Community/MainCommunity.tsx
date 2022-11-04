@@ -2,12 +2,13 @@ import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
-import { getData } from '../../redux/modules/BestDress';
+import { getBest3, getBestDress } from '../../redux/modules/BestDress';
 
 import BestDresser from '../../components/Community/BestDresser';
 import HelpCodi from '../../components/Community/HelpCodi';
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
+import { getHelpCodi } from '../../redux/modules/HelpCodi';
 
 export interface BestDresserArticle {
   post_id: number,
@@ -20,7 +21,7 @@ export interface BestDresserArticle {
 }
 
 export interface HelpCodiArticle {
-  help_id: Number;
+  help_id: number;
   help_img: string;
   user_id: {
     nickname: string,
@@ -31,22 +32,22 @@ export interface HelpCodiArticle {
 
 
 export default function MainCommunity() {
-  const {data} = useAppSelector(state => state.BestDress)
+  const {BestDress, Best3} = useAppSelector(state => state.BestDress)
+  const {HelpCody} = useAppSelector(state => state.HelpCodi)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [Best3, setBest3] = useState([
-    `https://m.rodenty.com/web/product/big/202204/88ead4b44cfbd86c80b237e0bbc4fc39.jpg`,
-    `https://static.lookpin.co.kr/20210830111703-9bf7/376bff1f9197214c2f17f2881ae8c68c.jpg?resize=880`,
-    `https://m.rodenty.com/web/product/big/202202/b9b6f434d554adbbae066c9d665004ab.jpg`
-  ])
+  const [Best3Article, setBest3Article] = useState(Array<BestDresserArticle>)
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
   useEffect(() => {
     const start = () => {
-      dispatch(getData())
-      console.log(data)
-      setBestArticles([...data])
+      dispatch(getBest3())
+      dispatch(getBestDress())
+      dispatch(getHelpCodi())
+      setBestArticles([...BestDress.splice(0,20)])
+      setHelpArticles([...HelpCody.splice(0,20)])
+      setBest3Article([...Best3])
     }
     start()
     
@@ -101,17 +102,17 @@ export default function MainCommunity() {
     <Container>
       <List>
         <Category>오늘의 깔롱쟁이🏆</Category>
-        {Best3.map((Best, index) => {
+        {Best3Article.map((Best, index) => {
           if (index === 1) {
             return (
               <div key={index} style={{display: 'inline'}}>
-                <Best3Container style={{margin: '0 20px'}} src={Best}/>
+                <Best3Container style={{margin: '0 20px'}} src={Best.post_img}/>
               </div>
             )
           } else {
             return (
               <div key={index} style={{display: 'inline'}}>
-                <Best3Container src={Best}/>
+                <Best3Container src={Best.post_img}/>
               </div>
             )
           }

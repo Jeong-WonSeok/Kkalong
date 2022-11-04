@@ -1,10 +1,19 @@
-import React from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import requests from '../../api/requests'
 
 export default function Modal(props: any) {
+  const navigate = useNavigate()
   // 삭제 axios 요청 보낼 예정
-  const Delete = () => {
-
+  const Delete = async () => {
+    if (props.Page === "BestDress") {
+      await axios.delete(requests.detailBestDress + props.Id)
+      navigate('/community/BestDress')
+    } else {
+      await axios.delete(requests.detailHelpCodi + props.Id)
+      navigate('/community/HelpCodi')
+    }
   }
 
   return (

@@ -9,50 +9,53 @@ import { BestDresserArticle, Container } from './MainCommunity'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddArticle from '../../assets/icon/Community/addArticle.png'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export default function MainBestDress() {
   const navigate = useNavigate()
+  const { BestDress } = useAppSelector(store => store.BestDress)
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>)
 
   useEffect(() => {
-    setBestArticles([
-      {
-        post_id: 1,
-        post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-        post_user: {
-          nickname: 'loki535',
-          profile: ''
-        },
-        post_like: 13
-      },
-      {
-        post_id: 2,
-        post_img: 'https://i.pinimg.com/474x/e3/0a/73/e30a73291a0f8c2403c95472157d4b7e.jpg',
-        post_user: {
-          nickname: 'hans',
-          profile: ''
-        },
-        post_like: 10
-      },
-      {
-        post_id: 3,
-        post_img: 'https://www.ultrafashion.net/shopimages/girlsje/031001001172.jpg?1646365806',
-        post_user: {
-          nickname: 'jane13',
-          profile: ''
-        },
-        post_like: 5
-      },
-      {
-        post_id: 4,
-        post_img: 'https://sitem.ssgcdn.com/21/01/16/item/1000049160121_i1_1200.jpg',
-        post_user: {
-          nickname: 'likeme',
-          profile: ''
-        },
-        post_like: 2
-      },
-    ])
+    setBestArticles(BestDress)
+    // setBestArticles([
+    //   {
+    //     post_id: 1,
+    //     post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
+    //     post_user: {
+    //       nickname: 'loki535',
+    //       profile: ''
+    //     },
+    //     post_like: 13
+    //   },
+    //   {
+    //     post_id: 2,
+    //     post_img: 'https://i.pinimg.com/474x/e3/0a/73/e30a73291a0f8c2403c95472157d4b7e.jpg',
+    //     post_user: {
+    //       nickname: 'hans',
+    //       profile: ''
+    //     },
+    //     post_like: 10
+    //   },
+    //   {
+    //     post_id: 3,
+    //     post_img: 'https://www.ultrafashion.net/shopimages/girlsje/031001001172.jpg?1646365806',
+    //     post_user: {
+    //       nickname: 'jane13',
+    //       profile: ''
+    //     },
+    //     post_like: 5
+    //   },
+    //   {
+    //     post_id: 4,
+    //     post_img: 'https://sitem.ssgcdn.com/21/01/16/item/1000049160121_i1_1200.jpg',
+    //     post_user: {
+    //       nickname: 'likeme',
+    //       profile: ''
+    //     },
+    //     post_like: 2
+    //   },
+    // ])
   }, [])
 
   return (

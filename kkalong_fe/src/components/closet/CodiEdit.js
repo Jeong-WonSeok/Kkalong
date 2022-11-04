@@ -15,14 +15,10 @@ export default function CodiEdit() {
   useEffect(() => {
     setCanvas(initCanvas());
   }, []);
-  const onAddRectangle = () => {
-    editor.addRectangle();
-  };
   const initCanvas = () =>
     new fabric.Canvas("canvas", {
       height: 300,
       width: 300,
-      backgroundColor: "pink",
     });
   const downloadImage = () => {
     const ext = "png";
@@ -66,7 +62,6 @@ export default function CodiEdit() {
   return (
     <div>
       <h1>코디하기</h1>
-      <button onClick={onAddRectangle}>Add Rectangle</button>
       <input type="file" multiple onChange={onUploadImage} />
       <button onClick={removeObjectFromCanvas}>Remove</button>
       <button onClick={downloadImage}>to Image</button>

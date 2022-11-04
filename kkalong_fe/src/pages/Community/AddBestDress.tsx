@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
+import axios from '../../api/axios'
+import requsets from '../../api/requests'
 
 import TopNav from '../../components/ui/TopNav'
 import { Container } from './MainCommunity'
@@ -9,10 +11,11 @@ import AddPictureIcon from '../../assets/icon/Community/pictureAdd.png'
 import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddExample from '../../assets/icon/Community/AddExample.png'
 import FooterBar from '../../components/ui/FooterBar'
+import {ArticleType} from '../../pages/Community/DetailBestDress'
 
 interface SendType {
-  Picture: File,
-  context: string
+  Picture: File | String,
+  content: string
 }
 
 export default function AddBestDress() {
@@ -22,9 +25,23 @@ export default function AddBestDress() {
 
   // 만약 Edit 상태라면 미리 데이터를 받아온다.
   useEffect(()=>{
-    if (params.Id) {
-
+    const Edit = async () => {
+      if (params.Id) {
+        const res = await axios.get(requsets.detailBestDress + String(params.Id))
+        const BestDress = res.data as ArticleType
+        setSendData({
+          Picture: BestDress.post_img,
+          content: BestDress.post_content 
+        })
+        const Picture = document.getElementById("SelectPicture") as HTMLDivElement
+        // 위에 레이어 모두 삭제후
+        Picture.replaceChildren()
+        Picture.style.backgroundImage=`url(${SendData?.Picture})`
+        Picture.style.backgroundPosition="center"
+        Picture.style.width="auto"
+      }
     }
+    Edit()
   }, [])
 
   const SelectPicture = () => {
@@ -60,6 +77,16 @@ export default function AddBestDress() {
     Picture.style.width="auto"
   }
 
+  const Submit = async() => {
+    if (params.Id) {
+      await axios.put(requsets.detailBestDress + params.Id, SendData)
+      navigate(`community/BestDress/${params.Id}`)
+    } else {
+      const res = await axios.post(requsets.detailBestDress, SendData)
+      navigate(`community/BestDress/${res.data.post_id}`)
+    }
+  }
+
   return (
     <div>
       <TopNav type={""}>
@@ -67,7 +94,7 @@ export default function AddBestDress() {
         <MenuImg src={BackArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도전! 베스트 드레서✨</CategoryText>
-        <SubmitBtn>작성</SubmitBtn>
+        <SubmitBtn onClick={()=>Submit}>작성</SubmitBtn>
       </TopNav>
       <AddContainer>
         <PictureDiv>
@@ -83,7 +110,7 @@ export default function AddBestDress() {
         <LineDiv></LineDiv>
 
         <PictureDiv>
-          <ContextArea id="Context" placeholder='내용을 입력해주세요' onChange={resize}></ContextArea>
+          <ContextArea id="Context" placeholder='내용을 입력해주세요' onChange={resize}>{SendData?.content}</ContextArea>
         </PictureDiv>
         
         <FooterBar/>
