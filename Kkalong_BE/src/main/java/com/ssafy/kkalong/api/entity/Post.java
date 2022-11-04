@@ -29,9 +29,11 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE})
     private List<PostLike> postlikes = new ArrayList<>();
 

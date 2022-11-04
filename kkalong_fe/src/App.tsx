@@ -4,30 +4,35 @@ import "./styles/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import FooterBar from "./components/ui/FooterBar";
+// Login
+import StartPage from './pages/StartPage';
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import SignupNext from "./pages/Signup/SignupNext";
+// Closet
 import MainCloset from "./pages/Closet/MainCloset";
-import MainCommunity from "./pages/Community/MainCommunity";
-import MainBestDress from "./pages/Community/MainBestDress";
-import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddCloset from "./pages/Closet/AddCloset";
 import CodiPage from "./pages/Closet/CodiPage";
 import PlusCodi from "./pages/Closet/PlusCodi";
-import WeatherPage from "./pages/Recommend/WeatherPage";
-import DailyRecommend from "./pages/Recommend/DailyRecommend";
+import AddClothes from './pages/Closet/AddClothes';
+import CodiEdit from "./components/closet/CodiEdit";
+// Community
+import MainCommunity from "./pages/Community/MainCommunity";
+import MainBestDress from "./pages/Community/MainBestDress";
+import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddBestDress from './pages/Community/AddBestDress';
-import MyPage from './pages/MyPage/MyPage'
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
 import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
 import AddHelpCodi from './pages/Community/AddHelpCodi';
-import StartPage from './pages/StartPage';
-import AddClothes from './pages/Closet/AddClothes';
+// Recommand
+import WeatherPage from "./pages/Recommend/WeatherPage";
+import DailyRecommend from "./pages/Recommend/DailyRecommend";
+// AIFitting
 import VirtualBrandChoice from "./pages/VirturalFitting/VirtualBrandChoice";
 import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
 import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
-import CodiEdit from "./components/closet/CodiEdit";
+// MyPage
+import MyPage from './pages/MyPage/MyPage'
 import MyPageFriend from "./pages/MyPage/MyPageFriend";
 import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
 import MyPageArticle from "./pages/MyPage/MyPageArticle";
@@ -42,7 +47,6 @@ function App() {
           <Route path="/" element={<StartPage/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/signup" element={<Signup/>}></Route>
-          <Route path="/signupNext" element={<SignupNext/>}></Route>
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
           <Route path='/community/BestDress/Add/' element={<AddBestDress/>}></Route>

@@ -6,9 +6,12 @@ import CommentMessage from './CommentMessage'
 export default function CommentContainer({Comments} : {Comments: Array<commentType>}) {
   return (
     <Container>
-      {Comments && Comments.map(comment => {
+      {Comments && Comments.map((comment, idx) => {
         return (
-          <CommentMessage comment={comment}/>
+          <div key={idx}>
+            <CommentMessage comment={comment}/>
+          </div>
+          
         )
       })}
       <CommentInput/>

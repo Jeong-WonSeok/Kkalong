@@ -1,12 +1,10 @@
 package com.ssafy.kkalong.api.service;
 
+import com.ssafy.kkalong.api.dto.HelpInfoDto;
+import com.ssafy.kkalong.api.dto.PostInfoDto;
 import com.ssafy.kkalong.api.dto.SignupDto;
-import com.ssafy.kkalong.api.entity.AuthCode;
-import com.ssafy.kkalong.api.entity.Follow;
-import com.ssafy.kkalong.api.entity.User;
-import com.ssafy.kkalong.api.repository.AuthCodeRepository;
-import com.ssafy.kkalong.api.repository.FollowRepository;
-import com.ssafy.kkalong.api.repository.UserRepository;
+import com.ssafy.kkalong.api.entity.*;
+import com.ssafy.kkalong.api.repository.*;
 import com.ssafy.kkalong.common.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +27,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthCodeRepository authCodeRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final HelpRepository helpRepository;
     private final JavaMailSender javaMailSender;
 
 
@@ -115,8 +114,8 @@ public class UserService {
         User user = userRepository.findById(senderId).orElse(null);
         List<Follow> list = followRepository.findAllBySender(user);
         List<Integer> followingList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            followingList.add(list.get(i).getReceiver().getId());
+        for (Follow follow : list) {
+            followingList.add(follow.getReceiver().getId());
         }
         return followingList;
     }
@@ -124,11 +123,68 @@ public class UserService {
         User user = userRepository.findById(receiverId).orElse(null);
         List<Follow> list = followRepository.findAllByReceiver(user);
         List<Integer> followerList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            followerList.add(list.get(i).getSender().getId());
+        for(Follow follow : list){
+            followerList.add(follow.getSender().getId());
         }
         return followerList;
     }
 
 
+    public void sendFollowRequest(int sender_id, int receiver_id) {
+        User sender = userRepository.findById(sender_id).orElse(null);
+        User receiver = userRepository.findById(receiver_id).orElse(null);
+        if(sender != null && receiver != null){
+            Follow follow = followRepository.findBySenderAndReceiver(sender, receiver).orElse(null);
+            if(follow!=null){
+                followRepository.deleteById(follow.getId());
+            } else{
+                Follow newFollow = Follow.builder().sender(sender).receiver(receiver).build();
+                followRepository.save(newFollow);
+            }
+
+        }
+
+    }
+
+    public User getUserByUserId(int user_id) {
+        return userRepository.findById(user_id).orElse(null);
+    }
+
+    public List<PostInfoDto> getBestsByUserId(int user_id) {
+        User user = userRepository.findById(user_id).orElse(null);
+        List<Post> list = postRepository.findAllByUserId(user_id);
+        List<PostInfoDto> postInfos = new ArrayList<>();
+        for (Post post : list) {
+            PostInfoDto postInfoDto = PostInfoDto.builder()
+                    .post_id(post.getId())
+                    .post_img(post.getImg())
+                    .like(postLikeRepository.countByPostId(post.getId()))
+                    .user_id(user.getId())
+                    .nickname(user.getNickname())
+                    .profile_img(user.getImg())
+                    .build();
+            postInfos.add(postInfoDto);
+        }
+        return postInfos;
+    }
+
+    public List<HelpInfoDto> getHelpsByUserId(int user_id) {
+        User user = userRepository.findById(user_id).orElse(null);
+        List<Help> list = helpRepository.findAllByUserId(user_id);
+        List<HelpInfoDto> helpInfos = new ArrayList<>();
+        for (Help help : list) {
+            HelpInfoDto helpInfoDto = HelpInfoDto.builder()
+                    .help_id(help.getId())
+                    .open(help.getOpen())
+                    .help_img(help.getImg())
+                    .range(help.getOpenrange())
+                    .title(help.getTitle())
+                    .user_id(user.getId())
+                    .nickname(user.getNickname())
+                    .profile_img(user.getImg())
+                    .build();
+            helpInfos.add(helpInfoDto);
+        }
+        return helpInfos;
+    }
 }
