@@ -29,7 +29,7 @@ spring:
     url: jdbc:mysql://k7b302.p.ssafy.io:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
 #    username: ssafy
     username: b302
-    password: ssafy
+#    password: ssafy
   security:
     oauth2:
       client:
