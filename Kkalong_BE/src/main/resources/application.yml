@@ -73,6 +73,6 @@ logging:
     org.springframework.web: debug
     org.apache.tomcat: debug
 
-#app:
-#  firebase-configuration-file: ./serviceAccountKey.json
-#  firebase-bucket: dipping-f118c.appspot.com
+app:
+  firebase-configuration-file: ./kkalong-f243a-firebase-adminsdk-7m0zj-98534bc536.json
+  firebase-bucket: kkalong-f243a.appspot.com
