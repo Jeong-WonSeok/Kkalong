@@ -1,8 +1,11 @@
 package com.ssafy.kkalong.api.repository;
 
+import com.ssafy.kkalong.api.entity.Help;
 import com.ssafy.kkalong.api.entity.Post;
+import com.ssafy.kkalong.api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Post findById(int post_id);
 
+    @Query("select d from Post d where d.user.id = :user_id")
+    List<Post> findAllByUserId(@Param("user_id") Integer user_id);
 
 }

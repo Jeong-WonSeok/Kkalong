@@ -1,9 +1,6 @@
 package com.ssafy.kkalong.api.controller;
 
-import com.ssafy.kkalong.api.dto.IntegerDto;
-import com.ssafy.kkalong.api.dto.SignupDto;
-import com.ssafy.kkalong.api.dto.StringDto;
-import com.ssafy.kkalong.api.dto.UserInfoDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
@@ -11,7 +8,6 @@ import com.ssafy.kkalong.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -100,6 +96,32 @@ public class UserController {
     @PostMapping("/follow")
     public void sendFollowRequest(@AuthenticationPrincipal UserDetailsImpl user, @RequestBody IntegerDto integerDto){
         userService.sendFollowRequest(user.getId(), integerDto.getValue());
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfileByUserId(@RequestBody IntegerDto integerDto){
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.getUserByUserId(integerDto.getValue());
+        if (user != null) {
+            ProfileDto profileDto = ProfileDto.builder()
+                    .user_id(user.getId())
+                    .nickname(user.getNickname())
+                    .followers(userService.getFollowerListByReceiverId(user.getId()))
+                    .followings(userService.getFollowingListBySenderId(user.getId()))
+                    .build();
+            result.put("user", profileDto);
+            return ResponseEntity.ok().body(result);
+        }
+        return ResponseEntity.badRequest().body("존재하지 않는 사용자");
+    }
+
+    @GetMapping("/write")
+    public ResponseEntity<?> getPostsAndHelpsByUserId(@RequestBody IntegerDto integerDto){
+        Map<String, Object> result = new HashMap<>();
+        result.put("Bests", userService.getBestsByUserId(integerDto.getValue()));
+        result.put("Helps", userService.getHelpsByUserId(integerDto.getValue()));
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/test")

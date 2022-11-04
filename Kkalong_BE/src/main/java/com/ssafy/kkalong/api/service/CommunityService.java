@@ -42,7 +42,7 @@ public class CommunityService {
 
 
     public int selectCntLike(int post_id){
-        int countLike = postLikeRepository.countByPost(post_id);
+        int countLike = postLikeRepository.countByPostId(post_id);
 
         return countLike;
     }
