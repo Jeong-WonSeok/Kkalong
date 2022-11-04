@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CodyRepository extends JpaRepository<Cody, Integer> {
-
+    Cody findById(int cody_id);
 }

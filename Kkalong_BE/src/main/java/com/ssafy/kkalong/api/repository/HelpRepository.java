@@ -1,7 +1,6 @@
 package com.ssafy.kkalong.api.repository;
 
 import com.ssafy.kkalong.api.entity.Help;
-import com.ssafy.kkalong.api.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,5 +13,7 @@ public interface HelpRepository extends JpaRepository<Help, Integer> {
 
     @Query("select d from Help d where d.user.id = :user_id")
     List<Help> findAllByUserId(@Param("user_id") Integer user_id);
+
+    Help findById(int help_id);
 
 }
