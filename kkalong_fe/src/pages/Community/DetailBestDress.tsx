@@ -17,6 +17,7 @@ import axios from '../../api/axios'
 import requests from '../../api/requests'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
+import CommentInput from '../../components/Community/CommentInput'
 
 export interface commentType {
   user_id: {
@@ -49,12 +50,11 @@ export default function DetailBestDress() {
   const [Article, setArticle] = useState<ArticleType>()
 
   useEffect(() => {
-    // 추후 axios 요청을 위한 함수
-    // async function getDetail() {
-    //   const res = await axios.get(requests.DetailBestDress(pramas.BestDressId))
-    //   setArticle(res.data)
-    // }
-    // getDetail()
+    async function getDetail() {
+      const res = await axios.get(requests.detailBestDress + params.BestDressId)
+      setArticle(res.data)
+    }
+    getDetail()
     setArticle({
       post_id : Number(params.BestDressId),
       post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
@@ -89,6 +89,15 @@ export default function DetailBestDress() {
   const ModalChange = () => {
     setIsMenu(false)
     setIsModal(true)
+  }
+
+  const CommentsInput = (data:commentType) => {
+      let newArticle = [...Article!.comment]
+      newArticle.push(data)
+      setArticle((prev) => ({
+        ...prev!,
+        comment: newArticle
+      }))
   }
 
   return (
@@ -127,7 +136,11 @@ export default function DetailBestDress() {
         
         <LineDiv></LineDiv>
 
-        <CommentContainer Comments={Article?.comment ? Article?.comment : defaultComment}/>
+        <CommentContainer
+         Comments={Article?.comment ? Article?.comment : defaultComment}
+          article_id={Article?.post_id ? Article?.post_id : 1}
+          category={"bestdress"}
+          CommentsInput={CommentsInput}/>
       </Container>
 
       <FooterBar/>
