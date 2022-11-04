@@ -17,6 +17,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/community")
+@CrossOrigin(origins = {"*"})
 public class CommunityController {
 
     //    private final Logger logger = LoggerFactory.getLogger(this.getClass());

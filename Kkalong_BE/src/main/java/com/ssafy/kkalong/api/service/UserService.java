@@ -92,8 +92,8 @@ public class UserService {
         return user;
     }
 
-    public User signUpNext(SignupDto signupDto) {
-        User user = userRepository.findByEmail(signupDto.getEmail());
+    public User signUpNext(String email, SignupDto signupDto) {
+        User user = userRepository.findByEmail(email);
         user.setUserInfo(signupDto);
         userRepository.save(user);
         return user;
