@@ -50,7 +50,7 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
         } else {
             if(!user.getProvider().equals(attributes.getProvider())){ //다른 계정으로 회원가입 한적 있음
                 System.out.println(attributes.getProvider()+" 회원가입한적 있는 사용자입니다");
-                return new UserDetailsImpl(attributes.getEmail(), "invalid", -1, "invalid", attributes.getProvider(), null);
+                return new UserDetailsImpl("invalid", "invalid", -1, "invalid", user.getProvider(), null);
             } else{ //로그인 처리
                 System.out.println("로그인으로 안내합니다");
                 return new UserDetailsImpl(

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import Camera from 'react-html5-camera-photo';
+import Webcam from "react-webcam";
 import 'react-html5-camera-photo/build/css/index.css';
 import styled from 'styled-components';
 
@@ -17,6 +17,12 @@ export default function AddClothes() {
   },[])
 
   const [dataUri, setDataUri] = useState('');
+
+  const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: "user"
+  };
 
   const handleTakePhotoAnimationDone = (dataUri: string) => {
     setDataUri(dataUri);
@@ -75,9 +81,25 @@ export default function AddClothes() {
             </Container>
           </div>
 
-          : <Camera onTakePhotoAnimationDone = {handleTakePhotoAnimationDone}
-            isFullscreen={false}
-          />
+          : 
+          <div></div>
+          // 모바일 캠 적용중
+          // <WebCam 
+          // audio={false}
+          // height={720}
+          // screenshotFormat="image/jpeg"
+          // width={1280}
+          // videoConstraints={videoConstraints}>
+          //   {({ getScreenshot }) => (
+          //         <button
+          //           onClick={() => {
+          //             const imageSrc = getScreenshot()
+          //           }}
+          //         >
+          //           Capture photo
+          //         </button>
+          //       )}
+          // </WebCam>
       }
     </div>
   );

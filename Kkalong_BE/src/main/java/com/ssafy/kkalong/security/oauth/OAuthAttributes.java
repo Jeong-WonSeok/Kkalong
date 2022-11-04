@@ -51,7 +51,7 @@ public class OAuthAttributes {
     }
 
     public User toEntity(){
-        return User.builder().email(email).password(new BCryptPasswordEncoder().encode(email)).role(ROLE_USER).provider(provider).build();
+        return User.builder().email(email).password(new BCryptPasswordEncoder().encode(email)).role(ROLE_GUEST).provider(provider).build();
     }
 
 }

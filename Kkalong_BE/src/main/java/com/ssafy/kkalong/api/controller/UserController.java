@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = {"*"})
 public class UserController {
 
     @Autowired
@@ -49,10 +50,10 @@ public class UserController {
     }
 
     @PostMapping("/signupNext")
-    public ResponseEntity<?> signUpNext(@RequestBody final SignupDto signupDto) {
+    public ResponseEntity<?> signUpNext(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
 
-        User user = userService.signUpNext(signupDto);
+        User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())

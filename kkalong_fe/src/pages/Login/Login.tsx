@@ -1,30 +1,25 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import Logo from "../../assets/icon/logo/kkalongLogo.png";
-import KakaoLoginLogo from "../../assets/icon/Login/SocialLogin/kakao.png";
-import GoogleLoginLogo from "../../assets/icon/Login/SocialLogin/google.png";
-import EmailLogo from "../../assets/icon/Login/email.png";
-import PasswordLogo from "../../assets/icon/Login/password.png";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/reduxHook";
-import { getData } from "../../redux/modules/BestDress";
+import React, { useEffect } from 'react'
+import styled from 'styled-components';
+import Logo from '../../assets/icon/logo/kkalongLogo.png';
+import KakaoLoginLogo from '../../assets/icon/Login/SocialLogin/kakao.png';
+import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
+import EmailLogo from '../../assets/icon/Login/email.png';
+import PasswordLogo from '../../assets/icon/Login/password.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleSignup = () => {
     navigate("/signup");
   };
 
   // 화면의 상하단 margin 제거
-  useEffect(() => {
-    const app = document.getElementById("App") as HTMLDivElement;
-    app.style.margin = "0";
-
-    dispatch(getData());
-  }, []);
-
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.margin = '0'
+  },[])
+  
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo"></LogoImg>
@@ -40,7 +35,7 @@ export default function Login() {
       <SocialLoginDiv>소셜로그인</SocialLoginDiv>
       <SocialLoginButton>
         <SocialLoginLinkTag>
-          <a href="http://k7b302.p.ssafy.io:8080/oauth2/authorization/kakao">
+          <a href="http://k7b302.p.ssafy.io:8080/api/v1/oauth2/authorization/kakao">
             <KakaoLogin src={KakaoLoginLogo}></KakaoLogin>
           </a>
         </SocialLoginLinkTag>
@@ -69,6 +64,7 @@ const LoginDiv = styled.div`
 const LogoImg = styled.img`
   padding-top: 15%;
   padding-bottom: 15%;
+
   width: 107px;
   height: 82px;
 `;
@@ -84,30 +80,37 @@ const LoginInputDiv = styled.div`
   padding: 0 6px;
   margin-bottom: 10px;
 `;
+
 const LoginInputImg = styled.img`
   width: 20px;
   height: 20px;
   margin: auto 0;
+  position: relative;
 `;
 
 //이메일 입력
 const EmailInput = styled.input`
+  margin: 3px;
   border: none;
   background-color: #f0f0f0;
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent: 10px;
+  text-indent: 20px;
+
+  border-radius: 10px;
 `;
 
 //패스워드 입력
 const PasswordInput = styled.input`
+  margin: 3px;
   border: none;
   background-color: #f0f0f0;
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent: 10px;
+  text-indent: 20px;
+  border-radius: 10px;
 `;
 //로그인 버튼
 const LoginButton = styled.button`
@@ -135,7 +138,6 @@ const SocialLoginDiv = styled.div`
   color: rgba(0, 0, 0, 0.35);
   font-size: 12px;
   margin: 40px 0px 10px;
-
   &::before {
     content: "";
     flex: 1;
