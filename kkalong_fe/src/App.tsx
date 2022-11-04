@@ -48,12 +48,13 @@ function App() {
   return (
     <div id="container">
       <div id="App">
-<<<<<<< HEAD
         <Router>
           <Routes>
             <Route path="/" element={<StartPage />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
+            {/* 출시를 위한 개인정보 처리방침 url */}
+            <Route path="/PersonalInfo" element={<PersonalInfo/>}></Route>
             <Route path="/community" element={<MainCommunity />}></Route>
             <Route
               path="/community/BestDress"
@@ -125,43 +126,6 @@ function App() {
           </Routes>
         </Router>
       </div>
-=======
-      <Router>                       
-        <Routes>
-          <Route path="/" element={<StartPage/>}></Route>
-          <Route path="/login" element={<Login/>}></Route>
-          <Route path="/signup" element={<Signup/>}></Route>
-          {/* 출시를 위한 개인정보 처리방침 url */}
-          <Route path="/PersonalInfo" element={<PersonalInfo/>}></Route>
-          <Route path='/community' element={<MainCommunity/>}></Route>
-          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
-          <Route path='/community/BestDress/Add/' element={<AddBestDress/>}></Route>
-          <Route path='/community/BestDress/Add/:Id' element={<AddBestDress/>}></Route>
-          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
-          <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/Add' element={<AddSelectHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/Add/:Category/:Id' element={<AddHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
-          <Route path="/closet" element={<MainCloset />}></Route>
-          <Route path="/closet/Add" element={<AddClothes/>}></Route>
-          <Route path="/addcloset" element={<AddCloset />}></Route>
-          <Route path="/codi" element={<CodiPage />}></Route>
-          <Route path="/pluscodi" element={<PlusCodi />}></Route>
-          <Route path="/codiedit" element={<CodiEdit />}></Route>
-          <Route path="/recommend/weather" element={<WeatherPage />}></Route>
-          <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
-          <Route path="/community/BestDress" element={<MainBestDress />}></Route>
-          <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
-          <Route path="/myPage" element={<MyPage/>}></Route>
-          <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
-          <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
-          <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
-          <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
-          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
-          <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
-        </Routes>
-      </Router>
->>>>>>> 299d731e603d101b39caa91aec86fbe96af52d86
     </div>
   );
 }
