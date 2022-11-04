@@ -22,7 +22,7 @@ public class Closet {
     private String name;
 
     @Column
-    private boolean all;
+    private boolean base;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
