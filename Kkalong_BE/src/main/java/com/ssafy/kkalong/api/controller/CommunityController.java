@@ -19,17 +19,17 @@ import java.util.*;
 @RequestMapping("/community")
 public class CommunityController {
 
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     CommunityService communityService;
 
     //좋아요 가장 많은 게시글 보여주기(3개 까지)
     @GetMapping("/best")
-    public ResponseEntity selectBestDressTop(){
+    public ResponseEntity selectBestDressTop() {
         List<Map<String, Object>> result = new ArrayList<>();
         List<BestDressResponseInterface> post = communityService.selectBestDress();
 
-        for(BestDressResponseInterface bd : post){
+        for (BestDressResponseInterface bd : post) {
             System.out.println(bd.getId());
             Map<String, Object> temp = new HashMap<>();
             Map<String, Object> temp_u = new HashMap<>();
@@ -50,11 +50,11 @@ public class CommunityController {
 
     //bestdress 목록 전부 다 가져오기
     @GetMapping(value = "/bestdress")
-    public ResponseEntity<?> selectAllBestDress(){
+    public ResponseEntity<?> selectAllBestDress() {
         List<Map<String, Object>> result = new ArrayList<>();
         List<BestDressResponseInterface> post = communityService.selectAllPost();
 
-        for(BestDressResponseInterface bd : post){
+        for (BestDressResponseInterface bd : post) {
 
             Map<String, Object> temp = new HashMap<>();
             Map<String, Object> temp_u = new HashMap<>();
@@ -73,9 +73,9 @@ public class CommunityController {
         return ResponseEntity.ok().body(result);
     }
 
-//    일일히 가져오기
-    @GetMapping(value="/bestdress/post_id")
-    public ResponseEntity<?> selectPost(@RequestParam int post_id){
+    //    일일히 가져오기
+    @GetMapping(value = "/bestdress/{post_id}")
+    public ResponseEntity<?> selectPost(@PathVariable int post_id) {
 
         Map<String, Object> result = new HashMap<>();
         User user = communityService.selectUser(post_id);
@@ -86,7 +86,7 @@ public class CommunityController {
         List<CommentDto> commentList = communityService.selectComment(post_id);
         List<Map<String, Object>> commentArr = new ArrayList<>();
 
-        for(CommentDto comm : commentList) {
+        for (CommentDto comm : commentList) {
             Map<String, Object> comment = new HashMap<>();
             User temp_user = comm.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
@@ -109,11 +109,11 @@ public class CommunityController {
 
 
     //bestDressRegister 등록
-    @PostMapping(value="/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq){
+    @PostMapping(value = "/bestdress")
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq) {
 
         Map<String, Object> result = new HashMap<>();
-        
+
         //유저 정보 가져오기
         User user = communityService.getUser(userInfo.getEmail());
 
@@ -152,16 +152,16 @@ public class CommunityController {
     }
 
     //베스트 드레서 삭제
-    @DeleteMapping("/bestdress/post_id")
-    public ResponseEntity<?> deletePost(@RequestParam int post_id){
+    @DeleteMapping("/bestdress/{post_id}")
+    public ResponseEntity<?> deletePost(@PathVariable int post_id) {
         communityService.deletePost(post_id);
 
         return ResponseEntity.ok().body("삭제 성공");
     }
 
     //베스트 드레서 수정
-    @PutMapping("/bestdress/post_id")
-    public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq, @RequestParam int post_id){
+    @PutMapping("/bestdress/{post_id}")
+    public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq, @PathVariable int post_id) {
 
         Map<String, Object> result = new HashMap<>();
 
@@ -177,7 +177,7 @@ public class CommunityController {
         List<Map<String, Object>> commentArr = new ArrayList<>();
 
 
-        for(CommentDto comm : commentList) {
+        for (CommentDto comm : commentList) {
             Map<String, Object> comment = new HashMap<>();
             User temp_user = comm.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
@@ -203,8 +203,8 @@ public class CommunityController {
 //    comment
 //    ================================================================================================
 
-    @PostMapping("bestdress/post_id/comment")
-    public ResponseEntity<?> commentRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody CommentRequestDto commentInfo, @RequestParam int post_id){
+    @PostMapping("bestdress/{post_id}/comment")
+    public ResponseEntity<?> commentRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody CommentRequestDto commentInfo, @PathVariable int post_id) {
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> user_id = new HashMap<>();
@@ -216,21 +216,21 @@ public class CommunityController {
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
         //createAt 넣어야 댐
-        
+
         result.put("content", comment.getContent());
         result.put("user_id", user_id);
 
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/bestdress/post_id/comment")
-    public ResponseEntity<?> deleteComment(@RequestParam int content_id){
-        communityService.deleteComment(content_id);
+    @DeleteMapping("/bestdress/{post_id}/comment/{comment_id}")
+    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int conment_id) {
+        communityService.deleteComment(conment_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
-    @PutMapping("/bestdress/post_id/comment")
-    public ResponseEntity<?> updateComment(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestParam int comment_id, @RequestBody CommentRequestDto commentInfo){
+    @PutMapping("/bestdress/{post_id}/comment/{comment_id}")
+    public ResponseEntity<?> updateComment(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int comment_id, @RequestBody CommentRequestDto commentInfo) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> userMap = new HashMap<>();
 
@@ -252,11 +252,11 @@ public class CommunityController {
 
     //모든 목록 불러오기
     @GetMapping("/helpcodi")
-    public ResponseEntity<?> selectAllHelp(){
+    public ResponseEntity<?> selectAllHelp() {
         List<Map<String, Object>> result = new ArrayList<>();
 
         List<HelpResponseDto> help = communityService.selectAllHelp();
-        for(HelpResponseDto h : help) {
+        for (HelpResponseDto h : help) {
             Map<String, Object> temp = new HashMap<>();
 
             BestDressUserDto userDto = new BestDressUserDto();
@@ -273,8 +273,8 @@ public class CommunityController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/helpcodi/help_id")
-    public ResponseEntity<?> selectHelp(@RequestParam int help_id){
+    @GetMapping("/helpcodi/{help_id}")
+    public ResponseEntity<?> selectHelp(@PathVariable int help_id) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> comment = new HashMap<>();
         Map<String, Object> commentUser = new HashMap<>();
@@ -288,7 +288,7 @@ public class CommunityController {
         userDto.setNickname((user.getNickname()));
         userDto.setProfile_image(user.getImg());
 
-        for(ReplyDto rpl : replyList) {
+        for (ReplyDto rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
             User temp_user = rpl.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
@@ -311,14 +311,14 @@ public class CommunityController {
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("helpcodi/help_id")
-    public void deleteHelp(@RequestParam int help_id){
+    @DeleteMapping("helpcodi/{help_id}")
+    public void deleteHelp(@PathVariable int help_id) {
         communityService.deleteHelp(help_id);
     }
 
 
     @PostMapping("/helpcodi")
-    public ResponseEntity<?> insertHelp(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody HelpRequestDto helpInfo){
+    public ResponseEntity<?> insertHelp(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody HelpRequestDto helpInfo) {
         System.out.println(helpInfo.getContent());
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> comment = new HashMap<>();
@@ -339,9 +339,11 @@ public class CommunityController {
         comment.put("content", null);
         commentUser.put("nickname", null);
         commentUser.put("profile_img", null);
-        comment.put("user_id",commentUser);
+        comment.put("user_id", commentUser);
+        codi.put("codi_img", null);
+        comment.put("codi_id", codi);
         userMap.put("nickname", null);
-        userMap.put("profile_img",null);
+        userMap.put("profile_img", null);
         result.put("comment", comment);
         result.put("user_id", userMap);
 
@@ -353,15 +355,19 @@ public class CommunityController {
     //패알못 댓글
     //=====================================================================
 
-    @PostMapping("helpcodi/help_id/reply")
-    public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @RequestParam int help_id){
+    @PostMapping("helpcodi/{help_id}/reply")
+    public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @RequestParam int help_id) {
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> user_id = new HashMap<>();
+        Map<String, Object> codi = new HashMap<>();
 
         Help help = communityService.getHelp(help_id);
         User user = communityService.getUser(userInfo.getEmail());
         Reply reply = communityService.insertReply(replyInfo, user, help);
+        ReplyCodyDto cody = communityService.getCody(reply.getCody().getId());
+
+        codi.put("codi_img", cody);
 
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
@@ -369,33 +375,36 @@ public class CommunityController {
 
         result.put("content", reply.getContent());
         result.put("user_id", user_id);
+        result.put("codi_id", codi);
 
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/helpcodi/help_id/reply")
-    public ResponseEntity<?> deleteReply(@RequestParam int reply_id){
+    @DeleteMapping("/helpcodi/{help_id}/reply/{reply_id}")
+    public ResponseEntity<?> deleteReply(@PathVariable int help_id, @PathVariable int reply_id){
         communityService.deleteReply(reply_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
-    @PutMapping("/helpcodi/help_id/reply")
-    public ResponseEntity<?> updateReply(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestParam int reply_id, @RequestBody ReplyRequestDto replyInfo){
+    @PutMapping("/helpcodi/{help_id}/reply/{reply_id}")
+    public ResponseEntity<?> updateReply(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int help_id, @PathVariable int reply_id, @RequestBody ReplyRequestDto replyInfo){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> userMap = new HashMap<>();
+        Map<String, Object> codi = new HashMap<>();
+
 
         communityService.updateReply(reply_id, replyInfo);
         Reply reply = communityService.getReply(reply_id);
         User user = communityService.getUser(userInfo.getEmail());
 
+        ReplyCodyDto cody = communityService.getCody(reply.getCody().getId());
+
+        codi.put("codi_img", cody);
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
         result.put("content", reply.getContent());
         result.put("user_id", userMap);
-
+        result.put("codi_id", codi);
         return ResponseEntity.ok().body(result);
     }
-
-
-
 }

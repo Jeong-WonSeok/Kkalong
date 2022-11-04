@@ -28,6 +28,8 @@ public class CommunityService {
     HelpRepository helpRepository;
     @Autowired
     ReplyRepository replyRepository;
+    @Autowired
+    CodyRepository codyRepository;
 
 
     //좋아요 많은 순 3개 출력
@@ -192,6 +194,7 @@ public class CommunityService {
                 .content(replyInfo.getContent())
                 .user(userInfo)
                 .help(help)
+                .cody(replyInfo.getCody())
                 .build();
         replyRepository.save(reply);
         return reply;
@@ -200,6 +203,15 @@ public class CommunityService {
     public void deleteReply(int reply_id) { replyRepository.deleteById(reply_id); }
 
     public void updateReply(int reply_id, ReplyRequestDto replyInfo) {
-        replyRepository.updateReply(reply_id, replyInfo.getContent());
+        replyRepository.updateReply(reply_id, replyInfo.getContent() );
+
+    }
+
+    public ReplyCodyDto getCody(int cody_id){
+        Cody cody = codyRepository.findById(cody_id);
+        ReplyCodyDto codyDto = new ReplyCodyDto();
+        codyDto.setImg(cody.getImg());
+
+        return codyDto;
     }
 }

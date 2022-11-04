@@ -22,4 +22,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     @Modifying
     @Query(nativeQuery = true, value = "update reply set content = :content where reply_id = :reply_id")
     void updateReply(int reply_id, String content);
+
+
 }
