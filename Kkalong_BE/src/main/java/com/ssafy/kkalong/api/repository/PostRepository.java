@@ -1,12 +1,11 @@
 package com.ssafy.kkalong.api.repository;
 
-import com.ssafy.kkalong.api.dto.BestDressRequestDto;
-import com.ssafy.kkalong.api.dto.BestDressResponseDto;
 import com.ssafy.kkalong.api.dto.BestDressResponseInterface;
 import com.ssafy.kkalong.api.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,10 +28,12 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     Post findById(int post_id);
 
+    @Query("select d from Post d where d.user.id = :user_id")
+    List<Post> findAllByUserId(@Param("user_id") Integer user_id);
+
     @Transactional
     @Modifying
     @Query(nativeQuery = true, value = "update post set content = :content , img = :img where post_id = :post_id ")
     void updatePost(String content, String img, int post_id);
-
 
 }
