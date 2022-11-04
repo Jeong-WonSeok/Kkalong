@@ -21,6 +21,9 @@ public class Closet {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private boolean all;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
