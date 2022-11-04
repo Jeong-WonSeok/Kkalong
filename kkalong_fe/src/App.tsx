@@ -36,6 +36,7 @@ import MyPage from './pages/MyPage/MyPage'
 import MyPageFriend from "./pages/MyPage/MyPageFriend";
 import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
 import MyPageArticle from "./pages/MyPage/MyPageArticle";
+import PersonalInfo from "./pages/PersonalInfo";
 
 
 function App() {
@@ -47,6 +48,8 @@ function App() {
           <Route path="/" element={<StartPage/>}></Route>
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/signup" element={<Signup/>}></Route>
+          {/* 출시를 위한 개인정보 처리방침 url */}
+          <Route path="/PersonalInfo" element={<PersonalInfo/>}></Route>
           <Route path='/community' element={<MainCommunity/>}></Route>
           <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
           <Route path='/community/BestDress/Add/' element={<AddBestDress/>}></Route>

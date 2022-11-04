@@ -2,10 +2,13 @@ const {createProxyMiddleware} = require('http-proxy-middleware')
 
 module.exports = app => {
     app.use(
-        createProxyMiddleware(
+        createProxyMiddleware('api/v1/',
             {
-                target: 'http://k7b302.p.ssafy.io/api/v1',
+                target: 'http://k7b302.p.ssafy.io/',
                 changeOrigin: true,
+                pathRewrite: {
+                    '^/api/v1/': '' // URL ^/api -> 공백 변경
+                }
             }
         )
     ),

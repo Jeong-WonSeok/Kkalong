@@ -4,7 +4,7 @@ import { commentType } from '../../pages/Community/DetailHelpCodi'
 import Profile from './Profile'
 import codiSave from '../../assets/icon/Community/codiSave.png'
 
-export default function CommentMessage({comment}: {comment: commentType}) {
+export default function CommentMessage({comment, category}: {comment: commentType, category: string}) {
   return (
     <Container>
       <Profile Image={comment.user_id.profile_img} Size={40}/>
@@ -12,11 +12,11 @@ export default function CommentMessage({comment}: {comment: commentType}) {
         <NickName>{comment.user_id.nickname}</NickName>
         <MessageContextContainer>
           <Message>
-            {comment.codi_img ? <CodiImg src={comment.codi_img}/> : null}
+            {category === "colset" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
             {comment.content}
           </Message>
           <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-            {comment.codi_img ? <CodiSave src={codiSave}/> : null}
+            {category === "colset" ? <CodiSave src={codiSave}/> : null}
             <Date>
               {comment.create_at.slice(11,16)}
             </Date>

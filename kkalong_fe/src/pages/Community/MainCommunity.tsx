@@ -21,7 +21,7 @@ export interface BestDresserArticle {
 }
 
 export interface HelpCodiArticle {
-  help_id: Number;
+  help_id: number;
   help_img: string;
   user_id: {
     nickname: string,

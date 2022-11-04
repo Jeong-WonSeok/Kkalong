@@ -54,9 +54,8 @@ export default function WeatherPage() {
 
     const start = async() => {
       await getLocation()
-      const res = await axios.get('/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst', {
+      const res = await axios.get(`/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst/?serviceKey=${process.env.REACT_APP_DECODING_KEY}`, {
         params: {
-          serviceKey: process.env.REACT_APP_WEATHER_DECODING_KEY,
           pageNo: 1,
           numOfRows: 1000,
           dataType: "JSON",
