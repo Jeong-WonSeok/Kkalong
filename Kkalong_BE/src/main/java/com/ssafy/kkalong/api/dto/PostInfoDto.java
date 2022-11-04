@@ -1,6 +1,5 @@
 package com.ssafy.kkalong.api.dto;
 
-import com.ssafy.kkalong.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BestDressResponseDto extends BaseEntity {
+public class PostInfoDto {
     private int post_id;
-    private String img;
+    private String post_img;
     private int like;
-    private String content;
+    private int user_id;
+    private String nickname;
+    private String profile_img;
 }

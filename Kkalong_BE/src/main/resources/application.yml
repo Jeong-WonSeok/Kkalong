@@ -27,7 +27,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
     url: jdbc:mysql://k7b302.p.ssafy.io:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
-    username: ssafy
+#    username: ssafy
+    username: b302
     password: ssafy
   security:
     oauth2:
@@ -65,7 +66,7 @@ spring:
     generate-ddl: true
     hibernate:
       #format_sql: true
-      ddl-auto: create
+      ddl-auto: update
 
 logging:
   level:
