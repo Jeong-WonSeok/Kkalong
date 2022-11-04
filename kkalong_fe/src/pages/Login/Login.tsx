@@ -6,14 +6,10 @@ import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
 import EmailLogo from '../../assets/icon/Login/email.png';
 import PasswordLogo from '../../assets/icon/Login/password.png';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/reduxHook';
-import { getData } from '../../redux/modules/BestDress';
-
 
 export default function Login() {
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
 
   const handleSignup = () => {
     navigate('/signup');
@@ -23,8 +19,6 @@ export default function Login() {
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.margin = '0'
-
-    dispatch(getData())
   },[])
   
   return (

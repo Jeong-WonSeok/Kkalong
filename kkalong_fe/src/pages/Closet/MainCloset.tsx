@@ -256,7 +256,7 @@ const AddClothes = styled.button`
   position: absolute;
   right: 10px;
   border: none;
-  top: 700px;
+  top: 0px;
   background-color: white;
   background-size: auto;
   background-image: url("../../assets/icon/Closet/arrow-left.png");
