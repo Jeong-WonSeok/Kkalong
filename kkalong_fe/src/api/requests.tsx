@@ -6,6 +6,7 @@ const requests = {
   email: "/user/signup/email",
   nickname: "/user/check/nickname",
   signup: "/user/signup",
+  emailCheck: "user/signup/email",
 
   // 마이페이지
   myWrite: "/user/write",

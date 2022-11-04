@@ -30,6 +30,7 @@ import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
 import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
 import CodiEdit from "./components/closet/CodiEdit";
 import ClosetAsset from "./components/closet/ClosetAsset";
+import { OauthRedirect } from "./pages/Signup/OauthRedirect";
 import ThreeTest from "./pages/Closet/ThreeTest";
 // import Example from "./components/closet/Example";
 // import Scene from "../public/Scene";
@@ -41,7 +42,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/signupNext" element={<SignupNext />}></Route>
+            <Route path="/signupnext" element={<SignupNext />}></Route>
             <Route path="/community" element={<MainCommunity />}></Route>
             <Route
               path="/community/BestDress"
@@ -100,6 +101,7 @@ function App() {
             <Route path="/codiedit" element={<CodiEdit />}></Route>
             <Route path="/closetasset" element={<ClosetAsset />}></Route>
             <Route path="/threetest" element={<ThreeTest />}></Route>
+            <Route path="/oauth2/redirect" element={<OauthRedirect />} />
           </Routes>
         </Router>
       </div>
