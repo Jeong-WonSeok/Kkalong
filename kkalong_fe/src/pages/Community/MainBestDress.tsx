@@ -64,9 +64,11 @@ export default function MainBestDress() {
       </TopNav>
 
       <BestContainer>
-        {BestArticles.map((BestArticle) => {
+        {BestArticles.map((BestArticle, idx) => {
           return (
-            <BestDresser article={BestArticle}/>
+            <div key={idx}>
+              <BestDresser article={BestArticle}/>
+            </div>
           )
         })}
       </BestContainer>
