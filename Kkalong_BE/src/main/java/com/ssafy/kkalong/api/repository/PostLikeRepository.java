@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PostLikeRepository extends JpaRepository<PostLike, Integer> {
 
-    int countByPost(int post);
+
 }
