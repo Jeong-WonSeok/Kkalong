@@ -9,16 +9,11 @@ import TopNav from "../../components/ui/TopNav";
 export default function Signup() {
   return (
     <SignupDiv>
-
       <TopNav type={""}>
-        <div style={{width: "30px", height: "30px"}}></div>
+        <div style={{ width: "30px", height: "30px" }}></div>
         <SignupText>회원가입</SignupText>
         <SignupNext src={ArrowIcon}></SignupNext>
       </TopNav>
-      {/* <SignupArrowDiv>
-        <SignupText>회원가입</SignupText>
-        <SignupNext src={ArrowIcon}></SignupNext>
-      </SignupArrowDiv> */}
       <SignupLine></SignupLine>
       <SignupEmailDiv>
         <SignupEmailInput placeholder="이메일"></SignupEmailInput>
@@ -52,7 +47,7 @@ const SignupLine = styled.hr`
 
 //회원가입 text와 arrow를 담은 div
 const SignupArrowDiv = styled.div`
-  display : flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
 `;
@@ -61,9 +56,7 @@ const SignupText = styled.span`
   font-family: var(--base-font-600);
 `;
 
-const SignupNext = styled.img`
-
-`;
+const SignupNext = styled.img``;
 
 //이메일 input, button 담는 div
 const SignupEmailDiv = styled.div`

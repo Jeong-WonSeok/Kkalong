@@ -30,6 +30,7 @@ import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
 import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
 import CodiEdit from "./components/closet/CodiEdit";
 import ClosetAsset from "./components/closet/ClosetAsset";
+import ThreeTest from "./pages/Closet/ThreeTest";
 // import Example from "./components/closet/Example";
 // import Scene from "../public/Scene";
 function App() {
@@ -98,7 +99,7 @@ function App() {
             <Route path="/daily" element={<DailyRecommend />}></Route>
             <Route path="/codiedit" element={<CodiEdit />}></Route>
             <Route path="/closetasset" element={<ClosetAsset />}></Route>
-            {/* <Route path="/scene" element={<Scene />}></Route> */}
+            <Route path="/threetest" element={<ThreeTest />}></Route>
           </Routes>
         </Router>
       </div>
