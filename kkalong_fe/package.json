@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-three/drei": "^8.7.0",
+    "@react-three/fiber": "^7.0.26",
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.4",
@@ -27,6 +29,7 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
+    "react-spinners": "^0.13.6",
     "redux": "^4.2.0",
     "redux-actions": "^2.6.5",
     "slick-carousel": "^1.8.1",

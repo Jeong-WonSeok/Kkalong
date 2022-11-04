@@ -9,10 +9,9 @@ import WeightIcon from "../../assets/icon/User/weight.png";
 import nickname from "../../assets/icon/User/nickname.png";
 import PasswordIcon from "../../assets/icon/User/password.png";
 import PasswordCheckIcon from "../../assets/icon/User/passwordCheck.png";
-
 import TopNav from "../../components/ui/TopNav";
 import requests from "../../api/requests";
-import axios from "axios";
+import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 
 interface userType {
@@ -51,10 +50,76 @@ export default function Signup() {
     provider: "kkalong",
   });
 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [checkPassword, setCheckPassword] = useState<string>("");
+
+  //오류메시지
+  const [emailMessage, setEmailMessage] = useState<String>("");
+  const [passwordMessage, setPasswordMessage] = useState<String>("");
+  const [checkPasswordMessage, setCheckPasswordMessage] = useState<String>("");
+
+  //유효성 검사
+  const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [isCheckPassword, setIsCheckPassword] = useState<boolean>(false);
+
+  //이메일 체크 (백엔드에서 받아온 인증번호)
+  const [emailAuth, setEmailAuth] = useState<String>("");
+
+  //이메일 체크 (사용자가 입력한 인증번호)
+  const [emailAuthInput, setEmailAuthInput] = useState<String>("");
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    setUserInfo((current) => ({
+      ...current,
+      email: e.target.value,
+    }));
+
+    if (!emailRegex.test(UserInfo.email)) {
+      setEmailMessage("이메일 형식을 확인해주세요.");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("올바른 형식입니다.");
+      setIsEmail(true);
+    }
+  };
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    setUserInfo((current) => ({
+      ...current,
+      password: e.target.value,
+    }));
+
+    if (!passwordRegex.test(UserInfo.password)) {
+      setPasswordMessage("숫자+영문자+특수문자 조합 8자리 이상 입력해주세요.");
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("안전한 비밀번호입니다.");
+      setIsPassword(true);
+    }
+  };
   // 이메일 인증
   const AproveEmail = async () => {
-    const res = await axios.post(requests.email, UserInfo?.email);
-    setEmailCheck((current) => ({ ...current, Check: res.data }));
+    const res = await axios
+      .post(requests.email, { value: UserInfo?.email })
+      .then((res) => {
+        console.log(res);
+        if (res.data.provider) {
+          alert("이미 존재하는 이메일입니다.");
+          navigate("/login");
+        } else {
+          console.log(res);
+          setEmailCheck((current) => ({
+            ...current,
+            Check: res.data.security,
+          }));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const CheckInput = () => {
@@ -73,9 +138,38 @@ export default function Signup() {
   };
 
   // 회원가입 axios 요청
-  const SubmitSingup = async () => {};
-
-  // 회원가입시 로그인 화면
+  const onSubmit = () => {
+    // 인증번호를 입력하지 않은경우
+    if (emailAuthInput == "") {
+      alert("인증번호를 입력해주세요.");
+    }
+    // 입력한 인증번호와 실제 인증번호가 같을 경우
+    else if (emailAuth === emailAuthInput) {
+      axios
+        .post(
+          requests.signup,
+          {
+            email: email,
+            password: password,
+            provider: "lofi",
+          },
+          {
+            headers: { "Content-type": `application/json` },
+          }
+        )
+        .then((response) => {
+          // console.log(response);
+          // window.location.href = "http://localhost:3000/login";
+          navigate("/login");
+        })
+        .catch((error) => {
+          // console.error(error.response);
+        });
+      //인증번호 다른 경우
+    } else {
+      alert("다시 인증해주세요.");
+    }
+  };
   if (UserInfo.provider === "kkalong") {
     return (
       <div>
@@ -88,15 +182,7 @@ export default function Signup() {
         <SignupDiv>
           <SignupEmailDiv>
             <div>
-              <SignupEmailInput
-                placeholder="이메일"
-                onChange={(e: any) => {
-                  setUserInfo((current) => ({
-                    ...current,
-                    email: e.target.value,
-                  }));
-                }}
-              />
+              <SignupEmailInput placeholder="이메일" onChange={onChangeEmail} />
               <SignupIcon src={EmailIcon} />
             </div>
             <SignupEmailCheck onClick={AproveEmail}>
@@ -125,12 +211,7 @@ export default function Signup() {
             <SignupPasswordInput
               type="password"
               placeholder="비밀번호"
-              onChange={(e: any) => {
-                setUserInfo((current) => ({
-                  ...current,
-                  password: e.target.value,
-                }));
-              }}
+              onChange={onChangePassword}
             />
             <SignupIcon src={PasswordIcon} />
           </SignupInputDiv>
@@ -170,7 +251,10 @@ export default function Signup() {
               type="number"
               placeholder="나이"
               onChange={(e: any) => {
-                setUserInfo((current) => ({ ...current, age: e.target.value }));
+                setUserInfo((current) => ({
+                  ...current,
+                  age: e.target.value,
+                }));
               }}
             />
             <SignupIcon src={AgeIcon} />
@@ -212,7 +296,7 @@ export default function Signup() {
             UserInfo.age &&
             UserInfo.height &&
             UserInfo.weight && (
-              <SubmitButton onClick={SubmitSingup}>회원가입</SubmitButton>
+              <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
             )}
         </SignupDiv>
       </div>
@@ -226,7 +310,6 @@ export default function Signup() {
           <SignupText>회원가입</SignupText>
           <div style={{ width: "30px", height: "30px" }}></div>
         </TopNav>
-
         <SignupDiv>
           <SignupEmailDiv>
             <div>
@@ -249,7 +332,10 @@ export default function Signup() {
               type="number"
               placeholder="나이"
               onChange={(e: any) => {
-                setUserInfo((current) => ({ ...current, age: e.target.value }));
+                setUserInfo((current) => ({
+                  ...current,
+                  age: e.target.value,
+                }));
               }}
             />
             <SignupIcon src={AgeIcon} />
@@ -291,7 +377,7 @@ export default function Signup() {
             UserInfo.age &&
             UserInfo.height &&
             UserInfo.weight && (
-              <SubmitButton onClick={SubmitSingup}>회원가입</SubmitButton>
+              <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
             )}
         </SignupDiv>
       </div>
