@@ -1,30 +1,25 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import Logo from "../../assets/icon/logo/kkalongLogo.png";
-import KakaoLoginLogo from "../../assets/icon/Login/SocialLogin/kakao.png";
-import GoogleLoginLogo from "../../assets/icon/Login/SocialLogin/google.png";
-import EmailLogo from "../../assets/icon/Login/email.png";
-import PasswordLogo from "../../assets/icon/Login/password.png";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/reduxHook";
-import { getData } from "../../redux/modules/BestDress";
+import React, { useEffect } from 'react'
+import styled from 'styled-components';
+import Logo from '../../assets/icon/logo/kkalongLogo.png';
+import KakaoLoginLogo from '../../assets/icon/Login/SocialLogin/kakao.png';
+import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
+import EmailLogo from '../../assets/icon/Login/email.png';
+import PasswordLogo from '../../assets/icon/Login/password.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleSignup = () => {
     navigate("/signup");
   };
 
   // 화면의 상하단 margin 제거
-  useEffect(() => {
-    const app = document.getElementById("App") as HTMLDivElement;
-    app.style.margin = "0";
-
-    dispatch(getData());
-  }, []);
-
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.margin = '0'
+  },[])
+  
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo"></LogoImg>
