@@ -1,8 +1,10 @@
 package com.ssafy.kkalong.api.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.CommunityService;
+import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.common.BaseEntity;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @CrossOrigin(origins = {"*"})
@@ -408,4 +412,15 @@ public class CommunityController {
         result.put("codi_id", codi);
         return ResponseEntity.ok().body(result);
     }
+
+    @Autowired
+    FirebaseService firebaseService;
+    @PostMapping("/files")
+    public String uploadFile(@RequestParam("file") MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
+        if (file.isEmpty()) {
+            return "is empty";
+        }
+        return firebaseService.uploadFiles(file,nameFile);
+    }
+
 }
