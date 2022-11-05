@@ -24,22 +24,18 @@ public class User {
     @Column(nullable=false, unique = true, length = 50)
     private String email;
 
-    @Column(nullable=false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     @Column(nullable=false, unique = true)
     private String password;
 
-    @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
     private int age;
 
-    @Column(nullable = false)
     private int height;
 
-    @Column(nullable = false)
     private int weight;
 
     @Column(nullable = false)
@@ -79,5 +75,6 @@ public class User {
         this.age = signupDto.getAge();
         this.height = signupDto.getHeight();
         this.weight = signupDto.getWeight();
+        this.role = UserRole.ROLE_USER;
     }
 }
