@@ -34,7 +34,6 @@ public class UserController {
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
@@ -56,7 +55,6 @@ public class UserController {
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
