@@ -26,7 +26,7 @@ export const OauthRedirect = () => {
       localStorage.setItem("accessToken", token);
       window.location.href = "/";
     } else {
-      navigate("/signupnext", {
+      navigate("/process", {
         state: token,
       });
     }

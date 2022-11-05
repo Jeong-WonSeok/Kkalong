@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components';
-import Logo from '../../assets/icon/logo/kkalongLogo.png';
-import KakaoLoginLogo from '../../assets/icon/Login/SocialLogin/kakao.png';
-import GoogleLoginLogo from '../../assets/icon/Login/SocialLogin/google.png';
-import EmailLogo from '../../assets/icon/Login/email.png';
-import PasswordLogo from '../../assets/icon/Login/password.png';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import Logo from "../../assets/icon/logo/kkalongLogo.png";
+import KakaoLoginLogo from "../../assets/icon/Login/SocialLogin/kakao.png";
+import GoogleLoginLogo from "../../assets/icon/Login/SocialLogin/google.png";
+import EmailLogo from "../../assets/icon/Login/email.png";
+import PasswordLogo from "../../assets/icon/Login/password.png";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios from "../../api/axios";
+import requests from "../../api/requests";
+import jwtDecode from "jwt-decode";
 export default function Login() {
+  const LOGIN = "user/LOGIN";
   const navigate = useNavigate();
 
   const handleSignup = () => {
@@ -15,23 +19,75 @@ export default function Login() {
   };
 
   // 화면의 상하단 margin 제거
-  useEffect(()=>{
-    const app = document.getElementById('App') as HTMLDivElement
-    app.style.margin = '0'
-  },[])
-  
+  useEffect(() => {
+    const app = document.getElementById("App") as HTMLDivElement;
+    app.style.margin = "0";
+  }, []);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const onChangeEmail = (e: any) => {
+    setEmail(e.target.value);
+  };
+
+  const onChangePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
+
+  const onLoginButton = (e: any) => {
+    e.preventDefault();
+    console.log(email);
+    console.log(password);
+    axios
+      .post(
+        requests.login,
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: { "Content-type": `application/json` },
+        }
+      )
+      .then((response) => {
+        const token = response.data.result;
+        console.log(response.data.result);
+        localStorage.setItem("token", token);
+        const decode: any = jwtDecode(token);
+
+        const email = decode.email;
+        const id = decode.id;
+
+        dispatch({ type: LOGIN, email: email, id: id });
+        navigate("/");
+        console.log("확인해볼라고");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <LoginDiv>
       <LogoImg src={Logo} alt="our service logo"></LogoImg>
       <LoginInputDiv>
         <LoginInputImg src={EmailLogo} />
-        <EmailInput placeholder="이메일" type="email"></EmailInput>
+        <EmailInput
+          placeholder="이메일"
+          type="email"
+          onChange={onChangeEmail}
+        ></EmailInput>
       </LoginInputDiv>
       <LoginInputDiv>
         <LoginInputImg src={PasswordLogo} />
-        <PasswordInput placeholder="비밀번호" type="password"></PasswordInput>
+        <PasswordInput
+          placeholder="비밀번호"
+          type="password"
+          onChange={onChangePassword}
+        ></PasswordInput>
       </LoginInputDiv>
-      <LoginButton>로그인</LoginButton>
+      <LoginButton onClick={onLoginButton}>로그인</LoginButton>
       <SocialLoginDiv>소셜로그인</SocialLoginDiv>
       <SocialLoginButton>
         <SocialLoginLinkTag>
@@ -40,7 +96,9 @@ export default function Login() {
           </a>
         </SocialLoginLinkTag>
         <SocialLoginLinkTag>
-          <GoogleLogin src={GoogleLoginLogo}></GoogleLogin>
+          <a href="http://k7b302.p.ssafy.io:8080/api/v1/oauth2/authorization/kakao">
+            <GoogleLogin src={GoogleLoginLogo}></GoogleLogin>
+          </a>
         </SocialLoginLinkTag>
       </SocialLoginButton>
       <RegisterDiv>
