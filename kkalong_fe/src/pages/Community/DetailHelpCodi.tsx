@@ -78,6 +78,15 @@ export default function DetailHelpCodi() {
     setIsModal(true)
   }
 
+  const CommentsInput = (data:commentType) => {
+    let newArticle = [...Article!.comment]
+    newArticle.push(data)
+    setArticle((prev) => ({
+      ...prev!,
+      comment: newArticle
+    }))
+}
+
   return (
     <div>
       <TopNav type={''}>
@@ -113,7 +122,11 @@ export default function DetailHelpCodi() {
 
         <LineDiv></LineDiv>
 
-        <CommentContainer Comments={Article?.comment ? Article?.comment : defaultComment}/>
+        <CommentContainer 
+        Comments={Article?.comment ? Article?.comment : defaultComment} 
+        article_id={Article?.help_id ? Article?.help_id : 1}
+        category={Article?.open ? "closet" : "cody"}
+        CommentsInput={CommentsInput}/>
       </Container>
 
       <FooterBar/>
