@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/community")
-@CrossOrigin(origins = {"*"})
 public class CommunityController {
 
     //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
