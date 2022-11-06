@@ -23,17 +23,17 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
     private final UserRepository userRepository;
 
     @Override
-    public UserDetailsImpl loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        System.out.println("CustomOAuth2UserService-loadUser: "+userRequest.toString());
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
+        public UserDetailsImpl loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+            System.out.println("CustomOAuth2UserService-loadUser: "+userRequest.toString());
+            OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
+            OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+            String registrationId = userRequest.getClientRegistration().getRegistrationId();
+            String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+            OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        System.out.println("loadUserByUsername - oauth2: "+attributes.getEmail());
+            System.out.println("loadUserByUsername - oauth2: "+attributes.getEmail());
 
         User user = userRepository.findByEmail(attributes.getEmail());
         if(user==null){ //회원가입 한 적 없음
