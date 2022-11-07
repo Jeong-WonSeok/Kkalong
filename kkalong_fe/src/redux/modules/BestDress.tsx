@@ -37,35 +37,7 @@ export const getBest3 = () => async (dispatch: Dispatch) => {
   const res = await axios.get(requests.best3)
   console.log(res.data)
 
-  const Best3: Array<BestDresserArticle> = [
-    {
-      post_id: 1,
-      post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-      post_user: {
-        nickname: 'loki535',
-        profile: ''
-      },
-      post_like: 13
-    },
-    {
-      post_id: 2,
-      post_img: 'https://i.pinimg.com/474x/e3/0a/73/e30a73291a0f8c2403c95472157d4b7e.jpg',
-      post_user: {
-        nickname: 'hans',
-        profile: ''
-      },
-      post_like: 10
-    },
-    {
-      post_id: 3,
-      post_img: 'https://www.ultrafashion.net/shopimages/girlsje/031001001172.jpg?1646365806',
-      post_user: {
-        nickname: 'jane13',
-        profile: ''
-      },
-      post_like: 5
-    },
-  ]
+  const Best3 = res.data
 
   dispatch({type: GET_BEST_SUCCESS, payload: Best3})
 }
@@ -77,45 +49,7 @@ export const getBestDress = () => async (dispatch: Dispatch) => {
   const res = await axios.get(requests.bestDress)
   console.log(res.data)
 
-  const BestDress: Array<BestDresserArticle> = [
-    {
-      post_id: 1,
-      post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-      post_user: {
-        nickname: 'loki535',
-        profile: ''
-      },
-      post_like: 13
-    },
-    {
-      post_id: 2,
-      post_img: 'https://i.pinimg.com/474x/e3/0a/73/e30a73291a0f8c2403c95472157d4b7e.jpg',
-      post_user: {
-        nickname: 'hans',
-        profile: ''
-      },
-      post_like: 10
-    },
-    {
-      post_id: 3,
-      post_img: 'https://www.ultrafashion.net/shopimages/girlsje/031001001172.jpg?1646365806',
-      post_user: {
-        nickname: 'jane13',
-        profile: ''
-      },
-      post_like: 5
-    },
-    {
-      post_id: 4,
-      post_img: 'https://sitem.ssgcdn.com/21/01/16/item/1000049160121_i1_1200.jpg',
-      post_user: {
-        nickname: 'likeme',
-        profile: ''
-      },
-      post_like: 2
-    },
-  ]
-
+  const BestDress = res.data
   dispatch({type: GET_DATA_SUCCESS, payload: BestDress})
 }
 
