@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BestDressUserDto {
+    private int user_id;
     private String nickname;
     private String profile_image;
 }

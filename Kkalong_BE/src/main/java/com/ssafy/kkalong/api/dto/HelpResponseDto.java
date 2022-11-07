@@ -15,5 +15,6 @@ public class HelpResponseDto {
     private String help_img;
     private String range;
     private String title;
+    private String content;
 
 }
