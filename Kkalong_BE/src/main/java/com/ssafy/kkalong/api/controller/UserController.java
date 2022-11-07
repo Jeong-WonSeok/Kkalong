@@ -136,6 +136,26 @@ public class UserController {
         return ResponseEntity.badRequest().body("존재하지 않는 사용자");
     }
 
+    @PostMapping("/profile/update")
+    public ResponseEntity<?> updateProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody SignupDto signupDto){
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.signUpNext(userInfo.getEmail(), signupDto);
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .height(user.getHeight())
+                .weight(user.getWeight())
+                .provider(user.getProvider())
+                .followers(userService.getFollowerListByReceiverId(user.getId()))
+                .followings(userService.getFollowingListBySenderId(user.getId()))
+                .build();
+        result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
+    }
+
     @GetMapping("/write")
     public ResponseEntity<?> getPostsAndHelpsByUserId(@RequestBody IntegerDto integerDto){
         Map<String, Object> result = new HashMap<>();
