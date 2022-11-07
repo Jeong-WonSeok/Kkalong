@@ -36,7 +36,6 @@ export const OauthRedirect = () => {
           console.log(err);
         });
       navigate("/closet");
-      // window.location.href = "/closet";
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
