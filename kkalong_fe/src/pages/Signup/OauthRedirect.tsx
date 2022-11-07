@@ -36,7 +36,7 @@ export const OauthRedirect = () => {
       axios
         .get(requests.Profile)
         .then((res) => {
-          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+          localStorage.setItem("userProfile", res.data.user);
           navigate("/closet");
         })
         .catch((err) => {
