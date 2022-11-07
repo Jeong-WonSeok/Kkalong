@@ -9,13 +9,13 @@ export default function HelpCodi({article} : {article: HelpCodiArticle}) {
     <div  onClick={()=>navigate(`/community/HelpCodi/${article.help_id}`)}>
     <Container style={{backgroundImage: `url(${article.help_img})`}}>
       <ProfileContainer>
-      <Profile Image={article.user_id.profile} Size={17}/>
-        <span>{article.user_id.nickname}</span>
+      <Profile Image={article.user.profile_img} Size={17}/>
+        <span>{article.user.nickname}</span>
       </ProfileContainer>
       
     </Container>
     <TitleContainer>
-      Q. {article.help_title.length < 15 ? article.help_title : article.help_title.slice(0, 15) + '...'}
+      Q. {article.title.length < 15 ? article.title : article.title.slice(0, 15) + '...'}
     </TitleContainer>
     </div>
   )

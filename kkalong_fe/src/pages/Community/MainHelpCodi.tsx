@@ -82,7 +82,7 @@ export default function MainHelpCodi() {
         {HelpArticles.length > 0 && HelpArticles.map((HelpArticle, idx) => {
             return (
               <TitleDiv key={idx}>
-                Q. {HelpArticle.help_title.length > 25 ? HelpArticle.help_title.slice(0,23) + '...' : HelpArticle.help_title}
+                Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
               </TitleDiv>
             )
           })}
@@ -106,7 +106,7 @@ export default function MainHelpCodi() {
           {HelpArticles.map((HelpArticle, idx) => {
             return (
             <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
-              Q. {HelpArticle.help_title.length > 25 ? HelpArticle.help_title.slice(0,23) + '...' : HelpArticle.help_title}
+              Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
             </TitleDiv>
             )
           })}

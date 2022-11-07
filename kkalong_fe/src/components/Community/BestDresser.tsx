@@ -18,12 +18,12 @@ export default function BestDresser({
       onClick={() => navigate(`/community/BestDress/${article.post_id}`)}
     >
       <ProfileContainer>
-        <Profile Image={article.post_user.profile} Size={17} />
-        <span>{article.post_user.nickname}</span>
+        <Profile Image={article.user.profile_img} Size={17} />
+        <span>{article.user.nickname}</span>
       </ProfileContainer>
       <LikeContainer>
         <LikeImg src={like} />
-        {article.post_like}
+        {article.like}
       </LikeContainer>
     </Container>
   );

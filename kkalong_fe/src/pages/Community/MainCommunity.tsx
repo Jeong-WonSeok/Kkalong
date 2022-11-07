@@ -13,21 +13,25 @@ import { getHelpCodi } from '../../redux/modules/HelpCodi';
 export interface BestDresserArticle {
   post_id: number,
   post_img: string,
-  post_user: {
+  user: {
+    user_id: number,
     nickname: string,
-    profile: string,
+    profile_img: string,
   }
-  post_like: number
+  like: number
 }
 
 export interface HelpCodiArticle {
   help_id: number;
   help_img: string;
-  user_id: {
+  range: string,
+  open: boolean,
+  user: {
+    user_id: number,
     nickname: string,
-    profile: string,
+    profile_img: string,
   }
-  help_title: string
+  title: string
 }
 
 

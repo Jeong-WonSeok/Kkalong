@@ -17,7 +17,7 @@ import { SubmitBtn } from './AddBestDress'
 interface SendType {
   img: String,
   title: string,
-  context: string,
+  content: string,
   range: string,
   open: boolean
 }
@@ -27,7 +27,7 @@ export default function AddHelpCodi() {
   const params = useParams()
   const navigate = useNavigate()
   const [SendData, setSendData]= useState<SendType>()
-  const SelectOptions = ['친구', '전체']
+  const SelectOptions = ['친구', '모두']
 
   useEffect(() => {
     const Edit = async () => {
@@ -41,6 +41,15 @@ export default function AddHelpCodi() {
         Picture.style.backgroundImage=`url(${SendData?.img})`
         Picture.style.backgroundPosition="center"
         Picture.style.width="auto"
+      }
+      
+      if (params.Category === "Closet") {
+        setSendData((prev) => ({
+          ...prev as SendType,
+          img: '',
+          open: true,
+          range: '친구'
+        }))
       }
     }
 
@@ -59,7 +68,7 @@ export default function AddHelpCodi() {
   const resize = (e: any) => {
     setSendData((prevState: any) => ({
       ...prevState,
-      "context": e.target.value
+      "content": e.target.value
     }))
     const textEle = document.getElementById('Context') as HTMLTextAreaElement
     textEle.style.height = '1px';
@@ -70,7 +79,7 @@ export default function AddHelpCodi() {
     setSendData((current) => {
       return({
         ...current as SendType,
-        itle: e.target.value
+        title: e.target.value
       })
     })
   }
@@ -81,7 +90,6 @@ export default function AddHelpCodi() {
         // undefined 타입 지정 오류 처리
         ...state as SendType,
         range: e.target.value,
-        open: e.target.value == "친구" ? false : true
       }
     })
   }
@@ -110,7 +118,8 @@ export default function AddHelpCodi() {
     // 코디 추천
     } else {
       const res = await axios.post(requests.helpCodi, SendData)
-      navigate(`community/HelpCodi/${res.data.help_id}`)
+      console.log(res)
+      navigate(`community/HelpCodi/${res.data.Help.help_id}`)
     }
   }
 
@@ -138,7 +147,7 @@ export default function AddHelpCodi() {
       }
 
       <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>
-      <ContextArea placeholder='내용을 입력해주세요' value={SendData?.context} onChange={resize}></ContextArea>
+      <ContextArea id="Context" placeholder='내용을 입력해주세요' value={SendData?.content} onChange={resize}></ContextArea>
 
       <LabelContainer>
         <Label>옷장 공개 범위</Label>
@@ -196,6 +205,7 @@ const ContextArea = styled.textarea`
   border: none;
   font-family: var(--base-font-300);
   background-color: var(--primary-color-100);
+  height: 43.992px;
   width: 90%;
 `
 
