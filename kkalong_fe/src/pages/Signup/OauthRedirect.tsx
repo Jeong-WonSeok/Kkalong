@@ -17,13 +17,13 @@ export const OauthRedirect = () => {
   let token: string = useLocation().search.split("=")[1];
   console.log(token);
   if (token === "google") {
-    window.location.href = "/closet";
+    window.location.href = "/login";
     alert("이미 가입된 유저입니다. 구글로 로그인 해주세요");
   } else if (token === "kakao") {
-    navigate("/login");
+    window.location.href = "/login";
     alert("이미 가입된 유저입니다. 카카오로 로그인 해주세요");
   } else if (token === "kkalong") {
-    navigate("/login");
+    window.location.href = "/login";
     alert("이미 가입된 유저입니다. 로그인 해주세요");
   }
   let role = parseJwt(token).roles[0].authority;
