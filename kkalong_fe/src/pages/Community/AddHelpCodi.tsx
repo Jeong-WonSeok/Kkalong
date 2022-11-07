@@ -32,8 +32,15 @@ export default function AddHelpCodi() {
   useEffect(() => {
     const Edit = async () => {
       if (params.HelpCodiId) {
+        
         const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
-        setSendData(res.data)
+        setSendData({
+          img: res.data.Help.help_img,
+          title: res.data.Help.title,
+          open: res.data.Help.open,
+          content: res.data.Help.content,
+          range: res.data.Help.range,
+        })
 
         const Picture = document.getElementById("SelectPicture") as HTMLDivElement
         // 위에 레이어 모두 삭제후
@@ -147,17 +154,26 @@ export default function AddHelpCodi() {
       }
 
       <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>
-      <ContextArea id="Context" placeholder='내용을 입력해주세요' value={SendData?.content} onChange={resize}></ContextArea>
+      <ContextArea id="Context" placeholder='내용을 입력해주세요' value={SendData?.content} onChange={resize}>{SendData?.content}</ContextArea>
 
       <LabelContainer>
         <Label>옷장 공개 범위</Label>
         <SelectOpen onChange={HandleOpen}>
           {SelectOptions.map((Option, idx) => {
-            return (
-              <SelectOption value={Option} key={idx} >
-                {Option}
-              </SelectOption>
-            )
+            if (SendData?.range === Option) {
+              return (
+                <SelectOption selected value={Option} key={idx} >
+                  {Option}
+                </SelectOption>
+              )
+            } else {
+              return (
+                <SelectOption value={Option} key={idx} >
+                  {Option}
+                </SelectOption>
+              )
+            }
+            
           })}
         </SelectOpen>
       </LabelContainer>

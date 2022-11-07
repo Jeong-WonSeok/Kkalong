@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
 import list from "../../assets/icon/Closet/list.png";
@@ -31,6 +35,7 @@ export interface ClothesProps {
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const params = useParams();
   const settings = {
     className: "center",
     centerMode: true,
@@ -60,7 +65,24 @@ export default function MainCloset() {
   ]);
   let [sls, setSls] = useState("");
 
+  useEffect(() => {
+    const start = async () => {
+      if (params.UserId) {
+        // 타인이 볼 때
+        const res = await axios.get(requests.closet + params.UserId)
+      } else {
+        // 자기자신
+        const res = await axios.get(requests.closet + params.UserId)
+      }
+    }
+    start()
+  },)
+
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
+
+  const GoCody = () => {
+    
+  }
 
   return (
     <div style={{marginBottom: '70px'}}>
@@ -84,9 +106,7 @@ export default function MainCloset() {
         </SelectBtn>
         <img src={Bar} />
         <SelectBtn
-          onClick={() => {
-            navigate("/codi");
-          }}
+          onClick={GoCody}
         >
           <SelectColor2 />
           <SelectText>코디</SelectText>

@@ -42,6 +42,7 @@ export default function AddClothes() {
   const capture = useCallback(async () => {
     const imageSrc = webcam.current?.getScreenshot();
     if (imageSrc) {
+      // base64 코드를 File로 변환
       const byteCharacters = URL.createObjectURL(new Blob([imageSrc] , {type:'text/plain'}));
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -51,6 +52,7 @@ export default function AddClothes() {
 
       let image = new Blob([byteArray], { type: 'image/jpeg' });
       setUrl(imageSrc);
+      // 이대로 넘겨주는게 맞나?
       const res = await axios.post(requests.removeBackground, image)
     }
   }, [webcam]); 

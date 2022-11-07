@@ -54,7 +54,8 @@ export default function WeatherPage() {
 
     const start = async() => {
       await getLocation()
-      const res = await axios.get(`/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst/?serviceKey=${process.env.REACT_APP_DECODING_KEY}`, {
+      // env파일 안먹어서 key 그대로 올립니다
+      const res = await axios.get(`/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=M/89Ftol4BdXqnIv25gXvyRHf3V6Mdon4yO0eKKSIQlhdVxg130z7c7/0Bi/i7xb3fGcn6hCDOw9f+/o2OjfyA==`, {
         params: {
           pageNo: 1,
           numOfRows: 1000,

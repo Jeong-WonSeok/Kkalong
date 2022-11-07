@@ -67,8 +67,8 @@ function App() {
             <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
             <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
-            <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
+            <Route path="/closet/:UserId" element={<MainCloset />}></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>
