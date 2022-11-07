@@ -33,6 +33,7 @@ export const OauthRedirect = () => {
   useEffect(() => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
+      console.log("하이");
       axios
         .get(requests.Profile)
         .then((res) => {
