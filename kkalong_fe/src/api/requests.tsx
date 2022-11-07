@@ -6,6 +6,7 @@ const requests = {
   email: "/user/signup/email",
   nickname: "/user/check/nickname",
   signup: "/user/signup",
+  signupNext: "/user/signupNext",
 
   // 마이페이지
   myWrite: "/user/write",
@@ -15,7 +16,7 @@ const requests = {
   follow: "/user/follow/", // ${} 으로 동적 라우팅
   otherProfile: "/user/profile/", // ${} 으로 동적 라우팅
   otherWrite: "/user/write/", // ${} 으로 동적 라우팅
-
+  Profile: "/user/social/login",
   // 커뮤니티
   best3: "/community/best",
   bestDress: "/community/bestdress",

@@ -15,10 +15,10 @@ import Closet from '../../assets/icon/Footer/select_closet.png'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
 
-
-
 export interface commentType {
-  user_id: {
+  comment_id: number,
+  user: {
+    user_id: number,
     nickname: string,
     profile_img: string,
   },
@@ -53,7 +53,9 @@ export default function DetailHelpCodi() {
       help_title: '20대 남자인데 데이트 코디 어떤가요?',
       help_content: '같은 대학교 동기랑 내일 영화 약속 잡아놨는데 이정도면 무난할까요?',
       comment: [{
-        user_id: {
+        comment_id: 1,
+        user : {
+          user_id: 1,
           nickname: 'hello',
           profile_img: '',
         },
@@ -62,7 +64,9 @@ export default function DetailHelpCodi() {
         codi_img: 'https://i.pinimg.com/474x/85/06/4d/85064decf478772d1659c1aec4afd4b5.jpg',
       },
       {
-        user_id: {
+        comment_id: 2,
+        user: {
+          user_id: 2,
           nickname: 'queen3',
           profile_img: 'https://i1.sndcdn.com/avatars-BuwoWygg1Oj9xyIp-qQgBxA-t240x240.jpg',
         },
@@ -78,6 +82,7 @@ export default function DetailHelpCodi() {
     setIsModal(true)
   }
 
+  // 댓글 추가
   const CommentsInput = (data:commentType) => {
     let newArticle = [...Article!.comment]
     newArticle.push(data)
@@ -85,7 +90,36 @@ export default function DetailHelpCodi() {
       ...prev!,
       comment: newArticle
     }))
-}
+  }
+
+  // 댓글 삭제
+  const CommentsDelete = (idx: number) => {
+    let newArticle  = [...Article!.comment]
+    let newComment = newArticle.filter(comment => {
+      return comment.comment_id !== idx
+    })
+    setArticle((prev => ({
+      ...prev!,
+      comment: newComment
+    })))
+  }
+
+    // 댓글 수정
+    const CommentsEdit = (idx: number, data: commentType) => {
+      let newArticle  = [...Article!.comment]
+      let newComment = newArticle.map(comment => {
+        if (comment.comment_id === idx) {
+          comment = data
+        }
+        return comment
+      })
+  
+      setArticle((prev => ({
+        ...prev!,
+        comment: newComment
+      })))
+    }
+
 
   return (
     <div>
@@ -126,7 +160,9 @@ export default function DetailHelpCodi() {
         Comments={Article?.comment ? Article?.comment : defaultComment} 
         article_id={Article?.help_id ? Article?.help_id : 1}
         category={Article?.open ? "closet" : "cody"}
-        CommentsInput={CommentsInput}/>
+        CommentsInput={CommentsInput}
+        CommentsDelete={CommentsDelete}
+        CommentsEdit={CommentsEdit}/>
       </Container>
 
       <FooterBar/>

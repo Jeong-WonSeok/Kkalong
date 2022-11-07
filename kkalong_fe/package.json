@@ -21,6 +21,7 @@
     "fabric": "^4.6.0",
     "fabricjs-react": "^1.0.8",
     "http-proxy-middleware": "^2.0.6",
+    "jwt-decode": "^3.1.2",
     "node-sass": "^7.0.3",
     "react": "^17.0.2",
     "react-canvas-draw": "^1.2.1",
@@ -30,11 +31,8 @@
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
-<<<<<<< HEAD
     "react-spinners": "^0.13.6",
-=======
     "react-webcam": "^7.0.1",
->>>>>>> 299d731e603d101b39caa91aec86fbe96af52d86
     "redux": "^4.2.0",
     "redux-actions": "^2.6.5",
     "slick-carousel": "^1.8.1",

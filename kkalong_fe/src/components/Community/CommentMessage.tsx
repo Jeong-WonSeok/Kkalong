@@ -1,28 +1,80 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import { commentType } from '../../pages/Community/DetailHelpCodi'
 import Profile from './Profile'
-import codiSave from '../../assets/icon/Community/codiSave.png'
 
-export default function CommentMessage({comment, category}: {comment: commentType, category: string}) {
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
+import codiSave from '../../assets/icon/Community/codiSave.png'
+import Edit from '../../assets/icon/Community/Edit.png'
+import Trash from '../../assets/icon/Community/Trash.png'
+import { useParams } from 'react-router-dom'
+
+export default function CommentMessage({comment, category, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
+  const [EditContent, setEditContent] = useState('')
+  const [IsEdit, setIsEdit] = useState(false)
+  const params = useParams()
+
+  const CommentDelete = async(idx: number) => {
+    if (category === "bestdress"){
+      await axios.delete(requests.detailBestDress + params.BestDressId + requests.comment + String(idx))
+    } else {
+      await axios.delete(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx))
+    }
+    CommentsDelete(idx)
+  }
+
+  const EditMessage = async(idx: number) => {
+    if (category === "bestdress"){
+      const res= await axios.put(requests.detailBestDress + params.BestDressId + requests.comment + String(idx), EditContent)
+      CommentsEdit(idx, res.data)
+    } else {
+      const res = await axios.put(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx), EditContent)
+      CommentsEdit(idx, res.data)
+    }
+    setIsEdit(false)
+    setEditContent('')
+  }
+
   return (
     <Container>
-      <Profile Image={comment.user_id.profile_img} Size={40}/>
-      <MessageContainer>
-        <NickName>{comment.user_id.nickname}</NickName>
-        <MessageContextContainer>
-          <Message>
-            {category === "colset" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
-            {comment.content}
-          </Message>
-          <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-            {category === "colset" ? <CodiSave src={codiSave}/> : null}
-            <Date>
-              {comment.create_at.slice(11,16)}
-            </Date>
-          </MessageContainer>
-        </MessageContextContainer>
-      </MessageContainer>
+      <MessageContextContainer>
+        <Profile Image={comment.user.profile_img} Size={30}/>
+        <MessageContainer>
+          <NickName>{comment.user.nickname}</NickName>
+          <MessageContextContainer>
+            {!IsEdit && 
+            <div>
+              <Message>
+                {category === "closet" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
+                {comment.content}
+              </Message>
+              <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
+                {category === "closet" ? <CodiSave src={codiSave}/> : null}
+                <Date>
+                  {comment.create_at.slice(11,16)}
+                </Date>
+              </MessageContainer>
+            </div>}
+
+            {/* 수정 취소 버튼 추가해야됨 */}
+            {IsEdit && 
+            <div>
+              <EditMessageInput value={comment.content} onChange={(e: any)=> setEditContent(e.target.value)}/>
+              <Button onClick={()=> EditMessage(comment.comment_id)}>수정</Button>
+            </div>
+            }
+            
+          </MessageContextContainer>
+        </MessageContainer>
+      </MessageContextContainer>
+      {/* 추후 작성한 유저만 수정 삭제 할 수 있도록 */}
+      {/* {comment.user.user_id === localStorage.get(User).user_id && 
+      <MessageContextContainer>
+        <UpdateImg src={Edit} onClick={()=> setIsEdit(true)}/>
+        <UpdateImg src={Trash} onClick={()=> CommentDelete(comment.comment_id)}/>
+      </MessageContextContainer>} */}
     </Container>
   )
 }
@@ -31,6 +83,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 5px;
+  justify-content: space-between;
 `
 
 const MessageContainer = styled.div`
@@ -61,6 +114,28 @@ const Message = styled.div`
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
 `
 
+const EditMessageInput = styled.input`
+  width: 70%;
+  max-width: 200px;
+  height: 24px;
+  font-size: 13px;
+  border-radius: 10px;
+  background-color: var(--primary-color-100);
+  padding: 3px 7px;
+  font-family: var(--base-font-300);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
+`
+
+const Button = styled.button`
+  width: 54px;
+  height: 24px;
+  border-radius: 10px;
+  border: 0;
+  font-family: var(--base-font-400);
+  font-size: 12px;
+  background-color: var(--primary-color-400);
+`
+
 const Date = styled.p`
   margin: 0;
   font-size: 5px;
@@ -76,4 +151,10 @@ const CodiImg = styled.img`
 const CodiSave = styled.img`
   width: 21px;
   height: 21px;
+`
+
+const UpdateImg = styled.img`
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 `

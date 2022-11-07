@@ -27,6 +27,27 @@ public class UserController {
         this.jwtProvider = jwtProvider;
     }
 
+    @GetMapping("/social/login")
+    public ResponseEntity<?> signUp(@AuthenticationPrincipal UserDetailsImpl userInfo) {
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.getUserByUserId(userInfo.getId());
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .height(user.getHeight())
+                .weight(user.getWeight())
+                .provider(user.getProvider())
+                .followers(userService.getFollowerListByReceiverId(user.getId()))
+                .followings(userService.getFollowingListBySenderId(user.getId()))
+                .build();
+        result.put("token", jwtProvider.generateJwtTokenFromUser(user));
+        result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
@@ -34,7 +55,6 @@ public class UserController {
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
@@ -56,7 +76,6 @@ public class UserController {
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
                 .age(user.getAge())
@@ -115,6 +134,26 @@ public class UserController {
             return ResponseEntity.ok().body(result);
         }
         return ResponseEntity.badRequest().body("존재하지 않는 사용자");
+    }
+
+    @PostMapping("/profile/update")
+    public ResponseEntity<?> updateProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody SignupDto signupDto){
+        Map<String, Object> result = new HashMap<>();
+
+        User user = userService.signUpNext(userInfo.getEmail(), signupDto);
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .height(user.getHeight())
+                .weight(user.getWeight())
+                .provider(user.getProvider())
+                .followers(userService.getFollowerListByReceiverId(user.getId()))
+                .followings(userService.getFollowingListBySenderId(user.getId()))
+                .build();
+        result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/write")
