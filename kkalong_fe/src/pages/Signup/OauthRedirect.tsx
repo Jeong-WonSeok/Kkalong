@@ -50,9 +50,9 @@ export const OauthRedirect = () => {
       });
     }
 
-    dispatch(setEmail(email));
-    dispatch(setDupEmail(true));
-  }, []);
+    // dispatch(setEmail(email));
+    // dispatch(setDupEmail(true));
+  });
 
   return (
     <div className="contentWrap">
