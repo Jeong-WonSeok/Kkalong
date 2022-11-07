@@ -13,6 +13,7 @@ import axios from "../../api/axios";
 import requests from "../../api/requests";
 export const OauthRedirect = () => {
   let token: string = useLocation().search.split("=")[1];
+  console.log(token);
   let role = parseJwt(token).roles[0].authority;
   let email = parseJwt(token).sub;
   let provider = parseJwt(token).provider;
@@ -34,7 +35,7 @@ export const OauthRedirect = () => {
           // localStorage.setItem("userProfile", )
           console.log(err);
         });
-      navigate("/closet");
+      // navigate("/closet");
       console.log(token);
     } else {
       localStorage.setItem("provider", provider);
