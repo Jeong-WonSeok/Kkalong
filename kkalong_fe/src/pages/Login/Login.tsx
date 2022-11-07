@@ -25,7 +25,7 @@ export default function Login() {
   }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  let [alert, setAlert] = useState(false);
   const dispatch = useDispatch();
 
   const onChangeEmail = (e: any) => {
@@ -87,6 +87,14 @@ export default function Login() {
           onChange={onChangePassword}
         ></PasswordInput>
       </LoginInputDiv>
+      {alert === false ? null : (
+        <LoginAlert>
+          {/* <span className={styles.login_alert_text}> */}
+          회원정보를 확인해주세요
+          {/* </span> */}
+        </LoginAlert>
+      )}
+
       <LoginButton onClick={onLoginButton}>로그인</LoginButton>
       <SocialLoginDiv>소셜로그인</SocialLoginDiv>
       <SocialLoginButton>
@@ -260,3 +268,13 @@ const RegisterLink = styled.a`
   margin: 0px 5px;
   text-decoration: underline;
 `;
+
+//회원 정보가 잘 못 된 경우
+const LoginAlert = styled.p`
+  display: flex;
+  visibility: hidden;
+`;
+
+// .log_alert_view {
+//   display: flex;
+// }
