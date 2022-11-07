@@ -48,9 +48,12 @@ export default function AddHelpCodi() {
     
   }, [])
 
-  const SelectFile = (e:any) => {
-    const input = document.getElementById('SelectCodi') as HTMLInputElement
-    input.click()
+
+  // 코디 선택하는 로직, 옷장 완성되고 나서 진행
+  const SelectCody = async (e:any) => {
+    // const user = localStorage.getItem('useProfile')
+    // const res = await axios.get(requests.closet + user.user_id)
+    // res.data.closets[0].codies
   }
 
   const resize = (e: any) => {
@@ -99,6 +102,17 @@ export default function AddHelpCodi() {
     Picture.style.backgroundPosition="center"
     Picture.style.width="auto"
   }
+  
+  const Submit = async () => {
+    // 코디 피드백
+    if (params.Category === "Codi") {
+
+    // 코디 추천
+    } else {
+      const res = await axios.post(requests.helpCodi, SendData)
+      navigate(`community/HelpCodi/${res.data.help_id}`)
+    }
+  }
 
   return (
     <div>
@@ -107,20 +121,19 @@ export default function AddHelpCodi() {
         <AdjustBackArrow src={backArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도와주세요 패알못😂</CategoryText>
-        <SubmitBtn>작성</SubmitBtn>
+        <SubmitBtn onClick={Submit}>작성</SubmitBtn>
       </TopNav>
 
       <AddContainer>
         {/* 코디 추가 시 */}
         {params.Category === "Codi" && 
-        <CodiBackground id="SelectPicture" onClick={SelectFile}>
+        <CodiBackground id="SelectPicture" onClick={SelectCody}>
         <SelectContainer>
           <ImgContainer>
             <SelectImg src={AddCodi}/>
             <SelectSpan>코디 추가</SelectSpan>
           </ImgContainer>
         </SelectContainer>
-      <CodiInput id="SelectCodi" type="file" onChange={ChangePicture} accept="image/*" required/>
       </CodiBackground>
       }
 
