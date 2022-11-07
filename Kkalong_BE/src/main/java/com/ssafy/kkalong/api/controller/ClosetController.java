@@ -1,29 +1,17 @@
 package com.ssafy.kkalong.api.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.kkalong.api.dto.BestDressResponseInterface;
-import com.ssafy.kkalong.api.dto.ClosetInfoDto;
+
 import com.ssafy.kkalong.api.dto.RemoveBgDto;
 import com.ssafy.kkalong.api.entity.Closet;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
-import com.ssafy.kkalong.api.service.CommunityService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.*;
 
 
@@ -51,6 +39,7 @@ public class ClosetController {
     public ResponseEntity<?> removeBackgroundandGetColorInfo(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile file) throws Exception {
         Map<String, Object> result = new HashMap<>();
         if (file!=null) {
+            System.out.println("file"+file);
             MultipartFile bgRemovedImg = closetService.removeBackGround(userInfo.getId(), file);
             List<String> extractedColors = closetService.getColorInfos(bgRemovedImg);
             RemoveBgDto removeBgDto = RemoveBgDto.builder()
