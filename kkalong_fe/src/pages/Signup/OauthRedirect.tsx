@@ -23,7 +23,16 @@ export const OauthRedirect = () => {
 
   useEffect(() => {
     dispatch(SET_TOKEN(token));
-
+    if (token === "google") {
+      navigate("/login");
+      alert("이미 가입된 유저입니다. 구글로 로그인 해주세요");
+    } else if (token === "kakao") {
+      navigate("/login");
+      alert("이미 가입된 유저입니다. 카카오로 로그인 해주세요");
+    } else if (token === "kkalong") {
+      navigate("/login");
+      alert("이미 가입된 유저입니다. 로그인 해주세요");
+    }
     if (role === "ROLE_USER") {
       localStorage.setItem("token", token);
       axios
