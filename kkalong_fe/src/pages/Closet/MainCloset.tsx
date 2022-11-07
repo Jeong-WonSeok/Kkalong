@@ -74,7 +74,7 @@ export default function MainCloset() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   return (
     <div style={{ marginBottom: "70px" }}>
