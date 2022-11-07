@@ -108,6 +108,22 @@ export default function DetailBestDress() {
     })))
   }
 
+  // 댓글 수정
+  const CommentsEdit = (idx: number, data: commentType) => {
+    let newArticle  = [...Article!.comment]
+    let newComment = newArticle.map(comment => {
+      if (comment.comment_id === idx) {
+        comment = data
+      }
+      return comment
+    })
+
+    setArticle((prev => ({
+      ...prev!,
+      comment: newComment
+    })))
+  }
+
   return (
     <div>
       <TopNav type="">
@@ -149,7 +165,8 @@ export default function DetailBestDress() {
           article_id={Article?.post_id ? Article?.post_id : 1}
           category={"bestdress"}
           CommentsInput={CommentsInput}
-          CommentsDelete={CommentsDelete}/>
+          CommentsDelete={CommentsDelete}
+          CommentsEdit={CommentsEdit}/>
       </Container>
 
       <FooterBar/>
