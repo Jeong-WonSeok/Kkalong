@@ -16,7 +16,6 @@ export const OauthRedirect = () => {
   let role = parseJwt(token).roles[0].authority;
   let email = parseJwt(token).sub;
   let provider = parseJwt(token).provider;
-  console.log(parseJwt(token));
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,7 +28,7 @@ export const OauthRedirect = () => {
       axios
         .get(requests.Profile)
         .then((res) => {
-          console.log(res);
+          console.log(res.data.user);
           console.log("보내기 완료");
         })
         .catch((err) => {
