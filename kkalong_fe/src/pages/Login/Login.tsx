@@ -54,15 +54,15 @@ export default function Login() {
       .then((response) => {
         const token = response.data.result;
         console.log(response.data.result);
-        localStorage.setItem("token", token);
-        const decode: any = jwtDecode(token);
+        localStorage.setItem("token", JSON.stringify(token.token));
+        localStorage.setItem("useProfile", JSON.stringify(token.user));
 
+        navigate("/closet");
+        const decode: any = jwtDecode(token);
         const email = decode.email;
         const id = decode.id;
 
-        dispatch({ type: LOGIN, email: email, id: id });
-        navigate("/");
-        console.log("확인해볼라고");
+        // dispatch({ type: LOGIN, email: email, id: id });
       })
       .catch((error) => {
         console.log(error);
@@ -96,7 +96,7 @@ export default function Login() {
           </a>
         </SocialLoginLinkTag>
         <SocialLoginLinkTag>
-          <a href="http://k7b302.p.ssafy.io:8080/api/v1/oauth2/authorization/kakao">
+          <a href="http://k7b302.p.ssafy.io:8080/api/v1/oauth2/authorization/google">
             <GoogleLogin src={GoogleLoginLogo}></GoogleLogin>
           </a>
         </SocialLoginLinkTag>
