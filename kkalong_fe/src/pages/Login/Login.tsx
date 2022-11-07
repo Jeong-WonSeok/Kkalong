@@ -66,7 +66,10 @@ export default function Login() {
       })
       .catch((error) => {
         console.log(error);
+        setAlert((alert = true));
       });
+    }
+
   };
   return (
     <LoginDiv>
