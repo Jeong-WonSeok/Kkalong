@@ -41,7 +41,7 @@ export const OauthRedirect = () => {
         .catch((err) => {
           console.log(err);
         });
-      // navigate("/closet");
+      navigate("/closet");
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
