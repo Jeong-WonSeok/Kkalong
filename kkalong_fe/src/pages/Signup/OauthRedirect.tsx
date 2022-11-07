@@ -15,6 +15,7 @@ export const OauthRedirect = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let token: string = useLocation().search.split("=")[1];
+  localStorage.setItem("token", token);
   if (token === "google") {
     window.location.href = "/login";
     alert("이미 가입된 유저입니다. 구글로 로그인 해주세요");
@@ -31,17 +32,16 @@ export const OauthRedirect = () => {
 
   useEffect(() => {
     dispatch(SET_TOKEN(token));
-    localStorage.setItem("token", token);
     if (role === "ROLE_USER") {
       axios
         .get(requests.Profile)
         .then((res) => {
           localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-          navigate("/closet");
         })
         .catch((err) => {
           console.log(err);
         });
+      navigate("/closet");
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
