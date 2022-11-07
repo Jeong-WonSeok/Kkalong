@@ -67,6 +67,7 @@ export default function Login() {
       .catch((error) => {
         console.log(error);
         setAlert((alert = true));
+        console.log(alert);
       });
   };
   return (
@@ -270,7 +271,8 @@ const RegisterLink = styled.a`
 
 //회원 정보가 잘 못 된 경우
 const LoginAlertText = styled.p`
-  visibility: hidden;
+  color: red;
+  font-size: 13px;
 `;
 
 const LoginAlert = styled.div`
