@@ -26,7 +26,6 @@ export const OauthRedirect = () => {
 
     if (role === "ROLE_USER") {
       localStorage.setItem("token", token);
-      window.location.href = "/closet";
       axios
         .get(requests.Profile)
         .then((res) => {
@@ -37,6 +36,8 @@ export const OauthRedirect = () => {
           // localStorage.setItem("userProfile", )
           console.log(err);
         });
+      // navigate("/closet");
+      // window.location.href = "/closet";
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
