@@ -32,6 +32,7 @@ public class CommunityService {
     CodyRepository codyRepository;
     @Autowired
     ClosetRepository closetRepository;
+    
 
     //좋아요 많은 순 3개 출력
     public List<BestDressResponseInterface> selectBestDress(){
