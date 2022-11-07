@@ -32,16 +32,16 @@ export const OauthRedirect = () => {
   useEffect(() => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
+      localStorage.setItem("token", token);
       axios
         .get(requests.Profile)
         .then((res) => {
-          localStorage.setItem("token", token);
           localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+          navigate("/closet");
         })
         .catch((err) => {
           console.log(err);
         });
-      navigate("/closet");
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
