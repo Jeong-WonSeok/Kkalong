@@ -63,17 +63,18 @@ export default function MainCloset() {
   let [sls, setSls] = useState("");
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  axios
-    .get(requests.Profile)
-    .then((res) => {
-      localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-      navigate("/closet");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    axios
+      .get(requests.Profile)
+      .then((res) => {
+        localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+        console.log("화이팅");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div style={{ marginBottom: "70px" }}>
