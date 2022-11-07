@@ -15,7 +15,6 @@ export const OauthRedirect = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let token: string = useLocation().search.split("=")[1];
-  console.log(token);
   if (token === "google") {
     window.location.href = "/login";
     alert("이미 가입된 유저입니다. 구글로 로그인 해주세요");
