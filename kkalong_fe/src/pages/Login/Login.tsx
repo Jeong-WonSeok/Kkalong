@@ -55,7 +55,7 @@ export default function Login() {
         const token = response.data.result;
         console.log(response.data.result);
         localStorage.setItem("token", JSON.stringify(token.token));
-        localStorage.setItem("useProfile", JSON.stringify(token.user));
+        localStorage.setItem("userProfile", JSON.stringify(token.user));
 
         navigate("/closet");
         const decode: any = jwtDecode(token);
