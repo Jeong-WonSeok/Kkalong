@@ -35,7 +35,7 @@ export const OauthRedirect = () => {
           // localStorage.setItem("userProfile", )
           console.log(err);
         });
-      window.location.href = "/";
+      window.location.href = "/closet";
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
