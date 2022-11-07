@@ -3,13 +3,15 @@ import { commentType } from '../../pages/Community/DetailHelpCodi'
 import CommentInput from './CommentInput'
 import CommentMessage from './CommentMessage'
 
-export default function CommentContainer({Comments, article_id, category, CommentsInput} : {Comments: Array<commentType>, article_id: number, category:string, CommentsInput:(data: commentType) => void}) {
+export default function CommentContainer(
+  {Comments, article_id, category, CommentsInput, CommentsDelete, CommentsEdit} : 
+  {Comments: Array<commentType>, article_id: number, category:string, CommentsInput:(data: commentType) => void, CommentsDelete:(idx: number) => void, CommentsEdit:(idx: number, data: commentType) => void}) {
   return (
     <Container>
       {Comments && Comments.map((comment, idx) => {
         return (
           <div key={idx}>
-            <CommentMessage comment={comment} category={category}/>
+            <CommentMessage comment={comment} category={category} CommentsDelete={CommentsDelete} CommentsEdit={CommentsEdit}/>
           </div>
         )
       })}

@@ -17,17 +17,8 @@ import axios from '../../api/axios'
 import requests from '../../api/requests'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
-import CommentInput from '../../components/Community/CommentInput'
 
-export interface commentType {
-  user_id: {
-    nickname: string,
-    profile_img: string,
-  },
-  content: string,
-  create_at: string,
-  codi_img: string | null,
-}
+import {commentType} from './DetailHelpCodi'
 
 export interface ArticleType extends BestDresserArticle{
   post_content: string,
@@ -65,7 +56,9 @@ export default function DetailBestDress() {
       post_like: 13,
       post_content: '홍대 카페에서 찍어봤어요',
       comment: [{
-        user_id: {
+        comment_id: 1,
+        user: {
+          user_id: 1,
           nickname: 'hello',
           profile_img: '',
         },
@@ -74,7 +67,9 @@ export default function DetailBestDress() {
         codi_img: null,
       },
       {
-        user_id: {
+        comment_id: 2,
+        user: {
+          user_id: 2,
           nickname: 'queen3',
           profile_img: 'https://i1.sndcdn.com/avatars-BuwoWygg1Oj9xyIp-qQgBxA-t240x240.jpg',
         },
@@ -91,6 +86,7 @@ export default function DetailBestDress() {
     setIsModal(true)
   }
 
+  // 댓글 추가
   const CommentsInput = (data:commentType) => {
       let newArticle = [...Article!.comment]
       newArticle.push(data)
@@ -98,6 +94,18 @@ export default function DetailBestDress() {
         ...prev!,
         comment: newArticle
       }))
+  }
+
+  // 댓글 삭제
+  const CommentsDelete = (idx: number) => {
+    let newArticle  = [...Article!.comment]
+    let newComment = newArticle.filter(comment => {
+      return comment.comment_id !== idx
+    })
+    setArticle((prev => ({
+      ...prev!,
+      comment: newComment
+    })))
   }
 
   return (
@@ -140,7 +148,8 @@ export default function DetailBestDress() {
          Comments={Article?.comment ? Article?.comment : defaultComment}
           article_id={Article?.post_id ? Article?.post_id : 1}
           category={"bestdress"}
-          CommentsInput={CommentsInput}/>
+          CommentsInput={CommentsInput}
+          CommentsDelete={CommentsDelete}/>
       </Container>
 
       <FooterBar/>
