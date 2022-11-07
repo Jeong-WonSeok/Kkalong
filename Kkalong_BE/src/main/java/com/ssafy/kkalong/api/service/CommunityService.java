@@ -145,6 +145,7 @@ public class CommunityService {
         helpDto.setHelp_img(help.getImg());
         helpDto.setTitle(help.getTitle());
         helpDto.setContent(help.getContent());
+        helpDto.setUser(new BestDressUserDto());
 
         return helpDto;
     }

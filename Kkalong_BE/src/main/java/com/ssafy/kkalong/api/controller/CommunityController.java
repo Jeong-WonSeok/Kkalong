@@ -344,7 +344,6 @@ public class CommunityController {
 
 
         result.put("Help", helpDto);
-        result.put("user_id", userDto);
         result.put("comment", commentArr);
 
 
