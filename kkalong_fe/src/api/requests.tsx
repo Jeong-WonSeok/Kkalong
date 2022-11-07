@@ -22,8 +22,8 @@ const requests = {
   bestDress: "/community/bestdress",
   detailBestDress: "/community/bestdress/", // ${} 으로 동적 라우팅
   comment: "/comment/",
-  helpCodi: "/community/helpCodi",
-  detailHelpCodi: "/community/helpCodi/", // ${} 으로 동적 라우팅
+  helpCodi: "/community/helpcodi",
+  detailHelpCodi: "/community/helpcodi/", // ${} 으로 동적 라우팅
 
   // 옷장
   closet: "/closet/", // ${} 으로 동적 라우팅

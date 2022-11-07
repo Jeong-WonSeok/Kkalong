@@ -79,7 +79,7 @@ export default function MainHelpCodi() {
 
       <CategoryText style={{marginLeft: '10px'}}>친구가 곤란해하고 있어요</CategoryText>
       <FriendContainer>
-        {HelpArticles.map((HelpArticle, idx) => {
+        {HelpArticles.length > 0 && HelpArticles.map((HelpArticle, idx) => {
             return (
               <TitleDiv key={idx}>
                 Q. {HelpArticle.help_title.length > 25 ? HelpArticle.help_title.slice(0,23) + '...' : HelpArticle.help_title}
@@ -94,7 +94,7 @@ export default function MainHelpCodi() {
         <TapButton tap={IsCloset} onClick={()=> {setIsCodi(false); setIsCloset(true)}}>옷장</TapButton>
       </ButtonContainer>
       
-      {IsCodi && <CodiContainer>
+      {IsCodi && HelpArticles.length && <CodiContainer>
         {HelpArticles.map((HelpArticle, idx) => {
           return (
             <HelpCodi article={HelpArticle}/> 
@@ -102,7 +102,7 @@ export default function MainHelpCodi() {
         })}
       </CodiContainer>}
 
-      {IsCloset && <ClosetContainer>
+      {IsCloset && HelpArticles.length && <ClosetContainer>
           {HelpArticles.map((HelpArticle, idx) => {
             return (
             <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>

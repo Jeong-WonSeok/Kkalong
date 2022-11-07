@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
+import axios from  '../../api/axios'
+import requests from  '../../api/requests'
 
 import FooterBar from '../../components/ui/FooterBar'
 import TopNav from '../../components/ui/TopNav'
@@ -13,9 +15,10 @@ import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
 
 interface SendType {
-  Picture: File,
-  Title: string,
+  img: String,
+  title: string,
   context: string,
+  range: string,
   open: boolean
 }
 
@@ -25,6 +28,25 @@ export default function AddHelpCodi() {
   const navigate = useNavigate()
   const [SendData, setSendData]= useState<SendType>()
   const SelectOptions = ['친구', '전체']
+
+  useEffect(() => {
+    const Edit = async () => {
+      if (params.HelpCodiId) {
+        const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
+        setSendData(res.data)
+
+        const Picture = document.getElementById("SelectPicture") as HTMLDivElement
+        // 위에 레이어 모두 삭제후
+        Picture.replaceChildren()
+        Picture.style.backgroundImage=`url(${SendData?.img})`
+        Picture.style.backgroundPosition="center"
+        Picture.style.width="auto"
+      }
+    }
+
+    Edit()
+    
+  }, [])
 
   const SelectFile = (e:any) => {
     const input = document.getElementById('SelectCodi') as HTMLInputElement
@@ -55,6 +77,7 @@ export default function AddHelpCodi() {
       return {
         // undefined 타입 지정 오류 처리
         ...state as SendType,
+        range: e.target.value,
         open: e.target.value == "친구" ? false : true
       }
     })
@@ -101,7 +124,7 @@ export default function AddHelpCodi() {
       </CodiBackground>
       }
 
-      <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.Title} onChange={HandleTitle}/>
+      <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>
       <ContextArea placeholder='내용을 입력해주세요' value={SendData?.context} onChange={resize}></ContextArea>
 
       <LabelContainer>
