@@ -27,7 +27,7 @@ const requests = {
 
   // 옷장
   closet: "/closet/all/", // ${} 으로 동적 라우팅
-  removeBackground: "/closet/remove_background",
+  removeBackground: "/closet/removeBg",
   addClothes: "/add/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
   codl: "/closet/cody",
 

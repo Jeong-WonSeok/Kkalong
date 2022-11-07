@@ -119,7 +119,7 @@ export default function AddHelpCodi() {
     } else {
       const res = await axios.post(requests.helpCodi, SendData)
       console.log(res)
-      navigate(`community/HelpCodi/${res.data.Help.help_id}`)
+      navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
     }
   }
 
