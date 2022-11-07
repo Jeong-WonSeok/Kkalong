@@ -28,8 +28,7 @@ export const OauthRedirect = () => {
       axios
         .get(requests.Profile)
         .then((res) => {
-          console.log(res.data.user);
-          console.log("보내기 완료");
+          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
         })
         .catch((err) => {
           // localStorage.setItem("userProfile", )
