@@ -68,8 +68,6 @@ export default function Login() {
         console.log(error);
         setAlert((alert = true));
       });
-    }
-
   };
   return (
     <LoginDiv>
