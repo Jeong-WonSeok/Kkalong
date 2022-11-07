@@ -26,16 +26,17 @@ export const OauthRedirect = () => {
 
     if (role === "ROLE_USER") {
       localStorage.setItem("token", token);
+      window.location.href = "/closet";
       axios
         .get(requests.Profile)
         .then((res) => {
           console.log(res);
+          console.log("보내기 완료");
         })
         .catch((err) => {
           // localStorage.setItem("userProfile", )
           console.log(err);
         });
-      window.location.href = "/";
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
