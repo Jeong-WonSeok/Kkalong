@@ -8,6 +8,7 @@ import FooterBar from "./components/ui/FooterBar";
 import StartPage from "./pages/StartPage";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
+
 // Closet
 import MainCloset from "./pages/Closet/MainCloset";
 import AddCloset from "./pages/Closet/AddCloset";
@@ -53,8 +54,9 @@ function App() {
             <Route path="/" element={<StartPage />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
+
             {/* 출시를 위한 개인정보 처리방침 url */}
-            <Route path="/PersonalInfo" element={<PersonalInfo/>}></Route>
+            <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
             <Route path="/community" element={<MainCommunity />}></Route>
             <Route
               path="/community/BestDress"

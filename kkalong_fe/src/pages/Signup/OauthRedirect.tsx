@@ -9,10 +9,13 @@ import {
   setProvider,
 } from "../../redux/modules/registerReducer";
 import FadeLoader from "react-spinners/FadeLoader";
+import axios from "../../api/axios";
+import requests from "../../api/requests";
 export const OauthRedirect = () => {
   let token: string = useLocation().search.split("=")[1];
   let role = parseJwt(token).roles[0].authority;
   let email = parseJwt(token).sub;
+  let provider = parseJwt(token).provider;
   console.log(parseJwt(token));
 
   const navigate = useNavigate();
@@ -22,20 +25,27 @@ export const OauthRedirect = () => {
     dispatch(SET_TOKEN(token));
 
     if (role === "ROLE_USER") {
-      // localStorage.removeItem('accessToken');
-      localStorage.setItem("accessToken", token);
+      localStorage.setItem("token", token);
+      axios
+        .get(requests.Profile)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          // localStorage.setItem("userProfile", )
+          console.log(err);
+        });
       window.location.href = "/";
     } else {
-      navigate("/signupnext", {
+      localStorage.setItem("provider", provider);
+      localStorage.setItem("token", token);
+      navigate("/signup", {
         state: token,
       });
     }
 
     dispatch(setEmail(email));
     dispatch(setDupEmail(true));
-    // dispatch(setProvider())
-
-    // navigate(navigate_url);
   });
 
   return (

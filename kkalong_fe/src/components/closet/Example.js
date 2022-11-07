@@ -21,7 +21,11 @@ const Example = () => {
               castShadow
             />
             <Model />
-            <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+            <OrbitControls
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+            />
           </Suspense>
         </Canvas>
       </Contain>
@@ -33,7 +37,7 @@ export default Example;
 
 const Contain = styled.div`
   width: 100%;
-  height: 300%;
+  height: 600px;
   margin: 0 auto;
   background: #2d2d2d;
 `;
