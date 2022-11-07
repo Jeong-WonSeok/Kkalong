@@ -299,10 +299,8 @@ public class CommunityController {
             userDto.setProfile_image(user.getImg());
             userDto.setUser_id(user.getId());
 
-            temp.put("Help", help);
-            temp.put("user_id", userDto);
-
-
+            temp.put("Help", h);
+            h.setUser(userDto);
             result.add(temp);
         }
 
@@ -323,6 +321,9 @@ public class CommunityController {
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
         userDto.setProfile_image(user.getImg());
+        userDto.setUser_id(user.getId());
+
+        helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
 
@@ -343,7 +344,6 @@ public class CommunityController {
 
 
         result.put("Help", helpDto);
-        result.put("user_id", userDto);
         result.put("comment", commentArr);
 
 
@@ -373,6 +373,7 @@ public class CommunityController {
         help.setOpen(helpInfo.getOpen());
         help.setTitle(helpInfo.getTitle());
         help.setRange(helpInfo.getRange());
+        help.setUser(new BestDressUserDto());
 
         result.put("Help", help);
         comment.put("content", null);
@@ -380,11 +381,10 @@ public class CommunityController {
         commentUser.put("profile_img", null);
         comment.put("user", commentUser);
         codi.put("codi_img", null);
+
         comment.put("codi_id", codi);
-        userMap.put("nickname", null);
-        userMap.put("profile_img", null);
+
         result.put("comment", comment);
-        result.put("user_id", userMap);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
         return ResponseEntity.ok().body(result);

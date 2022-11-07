@@ -17,4 +17,6 @@ public class HelpResponseDto {
     private String title;
     private String content;
 
+    private BestDressUserDto user;
+
 }
