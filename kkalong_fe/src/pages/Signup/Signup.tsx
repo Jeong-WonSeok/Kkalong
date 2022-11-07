@@ -12,17 +12,28 @@ import PasswordCheckIcon from "../../assets/icon/User/passwordCheck.png";
 import TopNav from "../../components/ui/TopNav";
 import requests from "../../api/requests";
 import axios from "../../api/axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getNameOfDeclaration } from "typescript";
+import { userInfo } from "os";
+import { local } from "../../api/local";
 
 interface userType {
   email: string;
   password: string;
   nickname: string;
+  gender: string;
   age: number;
   weight: number;
   height: number;
   // kakao, google, kkalong 중 하나
   provider: string;
+}
+interface socialuserType {
+  nickname: string;
+  gender: string;
+  age: number;
+  weight: number;
+  height: number;
 }
 
 type nickname = {
@@ -38,18 +49,32 @@ export default function Signup() {
   const [IsClick, setIsClick] = useState(false);
   const [IsNickName, setIsNickname] = useState(false);
   const [IsEmail, setIsEmail] = useState(false);
+  const provider: any = localStorage.getItem("provider");
   const [CheckPassword, setCheckPassWord] = useState("");
   const [UserInfo, setUserInfo] = useState<userType>({
     email: "",
     password: "",
     nickname: "",
+    gender: "",
+    age: 0,
     weight: 0,
     height: 0,
-    age: 0,
+
     // kakao, google, kkalong 중 하나
     provider: "kkalong",
   });
+  const [SocialUser, setSocialUser] = useState<socialuserType>({
+    nickname: "",
+    age: 0,
+    gender: "M",
+    height: 0,
+    weight: 0,
+  });
+  // provider 저장
 
+  const location = useLocation();
+  const token = location.state;
+  const selectList = ["M", "F"];
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
@@ -68,6 +93,7 @@ export default function Signup() {
 
   //이메일 체크 (사용자가 입력한 인증번호)
   const [emailAuthInput, setEmailAuthInput] = useState<String>("");
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -110,7 +136,6 @@ export default function Signup() {
           alert("이미 존재하는 이메일입니다.");
           navigate("/login");
         } else {
-          console.log(res);
           setEmailCheck((current) => ({
             ...current,
             Check: res.data.security,
@@ -133,33 +158,23 @@ export default function Signup() {
 
   const CheckNickname = async () => {
     setIsClick(true);
-    const res = await axios.post(requests.nickname, UserInfo?.nickname);
-    setIsNickname(res.data);
+    const res = await axios.post(requests.nickname, {
+      value: UserInfo?.nickname,
+    });
+    setIsNickname(res.data.usable);
   };
 
   // 회원가입 axios 요청
   const onSubmit = () => {
     // 인증번호를 입력하지 않은경우
-    if (emailAuthInput == "") {
+    if (EmailCheck.Input === "") {
       alert("인증번호를 입력해주세요.");
     }
     // 입력한 인증번호와 실제 인증번호가 같을 경우
-    else if (emailAuth === emailAuthInput) {
+    else if (EmailCheck.Check === EmailCheck.Input) {
       axios
-        .post(
-          requests.signup,
-          {
-            email: email,
-            password: password,
-            provider: "lofi",
-          },
-          {
-            headers: { "Content-type": `application/json` },
-          }
-        )
+        .post(requests.signup, UserInfo)
         .then((response) => {
-          // console.log(response);
-          // window.location.href = "http://localhost:3000/login";
           navigate("/login");
         })
         .catch((error) => {
@@ -170,7 +185,116 @@ export default function Signup() {
       alert("다시 인증해주세요.");
     }
   };
-  if (UserInfo.provider === "kkalong") {
+  const SocialSubmit = () => {
+    // 닉네임이 없는 경우 가입
+    console.log(SocialUser);
+    if (IsNickName === true) {
+      console.log(requests.signupNext);
+      console.log(token);
+      axios
+        .post(requests.signupNext, SocialUser)
+        .then((response) => {
+          navigate("/login");
+        })
+        .catch((error) => {
+          // console.error(error.response);
+        });
+    } else {
+      console.log(IsNickName);
+      alert("닉네임을 확인해주세요.");
+    }
+  };
+
+  if (provider === "kakao" || provider === "google") {
+    return (
+      <div>
+        <TopNav type={"Line"}>
+          <BackArrowImg src={BackArrow} onClick={() => navigate("/login")} />
+          <SignupText>회원가입</SignupText>
+          <div style={{ width: "30px", height: "30px" }}></div>
+        </TopNav>
+        <SignupDiv>
+          <SignupEmailDiv>
+            <div>
+              <SignupIcon src={nickname} />
+              <SignupEmailInput
+                placeholder="닉네임"
+                onChange={(e: any) => {
+                  setSocialUser((current) => ({
+                    ...current,
+                    nickname: e.target.value,
+                  }));
+                }}
+              />
+            </div>
+            <SignupNicknameCheck onClick={CheckNickname}>
+              중복확인
+            </SignupNicknameCheck>
+          </SignupEmailDiv>
+          {IsClick && (
+            <NickNameP IsNickName>
+              {IsNickName
+                ? "사용가능한 닉네임입니다"
+                : "이미 사용중인 닉네임 입니다."}
+            </NickNameP>
+          )}
+          <SignupInputDiv>
+            <SignupAgeInput
+              type="number"
+              placeholder="나이"
+              onChange={(e: any) => {
+                setSocialUser((current) => ({
+                  ...current,
+                  age: e.target.value,
+                }));
+              }}
+            />
+            <SignupIcon src={AgeIcon} />
+          </SignupInputDiv>
+
+          <SignupInfoDiv>
+            <SignupBodyDiv>
+              <SignupBodyInfoInput
+                type="number"
+                placeholder="키"
+                onChange={(e: any) => {
+                  setSocialUser((current) => ({
+                    ...current,
+                    height: e.target.value,
+                  }));
+                }}
+              />
+              <SignupIcon src={HeightIcon} />
+              <InfoSpan>cm</InfoSpan>
+            </SignupBodyDiv>
+            <SignupBodyDiv>
+              <SignupBodyInfoInput
+                type="number"
+                placeholder="몸무게"
+                onChange={(e: any) => {
+                  setSocialUser((current) => ({
+                    ...current,
+                    weight: e.target.value,
+                  }));
+                }}
+              />
+              <SignupIcon src={WeightIcon} />
+              <InfoSpan>kg</InfoSpan>
+            </SignupBodyDiv>
+          </SignupInfoDiv>
+          {/* {IsNickName &&
+            CheckPassword === UserInfo.password &&
+            IsEmail &&
+            UserInfo.age &&
+            UserInfo.height &&
+            UserInfo.weight && ( */}
+          <SubmitButton onClick={SocialSubmit}>회원가입</SubmitButton>
+          {/* )} */}
+        </SignupDiv>
+      </div>
+    );
+    // 소셜로그인 시 보이는 화면
+  } else {
     return (
       <div>
         <TopNav type={"Line"}>
@@ -189,7 +313,7 @@ export default function Signup() {
               이메일 인증
             </SignupEmailCheck>
           </SignupEmailDiv>
-          {EmailCheck.Check && !IsEmail && (
+          {EmailCheck.Check ? (
             <SignupEmailDiv>
               <div>
                 <SignupEmailInput
@@ -205,8 +329,7 @@ export default function Signup() {
               </div>
               <SignupEmailCheck onClick={CheckInput}>인증</SignupEmailCheck>
             </SignupEmailDiv>
-          )}
-
+          ) : null}
           <SignupInputDiv>
             <SignupPasswordInput
               type="password"
@@ -233,7 +356,15 @@ export default function Signup() {
           <SignupEmailDiv>
             <div>
               <SignupIcon src={nickname} />
-              <SignupEmailInput placeholder="닉네임" />
+              <SignupEmailInput
+                placeholder="닉네임"
+                onChange={(e: any) => {
+                  setUserInfo((current) => ({
+                    ...current,
+                    nickname: e.target.value,
+                  }));
+                }}
+              />
             </div>
             <SignupNicknameCheck onClick={CheckNickname}>
               중복확인
@@ -246,101 +377,43 @@ export default function Signup() {
                 : "이미 사용중인 닉네임 입니다."}
             </NickNameP>
           )}
-          <SignupInputDiv>
-            <SignupAgeInput
-              type="number"
-              placeholder="나이"
-              onChange={(e: any) => {
-                setUserInfo((current) => ({
-                  ...current,
-                  age: e.target.value,
-                }));
-              }}
-            />
-            <SignupIcon src={AgeIcon} />
-          </SignupInputDiv>
 
           <SignupInfoDiv>
             <SignupBodyDiv>
               <SignupBodyInfoInput
                 type="number"
-                placeholder="키"
+                placeholder="나이"
+                min={10}
+                max={100}
                 onChange={(e: any) => {
                   setUserInfo((current) => ({
                     ...current,
-                    heihgt: e.target.value,
+                    age: e.target.value,
                   }));
                 }}
               />
-              <SignupIcon src={HeightIcon} />
+              <SignupIcon src={AgeIcon} />
               <InfoSpan>cm</InfoSpan>
             </SignupBodyDiv>
             <SignupBodyDiv>
-              <SignupBodyInfoInput
-                type="number"
-                placeholder="몸무게"
+              <SignupGenderInfoInput
+                placeholder="성별"
                 onChange={(e: any) => {
                   setUserInfo((current) => ({
                     ...current,
-                    weight: e.target.value,
+                    gender: e.target.value,
                   }));
                 }}
-              />
-              <SignupIcon src={WeightIcon} />
-              <InfoSpan>kg</InfoSpan>
-            </SignupBodyDiv>
-          </SignupInfoDiv>
-          {IsNickName &&
-            CheckPassword === UserInfo.password &&
-            IsEmail &&
-            UserInfo.age &&
-            UserInfo.height &&
-            UserInfo.weight && (
-              <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
-            )}
-        </SignupDiv>
-      </div>
-    );
-    // 소셜로그인 시 보이는 화면
-  } else {
-    return (
-      <div>
-        <TopNav type={"Line"}>
-          <BackArrowImg src={BackArrow} onClick={() => navigate("/login")} />
-          <SignupText>회원가입</SignupText>
-          <div style={{ width: "30px", height: "30px" }}></div>
-        </TopNav>
-        <SignupDiv>
-          <SignupEmailDiv>
-            <div>
+              >
+                <option value="" hidden>
+                  성별
+                </option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+              </SignupGenderInfoInput>
               <SignupIcon src={nickname} />
-              <SignupEmailInput placeholder="닉네임" />
-            </div>
-            <SignupNicknameCheck onClick={CheckNickname}>
-              중복확인
-            </SignupNicknameCheck>
-          </SignupEmailDiv>
-          {IsClick && (
-            <NickNameP IsNickName>
-              {IsNickName
-                ? "사용가능한 닉네임입니다"
-                : "이미 사용중인 닉네임 입니다."}
-            </NickNameP>
-          )}
-          <SignupInputDiv>
-            <SignupAgeInput
-              type="number"
-              placeholder="나이"
-              onChange={(e: any) => {
-                setUserInfo((current) => ({
-                  ...current,
-                  age: e.target.value,
-                }));
-              }}
-            />
-            <SignupIcon src={AgeIcon} />
-          </SignupInputDiv>
-
+            </SignupBodyDiv>
+          </SignupInfoDiv>
           <SignupInfoDiv>
             <SignupBodyDiv>
               <SignupBodyInfoInput
@@ -349,7 +422,7 @@ export default function Signup() {
                 onChange={(e: any) => {
                   setUserInfo((current) => ({
                     ...current,
-                    heihgt: e.target.value,
+                    height: e.target.value,
                   }));
                 }}
               />
@@ -371,14 +444,20 @@ export default function Signup() {
               <InfoSpan>kg</InfoSpan>
             </SignupBodyDiv>
           </SignupInfoDiv>
-          {IsNickName &&
+          {/* {IsNickName &&
             CheckPassword === UserInfo.password &&
             IsEmail &&
             UserInfo.age &&
             UserInfo.height &&
-            UserInfo.weight && (
-              <SubmitButton onClick={onSubmit}>회원가입</SubmitButton>
-            )}
+            UserInfo.weight && ( */}
+          <SubmitButton
+            onClick={() => {
+              onSubmit();
+            }}
+          >
+            회원가입
+          </SubmitButton>
+          {/* )} */}
         </SignupDiv>
       </div>
     );
@@ -516,6 +595,17 @@ const SignupBodyDiv = styled.div`
 
 //Body Info Input
 const SignupBodyInfoInput = styled.input`
+  width: 100%;
+  max-width: 130px;
+  border: none;
+  border-radius: 7px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  text-indent: 25px;
+  font-family: var(--base-font-400);
+`;
+
+const SignupGenderInfoInput = styled.select`
   width: 100%;
   max-width: 130px;
   border: none;

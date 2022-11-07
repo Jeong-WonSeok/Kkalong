@@ -8,7 +8,7 @@
 #App {
   width: 100%;
   max-width: 360px;
-  min-height: 610px;
+  min-height: 740px;
   margin: 60px 0 70px 0;
   font-family: var(--base-font-300);
   border: solid 1px;
