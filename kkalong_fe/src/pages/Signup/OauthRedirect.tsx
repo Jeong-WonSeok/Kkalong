@@ -32,7 +32,7 @@ export const OauthRedirect = () => {
   useEffect(() => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
-      localStorage.setItem("token", token);
+      // localStorage.setItem("token", token);
       axios
         .get(requests.Profile)
         .then((res) => {
