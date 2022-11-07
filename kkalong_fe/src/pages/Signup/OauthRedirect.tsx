@@ -30,25 +30,26 @@ export const OauthRedirect = () => {
   let email = parseJwt(token).sub;
   let provider = parseJwt(token).provider;
 
+  if (role === "ROLE_USER") {
+    axios
+      .get(requests.Profile)
+      .then((res) => {
+        localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    navigate("/closet");
+  } else {
+    localStorage.setItem("provider", provider);
+    localStorage.setItem("token", token);
+    navigate("/signup", {
+      state: token,
+    });
+  }
+
   useEffect(() => {
     dispatch(SET_TOKEN(token));
-    if (role === "ROLE_USER") {
-      axios
-        .get(requests.Profile)
-        .then((res) => {
-          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      navigate("/closet");
-    } else {
-      localStorage.setItem("provider", provider);
-      localStorage.setItem("token", token);
-      navigate("/signup", {
-        state: token,
-      });
-    }
 
     // dispatch(setEmail(email));
     // dispatch(setDupEmail(true));
