@@ -33,16 +33,16 @@ export const OauthRedirect = () => {
   useEffect(() => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
-      console.log("하이");
-      axios
-        .get(requests.Profile)
-        .then((res) => {
-          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-          navigate("/closet");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      navigate("/closet");
+      // axios
+      //   .get(requests.Profile)
+      //   .then((res) => {
+      //     localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+      //     navigate("/closet");
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
