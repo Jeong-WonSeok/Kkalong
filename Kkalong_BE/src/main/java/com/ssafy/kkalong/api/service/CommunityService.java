@@ -5,6 +5,7 @@ import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -125,10 +126,10 @@ public class CommunityService {
 
     public List<HelpResponseDto> selectAllHelp() {
         List<Help> help = helpRepository.findAll();
-            List<HelpResponseDto> helpAll = new ArrayList<>();
-            for (Help h : help) {
-                HelpResponseDto helpTemp = new HelpResponseDto(h.getId(), h.getOpen(), h.getImg(), h.getOpenrange(), h.getTitle(), h.getContent());
-            helpAll.add(helpTemp);
+        List<HelpResponseDto> helpAll = new ArrayList<>();
+        for (Help h : help) {
+            HelpResponseDto helpTemp = new HelpResponseDto(h.getId(), h.getOpen(), h.getImg(), h.getOpenrange(), h.getTitle(), h.getContent(), new BestDressUserDto());
+        helpAll.add(helpTemp);
         }
 
         return helpAll;
