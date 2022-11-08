@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Search from "../../components/ui/Search";
+
 import SpaoIcon from "../../assets/icon/Brand/spao.png";
 import HnMIcon from "../../assets/icon/Brand/h&m.png";
 import EightSecondsIcon from "../../assets/icon/Brand/eight.png";
 import ZaraIcon from "../../assets/icon/Brand/zara.png";
-import FooterBar from "../../components/ui/FooterBar";
-import TopNav from "../../components/ui/TopNav";
 import backArrow from "../../assets/icon/Nav/BackArrow.png"
 
+import Search from "../../components/ui/Search";
+import FooterBar from "../../components/ui/FooterBar";
+import TopNav from "../../components/ui/TopNav";
+
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
+interface BrandType {
+  img: string;
+  brand_id: number;
+}
+
 export default function VirtualBrandChoice() {
-  interface BrandType {
-    img: string;
-    brand_id: number;
-  }
-
   const navigate = useNavigate();
-
   const [Brand, setBrand] = useState(Array<BrandType>);
 
-  // const onClickBrandButton = (event: any) => {
-
-  //   navigate(`/VirtualFitting/VirtualBrandChoice/${event.brand_id}`)
-  // }
 
   useEffect(() => {
     setBrand([
@@ -62,14 +62,18 @@ export default function VirtualBrandChoice() {
     ]);
   }, []);
 
+  // filter 로 구현할 예정임
+  const SearchBrand = async(Text: string) => {
+    
+  }
+
   return (
     <VirtualBrandChoiceDiv>
       <TopNav type={"menu"}>
         <VirtualBrandChoiceText>브랜드 선택</VirtualBrandChoiceText>
         <div style={{width:"54px", height:"38px"}}></div>
       </TopNav>
-      <VirtualUserSearch>유저검색</VirtualUserSearch>
-      <Search></Search>
+      <Search Search={SearchBrand}>브랜드 검색</Search>
       <VirtualLine></VirtualLine>
       <VirtualBrandButtonDiv>
         {Brand.map((logo) => {

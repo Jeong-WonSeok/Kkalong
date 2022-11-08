@@ -44,23 +44,8 @@ export default function CodiPage() {
     speed: 500,
   };
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
-  let [cltext, setCltext] = useState([
-    "전체",
-    "상의",
-    "겉옷",
-    "하의",
-    "신발",
-    "악세서리",
-  ]);
-  let [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-  ]);
+  let [cltext, setCltext] = useState(["전체","상의","겉옷","하의","신발","악세서리"]);
+  let [sortclothes, setSortclothes] = useState([img1,img2,img3,img4,img5,img6,img7]);
   let [btn, setBtn] = useState(false);
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   useEffect(() => {}, []);

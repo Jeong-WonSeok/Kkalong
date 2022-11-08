@@ -69,7 +69,7 @@ export default function MainCloset() {
     const start = async () => {
       if (params.UserId) {
         // 타인이 볼 때
-        const res = await axios.get(requests.closet + params.UserId);
+        const res = await axios.get(requests.closet + params.UserId)
       } else {
         // 자기자신
         const res = await axios.get(requests.closet + params.UserId);
