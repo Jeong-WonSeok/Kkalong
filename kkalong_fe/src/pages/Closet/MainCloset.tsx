@@ -63,17 +63,6 @@ export default function MainCloset() {
   let [sls, setSls] = useState("");
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  setTimeout(() => {
-    axios
-      .get(requests.Profile)
-      .then((res) => {
-        localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, 1000);
-  useEffect(() => {}, []);
 
   return (
     <div style={{ marginBottom: "70px" }}>
