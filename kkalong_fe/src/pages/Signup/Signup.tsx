@@ -189,10 +189,12 @@ export default function Signup() {
     // 닉네임이 없는 경우 가입
     console.log(SocialUser);
     if (IsNickName === true) {
-      console.log(requests.signupNext);
-      console.log(token);
       axios
-        .post(requests.signupNext, SocialUser)
+        .post("http://k7b302.p.ssafy.io/api/v1/user/signupNext", SocialUser, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")!,
+          },
+        })
         .then((response) => {
           navigate("/login");
         })
