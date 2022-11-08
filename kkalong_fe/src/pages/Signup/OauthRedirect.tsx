@@ -33,19 +33,20 @@ export const OauthRedirect = () => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
       localStorage.setItem("token", token);
-      setTimeout(() => {
-        axios
-          .get(requests.Profile)
-          .then((res) => {
-            localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-            navigate("/closet");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 1000);
 
-      navigate("/closet");
+      axios
+        .get("http://k7b302.p.ssafy.io/api/v1/user/social/login", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")!,
+          },
+        })
+        .then((res) => {
+          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+          navigate("/closet");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       localStorage.setItem("provider", provider);
       localStorage.setItem("token", token);
