@@ -68,7 +68,7 @@ export default function MainCloset() {
   useEffect(() => {
     const start = async () => {
       if (params.UserId) {
-        // 타인이 볼 때
+        // 타인이 볼
         const res = await axios.get(requests.closet + params.UserId)
       } else {
         // 자기자신
