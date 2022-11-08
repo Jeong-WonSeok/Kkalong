@@ -52,11 +52,6 @@ export default function AddHelpCodi() {
   const SelectOptions = ['친구', '모두']
 
   useEffect(() => {
-    const app = document.getElementById('App') as HTMLDivElement
-    const Container = document.getElementById('Container') as HTMLDivElement
-    if (Number(Container.style.height) < 610) {
-      app.style.minHeight= '610px'
-    }
     const Edit = async () => {
       if (params.HelpCodiId) {
         
