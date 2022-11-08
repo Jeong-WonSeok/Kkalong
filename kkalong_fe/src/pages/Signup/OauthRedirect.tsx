@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { parseJwt } from "../../api/local";
+import { local, parseJwt } from "../../api/local";
 import { SET_TOKEN } from "../../redux/modules/Auth";
 import {
   setDupEmail,
@@ -15,7 +15,6 @@ export const OauthRedirect = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let token: string = useLocation().search.split("=")[1];
-  localStorage.setItem("token", token);
   if (token === "google") {
     window.location.href = "/login";
     alert("이미 가입된 유저입니다. 구글로 로그인 해주세요");
@@ -33,6 +32,7 @@ export const OauthRedirect = () => {
   useEffect(() => {
     dispatch(SET_TOKEN(token));
     if (role === "ROLE_USER") {
+      localStorage.setItem("token", token);
       navigate("/closet");
       // axios
       //   .get(requests.Profile)
