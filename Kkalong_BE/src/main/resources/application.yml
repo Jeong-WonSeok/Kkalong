@@ -65,7 +65,7 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      #format_sql: true
+#      format_sql: true
       ddl-auto: update
 
 logging:

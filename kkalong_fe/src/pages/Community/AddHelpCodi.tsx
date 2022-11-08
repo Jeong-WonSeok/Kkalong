@@ -1,6 +1,8 @@
-import { useState } from 'react'
-import styled from 'styled-components'
+import { useState, useEffect } from 'react'
+import styled, { keyframes } from 'styled-components'
 import { useParams, useNavigate } from 'react-router-dom'
+import axios from  '../../api/axios'
+import requests from  '../../api/requests'
 
 import FooterBar from '../../components/ui/FooterBar'
 import TopNav from '../../components/ui/TopNav'
@@ -11,30 +13,98 @@ import { CodiBackground, SelectContainer, ImgContainer,SelectImg, SelectSpan } f
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
+import index from '../Recommend'
+import { original } from '@reduxjs/toolkit'
 
 interface SendType {
-  Picture: File,
-  Title: string,
-  context: string,
+  img: String,
+  title: string,
+  content: string,
+  range: string,
   open: boolean
 }
 
+interface CodyType {
+  img: string,
+  name: string,
+  creater: number,
+  open: boolean
+}
+
+interface User {
+  user_id : number
+  email : string
+  nickname : string
+  gender : string
+  age : number
+  height : number
+  weight : number
+  follwers : Array<number>
+  followings : Array<number>
+}
 
 export default function AddHelpCodi() {
   const params = useParams()
   const navigate = useNavigate()
   const [SendData, setSendData]= useState<SendType>()
-  const SelectOptions = ['친구', '전체']
+  const [CodyList ,setCodyList] = useState(Array<CodyType>)
+  const [IsSelectCody, setIsSelectCody] = useState(false)
+  const SelectOptions = ['친구', '모두']
 
-  const SelectFile = (e:any) => {
-    const input = document.getElementById('SelectCodi') as HTMLInputElement
-    input.click()
+  useEffect(() => {
+    const Edit = async () => {
+      if (params.HelpCodiId) {
+        
+        const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
+        setSendData({
+          img: res.data.Help.help_img,
+          title: res.data.Help.title,
+          open: res.data.Help.open,
+          content: res.data.Help.content,
+          range: res.data.Help.range,
+        })
+
+        const Picture = document.getElementById("SelectPicture") as HTMLDivElement
+        // 위에 레이어 모두 삭제후
+        Picture.replaceChildren()
+        Picture.style.backgroundImage=`url(${SendData?.img})`
+        Picture.style.backgroundPosition="center"
+        Picture.style.width="auto"
+      }
+      
+      if (params.Category === "Closet") {
+        setSendData((prev) => ({
+          ...prev as SendType,
+          img: '',
+          open: true,
+          range: '친구'
+        }))
+      }
+    }
+
+    Edit()
+    
+  }, [])
+
+
+  // 코디 선택하는 로직, 옷장 완성되고 나서 진행
+  const SelectCody = async (e:any) => {
+    // const user = localStorage.getItem('useProfile') as User
+    // const res = await axios.get(requests.closet + user.user_id)
+    // setCodyList(res.data.closets[0].codies)
+    setCodyList([{
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAA0YOa2BQN1ttzmrK1Bdfnw_Y4u_oMD3vpA&usqp=CAU',
+      name: '여름코디',
+      creater: 1,
+      open: true
+    }])
+    setIsSelectCody(true)
   }
 
   const resize = (e: any) => {
     setSendData((prevState: any) => ({
       ...prevState,
-      "context": e.target.value
+      "content": e.target.value
     }))
     const textEle = document.getElementById('Context') as HTMLTextAreaElement
     textEle.style.height = '1px';
@@ -45,7 +115,7 @@ export default function AddHelpCodi() {
     setSendData((current) => {
       return({
         ...current as SendType,
-        itle: e.target.value
+        title: e.target.value
       })
     })
   }
@@ -55,27 +125,74 @@ export default function AddHelpCodi() {
       return {
         // undefined 타입 지정 오류 처리
         ...state as SendType,
-        open: e.target.value == "친구" ? false : true
+        range: e.target.value,
       }
     })
   }
 
-  const ChangePicture = (e: any) => {
+  const ChangePicture = (idx: any) => {
     setSendData((state) => {
       return {
         // undefined 타입 지정 오류 처리
         ...state as SendType,
-        Picture: e.target.files[0]
+        img: CodyList[idx].img
       }
     })
     const Picture = document.getElementById("SelectPicture") as HTMLDivElement
     // 위에 레이어 모두 삭제후
     Picture.replaceChildren()
-    const ImgUrl = URL.createObjectURL(e.target.files[0])
-    Picture.style.backgroundImage=`url(${ImgUrl})`
+    Picture.style.backgroundImage=`url(${CodyList[idx].img})`
     Picture.style.backgroundPosition="center"
-    Picture.style.width="auto"
+    Picture.style.width="210px"
+
+    setIsSelectCody(false)
   }
+  
+  const Submit = async () => {
+    // 코디 피드백
+    if (params.Category === "Codi") {
+
+    // 코디 추천
+    } else {
+      const res = await axios.post(requests.helpCodi, SendData)
+      console.log(res)
+      navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+    }
+  }
+
+  let posY = 0;
+  let originalY = 0;
+
+  const dragStartHandler = (e:any) => {
+    const CodyDiv = document.getElementById('move') as HTMLDivElement
+    // 현재 y의 위치
+    posY = e.clientY ? e.clientY : e.changedTouches[0].clientY
+    originalY = CodyDiv.offsetTop
+  };
+
+  const dragHandler = (e:any) => {
+    const CodyDiv = document.getElementById('move') as HTMLDivElement
+    const moveY = e.clientY ? e.clientY : e.changedTouches[0].clientY
+    CodyDiv.style.top = `${CodyDiv.offsetTop + moveY - posY}px`;
+    if (Number(CodyDiv.style.top) < 240) {
+      CodyDiv.style.height = `740 - ${CodyDiv.style.top}`
+    } else {
+      CodyDiv.style.height = '500px'
+    }
+    posY = moveY
+  };
+
+  const dragEndHandler = (e:any) => {
+    const moveY = e.clientY ? e.clientY : e.changedTouches[0].clientY
+    const CodyDiv = document.getElementById('move') as HTMLDivElement
+    if (originalY < moveY) {
+      CodyDiv.style.top = ''
+      CodyDiv.style.bottom = '-380px'
+    } else if (originalY > posY) {
+      CodyDiv.style.top = ''
+      CodyDiv.style.bottom = '0px'
+    }
+  };
 
   return (
     <div>
@@ -84,35 +201,68 @@ export default function AddHelpCodi() {
         <AdjustBackArrow src={backArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도와주세요 패알못😂</CategoryText>
-        <SubmitBtn>작성</SubmitBtn>
+        <SubmitBtn onClick={Submit}>작성</SubmitBtn>
       </TopNav>
 
-      <AddContainer>
+      <AddContainer id="Container">
         {/* 코디 추가 시 */}
         {params.Category === "Codi" && 
-        <CodiBackground id="SelectPicture" onClick={SelectFile}>
+        <CodiBackground id="SelectPicture" onClick={SelectCody}>
         <SelectContainer>
           <ImgContainer>
             <SelectImg src={AddCodi}/>
             <SelectSpan>코디 추가</SelectSpan>
           </ImgContainer>
         </SelectContainer>
-      <CodiInput id="SelectCodi" type="file" onChange={ChangePicture} accept="image/*" required/>
       </CodiBackground>
       }
 
-      <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.Title} onChange={HandleTitle}/>
-      <ContextArea placeholder='내용을 입력해주세요' value={SendData?.context} onChange={resize}></ContextArea>
+      {/* 코디 선택 창 */}
+      {IsSelectCody &&
+        <CodyContainer id="move">
+          <TopSlider
+          onDragStart={dragStartHandler} 
+          onTouchStart={dragStartHandler}
+          onDrag={dragHandler} 
+          onTouchMove={dragHandler}
+          onDragEnd={dragEndHandler}
+          onTouchEnd={dragEndHandler}>
+            <TopSliderButton></TopSliderButton>
+          </TopSlider>
+          <CodyListContainer>
+            {CodyList.map((Cody, idx) => {
+              return(
+                <CodyInfoContainer key={idx} onClick={()=>ChangePicture(idx)}>
+                  <CodyImg src={Cody.img}/>
+                  <CodyP>{Cody.name}</CodyP>
+                </CodyInfoContainer>
+              )
+            })}
+          </CodyListContainer>
+        </CodyContainer>
+      }
+
+      <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>
+      <ContextArea id="Context" placeholder='내용을 입력해주세요' value={SendData?.content} onChange={resize}>{SendData?.content}</ContextArea>
 
       <LabelContainer>
         <Label>옷장 공개 범위</Label>
         <SelectOpen onChange={HandleOpen}>
           {SelectOptions.map((Option, idx) => {
-            return (
-              <SelectOption value={Option} key={idx} >
-                {Option}
-              </SelectOption>
-            )
+            if (SendData?.range === Option) {
+              return (
+                <SelectOption selected value={Option} key={idx} >
+                  {Option}
+                </SelectOption>
+              )
+            } else {
+              return (
+                <SelectOption value={Option} key={idx} >
+                  {Option}
+                </SelectOption>
+              )
+            }
+            
           })}
         </SelectOpen>
       </LabelContainer>
@@ -129,15 +279,12 @@ const AddContainer = styled(Container)`
   align-items: center;
   display: flex;
   flex-direction: column;
+  z-index: 0;
 `
 
 const AdjustBackArrow = styled(BackArrow)`
   padding: 5px 30px 5px 0px;
 `
-
-const CodiInput = styled.input`
-  display: none;
-` 
 
 const TitleInput = styled.input`
   margin-top: 10px;
@@ -160,6 +307,7 @@ const ContextArea = styled.textarea`
   border: none;
   font-family: var(--base-font-300);
   background-color: var(--primary-color-100);
+  height: 43.992px;
   width: 90%;
 `
 
@@ -196,4 +344,81 @@ const SelectOption = styled.option`
   &:hover {
     background-color: var(--primary-color-200);
   }
+`
+
+const SliderOpenEvent = keyframes`
+  0% {
+    -webkit-transform: translateY(1000px);
+            transform: translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+`
+
+const CodyContainer = styled.div`
+  border-radius: 20px 20px 0 0;
+  border-top: 3px solid var(--primary-color-900);
+  position: fixed;
+  bottom: 0px;
+  left: auto;
+  background-color: white;
+  height: 500px;
+  width: 100%;
+  max-width: 360px;
+  animation: ${SliderOpenEvent} 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  /* 선택하다가 푸터바를 건들이지 않기 위한 z-index */
+  z-index: 5;
+`
+
+const TopSlider = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-width: 360px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const TopSliderButton = styled.div`
+  width: 60px;
+  height: 7px;
+  background-color: var(--primary-color-900);
+  border-radius: 5px;
+`
+
+const CodyListContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 40px;
+`
+
+const CodyInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color-500);
+`
+
+const CodyImg = styled.img`
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+`
+
+const CodyP = styled.p`
+  font-family: var(--base-font-400);
+  font-size: 14px;
+  margin: 5px;
+  text-align: center;
 `

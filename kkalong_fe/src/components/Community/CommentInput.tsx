@@ -1,3 +1,4 @@
+import { request } from 'http'
 import { useState } from 'react'
 import styled from 'styled-components'
 import axios from '../../api/axios'
@@ -6,14 +7,19 @@ import { commentType } from '../../pages/Community/DetailHelpCodi'
 
 export default function CommentInput({article_id, category, CommentsInput} :{article_id: number, category:string, CommentsInput: (data: commentType) => void}) {
   const [Message, setMessage] = useState('')
+  const [CodiImg, setCodiImg] = useState('')
 
   const SendMessage = async () => {
     // axios 요청 보내기
     if (category === "closet" || category == "cody") {
-      const res = await axios.post(requests.detailHelpCodi + String(article_id) + requests.comment, Message)
+      const data = {
+        content: Message,
+        codi_id: CodiImg
+      }
+      const res = await axios.post(requests.detailHelpCodi + article_id + '/reply' , data)
       CommentsInput(res.data)
     } else {
-      const res = await axios.post(requests.detailBestDress + String(article_id) + requests.comment, Message)
+      const res = await axios.post(requests.detailBestDress + article_id + requests.comment, Message)
       CommentsInput(res.data)
     }
     setMessage('')
