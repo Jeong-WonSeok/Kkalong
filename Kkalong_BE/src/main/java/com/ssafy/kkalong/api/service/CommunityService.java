@@ -164,7 +164,6 @@ public class CommunityService {
     }
 
     public void deleteHelp(int help_id) {
-        System.out.println(help_id);
         helpRepository.deleteById(help_id);
     }
 
