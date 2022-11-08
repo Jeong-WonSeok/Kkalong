@@ -65,15 +65,16 @@ export default function MainCloset() {
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
 
   useEffect(() => {
-    axios
-      .get(requests.Profile)
-      .then((res) => {
-        localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-        console.log("화이팅");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setTimeout(() => {
+      axios
+        .get(requests.Profile)
+        .then((res) => {
+          localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, 1000);
   }, []);
 
   return (
