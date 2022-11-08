@@ -43,7 +43,7 @@ export const OauthRedirect = () => {
           .catch((err) => {
             console.log(err);
           });
-      }, 2000);
+      }, 1000);
 
       navigate("/closet");
     } else {
