@@ -31,8 +31,6 @@ import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import { SelectBtnContainer } from "./MainCloset";
 
-
-
 export default function CodiPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
