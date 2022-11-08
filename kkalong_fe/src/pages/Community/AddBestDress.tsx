@@ -12,9 +12,10 @@ import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddExample from '../../assets/icon/Community/AddExample.png'
 import FooterBar from '../../components/ui/FooterBar'
 import {ArticleType} from '../../pages/Community/DetailBestDress'
+import FormDataChange from '../../hooks/FormDataChange'
 
 interface SendType {
-  Picture: File | String,
+  post_img: File | String,
   content: string
 }
 
@@ -30,13 +31,13 @@ export default function AddBestDress() {
         const res = await axios.get(requsets.detailBestDress + String(params.Id))
         const BestDress = res.data as ArticleType
         setSendData({
-          Picture: BestDress.post_img,
+          post_img: BestDress.post_img,
           content: BestDress.post_content 
         })
         const Picture = document.getElementById("SelectPicture") as HTMLDivElement
         // 위에 레이어 모두 삭제후
         Picture.replaceChildren()
-        Picture.style.backgroundImage=`url(${SendData?.Picture})`
+        Picture.style.backgroundImage=`url(${SendData?.post_img})`
         Picture.style.backgroundPosition="center"
         Picture.style.width="auto"
       }
@@ -51,7 +52,7 @@ export default function AddBestDress() {
   const resize = (e: any) => {
     setSendData((prevState: any) => ({
       ...prevState,
-      "context": e.target.value
+      "content": e.target.value
     }))
     const textEle = document.getElementById('Context') as HTMLTextAreaElement
     textEle.style.height = '1px';
@@ -59,12 +60,11 @@ export default function AddBestDress() {
   }
 
   const ChangePicture = (e: any) => {
-    console.log(e.target.files[0])
     setSendData((state) => {
       return {
         // undefined 타입 지정 오류 처리
         ...state as SendType,
-        Picture: e.target.files[0]
+        post_img: e.target.files[0]
       }
     })
 
@@ -77,12 +77,25 @@ export default function AddBestDress() {
     Picture.style.width="auto"
   }
 
-  const Submit = async() => {
+  const Submit = async () => {
+    const result = FormDataChange(SendData)
+    // FormData의 value 확인
+    console.log(result.get("file"))
+    console.log(result.get("content"))
+    
     if (params.Id) {
-      await axios.put(requsets.detailBestDress + params.Id, SendData)
+      await axios.put(requsets.detailBestDress + params.Id, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+        },
+        data: result})
       navigate(`community/BestDress/${params.Id}`)
     } else {
-      const res = await axios.post(requsets.detailBestDress, SendData)
+      const res = await axios.post(requsets.bestDress, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
+        },
+        data: result})
       navigate(`community/BestDress/${res.data.post_id}`)
     }
   }
@@ -94,7 +107,7 @@ export default function AddBestDress() {
         <MenuImg src={BackArrow} onClick={()=>navigate(-1)}/>
         </div>
         <CategoryText>도전! 베스트 드레서✨</CategoryText>
-        <SubmitBtn onClick={()=>Submit}>작성</SubmitBtn>
+        <SubmitBtn onClick={Submit}>작성</SubmitBtn>
       </TopNav>
       <AddContainer>
         <PictureDiv>

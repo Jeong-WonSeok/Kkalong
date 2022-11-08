@@ -1,35 +1,30 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useRef, useCallback} from 'react'
+import { useNavigate } from 'react-router-dom';
 import Webcam from "react-webcam";
-import 'react-html5-camera-photo/build/css/index.css';
 import styled from 'styled-components';
 
 import TopNav from '../../components/ui/TopNav';
 
 import Close from '../../assets/icon/Nav/close.png'
-import { useNavigate } from 'react-router-dom';
+import axios from '../../api/axios'
+import requests from '../../api/requests'
 
 export default function AddClothes() {
   const navigate = useNavigate()
+  const webcam = useRef<Webcam>(null)
+  const [url, setUrl] = useState<string | ''>('');
   const seasons = ['봄', '여름', '가을', '겨울']
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.margin = '0'
   },[])
 
-  const [dataUri, setDataUri] = useState('');
 
   const videoConstraints = {
-    width: 1280,
-    height: 720,
+    width: 1024,
+    height: 768,
     facingMode: "user"
   };
-
-  const handleTakePhotoAnimationDone = (dataUri: string) => {
-    setDataUri(dataUri);
-    //axios 요청 보내기
-    const app = document.getElementById('App') as HTMLDivElement
-    app.style.marginTop = '60px'
-  }
 
   const ChangeBackground = (season: string) => {
     const check = document.getElementById(season) as HTMLInputElement
@@ -44,10 +39,28 @@ export default function AddClothes() {
     
   }
 
+  const capture = useCallback(async () => {
+    const imageSrc = webcam.current?.getScreenshot();
+    if (imageSrc) {
+      // base64 코드를 File로 변환
+      const byteCharacters = URL.createObjectURL(new Blob([imageSrc] , {type:'text/plain'}));
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+
+      let image = new Blob([byteArray], { type: 'image/jpeg' });
+      setUrl(imageSrc);
+      // 이대로 넘겨주는게 맞나?
+      const res = await axios.post(requests.removeBackground, image)
+    }
+  }, [webcam]); 
+
   return (
     <div>
       {
-        (dataUri)
+        (url)
           ? 
           <div>
             <TopNav type={''}>
@@ -58,7 +71,7 @@ export default function AddClothes() {
 
             <Container>
               <ImgContainer>
-                <ImagePreview src={dataUri}/>
+                <ImagePreview src={url}/>
               </ImgContainer>
 
               <SeasonCategory>
@@ -82,28 +95,66 @@ export default function AddClothes() {
           </div>
 
           : 
-          <div></div>
           // 모바일 캠 적용중
-          // <WebCam 
-          // audio={false}
-          // height={720}
-          // screenshotFormat="image/jpeg"
-          // width={1280}
-          // videoConstraints={videoConstraints}>
-          //   {({ getScreenshot }) => (
-          //         <button
-          //           onClick={() => {
-          //             const imageSrc = getScreenshot()
-          //           }}
-          //         >
-          //           Capture photo
-          //         </button>
-          //       )}
-          // </WebCam>
+          <CamDiv>
+            <Webcam 
+              audio={false}
+              screenshotFormat="image/jpeg"
+              ref={webcam}
+              videoConstraints={videoConstraints}
+              onUserMediaError={() => window.alert('cant access your camera')}/>
+            <ButtonContainer>
+              <CaptureButton onClick={capture}>
+              <ChildCaptureButton></ChildCaptureButton>
+              </CaptureButton>
+            </ButtonContainer>
+          </CamDiv>
+          
       }
     </div>
   );
 }
+
+const CamDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+`
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: auto;
+  width: 100%;
+  height: 70px;
+  max-width: 360px;
+  display: flex;
+  justify-content: center;
+`
+
+const CaptureButton = styled.div`
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid black;
+  position: relative;
+  z-index: 5;
+`
+
+const ChildCaptureButton = styled.div`
+  left: -7.5px;
+  top: -7.5px;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid black;
+  z-index: 3;
+`
+
 
 const ImagePreview = styled.img`
   width: 100%;
