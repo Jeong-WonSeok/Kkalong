@@ -417,14 +417,14 @@ public class CommunityController {
 
 
 
-    @Autowired
-    FirebaseService firebaseService;
-    @PostMapping("/files")
-    public String uploadFile(@RequestParam("file") MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
-        if (file.isEmpty()) {
-            return "is empty";
-        }
-        return firebaseService.uploadFiles(file,nameFile);
-    }
+//    @Autowired
+//    FirebaseService firebaseService;
+//    @PostMapping("/files")
+//    public String uploadFile(@RequestParam("file") MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
+//        if (file.isEmpty()) {
+//            return "is empty";
+//        }
+//        return firebaseService.uploadFiles(file,nameFile);
+//    }
 
 }
