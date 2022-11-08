@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
-import axios from '../../api/axios'
-import requests from '../../api/requests'
+import axios from "../../api/axios";
+import requests from "../../api/requests";
 
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
@@ -28,8 +28,6 @@ import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../../components/closet/Carousel";
-import axios from "../../api/axios";
-import requests from "../../api/requests";
 // import { ClothesProps } from "../../components/closet/Carousel";
 export interface ClothesProps {
   sortclothes: string[];
@@ -71,20 +69,18 @@ export default function MainCloset() {
     const start = async () => {
       if (params.UserId) {
         // 타인이 볼 때
-        const res = await axios.get(requests.closet + params.UserId)
+        const res = await axios.get(requests.closet + params.UserId);
       } else {
         // 자기자신
-        const res = await axios.get(requests.closet + params.UserId)
+        const res = await axios.get(requests.closet + params.UserId);
       }
-    }
-    start()
-  },)
+    };
+    start();
+  });
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
 
-  const GoCody = () => {
-    
-  }
+  const GoCody = () => {};
 
   return (
     <div style={{ marginBottom: "70px" }}>
@@ -98,21 +94,19 @@ export default function MainCloset() {
       <>
         <Carousel sortclothes={sortclothes} />
         <SelectBtnContainer>
-        <SelectBtn
-          onClick={() => {
-            navigate("/closet");
-          }}
-        >
-          <SelectColor1 />
-          <SelectText>옷장</SelectText>
-        </SelectBtn>
-        <img src={Bar} />
-        <SelectBtn
-          onClick={GoCody}
-        >
-          <SelectColor2 />
-          <SelectText>코디</SelectText>
-        </SelectBtn>
+          <SelectBtn
+            onClick={() => {
+              navigate("/closet");
+            }}
+          >
+            <SelectColor1 />
+            <SelectText>옷장</SelectText>
+          </SelectBtn>
+          <img src={Bar} />
+          <SelectBtn onClick={GoCody}>
+            <SelectColor2 />
+            <SelectText>코디</SelectText>
+          </SelectBtn>
         </SelectBtnContainer>
       </>
 
