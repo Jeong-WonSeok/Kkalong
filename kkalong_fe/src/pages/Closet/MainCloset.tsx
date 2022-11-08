@@ -5,8 +5,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
-import axios from '../../api/axios'
-import requests from '../../api/requests'
+import axios from "../../api/axios";
+import requests from "../../api/requests";
 
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
@@ -68,27 +68,25 @@ export default function MainCloset() {
   useEffect(() => {
     const start = async () => {
       if (params.UserId) {
-        // 타인이 볼
+        // 타인이 볼 때
         const res = await axios.get(requests.closet + params.UserId)
       } else {
         // 자기자신
-        const res = await axios.get(requests.closet + params.UserId)
+        const res = await axios.get(requests.closet + params.UserId);
       }
-    }
-    start()
-  },)
+    };
+    start();
+  });
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
 
-  const GoCody = () => {
-    
-  }
+  const GoCody = () => {};
 
   return (
-    <div style={{marginBottom: '70px'}}>
+    <div style={{ marginBottom: "70px" }}>
       <TopNav type={"menu"}>
         <CategoryText1>옷장</CategoryText1>
-        <div style={{width: "54px", height: "38px"}}>
+        <div style={{ width: "54px", height: "38px" }}>
           <MenuIcon src={menu} />
         </div>
       </TopNav>
@@ -96,47 +94,45 @@ export default function MainCloset() {
       <>
         <Carousel sortclothes={sortclothes} />
         <SelectBtnContainer>
-        <SelectBtn
-          onClick={() => {
-            navigate("/closet");
-          }}
-        >
-          <SelectColor1 />
-          <SelectText>옷장</SelectText>
-        </SelectBtn>
-        <img src={Bar} />
-        <SelectBtn
-          onClick={GoCody}
-        >
-          <SelectColor2 />
-          <SelectText>코디</SelectText>
-        </SelectBtn>
+          <SelectBtn
+            onClick={() => {
+              navigate("/closet");
+            }}
+          >
+            <SelectColor1 />
+            <SelectText>옷장</SelectText>
+          </SelectBtn>
+          <img src={Bar} />
+          <SelectBtn onClick={GoCody}>
+            <SelectColor2 />
+            <SelectText>코디</SelectText>
+          </SelectBtn>
         </SelectBtnContainer>
       </>
 
       <Category>
-      {clothes.map(function (a, i) {
-        return (
-          <ClothesBtn>
-            <img src={clothes[i]} />
-            <ClothesText>{cltext[i]}</ClothesText>
-          </ClothesBtn>
-        );
-      })}
+        {clothes.map(function (a, i) {
+          return (
+            <ClothesBtn>
+              <img src={clothes[i]} />
+              <ClothesText>{cltext[i]}</ClothesText>
+            </ClothesBtn>
+          );
+        })}
       </Category>
-      
+
       <SortClothesContainer>
-      {sortclothes.map(function (a, i) {
-        return (
-          <SortClothes>
-            <ClothesImg src={sortclothes[i]}/>
-          </SortClothes>
-        );
-      })}
+        {sortclothes.map(function (a, i) {
+          return (
+            <SortClothes>
+              <ClothesImg src={sortclothes[i]} />
+            </SortClothes>
+          );
+        })}
       </SortClothesContainer>
-      
+
       <AddClothesContainer>
-        <AddClothes onClick={()=>navigate('/closet/add')}>
+        <AddClothes onClick={() => navigate("/closet/add")}>
           <img src={camera} />
         </AddClothes>
       </AddClothesContainer>
@@ -163,7 +159,6 @@ const SelectText = styled.p`
   color: #6b6060;
 `;
 
-
 export const Category = styled.div`
   margin-top: 20px;
   width: 100%;
@@ -171,7 +166,7 @@ export const Category = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-`
+`;
 
 const MenuIcon = styled.img`
   width: 30px;
@@ -186,7 +181,7 @@ export const SelectBtnContainer = styled.div`
   height: 30px;
   display: flex;
   flex-direction: row;
-`
+`;
 
 const SelectBtn = styled.button`
   width: 170px;
@@ -242,7 +237,7 @@ export const SortClothesContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: start;
-`
+`;
 
 export const SortClothes = styled.button`
   padding: 0;
@@ -257,7 +252,7 @@ export const SortClothes = styled.button`
 export const ClothesImg = styled.img`
   max-width: 80px;
   max-height: 80px;
-`
+`;
 
 const AddClothesContainer = styled.div`
   width: 100%;
@@ -266,7 +261,7 @@ const AddClothesContainer = styled.div`
   position: fixed;
   bottom: 70px;
   left: auto;
-`
+`;
 
 const AddClothes = styled.button`
   height: 60px;
