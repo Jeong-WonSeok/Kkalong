@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
 import MyImg from '../../assets/icon/MyPage/My.png'
 import ArticleIcon from '../../assets/icon/MyPage/article.png'
@@ -11,7 +14,8 @@ import MoveIcon from '../../assets/icon/MyPage/move.png'
 
 import FooterBar from '../../components/ui/FooterBar';
 
-interface UserType {
+
+export interface UserType {
   user_id : number
   email : string
   nickname : string
@@ -25,30 +29,31 @@ interface UserType {
 
 export default function MyPage() {
   const params = useParams()
-  const [User, setUser] = useState<UserType>()
+  const navigate = useNavigate();
+  const [User, setUser] = useState<UserType>()  
 
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.marginTop = '0'
-    console.log(JSON.parse(localStorage?.getItem('useProfile')as string))
-    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+    const start = async() => {
+      if (params.userId) {
+        const Input = {value: params.userId}
+        const res = await axios.get(requests.otherProfile, {
+          params: {
+            value: Number(params.userId)
+          }
+        })
+        setUser(res.data.user)
+      } else {
+        setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+      }
+    }
+    start()
+    return () => {
+      app.style.marginTop = '60px'
+    }
   },[])
 
-  const navigate = useNavigate();
-
-  const handleArticle = () => {
-    navigate(`Article`)
-  }
-
-  const handleFriend = () => {
-    navigate(`Friend`)
-
-  }
-
-  const handleUpdate = () => {
-    navigate('Update')
-  }
-  
   return (
     <div>
       <MyPageDiv>
@@ -70,28 +75,33 @@ export default function MyPage() {
 
       <MyPageUnderDiv>
         
-      <MyPageUnderButton onClick={handleArticle}>
+      <MyPageUnderButton onClick={()=> navigate('Article')}>
         <MyPageIconTextDiv>
           <MyPageButtonIcon src={ArticleIcon}/>
           <MyPageButtonText>게시물</MyPageButtonText>
         </MyPageIconTextDiv>
         <MyPageButtonMove src={MoveIcon}/>
       </MyPageUnderButton>
-      <MyPageUnderButton onClick={handleFriend}>
-        <MyPageIconTextDiv>
-          <MyPageButtonIcon src={FriendIcon}/>
-          <MyPageButtonText>친구</MyPageButtonText>
-        </MyPageIconTextDiv>
-        <MyPageButtonMove src={MoveIcon}/>
+      {!params.userId && 
+      <div>
+        <MyPageUnderButton onClick={()=>navigate(`Friend`)}>
+          <MyPageIconTextDiv>
+            <MyPageButtonIcon src={FriendIcon}/>
+            <MyPageButtonText>친구</MyPageButtonText>
+          </MyPageIconTextDiv>
+          <MyPageButtonMove src={MoveIcon}/>
         </MyPageUnderButton>
 
-        <MyPageUnderButton onClick={handleUpdate}>
+        <MyPageUnderButton onClick={()=>navigate('Update')}>
           <MyPageIconTextDiv> 
             <MyPageButtonIcon src={MemberUpdateIcon}/>
             <MyPageButtonText>회원정보 수정</MyPageButtonText>
           </MyPageIconTextDiv>
-            <MyPageButtonMove src={MoveIcon}/>
+          <MyPageButtonMove src={MoveIcon}/>
         </MyPageUnderButton>
+      </div>
+      }
+
       </MyPageUnderDiv>
       <FooterBar/>
     </div>

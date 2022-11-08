@@ -91,6 +91,7 @@ function App() {
             <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
             <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
             <Route path="/myPage/:userId" element={<MyPage />}></Route>
+            <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>

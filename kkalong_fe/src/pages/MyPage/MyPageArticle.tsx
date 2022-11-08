@@ -1,43 +1,51 @@
-import React from "react";
-import { useState } from "react";
+import React, {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FooterBar from "../../components/ui/FooterBar";
-import TopNav from "../../components/ui/TopNav";
-import backArrow from "../../assets/icon/Nav/BackArrow.png";
+
 import { BestDresserArticle } from "../Community/MainCommunity";
 import { HelpCodiArticle } from "../Community/MainCommunity";
-import { useNavigate } from "react-router-dom";
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
 import BestDresser from "../../components/Community/BestDresser";
 import HelpCodi from "../../components/Community/HelpCodi";
-import { useEffect } from "react";
+import FooterBar from "../../components/ui/FooterBar";
+import TopNav from "../../components/ui/TopNav";
+
+import backArrow from "../../assets/icon/Nav/BackArrow.png";
+import { UserType } from "./MyPage";
+
+
 
 export default function MyPageArticle() {
-  const name = "정원석";
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
+  const [User, setUser] = useState<UserType>()
 
   const navigate = useNavigate();
 
-  const goBestDress = () => {
-    navigate('/community/BestDress')
-  }
-
   useEffect(() => {
-    // dispatch(getData)
+    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+    const start = async() => {
+      const res = await axios.get(requests.myWrite)
+      setBestArticles(res.data.Best)
+      setHelpArticles(res.data.Help)
+    }
 
-    
+    start()
   }, [])
+
 
   return (
     <MyPageArticleContainer>
       <TopNav type={""}>
-        <MyPageArticleBackArrow src={backArrow}></MyPageArticleBackArrow>
-        <MyPageArticleText>{name}님의 게시글</MyPageArticleText>
+        <MyPageArticleBackArrow src={backArrow} onClick={()=> navigate('/myPage')}></MyPageArticleBackArrow>
+        <MyPageArticleText>{User?.nickname} 님의 게시글</MyPageArticleText>
         <div style={{ width: "30px", height: "30px" }}></div>
       </TopNav>
       <Container>
         <List>
-          <Category onClick={goBestDress}>도전! 베스트 드레서✨</Category>
+          <Category>도전! 베스트 드레서✨</Category>
           <ArticleList>
             {BestArticles.map((BestArticle, index) => {
               return (
@@ -69,7 +77,8 @@ export default function MyPageArticle() {
   );
 }
 
-const MyPageArticleContainer = styled.div``;
+const MyPageArticleContainer = styled.div`
+`;
 
 const MyPageArticleText = styled.div``;
 
@@ -100,6 +109,7 @@ const ArticleList = styled.div`
   display: flex;
   flex-direction: row;
   overflow: scroll;
+  min-height: 100px;
 `
 
 const Best3Container = styled.img`
