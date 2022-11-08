@@ -46,39 +46,6 @@ export default function DetailBestDress() {
       setArticle(res.data)
     }
     getDetail()
-    setArticle({
-      post_id : Number(params.BestDressId),
-      post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-      post_user: {
-        nickname: 'loki535',
-        profile: ''
-      },
-      post_like: 13,
-      post_content: '홍대 카페에서 찍어봤어요',
-      comment: [{
-        comment_id: 1,
-        user: {
-          user_id: 1,
-          nickname: 'hello',
-          profile_img: '',
-        },
-        content: '정말 이쁘세요',
-        create_at: '2022-10-25 14:23:00',
-        codi_img: null,
-      },
-      {
-        comment_id: 2,
-        user: {
-          user_id: 2,
-          nickname: 'queen3',
-          profile_img: 'https://i1.sndcdn.com/avatars-BuwoWygg1Oj9xyIp-qQgBxA-t240x240.jpg',
-        },
-        content: '저도 거기서 찍고싶네요!',
-        create_at: '2022-10-25 14:57:00',
-        codi_img: null,
-      }]
-    })
-    
   }, [])
 
   const ModalChange = () => {
@@ -146,13 +113,13 @@ export default function DetailBestDress() {
         <ContentInfoContainer>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
             <ProfileContainer>
-              <Profile Image={Article?.post_user.profile ? Article?.post_user.profile : ''} Size={30}/>
-              <CustomText>{Article?.post_user.nickname}</CustomText>
+              <Profile Image={Article!.user.profile_img} Size={30}/>
+              <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>
             <LikeContainer>
               {!!!Like && <Likeimg Like={Like} src={like} onClick={()=> setLike(!!!Like)}/>}
               {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=> setLike(!!!Like)}/>}
-              <CustomText style={{fontSize: '13px'}}>{Article?.post_like}</CustomText>
+              <CustomText style={{fontSize: '13px'}}>{Article?.like}</CustomText>
             </LikeContainer>
           </div>
           <CustomText style={{fontFamily: 'var(--base-font-200)', padding: '5px 15px 0px'}}>{Article?.post_content}</CustomText>

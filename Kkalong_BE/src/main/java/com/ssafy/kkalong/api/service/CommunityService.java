@@ -5,8 +5,10 @@ import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,9 @@ public class CommunityService {
     ReplyRepository replyRepository;
     @Autowired
     CodyRepository codyRepository;
-
+    @Autowired
+    ClosetRepository closetRepository;
+    
 
     //좋아요 많은 순 3개 출력
     public List<BestDressResponseInterface> selectBestDress(){
@@ -50,7 +54,8 @@ public class CommunityService {
     // 도전 베스트드레서 등록
     public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
         Post post = Post.builder()
-                .img(bestReq.getPost_img())
+                //이미지 경로로 바꿔줄 예정
+                .img(bestReq.getPost_img().getOriginalFilename()) 
                 .content(bestReq.getContent())
                 .user(userInfo)
                 .build();
@@ -64,7 +69,7 @@ public class CommunityService {
     }
 
     public void updatePost(BestDressRequestDto bestReq, int post_id) {
-        postRepository.updatePost(bestReq.getContent(), bestReq.getPost_img(), post_id);
+        postRepository.updatePost(bestReq.getContent(), bestReq.getPost_img().getOriginalFilename(), post_id); //이미지 경로로 바꿔줄 예정
     }
 
     public User selectUser(int post_id){
@@ -85,18 +90,11 @@ public class CommunityService {
 //    ========================================================================
 //    COMMENT
 //    ========================================================================
-    public List<CommentDto> selectComment(int post_id) {
+    public List<Comment> selectComment(int post_id) {
 
         List<Comment> comment = commentRepository.findByPost(post_id);
-        List<CommentDto> commentDto = new ArrayList<>();
 
-        for(Comment com : comment) {
-            CommentDto commentDtoCheck = new CommentDto();
-            commentDtoCheck.setContent(com.getContent());
-            commentDtoCheck.setUser(com.getUser());
-            commentDto.add(commentDtoCheck);
-        }
-        return commentDto;
+        return comment;
     }
 
     public Comment getComment(int comment_id){
@@ -131,8 +129,8 @@ public class CommunityService {
         List<Help> help = helpRepository.findAll();
         List<HelpResponseDto> helpAll = new ArrayList<>();
         for (Help h : help) {
-            HelpResponseDto helpTemp = new HelpResponseDto(h.getId(), h.getOpen(), h.getImg(), h.getOpenrange(), h.getTitle());
-            helpAll.add(helpTemp);
+            HelpResponseDto helpTemp = new HelpResponseDto(h.getId(), h.getOpen(), h.getImg(), h.getOpenrange(), h.getTitle(), h.getContent(), new BestDressUserDto());
+        helpAll.add(helpTemp);
         }
 
         return helpAll;
@@ -147,6 +145,8 @@ public class CommunityService {
         helpDto.setOpen(help.getOpen());
         helpDto.setHelp_img(help.getImg());
         helpDto.setTitle(help.getTitle());
+        helpDto.setContent(help.getContent());
+        helpDto.setUser(new BestDressUserDto());
 
         return helpDto;
     }
@@ -165,18 +165,11 @@ public class CommunityService {
 
     public void deleteHelp(int help_id) { helpRepository.deleteById(help_id); }
 
-    public List<ReplyDto> selectReply(int help_id) {
+    public List<Reply> selectReply(int help_id) {
 
         List<Reply> reply = replyRepository.findByHelp(help_id);
-        List<ReplyDto> replyDto = new ArrayList<>();
 
-        for(Reply rpl : reply) {
-            ReplyDto replyDtoCheck = new ReplyDto();
-            replyDtoCheck.setContent(rpl.getContent());
-            replyDtoCheck.setUser(rpl.getUser());
-            replyDto.add(replyDtoCheck);
-        }
-        return replyDto;
+        return reply;
     }
 
     public Reply getReply(int reply_id){
@@ -211,6 +204,43 @@ public class CommunityService {
         codyDto.setImg(cody.getImg());
 
         return codyDto;
+    }
+
+    public void updateCodiDown(int cody_id) {
+        codyRepository.updateCodi(cody_id);
+    }
+
+    public void updateLike(User user, int post_id) {
+        PostLike postLike = PostLike.builder()
+                .user(user)
+                .post(getPost(post_id))
+                .build();
+        postLikeRepository.save(postLike);
+    }
+
+    public List<Integer> selectLike(int post_id) {
+        Post post = postRepository.findById(post_id);
+        System.out.println(post.getId() + " " + post.getContent());
+        List<PostLike> postLikes = postLikeRepository.findByPost(post);
+        List<Integer> likeList = new ArrayList<>();
+        for(PostLike po : postLikes){
+            likeList.add(po.getUser().getId());
+        }
+
+        return likeList;
+    }
+
+    public String selectPostCreateAt(int post_id){
+        return "" + postRepository.findById(post_id).getCreatedAt();
+    }
+    public String selectCommentCreateAt(int comment_id){
+        return "" + commentRepository.findById(comment_id).getCreatedAt();
+    }
+    public String selectHelpCreateAt(int help_id){
+        return "" + helpRepository.findById(help_id).getCreatedAt();
+    }
+    public String selectReplyCreateAt(int reply_id){
+        return "" + helpRepository.findById(reply_id).getCreatedAt();
     }
 
 }

@@ -58,40 +58,17 @@ function App() {
             {/* 출시를 위한 개인정보 처리방침 url */}
             <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
             <Route path="/community" element={<MainCommunity />}></Route>
-            <Route
-              path="/community/BestDress"
-              element={<MainBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/Add/"
-              element={<AddBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/Add/:Id"
-              element={<AddBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/:BestDressId"
-              element={<DetailBestDress />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi"
-              element={<MainHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/Add"
-              element={<AddSelectHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/Add/:Category/:Id"
-              element={<AddHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/:HelpCodiId"
-              element={<DetailHelpCodi />}
-            ></Route>
-            <Route path="/closet" element={<MainCloset />}></Route>
+            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
+            <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/Add/:Id" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
+            <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
+            <Route path="/closet/:UserId" element={<MainCloset />}></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>
@@ -101,30 +78,15 @@ function App() {
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
-            <Route
-              path="/community/BestDress"
-              element={<MainBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/:BestDressId"
-              element={<DetailBestDress />}
-            ></Route>
+            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
+            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
             <Route path="/myPage" element={<MyPage />}></Route>
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
             <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
             <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/"
-              element={<VirtualBrandChoice />}
-            ></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/:brand_id"
-              element={<VirtualBrand />}
-            ></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id"
-              element={<VirtualBrandProduct />}
-            ></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
           </Routes>
         </Router>
       </div>

@@ -22,14 +22,14 @@ const requests = {
   bestDress: "/community/bestdress",
   detailBestDress: "/community/bestdress/", // ${} 으로 동적 라우팅
   comment: "/comment/",
-  helpCodi: "/community/helpCodi",
-  detailHelpCodi: "/community/helpCodi/", // ${} 으로 동적 라우팅
+  helpCodi: "/community/helpcodi",
+  detailHelpCodi: "/community/helpcodi/", // ${} 으로 동적 라우팅
 
   // 옷장
-  closet: "/closet/", // ${} 으로 동적 라우팅
-  removeBackground: "/closet/remove_background",
-  addClothes: "/add/clothes", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
-  codl: "/cody",
+  closet: "/closet/all/", // ${} 으로 동적 라우팅
+  removeBackground: "/closet/removeBg",
+  addClothes: "/add/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
+  codl: "/closet/cody",
 
   // 가상피팅
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴

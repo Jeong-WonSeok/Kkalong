@@ -8,11 +8,13 @@ import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.common.BaseEntity;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +29,13 @@ public class CommunityController {
     //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     CommunityService communityService;
+
+    @PostMapping("/imgTest")
+    public ResponseEntity<?> imgTest(@RequestBody MultipartFile m){
+
+        return ResponseEntity.ok().body(m.getOriginalFilename());
+    }
+
 
     //좋아요 가장 많은 게시글 보여주기(3개 까지)
     @GetMapping("/best")
@@ -44,9 +53,10 @@ public class CommunityController {
             String profile_img = user.getImg();
 
             temp.put("Best", bd);
-            temp_u.put("NickName", nick);
+            temp_u.put("user_id", user.getId());
+            temp_u.put("nickname", nick);
             temp_u.put("profile_img", profile_img);
-            temp.put("User", temp_u);
+            temp.put("user", temp_u);
             result.add(temp);
         }
 
@@ -69,9 +79,10 @@ public class CommunityController {
             String profile_img = user.getImg();
 
             temp.put("Best", bd);
-            temp_u.put("NickName", nick);
+            temp_u.put("user_id", user.getId());
+            temp_u.put("nickname", nick);
             temp_u.put("profile_img", profile_img);
-            temp.put("User", temp_u);
+            temp.put("user", temp_u);
             result.add(temp);
         }
 
@@ -84,46 +95,64 @@ public class CommunityController {
 
         Map<String, Object> result = new HashMap<>();
         User user = communityService.selectUser(post_id);
-        BestDressUserDto userDto = new BestDressUserDto(user.getNickname(), user.getImg());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
-        List<CommentDto> commentList = communityService.selectComment(post_id);
+        List<Comment> commentList = communityService.selectComment(post_id);
         List<Map<String, Object>> commentArr = new ArrayList<>();
 
-        for (CommentDto comm : commentList) {
+        List<Integer> likeList = communityService.selectLike(post_id);
+
+        for (Comment comm : commentList) {
             Map<String, Object> comment = new HashMap<>();
             User temp_user = comm.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
 
+            comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
 
             comment.put("content", comm.getContent());
-            comment.put("user_id", comment_user);
+            comment.put("user", comment_user);
+            comment.put("createAt", communityService.selectCommentCreateAt(comm.getId()));
 
             commentArr.add(comment);
         }
 
         result.put("comment", commentArr);
-        result.put("user_id", userDto);
+        result.put("user", userDto);
         result.put("Best", post);
+        result.put("like", likeList);
+        result.put("createAt", communityService.selectPostCreateAt(post_id));
+        return ResponseEntity.ok().body(result);
+    }
+
+//    bestdress 좋아요 클릭
+    @PostMapping("/bestdress/{post_id}")
+    public ResponseEntity<?> likeClick(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int post_id){
+        User user = communityService.getUser(userInfo.getEmail());
+        communityService.updateLike(user, post_id);
+        List<Integer> likeList = communityService.selectLike(post_id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("like", likeList);
 
         return ResponseEntity.ok().body(result);
     }
 
-
     //bestDressRegister 등록
     @PostMapping(value = "/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq) {
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq)
+    {
 
         Map<String, Object> result = new HashMap<>();
-
+//        result.put("img", img);
         //유저 정보 가져오기
         User user = communityService.getUser(userInfo.getEmail());
 
         BestDressUserDto post_user = new BestDressUserDto();
         // 게시물 주인 정보 넣기
+        post_user.setUser_id((user.getId()));
         post_user.setNickname(user.getNickname());
         post_user.setProfile_image(user.getImg());
 
@@ -137,21 +166,12 @@ public class CommunityController {
         Map<String, Object> comment = new HashMap<>();
         comment.put("content", null);
         comment.put("user_id", comment_user);
-//        for(CommentDto comm : commentList) {
-//            Map<String, Object> comment = new HashMap<>();
-//            User temp_user = comm.getUser();
-//            BestDressUserDto comment_user = new BestDressUserDto();
-//
-//            comment_user.setNickname(temp_user.getNickname());
-//            comment_user.setProfile_image(temp_user.getImg());
-//
-//            comment.put("content", comm.getContent());
-//            comment.put("comment_user", comment_user);
-//        }
 
         result.put("Best", postDto);
         result.put("user_id", post_user);
         result.put("comment", comment);
+        result.put("createAt", communityService.selectPostCreateAt(post.getId()));
+        result.put("filename", bestReq.getPost_img().getOriginalFilename());
 
         return ResponseEntity.ok().body(result);
     }
@@ -174,24 +194,27 @@ public class CommunityController {
 
         User user = communityService.selectUser(post_id);
 
-        BestDressUserDto userDto = new BestDressUserDto(user.getNickname(), user.getImg());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
-        List<CommentDto> commentList = communityService.selectComment(post_id);
+        List<Comment> commentList = communityService.selectComment(post_id);
         List<Map<String, Object>> commentArr = new ArrayList<>();
 
 
-        for (CommentDto comm : commentList) {
+        for (Comment comm : commentList) {
             Map<String, Object> comment = new HashMap<>();
             User temp_user = comm.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
 
+            comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
 
+
             comment.put("content", comm.getContent());
             comment.put("user_id", comment_user);
+            comment.put("createAt", "" + communityService.selectCommentCreateAt(comm.getId()));
 
             commentArr.add(comment);
         }
@@ -199,6 +222,8 @@ public class CommunityController {
         result.put("comment", commentArr);
         result.put("user_id", userDto);
         result.put("Best", post);
+        result.put("createAt", communityService.selectPostCreateAt(post_id));
+        result.put("filename", bestReq.getPost_img().getOriginalFilename());
 
         return ResponseEntity.ok().body(result);
     }
@@ -220,10 +245,12 @@ public class CommunityController {
 
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
+        user_id.put("user_id", user.getId());
         //createAt 넣어야 댐
 
         result.put("content", comment.getContent());
-        result.put("user_id", user_id);
+        result.put("user", user_id);
+        result.put("createAt", communityService.selectCommentCreateAt(comment.getId()));
 
         return ResponseEntity.ok().body(result);
     }
@@ -235,7 +262,7 @@ public class CommunityController {
     }
 
     @PutMapping("/bestdress/{post_id}/comment/{comment_id}")
-    public ResponseEntity<?> updateComment(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int comment_id, @RequestBody CommentRequestDto commentInfo) {
+    public ResponseEntity<?> updateComment(@AuthenticationPrincipal UserDetailsImpl userInfo,@PathVariable int post_id,  @PathVariable int comment_id, @RequestBody CommentRequestDto commentInfo) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> userMap = new HashMap<>();
 
@@ -245,8 +272,10 @@ public class CommunityController {
 
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
+        userMap.put("user_id", user.getId());
         result.put("content", comment.getContent());
-        result.put("user_id", userMap);
+        result.put("user", userMap);
+        result.put("createAt", communityService.selectCommentCreateAt(comment.getId()));
 
         return ResponseEntity.ok().body(result);
     }
@@ -268,10 +297,10 @@ public class CommunityController {
             User user = communityService.selectUserHelp(h.getHelp_id());
             userDto.setNickname(user.getNickname());
             userDto.setProfile_image(user.getImg());
+            userDto.setUser_id(user.getId());
 
-            temp.put("Help", help);
-            temp.put("user_id", userDto);
-
+            temp.put("Help", h);
+            h.setUser(userDto);
             result.add(temp);
         }
 
@@ -284,7 +313,7 @@ public class CommunityController {
         Map<String, Object> comment = new HashMap<>();
         Map<String, Object> commentUser = new HashMap<>();
 
-        List<ReplyDto> replyList = communityService.selectReply(help_id);
+        List<Reply> replyList = communityService.selectReply(help_id);
         List<Map<String, Object>> commentArr = new ArrayList<>();
 
         HelpResponseDto helpDto = communityService.selectHelp(help_id);
@@ -292,24 +321,29 @@ public class CommunityController {
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
         userDto.setProfile_image(user.getImg());
+        userDto.setUser_id(user.getId());
 
-        for (ReplyDto rpl : replyList) {
+        helpDto.setUser(userDto);
+        result.put("createAt", communityService.selectHelpCreateAt(help_id));
+
+
+        for (Reply rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
             User temp_user = rpl.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
 
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setUser_id((temp_user.getId()));
 
             comment.put("content", rpl.getContent());
-            comment.put("user_id", comment_user);
-
+            comment.put("user", comment_user);
+            comment.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(comment);
         }
 
 
         result.put("Help", helpDto);
-        result.put("user_id", userDto);
         result.put("comment", commentArr);
 
 
@@ -339,18 +373,19 @@ public class CommunityController {
         help.setOpen(helpInfo.getOpen());
         help.setTitle(helpInfo.getTitle());
         help.setRange(helpInfo.getRange());
+        help.setUser(new BestDressUserDto());
 
         result.put("Help", help);
         comment.put("content", null);
         commentUser.put("nickname", null);
         commentUser.put("profile_img", null);
-        comment.put("user_id", commentUser);
+        comment.put("user", commentUser);
         codi.put("codi_img", null);
+
         comment.put("codi_id", codi);
-        userMap.put("nickname", null);
-        userMap.put("profile_img", null);
+
         result.put("comment", comment);
-        result.put("user_id", userMap);
+        result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
         return ResponseEntity.ok().body(result);
 
@@ -376,11 +411,13 @@ public class CommunityController {
 
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
+        user_id.put("user_id", user.getId());
         //createAt 넣어야 댐
 
         result.put("content", reply.getContent());
-        result.put("user_id", user_id);
+        result.put("user", user_id);
         result.put("codi_id", codi);
+        result.put("createAt", communityService.selectHelpCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
     }
@@ -407,14 +444,20 @@ public class CommunityController {
         codi.put("codi_img", cody);
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
+        userMap.put("user_id", user.getId());
         result.put("content", reply.getContent());
-        result.put("user_id", userMap);
+        result.put("user", userMap);
         result.put("codi_id", codi);
+        result.put("createAt", communityService.selectHelpCreateAt(reply.getId()));
+
         return ResponseEntity.ok().body(result);
     }
 
-//    @PutMapping("/community/helpcodi/{help_id}/comment/{comment_id}")
-
+    @PutMapping("/helpcodi/{help_id}/{cody_id}")
+    public void codiDownload(@PathVariable int help_id, @PathVariable int cody_id){
+        System.out.println("cody " +cody_id);
+        communityService.updateCodiDown(cody_id);
+    }
 
 
     @Autowired

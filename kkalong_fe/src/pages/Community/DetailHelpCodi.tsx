@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
+import axios from '../../api/axios'
+import requests from '../../api/requests'
 
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
@@ -28,8 +30,7 @@ export interface commentType {
 }
 
 export interface ArticleType extends HelpCodiArticle{
-  help_content: string,
-  open: boolean,
+  content: string,
   comment: Array<commentType>
 }
 
@@ -42,39 +43,16 @@ export default function DetailHelpCodi() {
   const [Article, setArticle] = useState<ArticleType>()
 
   useEffect(()=>{
-    setArticle({
-      help_id: 1,
-      help_img: 'https://i3.codibook.net/files/1978121543118/a553319d9394abde/70936325.jpg?class=big',
-      user_id: {
-        nickname: 'infp2',
-        profile: ''
-      },
-      open: false,
-      help_title: '20대 남자인데 데이트 코디 어떤가요?',
-      help_content: '같은 대학교 동기랑 내일 영화 약속 잡아놨는데 이정도면 무난할까요?',
-      comment: [{
-        comment_id: 1,
-        user : {
-          user_id: 1,
-          nickname: 'hello',
-          profile_img: '',
-        },
-        content: '청자켓말고 가디건은 어때요?',
-        create_at: '2022-10-25 14:23:00',
-        codi_img: 'https://i.pinimg.com/474x/85/06/4d/85064decf478772d1659c1aec4afd4b5.jpg',
-      },
-      {
-        comment_id: 2,
-        user: {
-          user_id: 2,
-          nickname: 'queen3',
-          profile_img: 'https://i1.sndcdn.com/avatars-BuwoWygg1Oj9xyIp-qQgBxA-t240x240.jpg',
-        },
-        content: '그 옷은 정말 아닌거같아요!',
-        create_at: '2022-10-25 14:57:00',
-        codi_img: 'https://i.pinimg.com/736x/50/9d/b9/509db9f147d3b7d9589a0ded6a97b45b.jpg,'
-      }]
-    })
+    const start = async () => {
+      const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
+      const InputData = res.data.Help
+      InputData['user'] = res.data.user_id
+      InputData['comment'] = res.data.comment
+      setArticle(InputData)
+    }
+
+    start()
+
   },[])
 
   const ModalChange = () => {
@@ -105,20 +83,25 @@ export default function DetailHelpCodi() {
   }
 
     // 댓글 수정
-    const CommentsEdit = (idx: number, data: commentType) => {
-      let newArticle  = [...Article!.comment]
-      let newComment = newArticle.map(comment => {
-        if (comment.comment_id === idx) {
-          comment = data
-        }
-        return comment
-      })
-  
-      setArticle((prev => ({
-        ...prev!,
-        comment: newComment
-      })))
-    }
+  const CommentsEdit = (idx: number, data: commentType) => {
+    let newArticle  = [...Article!.comment]
+    let newComment = newArticle.map(comment => {
+      if (comment.comment_id === idx) {
+        comment = data
+      }
+      return comment
+    })
+
+    setArticle((prev => ({
+      ...prev!,
+      comment: newComment
+    })))
+  }
+
+  const ShowCloset = () => {
+    // 작성자의 코디 페이지로 이동
+    navigate(`closet/${Article?.user.user_id}`)
+  }
 
 
   return (
@@ -139,19 +122,19 @@ export default function DetailHelpCodi() {
 
       <Container >
         <ImgContainer>
-          <TitleText>Q. {Article?.help_title}</TitleText>
+          <TitleText>Q. {Article?.title}</TitleText>
           {!!!Article?.open &&<CodiImg src={Article?.help_img}/>}
           <ProfileContainer>
             <div style={{display: 'flex' ,flexDirection: 'row'}}>
-              <Profile Image={Article?.user_id.profile? Article?.user_id.profile : ''} Size={30}/>
-              <ProfileName>{Article?.user_id.nickname}</ProfileName>
+              <Profile Image={Article?.user.profile_img ? Article?.user.profile_img : ''} Size={30}/>
+              <ProfileName>{Article?.user.nickname}</ProfileName>
             </div>
-            {Article?.open && <ClosetButton>
+            {Article?.open && <ClosetButton onClick={ShowCloset}>
                 <ClosetImg src={Closet}/>
                 <ClosetP>옷장보기</ClosetP>
               </ClosetButton>}
           </ProfileContainer>
-          <TitleText style={{fontFamily: 'var(--base-font-300)'}}>{Article?.help_content}</TitleText>
+          <TitleText style={{fontFamily: 'var(--base-font-300)'}}>{Article?.content}</TitleText>
         </ImgContainer>
 
         <LineDiv></LineDiv>
