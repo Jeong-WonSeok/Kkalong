@@ -56,8 +56,10 @@ public class FittingController {
     public ResponseEntity<?> selectClothes(@PathVariable int brand_id, @PathVariable int clothes_id){
 
         ClothesResponseDto clothes = fittingService.selectClothes(clothes_id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("clothes_id", clothes);
 
-        return ResponseEntity.ok().body("a");
+        return ResponseEntity.ok().body(result);
     }
 
 }

@@ -26,6 +26,10 @@ public class Clothing {
     @Column(nullable = false)
     private String img;
 
+    //옷장에 들어가는 옷은 null처리
+    @Column
+    private int code;
+
     @Column(nullable = false)
     private String color;
 

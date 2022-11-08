@@ -42,8 +42,10 @@ public class FittingService {
         return clothingRepository.findByBrand(brand);
     }
 
-    public ClothesResponseDto selectClothes(int clothes_id) {
-        Clothing clothes = clothingRepository.findById(clothes_id);
+    public ClothesResponseDto selectClothes(int clothing_id) {
+        System.out.println("int" + clothing_id);
+        Clothing clothes = clothingRepository.findById(clothing_id);
+        System.out.println("gege" + clothes.getId());
         ClothesResponseDto clothesDto = new ClothesResponseDto();
         clothesDto.setImg(clothes.getImg());
         clothesDto.setName(clothes.getName());

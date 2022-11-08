@@ -15,5 +15,7 @@ public class RecommendController {
     @Autowired
     RecommendService recommendService;
 
-//    @GetMapping
+//    @GetMapping("/wheater"){
+//
+//    }
 }
