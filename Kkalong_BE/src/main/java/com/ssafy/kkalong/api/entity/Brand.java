@@ -19,7 +19,10 @@ public class Brand {
     private int id;
 
     @Column(nullable=false, unique = true)
-    private String name;
+    private String korean_name;
+
+    @Column(nullable=false, unique = true)
+    private String english_name;
 
     @Column(nullable = false)
     private String img;
