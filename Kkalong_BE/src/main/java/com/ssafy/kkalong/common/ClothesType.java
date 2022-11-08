@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ClothesType {
-    TOP,
-    BOTTOM,
-    OUTER,
-    SHOES,
-    ACC;
+    TOP("TOP");
+//    BOTTOM,
+//    OUTER,
+//    SHOES,
+//    ACC;
+
+    private final String value;
 }

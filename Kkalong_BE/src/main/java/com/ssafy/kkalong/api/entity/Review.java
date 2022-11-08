@@ -31,7 +31,7 @@ public class Review {
     private String thickness;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="clothing_id")
+    @JoinColumn(name="code")
     private Clothing clothing;
 
 }

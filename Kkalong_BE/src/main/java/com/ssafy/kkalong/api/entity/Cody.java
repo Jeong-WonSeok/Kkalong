@@ -18,6 +18,9 @@ public class Cody {
     @Column(name="cody_id", nullable = false)
     private int id;
 
+    @Column(nullable = false, unique = true)
+    private int code;
+
     @Column(nullable = false)
     private String img;
 

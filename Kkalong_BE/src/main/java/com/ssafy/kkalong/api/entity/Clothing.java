@@ -50,6 +50,9 @@ public class Clothing {
     @Column(nullable = false)
     private String gender;
 
+    @Column(nullable = false)
+    private String url;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
