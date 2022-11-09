@@ -10,7 +10,7 @@ const Example = () => {
 
   const navigate = useNavigate();
   setTimeout(() => {
-    // navigate('/VirtualFitting/VirtualBrandChoice/')
+    navigate('/VirtualFitting/VirtualBrandChoice/')
   }, 4500)
   
   // const updateHandler = (e) => {
