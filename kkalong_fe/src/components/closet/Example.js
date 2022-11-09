@@ -33,7 +33,6 @@ const Example = () => {
     <>
       <Contain>
         <Canvas>
-
           <Suspense fallback={null}>
            
             <directionalLight intensity={1}
@@ -63,7 +62,7 @@ const Example = () => {
             <Model 
               position={[0, -3, -1]}
               rotation-y={Math.PI * 1.5}
-             
+              color="hotpink"
             />
             <OrbitControls
               enablePan={true}
@@ -83,5 +82,5 @@ const Contain = styled.div`
   width: 100%;
   height: 600px;
   margin: 0 auto;
-  background: #FFFFFF;
+  background: #ffffff;
 `;
