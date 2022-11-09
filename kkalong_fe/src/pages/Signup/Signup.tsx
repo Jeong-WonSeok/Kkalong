@@ -198,9 +198,7 @@ export default function Signup() {
         .then((response) => {
           navigate("/login");
         })
-        .catch((error) => {
-          // console.error(error.response);
-        });
+        .catch((error) => {});
     } else {
       console.log(IsNickName);
       alert("닉네임을 확인해주세요.");
