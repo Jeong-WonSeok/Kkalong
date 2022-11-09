@@ -31,7 +31,7 @@ export interface commentType {
 }
 
 export interface ArticleType extends HelpCodiArticle{
-  content: string,
+  createAt: string,
   comment: Array<commentType>
 }
 
@@ -46,10 +46,8 @@ export default function DetailHelpCodi() {
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
-      const InputData = res.data.Help
-      InputData['comment'] = res.data.comment
       console.log(res.data)
-      setArticle(InputData)
+      setArticle(res.data)
     }
 
     start()
@@ -135,7 +133,7 @@ export default function DetailHelpCodi() {
                 <ClosetP>옷장보기</ClosetP>
               </ClosetButton>}
           </ProfileContainer>
-          <TitleText style={{fontFamily: 'var(--base-font-300)'}}>{Article?.content}</TitleText>
+          <TitleText style={{fontFamily: 'var(--base-font-300)'}}>{Article?.Help?.content}</TitleText>
         </ImgContainer>
 
         <LineDiv></LineDiv>

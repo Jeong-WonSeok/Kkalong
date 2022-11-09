@@ -34,6 +34,7 @@ export interface HelpCodiArticle {
     range: string,
     open: boolean,
     title: string,
+    content: string,
     user: {
       user_id: number,
       nickname: string,

@@ -12,6 +12,5 @@ export default function Profile({Image, Size} : {Image: string, Size: number}) {
 
 const ProfileImg = styled.img`
   border-radius: 50%;
-  margin: auto 0;
-  margin-right: 4px;
+  margin: 5px 6px 0 0;
 `

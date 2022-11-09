@@ -78,22 +78,18 @@ export default function AddBestDress() {
   }
 
   const Submit = async () => {
+    const header = {
+      'Content-Type': 'multipart/form-data',
+      'Symbol' : {
+        'Accept': 'multipart/form-data'
+      }}
     const result = FormDataChange(SendData)
     // FormData의 value 확인
-    console.log(result.get("file"))
-    console.log(result.get("content"))
-    
     if (params.Id) {
-      await axios.put(requsets.detailBestDress + params.Id, result, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        }})
+      await axios.put(requsets.detailBestDress + params.Id, result, {headers: header})
       navigate(`community/BestDress/${params.Id}`)
     } else {
-      const res = await axios.post(requsets.bestDress, result, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        }})
+      const res = await axios.post(requsets.bestDress, result, {headers: header})
       navigate(`community/BestDress/${res.data.post_id}`)
     }
   }
