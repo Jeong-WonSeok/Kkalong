@@ -45,7 +45,6 @@ export const getBest3 = () => async (dispatch: Dispatch) => {
 export const getBestDress = () => async (dispatch: Dispatch) => {
   dispatch({type: GET_DATA_PENDING})
 
-  // 
   const res = await axios.get(requests.bestDress)
   console.log(res.data)
 

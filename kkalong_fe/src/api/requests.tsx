@@ -11,7 +11,7 @@ const requests = {
   // 마이페이지
   myWrite: "/user/write",
   myFriend: "/user/friend",
-  searchFriend: "/user/friend/search_nickname", // 이건 어떻게 구현될지 모르겠음
+  searchFriend: "/user/friend/", // 이건 어떻게 구현될지 모르겠음
   updateProfile: "/user/profile/update",
   follow: "/user/follow/", // ${} 으로 동적 라우팅
   otherProfile: "/user/profile/", // ${} 으로 동적 라우팅

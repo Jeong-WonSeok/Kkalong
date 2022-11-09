@@ -340,6 +340,7 @@ public class CommunityController {
             comment.put("user", comment_user);
             comment.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(comment);
+
         }
 
 

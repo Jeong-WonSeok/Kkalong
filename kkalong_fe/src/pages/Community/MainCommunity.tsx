@@ -137,6 +137,7 @@ const ArticleList = styled.div`
   display: flex;
   flex-direction: row;
   overflow: scroll;
+  min-height: 100px;
 `
 
 const Best3Container = styled.img`
@@ -144,6 +145,7 @@ const Best3Container = styled.img`
   height: 120px;
   border-radius: 20px;
   margin-top: 10px;
+  min-height: 100px;
 `
 
 const CategoryText = styled.p`

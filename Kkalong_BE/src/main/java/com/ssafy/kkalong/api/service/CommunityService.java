@@ -163,7 +163,9 @@ public class CommunityService {
         return help.getId();
     }
 
-    public void deleteHelp(int help_id) { helpRepository.deleteById(help_id); }
+    public void deleteHelp(int help_id) {
+        helpRepository.deleteById(help_id);
+    }
 
     public List<Reply> selectReply(int help_id) {
 
