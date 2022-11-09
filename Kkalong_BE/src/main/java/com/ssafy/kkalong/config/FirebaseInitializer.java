@@ -7,13 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Slf4j
 @Service
 public class FirebaseInitializer {
+
     @Value("${app.firebase-configuration-file}")
     private String firebaseConfigPath;
 
