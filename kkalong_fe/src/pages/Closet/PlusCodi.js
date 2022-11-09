@@ -14,6 +14,8 @@ import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
 import CodiEdit from "../../components/closet/CodiEdit";
 import CanvasDraw from "react-canvas-draw";
+import { fabric } from "fabric";
+import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 
 export default function PlusCodi() {
   const navigate = useNavigate();
@@ -21,6 +23,30 @@ export default function PlusCodi() {
   const modalClose = () => {
     setModal(!modal);
   };
+  const initCanvas = () =>
+    new fabric.Canvas("canvas", {
+      height: 300,
+      width: 300,
+    });
+
+  const { editor, onReady } = useFabricJSEditor();
+  const [canvas, setCanvas] = useState("");
+
+  useEffect(() => {
+    setCanvas(initCanvas());
+  }, []);
+  const downloadImage = () => {
+    const ext = "png";
+    const base64 = editor.canvas.toDataURL({
+      format: ext,
+      enableRetinaScaling: true,
+    });
+    const link = document.createElement("a");
+    link.href = base64;
+    link.download = `eraser_example.${ext}`;
+    link.click();
+  };
+  let [num, setNum] = useState("");
   let [sortclothes, setSortclothes] = useState([
     img1,
     img2,
@@ -30,6 +56,33 @@ export default function PlusCodi() {
     img6,
     img7,
   ]);
+
+  let [sort, setSort] = useState([
+    "전체",
+    "상의",
+    "하의",
+    "아우터",
+    "신발",
+    "악세서리",
+  ]);
+
+  const onUploadImage = (e) => {
+    console.log(e);
+    const image = e.target.files[0];
+    console.log(e.target.files[0]);
+    fabric.Image.fromURL(URL.createObjectURL(image), (img) => {
+      var oImg = img.set({ left: 0, top: 0 }).scale(0.25);
+      editor.canvas.add(oImg);
+      editor.canvas.renderAll();
+    });
+  };
+  const removeObjectFromCanvas = () => {
+    editor.canvas.remove(editor.canvas.getActiveObject());
+  };
+  fabric.Image.fromURL("../../img/codi1.png", function (img) {
+    var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
+    canvas.add(oImg);
+  });
   return (
     <div>
       <div>
@@ -48,7 +101,12 @@ export default function PlusCodi() {
           </ClosetEnter>
         </TopNav>
       </div>
-      <CodiEdit />
+      <input type="file" multiple onChange={onUploadImage} />
+      <button onClick={removeObjectFromCanvas}>Remove</button>
+      <button onClick={downloadImage}>to Image</button>
+      <br />
+      <br /> <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+      {/* <CodiEdit /> */}
       {/* <Codi /> */}
       <PlusBtn onClick={modalClose}>
         <BtnText>코디 추가하기</BtnText>
@@ -56,12 +114,22 @@ export default function PlusCodi() {
       {modal === true ? (
         <>
           <Modal>
+            {/* <ClosetTitle>옷장 이름</ClosetTitle> */}
+            <SortDiv>
+              {sort.map(function (a, i) {
+                return (
+                  <Sortbtn>
+                    <SortTxt>{a}</SortTxt>
+                  </Sortbtn>
+                );
+              })}
+            </SortDiv>
             <ModalBar />
             <SortBorder>
               {sortclothes.map(function (a, i) {
                 return (
                   <SortClothes>
-                    <img src={sortclothes[i]} />
+                    <SortClothesImg src={sortclothes[i]} />
                   </SortClothes>
                 );
               })}
@@ -99,16 +167,16 @@ const EnterText = styled.span`
 
 const Codi = styled.div`
   width: 300px;
-  height: 250px;
+  height: 400px;
   display: flex;
-  margin: 70px auto;
+  margin: 30px auto 10px auto;
   border-radius: 20px;
   border: solid #67564e 2px;
 `;
 
 const Modal = styled.div`
   background: white;
-  height: 200px;
+  height: 160px;
   width: 320px;
   margin-top: 300px;
   padding: 20px;
@@ -166,16 +234,57 @@ const BtnText = styled.span`
 
 const SortBorder = styled.div`
   width: 360px;
-  height: 300px;
+  overflow-y: auto;
+  padding-top: 50px;
+`;
+const ClosetTitle = styled.p`
+  font-size: 15px;
+  position: absolute;
+  bottom: 160px;
+`;
+const SortDiv = styled.div`
+  width: 320px;
+  height: 60px;
+  margin-top: 0px;
+  position: absolute;
+  overflow-x: auto;
+  white-space: nowrap;
+`;
+const Sortbtn = styled.button`
+  height: 50px;
+  width: 80px;
+  border: solid #67564e 1px;
+  border-top: none;
+  border-bottom: solid #67564e 1px;
+  border-left: none;
+  border-right: none;
+  /* margin-top: 3px; */
+  background-color: white;
+  display: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+`;
+const SortTxt = styled.p`
+  font-size: 15px;
+  font-weight: 800;
+  color: #67564e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
 `;
 const SortClothes = styled.button`
-  height: 80px;
-  width: 85px;
-  margin-top: 20px;
-  margin-left: 20px;
+  height: 100px;
+  width: 100px;
   background-color: white;
-  border-radius: 20px;
-  border: solid 1px #67564e;
+  border: solid 0.1px #aeabab;
+  /* border: solid 2px #67564e; */
+`;
+const SortClothesImg = styled.img`
+  height: 70px;
+  width: 70px;
+  background-color: white;
 `;
 const ClosetName = styled.input`
   height: 30px;

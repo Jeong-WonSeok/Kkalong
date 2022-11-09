@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoDto {
+    private int user_id;
     private String email;
     private String nickname;
     private int age;
