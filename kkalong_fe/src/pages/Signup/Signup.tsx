@@ -47,7 +47,7 @@ export default function Signup() {
     Check: "",
   });
   const [IsClick, setIsClick] = useState(false);
-  const [IsNickName, setIsNickname] = useState(false);
+  const [IsNickName, setIsNickName] = useState(false);
   const [IsEmail, setIsEmail] = useState(false);
   const provider: any = localStorage.getItem("provider");
   const [CheckPassword, setCheckPassWord] = useState("");
@@ -161,7 +161,7 @@ export default function Signup() {
     const res = await axios.post(requests.nickname, {
       value: UserInfo?.nickname,
     });
-    setIsNickname(res.data.usable);
+    setIsNickName(res.data.usable);
   };
 
   // 회원가입 axios 요청
@@ -553,7 +553,7 @@ const PassWordCheckP = styled.p`
   text-align: start;
 `;
 
-const NickNameP = styled(PassWordCheckP)<nickname>`
+export const NickNameP = styled(PassWordCheckP)<nickname>`
   color: ${(props) => (props.IsNickName ? "blue" : "red")};
 `;
 

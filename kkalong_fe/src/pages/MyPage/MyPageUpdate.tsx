@@ -1,24 +1,40 @@
 import React,{ useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import AgeIcon from '../../assets/icon/User/age.png'
 import HeightIcon from '../../assets/icon/User/height.png'
 import WeightIcon from '../../assets/icon/User/weight.png'
 import NicknameIcon from '../../assets/icon/User/nickname.png'
-import FooterBar from "../../components/ui/FooterBar";
 import backArrow from '../../assets/icon/Nav/BackArrow.png';
+
 import TopNav from "../../components/ui/TopNav";
-import { useNavigate } from "react-router-dom";
+import FooterBar from "../../components/ui/FooterBar";
+
 import { UserType } from "./MyPage";
+import { NickNameP } from "../Signup/Signup";
+import axios from '../../api/axios'
+import requests from '../../api/requests'
 
 export default function MyPageUpdate() {
   const navigate = useNavigate();
+  const [isClick, setIsClick] = useState(false)
+  const [isNickName, setIsNickName] = useState(false)
   const [User, setUser] = useState<UserType>()  
 
   useEffect(()=>{
     setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
   },[])
 
-  const CheckNinkname = () => {
+  const CheckNinkname = async () => {
+    setIsClick(true);
+    const res = await axios.post(requests.nickname, {
+      value: User?.nickname,
+    });
+    setIsNickName(res.data.usable);
+  }
+
+  const handleNickname = (e:any) => {
 
   }
 
@@ -34,15 +50,22 @@ export default function MyPageUpdate() {
           <SignupInputText>닉네임</SignupInputText>
           <RowContainer>   
             <SignupNicknameDiv>
-              <SignupNicknameInput placeholder={User?.nickname}/>
+              <SignupNicknameInput placeholder={User?.nickname} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, nickname: e.target.value}))}/>
               <SignupAgeIcon src={NicknameIcon}/>
             </SignupNicknameDiv>
             <SignupNicknameCheck onClick={CheckNinkname}>중복확인</SignupNicknameCheck>
           </RowContainer>
+          {isClick && (
+            <NickNameP IsNickName>
+              {isNickName
+                ? "사용가능한 닉네임입니다"
+                : "이미 사용중인 닉네임 입니다."}
+            </NickNameP>
+          )}
 
         <SignupInputText>나이</SignupInputText>
         <SignupNicknameDiv>
-          <SignupNumberInput placeholder={{User.nickname}}/>
+          <SignupNumberInput value={User?.age} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, age: e.target.value}))}/>
           <SignupAgeIcon src={AgeIcon}></SignupAgeIcon>
         </SignupNicknameDiv>
 
@@ -50,7 +73,7 @@ export default function MyPageUpdate() {
         <ColumnDiv>
         <SignupInputText>키</SignupInputText>
         <div>
-          <SignupNumberInput placeholder={User?.height}/>
+          <SignupNumberInput value={User?.height} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, height: e.target.value}))}/>
           <SignupInfoIcon src={HeightIcon}/>
           <SpanTag>cm</SpanTag>
         </div>
@@ -58,7 +81,7 @@ export default function MyPageUpdate() {
         <ColumnDiv>
         <SignupInputText>몸무게</SignupInputText>
         <div>
-          <SignupNumberInput placeholder={User?.weight}/>
+          <SignupNumberInput value={User?.weight}  onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, weight: e.target.value}))}/>
           <SignupInfoIcon src={WeightIcon}/>
           <SpanTag>kg</SpanTag>
         </div>
