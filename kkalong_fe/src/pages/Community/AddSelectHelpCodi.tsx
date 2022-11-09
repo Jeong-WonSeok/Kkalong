@@ -72,6 +72,7 @@ export const CodiBackground = styled.div`
   background-position: center;
   background-size: cover;
   overflow: hidden;
+  z-index: 1;
 `
 
 export const SelectContainer = styled.div`
@@ -83,6 +84,7 @@ export const SelectContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 `
 
 export const ImgContainer = styled.div`

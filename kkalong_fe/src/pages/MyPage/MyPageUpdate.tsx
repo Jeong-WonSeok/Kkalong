@@ -1,49 +1,95 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import AgeIcon from '../../assets/icon/User/age.png'
 import HeightIcon from '../../assets/icon/User/height.png'
 import WeightIcon from '../../assets/icon/User/weight.png'
 import NicknameIcon from '../../assets/icon/User/nickname.png'
-import FooterBar from "../../components/ui/FooterBar";
 import backArrow from '../../assets/icon/Nav/BackArrow.png';
+
 import TopNav from "../../components/ui/TopNav";
-import { useNavigate } from "react-router-dom";
+import FooterBar from "../../components/ui/FooterBar";
+
+import { UserType } from "./MyPage";
+import { NickNameP } from "../Signup/Signup";
+import axios from '../../api/axios'
+import requests from '../../api/requests'
 
 export default function MyPageUpdate() {
-
   const navigate = useNavigate();
+  const [isClick, setIsClick] = useState(false)
+  const [isNickName, setIsNickName] = useState(false)
+  const [User, setUser] = useState<UserType>()  
+
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+  },[])
+
+  const CheckNinkname = async () => {
+    setIsClick(true);
+    const res = await axios.post(requests.nickname, {
+      value: User?.nickname,
+    });
+    setIsNickName(res.data.usable);
+  }
+
+  const handleNickname = (e:any) => {
+
+  }
 
   return (
-    <SignupDiv>
+    <div>
       <TopNav type={""}>
         <img src={backArrow} style={{width:"30px", height:"30px"}} onClick={()=>navigate(-1)}></img>
-        <SignupText>회원가입</SignupText>
+        <SignupText>회원정보 수정</SignupText>
         <div style={{width:"30px", height:"30px"}}></div>
-
       </TopNav>
-      <SignupInputText>닉네임</SignupInputText>
-      <SignupNicknameDiv>
-        <SignupNicknameInput ></SignupNicknameInput>
-        <SignupNicknameCheck>중복확인</SignupNicknameCheck>
-        <SignupNicknameIcon src={NicknameIcon}></SignupNicknameIcon>
-      </SignupNicknameDiv>
-      <SignupInputText>나이</SignupInputText>
+
+      <SignupDiv>
+          <SignupInputText>닉네임</SignupInputText>
+          <RowContainer>   
+            <SignupNicknameDiv>
+              <SignupNicknameInput placeholder={User?.nickname} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, nickname: e.target.value}))}/>
+              <SignupAgeIcon src={NicknameIcon}/>
+            </SignupNicknameDiv>
+            <SignupNicknameCheck onClick={CheckNinkname}>중복확인</SignupNicknameCheck>
+          </RowContainer>
+          {isClick && (
+            <NickNameP IsNickName>
+              {isNickName
+                ? "사용가능한 닉네임입니다"
+                : "이미 사용중인 닉네임 입니다."}
+            </NickNameP>
+          )}
+
+        <SignupInputText>나이</SignupInputText>
+        <SignupNicknameDiv>
+          <SignupNumberInput value={User?.age} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, age: e.target.value}))}/>
+          <SignupAgeIcon src={AgeIcon}></SignupAgeIcon>
+        </SignupNicknameDiv>
+
       <SignupInputDiv>
-        <SignupAgeInput />
-        <SignupAgeIcon src={AgeIcon}></SignupAgeIcon>
-      </SignupInputDiv>
-      <HeightWeightDiv>
+        <ColumnDiv>
         <SignupInputText>키</SignupInputText>
+        <div>
+          <SignupNumberInput value={User?.height} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, height: e.target.value}))}/>
+          <SignupInfoIcon src={HeightIcon}/>
+          <SpanTag>cm</SpanTag>
+        </div>
+        </ColumnDiv>
+        <ColumnDiv>
         <SignupInputText>몸무게</SignupInputText>
-      </HeightWeightDiv>
-      <SignupInputDiv>
-        <SignupBodyInfoInput ></SignupBodyInfoInput>
-        <SignupHeightIcon src={HeightIcon}></SignupHeightIcon>
-        <SignupBodyInfoInput ></SignupBodyInfoInput>
-        <SignupWeightIcon src={WeightIcon}></SignupWeightIcon>
+        <div>
+          <SignupNumberInput value={User?.weight}  onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, weight: e.target.value}))}/>
+          <SignupInfoIcon src={WeightIcon}/>
+          <SpanTag>kg</SpanTag>
+        </div>
+        </ColumnDiv>
       </SignupInputDiv>
       <FooterBar/>
     </SignupDiv>   
+    </div>
   )
 }
 
@@ -52,115 +98,114 @@ const SignupDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-`
-const SignupLine = styled.hr`
-  width:100%;
-  height: 1px;
-  background-color: #000000;
+  max-width: 300px;
+  margin: 0 auto;
 `
 
 const SignupText = styled.span`
   font-family: var(--base-font-600);
-  
+`
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 10px;
+`
+
+const ColumnDiv = styled.div`
+  display:flex;
+  flex-direction: column;
+  position: relative;
+  width: 45%;
 `
 
 //각 인풋 위에 text
-const SignupInputText = styled.span`
+const SignupInputText = styled.div`
   font-family: var(--base-font-400);
-  margin : auto 50px;
-  
+  font-size: 1rem;
+  width: 100%;
+  margin: 5px 0;
+  margin-left: 5px;
 `
 
 //닉네임 input, button 담는 div
 const SignupNicknameDiv = styled.div`
   position : relative;
+  width: 100%;
 `
 //닉네임 input
 const SignupNicknameInput = styled.input`
+  max-width: 210px;
   border:none;
   border-radius: 10px;
-  margin-bottom : 20px;
-  margin-right: 15px;
   padding : 5px;
   background-color: #F0F0F0;
-  text-indent: 20px;
+  text-indent: 25px;
+  font-size: 1rem;
   font-family: var(--base-font-400);
+  margin-right: 15px;
 `
 
 //닉네임 중복 확인 버튼
 const SignupNicknameCheck = styled.button`
   border : none;
+  width: 80px;
   padding : 5px 7px;
   border-radius: 10px;
   background-color: #CBA171;
   color : #FFFFFF;
   font-family: var(--base-font-300);
- 
-`
-
-//닉네임 아이콘
-const SignupNicknameIcon = styled.img`
-  position : absolute;
-  top : 3px;
-  left : 3px;
 `
 
 //input 담을 div
 const SignupInputDiv = styled.div`
-  margin-bottom : 20px;
-  width : 67%;
+  margin-top: 10px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position : relative;
-  
-`
-
-// 키 몸무메 나눌 div
-const HeightWeightDiv = styled.div`
-  display : flex;
-  flex-direction: row;
-  justify-content: space-between;
 `
 
 //age Input
-const SignupAgeInput = styled.input`
+const SignupNumberInput = styled.input.attrs(({type}) => ({
+  type: type || "number",
+}))`
   border : none;
   background-color: #F0F0F0;
   padding : 5px;
+  font-size: 1rem;
   border-radius : 10px;
-  text-indent : 22px;
+  text-indent : 25px;
   width : 100%;
-  font-family: var(--base-font-400)
+  font-family: var(--base-font-400);
+  ::-webkit-inner-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  };
+  ::-webkit-outer-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  };
 `
 
- const SignupAgeIcon = styled.img`
+const SignupAgeIcon = styled.img`
   position : absolute;
   left : 7px;
-  top : 5px;
- `
-
- //Body Info Input
-const SignupBodyInfoInput = styled.input`
-  width:44%;
-  border : none;
-  border-radius: 7px;
-  background-color: #F0F0F0;
-  padding : 5px;
-  text-indent : 22px;
-  
+  top : 7px;
 `
 
-const SignupHeightIcon = styled.img`
+const SignupInfoIcon = styled.img`
   position : absolute;
   left : 7px;
-  top : 4px;
- `
+  top : 39px;
+`
 
- 
-const SignupWeightIcon = styled.img`
-  position : absolute;
-  right : 100px;
-  top : 4px;
- `
+const SpanTag = styled.span`
+  position: absolute;
+  left: 115px;
+  top: 39px;
+  font-size: 0.95rem;
+  font-family: var(--base-font-400);
+`

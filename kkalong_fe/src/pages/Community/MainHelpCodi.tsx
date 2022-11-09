@@ -27,9 +27,13 @@ export default function MainHelpCodi() {
   const [ IsCloset, setIsCloset] = useState(false)
 
   useEffect(() => {
-    setHelpArticles(HelpCody)
-    console.log(HelpCody)
-    
+    const newData: Array<HelpCodiArticle> = []
+    HelpCody.map(cody => {
+      const newObject = {...cody, user: {profile_img: '', nickname: '', user_id: 1}}
+      newData.push(newObject)
+      return
+    })
+    setHelpArticles(newData)    
   }, [])
   
   return (
@@ -59,19 +63,25 @@ export default function MainHelpCodi() {
       
       {IsCodi && HelpArticles.length > 0 && <CodiContainer>
         {HelpArticles.map((HelpArticle, idx) => {
-          return (
-            <HelpCodi article={HelpArticle}/> 
-          )
+          if (HelpArticle.help_img) {
+            return (
+              <div key={idx}>
+                <HelpCodi article={HelpArticle}/> 
+              </div> 
+            )
+          }
         })}
       </CodiContainer>}
 
       {IsCloset && HelpArticles.length > 0 && <ClosetContainer>
           {HelpArticles.map((HelpArticle, idx) => {
-            return (
-            <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
-              Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
-            </TitleDiv>
-            )
+            if(!HelpArticle.help_img) {
+              return (
+                <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
+                  Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
+                </TitleDiv>
+                )
+            }
           })}
         </ClosetContainer>}
         

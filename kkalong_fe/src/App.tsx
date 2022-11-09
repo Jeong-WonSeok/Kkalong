@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import "./styles/common.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -46,6 +46,12 @@ import PersonalInfo from "./pages/PersonalInfo";
 // import Scene from "../public/Scene";
 
 function App() {
+  // 사용자의 화면에 맞춰서 크기조절
+  useEffect(()=>{
+    const windowHeight = window.innerHeight
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.minHeight = `${windowHeight - 130}px`
+  },[])
   return (
     <div id="container">
       <div id="App">
@@ -118,18 +124,11 @@ function App() {
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
             <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
             <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/"
-              element={<VirtualBrandChoice />}
-            ></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/:brand_id"
-              element={<VirtualBrand />}
-            ></Route>
-            <Route
-              path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id"
-              element={<VirtualBrandProduct />}
-            ></Route>
+            <Route path="/myPage/:userId" element={<MyPage />}></Route>
+            <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
           </Routes>
         </Router>
       </div>
