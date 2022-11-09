@@ -80,7 +80,7 @@ export default function PlusCodi() {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };
   fabric.Image.fromURL("../../img/codi1.png", function (img) {
-    var oImg = img.set({ left: 0, top: 0 }).scale(0.25);
+    var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
     canvas.add(oImg);
   });
   return (
