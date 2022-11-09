@@ -187,7 +187,7 @@ public class CommunityService {
                 .content(replyInfo.getContent())
                 .user(userInfo)
                 .help(help)
-                .cody(replyInfo.getCody())
+                .cody(codyRepository.findById(replyInfo.getCodi_id()))
                 .build();
         replyRepository.save(reply);
         return reply;
@@ -201,7 +201,9 @@ public class CommunityService {
     }
 
     public ReplyCodyDto getCody(int cody_id){
+        System.out.println(cody_id);
         Cody cody = codyRepository.findById(cody_id);
+        System.out.println(cody.getId());
         ReplyCodyDto codyDto = new ReplyCodyDto();
         codyDto.setImg(cody.getImg());
 
@@ -239,10 +241,11 @@ public class CommunityService {
         return "" + commentRepository.findById(comment_id).getCreatedAt();
     }
     public String selectHelpCreateAt(int help_id){
+        System.out.println("h" + help_id);
         return "" + helpRepository.findById(help_id).getCreatedAt();
     }
     public String selectReplyCreateAt(int reply_id){
-        return "" + helpRepository.findById(reply_id).getCreatedAt();
+        return "" + replyRepository.findById(reply_id).getCreatedAt();
     }
 
 }
