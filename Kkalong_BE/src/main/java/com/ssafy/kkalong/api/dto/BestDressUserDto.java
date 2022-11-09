@@ -13,4 +13,6 @@ public class BestDressUserDto {
     private int user_id;
     private String nickname;
     private String profile_image;
+
+    private String email;
 }

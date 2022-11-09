@@ -56,6 +56,7 @@ public class CommunityController {
             temp_u.put("user_id", user.getId());
             temp_u.put("nickname", nick);
             temp_u.put("profile_img", profile_img);
+            temp_u.put("email", user.getEmail());
             temp.put("user", temp_u);
             result.add(temp);
         }
@@ -82,6 +83,7 @@ public class CommunityController {
             temp_u.put("user_id", user.getId());
             temp_u.put("nickname", nick);
             temp_u.put("profile_img", profile_img);
+            temp_u.put("email", user.getEmail());
             temp.put("user", temp_u);
             result.add(temp);
         }
@@ -95,7 +97,7 @@ public class CommunityController {
 
         Map<String, Object> result = new HashMap<>();
         User user = communityService.selectUser(post_id);
-        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
@@ -112,6 +114,7 @@ public class CommunityController {
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setEmail(temp_user.getEmail());
 
             comment.put("content", comm.getContent());
             comment.put("user", comment_user);
@@ -155,6 +158,7 @@ public class CommunityController {
         post_user.setUser_id((user.getId()));
         post_user.setNickname(user.getNickname());
         post_user.setProfile_image(user.getImg());
+        post_user.setEmail(user.getEmail());
 
         // DB 등록
         Post post = communityService.insertBestDress(bestReq, user);
@@ -194,7 +198,7 @@ public class CommunityController {
 
         User user = communityService.selectUser(post_id);
 
-        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
@@ -210,6 +214,7 @@ public class CommunityController {
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setEmail(temp_user.getEmail());
 
 
             comment.put("content", comm.getContent());
@@ -246,6 +251,7 @@ public class CommunityController {
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
         user_id.put("user_id", user.getId());
+        user_id.put("email", user.getEmail());
         //createAt 넣어야 댐
 
         result.put("content", comment.getContent());
@@ -273,6 +279,7 @@ public class CommunityController {
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
         userMap.put("user_id", user.getId());
+        userMap.put("email", user.getEmail());
         result.put("content", comment.getContent());
         result.put("user", userMap);
         result.put("createAt", communityService.selectCommentCreateAt(comment.getId()));
@@ -298,6 +305,7 @@ public class CommunityController {
             userDto.setNickname(user.getNickname());
             userDto.setProfile_image(user.getImg());
             userDto.setUser_id(user.getId());
+            userDto.setEmail(user.getEmail());
 
             temp.put("Help", h);
             h.setUser(userDto);
@@ -322,6 +330,7 @@ public class CommunityController {
         userDto.setNickname((user.getNickname()));
         userDto.setProfile_image(user.getImg());
         userDto.setUser_id(user.getId());
+        userDto.setEmail(user.getEmail());
 
         helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
@@ -334,7 +343,8 @@ public class CommunityController {
 
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
-            comment_user.setUser_id((temp_user.getId()));
+            comment_user.setUser_id(temp_user.getId());
+            comment_user.setEmail(temp_user.getEmail());
 
             comment.put("content", rpl.getContent());
             comment.put("user", comment_user);
@@ -413,6 +423,7 @@ public class CommunityController {
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
         user_id.put("user_id", user.getId());
+        user_id.put("eamil", user.getEmail());
         //createAt 넣어야 댐
 
         result.put("content", reply.getContent());
@@ -446,6 +457,7 @@ public class CommunityController {
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
         userMap.put("user_id", user.getId());
+        userMap.put("email", user.getEmail());
         result.put("content", reply.getContent());
         result.put("user", userMap);
         result.put("codi_id", codi);
@@ -459,16 +471,5 @@ public class CommunityController {
         System.out.println("cody " +cody_id);
         communityService.updateCodiDown(cody_id);
     }
-
-
-//    @Autowired
-//    FirebaseService firebaseService;
-//    @PostMapping("/files")
-//    public String uploadFile(@RequestParam("file") MultipartFile file, String nameFile) throws IOException, FirebaseAuthException {
-//        if (file.isEmpty()) {
-//            return "is empty";
-//        }
-//        return firebaseService.uploadFiles(file,nameFile);
-//    }
 
 }
