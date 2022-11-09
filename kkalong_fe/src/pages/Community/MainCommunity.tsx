@@ -3,35 +3,44 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import { getBest3, getBestDress } from '../../redux/modules/BestDress';
+import { getHelpCodi } from '../../redux/modules/HelpCodi';
 
 import BestDresser from '../../components/Community/BestDresser';
 import HelpCodi from '../../components/Community/HelpCodi';
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
-import { getHelpCodi } from '../../redux/modules/HelpCodi';
+import FirebaseUrl from '../../hooks/FirebaseUrl';
+
 
 export interface BestDresserArticle {
-  post_id: number,
-  post_img: string,
+  Best: {
+    content: string,
+    id: number,
+    img: string,
+    likeCount: number
+  }
   user: {
     user_id: number,
     nickname: string,
     profile_img: string,
+    email: string
   }
-  like: number
 }
 
 export interface HelpCodiArticle {
-  help_id: number;
-  help_img: string;
-  range: string,
-  open: boolean,
-  user: {
-    user_id: number,
-    nickname: string,
-    profile_img: string,
+  Help: {
+    help_id: number,
+    help_img: string,
+    range: string,
+    open: boolean,
+    title: string,
+    user: {
+      user_id: number,
+      nickname: string,
+      profile_img: string,
+      email: string
+    }
   }
-  title: string
 }
 
 
@@ -40,18 +49,19 @@ export default function MainCommunity() {
   const {HelpCody} = useAppSelector(state => state.HelpCodi)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [Best3Article, setBest3Article] = useState(Array<BestDresserArticle>)
-  const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
-  const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
+  // const [Best3Article, setBest3Article] = useState(Array<BestDresserArticle>)
+  // const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
+  // const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
   useEffect(() => {
-    const start = () => {
-      dispatch(getBest3())
-      dispatch(getBestDress())
-      dispatch(getHelpCodi())
-      setBestArticles([...BestDress.splice(0,20)])
-      setHelpArticles([...HelpCody.splice(0,20)])
-      setBest3Article([...Best3])
+    const start = async () => {
+      await dispatch(getBest3())
+      await dispatch(getBestDress())
+      await dispatch(getHelpCodi())
+      
+      // setBestArticles([...BestDress.splice(0,20)])
+      // setHelpArticles([...HelpCody.splice(0,20)])
+      // setBest3Article([...Best3])
     }
     start()
     
@@ -67,17 +77,18 @@ export default function MainCommunity() {
     <Container>
       <List>
         <Category>오늘의 깔롱쟁이🏆</Category>
-        {Best3Article.map((Best, index) => {
+        {Best3.map((Best, index) => {
+          const url = FirebaseUrl(Best)
           if (index === 1) {
             return (
               <div key={index} style={{display: 'inline'}}>
-                <Best3Container style={{margin: '0 20px'}} src={Best.post_img}/>
+                <Best3Container style={{margin: '0 20px'}} src={Best.Best.img}/>
               </div>
             )
           } else {
             return (
               <div key={index} style={{display: 'inline'}}>
-                <Best3Container src={Best.post_img}/>
+                <Best3Container src={url}/>
               </div>
             )
           }
@@ -87,7 +98,7 @@ export default function MainCommunity() {
       <List>
         <Category onClick={()=>navigate('/community/BestDress')}>도전! 베스트 드레서✨</Category>
         <ArticleList>
-          {BestArticles.length > 0 && BestArticles.map((BestArticle, index) => {
+          {BestDress.length > 0 && BestDress.map((BestArticle, index) => {
             return (
               <div key={index}>
                 <BestDresser article={BestArticle}/>
@@ -100,7 +111,7 @@ export default function MainCommunity() {
       <List>
         <Category onClick={()=> navigate('/community/HelpCodi')}>도와주세요 패알못😂</Category>
         <ArticleList>
-          {HelpArticles.map((HelpArticle, index) => {
+          {HelpCody.map((HelpArticle, index) => {
             return (
               <div key={index}>
                 <HelpCodi article={HelpArticle}/>

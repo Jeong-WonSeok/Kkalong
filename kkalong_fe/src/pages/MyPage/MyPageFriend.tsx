@@ -16,35 +16,33 @@ import axios from '../../api/axios'
 import requests from '../../api/requests'
 
 export interface FriendType {
-  follower : [{
-    user : { 
-       user_id : number
-       nickname  : string
-       img : string
-     }
-     lover : boolean
-   }]
+  user_id : number
+  nickname  : string
+  img : string
+  lover : boolean
 }
 
 export default function MyPageArticle() {
   const navigate = useNavigate();
   const [User, setUser] = useState<UserType>()
-  const [Friends, setFrineds] = useState<FriendType>()
+  const [Friends, setFrineds] = useState(Array<FriendType>)
+  const [IsSearch, setIsSearch] = useState(false)
+  const [SearchFriendList, setSearchFriendList] = useState(Array<FriendType>)
   
   useEffect(()=>{
     setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async () => {
       const res = await axios.get(requests.myFriend)
-      setFrineds(res.data)
+      setFrineds(res.data.friends)
     }
     start()
     
   },[])
 
   const SearchFriend = async(Text: string) => {
-    const SearchFriend = Friends?.follower.filter(info => {
-      return info.user.nickname.includes(Text)
-    })
+    const res = await axios.get(requests.searchFriend + Text)
+    setSearchFriendList(res.data.users)
+    setIsSearch(true)
   }
 
   return (
@@ -58,8 +56,10 @@ export default function MyPageArticle() {
     <MyPageArticleFriendContainer>
       <Search Search={SearchFriend}>유저검색</Search>
 
-      {Friends?.follower.length && <Friend Friend={Friends!}/>}
-      
+      {/* 유저목록 */}
+      {IsSearch ? 
+      SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
+      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch}/> : <NoneFriend>아직 친구가 없어요</NoneFriend>}
 
       <FooterBar/>
     </MyPageArticleFriendContainer>
@@ -86,3 +86,10 @@ const TopDivText = styled.text`
   font-family: var(--base-font-600);
 `;
 
+const NoneFriend = styled.div`
+  font-family: var(--base-font-300);
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 10px;
+  width: 100%;  
+`

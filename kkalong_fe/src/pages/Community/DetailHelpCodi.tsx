@@ -23,9 +23,10 @@ export interface commentType {
     user_id: number,
     nickname: string,
     profile_img: string,
+    email: string,
   },
   content: string,
-  create_at: string,
+  createAt: string,
   codi_img: string | null,
 }
 
@@ -46,8 +47,8 @@ export default function DetailHelpCodi() {
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
       const InputData = res.data.Help
-      InputData['user'] = res.data.user_id
       InputData['comment'] = res.data.comment
+      console.log(res.data)
       setArticle(InputData)
     }
 
@@ -100,7 +101,7 @@ export default function DetailHelpCodi() {
 
   const ShowCloset = () => {
     // 작성자의 코디 페이지로 이동
-    navigate(`closet/${Article?.user.user_id}`)
+    navigate(`closet/${Article?.Help.user.user_id}`)
   }
 
 
@@ -114,7 +115,7 @@ export default function DetailHelpCodi() {
 
       {IsMenu && <MenuModal 
       Page={"Helpcodi"}
-      Category={Article?.open? "Closet" : "Codi"} 
+      Category={Article?.Help.open? "Closet" : "Codi"} 
       Id={Number(params.HelpCodiId)} 
       openModal={ModalChange}
       closeModal={()=> setIsMenu(false)}/>}
@@ -122,14 +123,14 @@ export default function DetailHelpCodi() {
 
       <Container >
         <ImgContainer>
-          <TitleText>Q. {Article?.title}</TitleText>
-          {!!!Article?.open &&<CodiImg src={Article?.help_img}/>}
+          <TitleText>Q. {Article?.Help?.title}</TitleText>
+          {!!!Article?.Help?.open &&<CodiImg src={Article?.Help?.help_img}/>}
           <ProfileContainer>
             <div style={{display: 'flex' ,flexDirection: 'row'}}>
-              <Profile Image={Article?.user.profile_img ? Article?.user.profile_img : ''} Size={30}/>
-              <ProfileName>{Article?.user.nickname}</ProfileName>
+              <Profile Image={Article?.Help?.user.profile_img ? Article?.Help?.user.profile_img : ''} Size={30}/>
+              <ProfileName>{Article?.Help?.user.nickname}</ProfileName>
             </div>
-            {Article?.open && <ClosetButton onClick={ShowCloset}>
+            {Article?.Help?.open && <ClosetButton onClick={ShowCloset}>
                 <ClosetImg src={Closet}/>
                 <ClosetP>옷장보기</ClosetP>
               </ClosetButton>}
@@ -141,8 +142,8 @@ export default function DetailHelpCodi() {
 
         <CommentContainer 
         Comments={Article?.comment ? Article?.comment : defaultComment} 
-        article_id={Article?.help_id ? Article?.help_id : 1}
-        category={Article?.open ? "closet" : "cody"}
+        article_id={Article?.Help?.help_id ? Article?.Help?.help_id : 1}
+        category={Article?.Help?.open ? "closet" : "cody"}
         CommentsInput={CommentsInput}
         CommentsDelete={CommentsDelete}
         CommentsEdit={CommentsEdit}/>

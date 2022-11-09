@@ -31,8 +31,8 @@ export default function AddBestDress() {
         const res = await axios.get(requsets.detailBestDress + String(params.Id))
         const BestDress = res.data as ArticleType
         setSendData({
-          post_img: BestDress.post_img,
-          content: BestDress.post_content 
+          post_img: BestDress.Best.img,
+          content: BestDress.Best.content 
         })
         const Picture = document.getElementById("SelectPicture") as HTMLDivElement
         // 위에 레이어 모두 삭제후

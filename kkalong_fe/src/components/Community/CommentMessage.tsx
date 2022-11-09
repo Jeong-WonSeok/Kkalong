@@ -45,7 +45,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
           <NickName>{comment.user.nickname}</NickName>
           <MessageContextContainer>
             {!IsEdit && 
-            <div>
+            <MessageContextContainer>
               <Message>
                 {category === "closet" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
                 {comment.content}
@@ -53,10 +53,10 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
                 {category === "closet" ? <CodiSave src={codiSave}/> : null}
                 <Date>
-                  {comment.create_at.slice(11,16)}
+                  {comment.createAt.slice(11,16)}
                 </Date>
               </MessageContainer>
-            </div>}
+            </MessageContextContainer>}
 
             {/* 수정 취소 버튼 추가해야됨 */}
             {IsEdit && 
