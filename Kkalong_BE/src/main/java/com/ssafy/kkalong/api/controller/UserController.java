@@ -164,6 +164,15 @@ public class UserController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/friend")
+    public ResponseEntity<?> getFollwerProfileInfosByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
+        Map<String, Object> result = new HashMap<>();
+
+
+
+        return ResponseEntity.ok().body(result);
+    }
+
     @GetMapping("/test")
     public ResponseEntity<?> Test(@AuthenticationPrincipal UserDetailsImpl user){
         Map<String, Object> result = new HashMap<>();
