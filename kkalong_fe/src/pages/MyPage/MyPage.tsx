@@ -45,7 +45,7 @@ export default function MyPage() {
         })
         setUser(res.data.user)
       } else {
-        setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+        setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
       }
     }
     start()

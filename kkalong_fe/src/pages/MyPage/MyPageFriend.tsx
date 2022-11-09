@@ -32,7 +32,7 @@ export default function MyPageArticle() {
   const [Friends, setFrineds] = useState<FriendType>()
   
   useEffect(()=>{
-    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async () => {
       const res = await axios.get(requests.myFriend)
       setFrineds(res.data)

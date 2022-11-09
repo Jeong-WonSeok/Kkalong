@@ -84,18 +84,16 @@ export default function AddBestDress() {
     console.log(result.get("content"))
     
     if (params.Id) {
-      await axios.put(requsets.detailBestDress + params.Id, {
+      await axios.put(requsets.detailBestDress + params.Id, result, {
         headers: {
           "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        },
-        data: result})
+        }})
       navigate(`community/BestDress/${params.Id}`)
     } else {
-      const res = await axios.post(requsets.bestDress, {
+      const res = await axios.post(requsets.bestDress, result, {
         headers: {
           "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        },
-        data: result})
+        }})
       navigate(`community/BestDress/${res.data.post_id}`)
     }
   }
