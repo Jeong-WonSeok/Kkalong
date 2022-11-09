@@ -1,10 +1,10 @@
 package com.ssafy.kkalong.api.controller;
 
 
-import com.ssafy.kkalong.api.dto.RemoveBgDto;
 import com.ssafy.kkalong.api.entity.Closet;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
+import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,12 @@ public class ClosetController {
 
     @Autowired
     ClosetService closetService;
+    @Autowired
     UserService userService;
+    @Autowired
+    FirebaseService firebaseService;
+
+
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllClosetByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
@@ -36,17 +41,21 @@ public class ClosetController {
     }
 
     @PostMapping("/removeBg")
-    public ResponseEntity<?> removeBackgroundandGetColorInfo(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile file) throws Exception {
+    public ResponseEntity<?> removeBackgroundAndGetColorInfo(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile file) throws Exception {
         Map<String, Object> result = new HashMap<>();
         if (file!=null) {
-            System.out.println("file"+file);
-            MultipartFile bgRemovedImg = closetService.removeBackGround(userInfo.getId(), file);
-            List<String> extractedColors = closetService.getColorInfos(bgRemovedImg);
-            RemoveBgDto removeBgDto = RemoveBgDto.builder()
-                    .file(bgRemovedImg)
-                    .color(extractedColors)
-                    .build();
-            result.put("img", removeBgDto);
+//            MultipartFile bgRemovedImg = closetService.removeBackGround(userInfo.getId(), imgUrl);
+//            List<String> extractedColors = closetService.getColorInfos(bgRemovedImg);
+//            RemoveBgDto removeBgDto = RemoveBgDto.builder()
+//                    .file(bgRemovedImg)
+//                    .color(extractedColors)
+//                    .build();
+//            result.put("img", removeBgDto);
+            String imgUrl = firebaseService.uploadImageWithBackground(userInfo.getId(), userInfo.getEmail(), file);
+            System.out.println(imgUrl);
+            String removedBgImgUrl = closetService.removeBackGround(imgUrl);
+            System.out.println(removedBgImgUrl);
+
             return ResponseEntity.ok().body(result);
         } else{
             return ResponseEntity.badRequest().body("이미지 파일이 없습니다");

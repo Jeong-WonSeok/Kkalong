@@ -85,8 +85,14 @@ function App() {
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
-            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
-            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
+            <Route
+              path="/community/BestDress"
+              element={<MainBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/:BestDressId"
+              element={<DetailBestDress />}
+            ></Route>
             <Route path="/myPage" element={<MyPage />}></Route>
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
             <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>

@@ -33,6 +33,7 @@ public class UserController {
 
         User user = userService.getUserByUserId(userInfo.getId());
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -54,6 +55,7 @@ public class UserController {
 
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -75,6 +77,7 @@ public class UserController {
 
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -142,6 +145,7 @@ public class UserController {
 
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -161,6 +165,15 @@ public class UserController {
         Map<String, Object> result = new HashMap<>();
         result.put("Bests", userService.getBestsByUserId(integerDto.getValue()));
         result.put("Helps", userService.getHelpsByUserId(integerDto.getValue()));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/friend")
+    public ResponseEntity<?> getFollwerProfileInfosByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
+        Map<String, Object> result = new HashMap<>();
+
+
+
         return ResponseEntity.ok().body(result);
     }
 

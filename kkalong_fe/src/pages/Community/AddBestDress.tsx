@@ -80,9 +80,7 @@ export default function AddBestDress() {
   const Submit = async () => {
     const header = {
       'Content-Type': 'multipart/form-data',
-      'Symbol' : {
-        'Accept': 'multipart/form-data'
-      }}
+      'Accept' : '*/*'}
     const result = FormDataChange(SendData)
     // FormData의 value 확인
     if (params.Id) {

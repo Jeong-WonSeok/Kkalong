@@ -61,6 +61,7 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
             Map<String, Object> result = new HashMap<>();
             User user = extractUserInfos(authentication);
             UserInfoDto userInfoDto = UserInfoDto.builder()
+                    .user_id(user.getId())
                     .email(user.getEmail())
                     .nickname(user.getNickname())
                     .gender(user.getGender())

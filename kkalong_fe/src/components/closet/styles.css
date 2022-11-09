@@ -36,7 +36,10 @@ body {
 }
 
 .sample-canvas {
+  width: 300px;
   height: 400px;
-  border: black solid 1px;
+  display: flex;
+  margin: 30px auto 10px auto;
   border-radius: 20px;
+  border: solid #67564e 2px;
 }

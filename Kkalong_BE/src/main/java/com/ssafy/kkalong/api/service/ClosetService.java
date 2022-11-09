@@ -1,24 +1,20 @@
 package com.ssafy.kkalong.api.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.kkalong.api.entity.Closet;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.repository.ClosetRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ClosetService {
 
     @Autowired
@@ -28,33 +24,34 @@ public class ClosetService {
         return closetRepository.findAllByUser(user);
     }
 
-    public MultipartFile removeBackGround(int id, MultipartFile file) throws Exception {
-
-        String originalFileName = file.getOriginalFilename();
-        String url = "http://k7b302.p.ssafy.io:8000/api/removeBg";
-
+    public String removeBackGround(String imgUrl) {
+        String url = "http://localhost:8000/api/removeBg/"+imgUrl;
+        System.out.println("restTemplate Url: "+url);
         RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        String imageFileString = getBase64String(file);
-        body.add("filename", id +"."+file.getContentType());
-        body.add("image", imageFileString);
-
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-        HttpEntity<?> response = restTemplate.postForEntity(url, requestMessage, String.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        MultipartFile bgRemovedImg = objectMapper.readValue((byte[]) response.getBody(), MultipartFile.class);
-        return bgRemovedImg;
+        String s = restTemplate.getForObject(url,String.class);
+        return s;
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+////        String imageFileString = getBase64String(file);
+////        body.add("filename", id +"."+file.getContentType());
+//        body.add("image", file);
+//
+//        System.out.println(file.getOriginalFilename()+","+file.getContentType());
+//
+//        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
+//        HttpEntity<?> response = restTemplate.postForEntity(url, requestEntity, String.class);
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        System.out.println(response.getBody());
+//        MultipartFile bgRemovedImg = objectMapper.readValue((byte[]) response.getBody(), MultipartFile.class);
     }
 
-    private String getBase64String(MultipartFile multipartFile) throws Exception {
-        byte[] bytes = multipartFile.getBytes();
-        return Base64.getEncoder().encodeToString(bytes);
-    }
+//    private String getBase64String(MultipartFile multipartFile) throws Exception {
+//        byte[] bytes = multipartFile.getBytes();
+//        return Base64.getEncoder().encodeToString(bytes);
+//    }
 
     public List<String> getColorInfos(MultipartFile bgRemovedImg) {
         List<String> colorList = new ArrayList<>();
