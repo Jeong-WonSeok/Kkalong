@@ -1,5 +1,6 @@
 package com.ssafy.kkalong.api.entity;
 
+import com.ssafy.kkalong.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReplyLike {
+public class ReplyLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
