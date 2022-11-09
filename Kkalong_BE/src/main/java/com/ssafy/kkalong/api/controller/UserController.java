@@ -33,6 +33,7 @@ public class UserController {
 
         User user = userService.getUserByUserId(userInfo.getId());
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -54,6 +55,7 @@ public class UserController {
 
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -75,6 +77,7 @@ public class UserController {
 
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
@@ -142,6 +145,7 @@ public class UserController {
 
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
+                .user_id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .gender(user.getGender())
