@@ -118,6 +118,7 @@ public class CommunityController {
 
             comment.put("content", comm.getContent());
             comment.put("user", comment_user);
+            comment.put("comment_id", comm.getId());
             comment.put("createAt", communityService.selectCommentCreateAt(comm.getId()));
 
             commentArr.add(comment);
@@ -170,6 +171,7 @@ public class CommunityController {
         Map<String, Object> comment = new HashMap<>();
         comment.put("content", null);
         comment.put("user_id", comment_user);
+        comment.put("comment_id", null);
 
         result.put("Best", postDto);
         result.put("user_id", post_user);
@@ -190,10 +192,10 @@ public class CommunityController {
 
     //베스트 드레서 수정
     @PutMapping("/bestdress/{post_id}")
-    public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody BestDressRequestDto bestReq, @PathVariable int post_id) {
-
+    public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq, @PathVariable int post_id) {
+        System.out.println("adfsafasfsafaffasffasfafsfsaf");
         Map<String, Object> result = new HashMap<>();
-
+        System.out.println(bestReq.getPost_img().getOriginalFilename());
         communityService.updatePost(bestReq, post_id);
 
         User user = communityService.selectUser(post_id);
@@ -219,6 +221,7 @@ public class CommunityController {
 
             comment.put("content", comm.getContent());
             comment.put("user_id", comment_user);
+            comment.put("comment_id", comm.getId());
             comment.put("createAt", "" + communityService.selectCommentCreateAt(comm.getId()));
 
             commentArr.add(comment);
@@ -318,8 +321,6 @@ public class CommunityController {
     @GetMapping("/helpcodi/{help_id}")
     public ResponseEntity<?> selectHelp(@PathVariable int help_id) {
         Map<String, Object> result = new HashMap<>();
-        Map<String, Object> comment = new HashMap<>();
-        Map<String, Object> commentUser = new HashMap<>();
 
         List<Reply> replyList = communityService.selectReply(help_id);
         List<Map<String, Object>> commentArr = new ArrayList<>();
@@ -346,10 +347,11 @@ public class CommunityController {
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
-            comment.put("content", rpl.getContent());
-            comment.put("user", comment_user);
-            comment.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
-            commentArr.add(comment);
+            reply.put("content", rpl.getContent());
+            reply.put("user", comment_user);
+            reply.put("comment_id", rpl.getId());
+            reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
+            commentArr.add(reply);
 
         }
 
@@ -390,6 +392,7 @@ public class CommunityController {
         comment.put("content", null);
         commentUser.put("nickname", null);
         commentUser.put("profile_img", null);
+        comment.put("comment_id", null);
         comment.put("user", commentUser);
         codi.put("codi_img", null);
 
@@ -406,9 +409,9 @@ public class CommunityController {
     //패알못 댓글
     //=====================================================================
 
-    @PostMapping("helpcodi/{help_id}/reply")
-    public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @RequestParam int help_id) {
-
+    @PostMapping("helpcodi/{help_id}/comment")
+    public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @PathVariable int help_id) {
+        System.out.println("help" + help_id);
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> user_id = new HashMap<>();
         Map<String, Object> codi = new HashMap<>();
@@ -416,7 +419,7 @@ public class CommunityController {
         Help help = communityService.getHelp(help_id);
         User user = communityService.getUser(userInfo.getEmail());
         Reply reply = communityService.insertReply(replyInfo, user, help);
-        ReplyCodyDto cody = communityService.getCody(reply.getCody().getId());
+        ReplyCodyDto cody = communityService.getCody(replyInfo.getCodi_id());
 
         codi.put("codi_img", cody);
 
@@ -429,18 +432,18 @@ public class CommunityController {
         result.put("content", reply.getContent());
         result.put("user", user_id);
         result.put("codi_id", codi);
-        result.put("createAt", communityService.selectHelpCreateAt(reply.getId()));
+        result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
     }
 
-    @DeleteMapping("/helpcodi/{help_id}/reply/{reply_id}")
+    @DeleteMapping("/helpcodi/{help_id}/comment/{reply_id}")
     public ResponseEntity<?> deleteReply(@PathVariable int help_id, @PathVariable int reply_id){
         communityService.deleteReply(reply_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
-    @PutMapping("/helpcodi/{help_id}/reply/{reply_id}")
+    @PutMapping("/helpcodi/{help_id}/comment/{reply_id}")
     public ResponseEntity<?> updateReply(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int help_id, @PathVariable int reply_id, @RequestBody ReplyRequestDto replyInfo){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> userMap = new HashMap<>();
@@ -461,14 +464,13 @@ public class CommunityController {
         result.put("content", reply.getContent());
         result.put("user", userMap);
         result.put("codi_id", codi);
-        result.put("createAt", communityService.selectHelpCreateAt(reply.getId()));
+        result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
     }
 
     @PutMapping("/helpcodi/{help_id}/{cody_id}")
     public void codiDownload(@PathVariable int help_id, @PathVariable int cody_id){
-        System.out.println("cody " +cody_id);
         communityService.updateCodiDown(cody_id);
     }
 
