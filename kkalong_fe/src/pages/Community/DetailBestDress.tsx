@@ -43,6 +43,7 @@ export default function DetailBestDress() {
   useEffect(() => {
     async function getDetail() {
       const res = await axios.get(requests.detailBestDress + params.BestDressId)
+      console.log(res.data)
       setArticle(res.data)
     }
     getDetail()

@@ -7,7 +7,7 @@ import { commentType } from '../../pages/Community/DetailHelpCodi'
 
 export default function CommentInput({article_id, category, CommentsInput} :{article_id: number, category:string, CommentsInput: (data: commentType) => void}) {
   const [Message, setMessage] = useState('')
-  const [CodiImg, setCodiImg] = useState('')
+  const [CodiImg, setCodiImg] = useState(0)
 
   const SendMessage = async () => {
     // axios 요청 보내기

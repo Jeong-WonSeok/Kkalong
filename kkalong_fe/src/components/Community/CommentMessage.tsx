@@ -20,9 +20,9 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
 
   const CommentDelete = async(idx: number) => {
     if (category === "bestdress"){
-      await axios.delete(requests.detailBestDress + params.BestDressId + requests.comment + String(idx))
+      await axios.delete(requests.detailBestDress + params.BestDressId + requests.comment + comment.comment_id)
     } else {
-      await axios.delete(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx))
+      await axios.delete(requests.detailHelpCodi + params.HelpCodiId + requests.comment + comment.comment_id)
     }
     CommentsDelete(idx)
   }
@@ -38,6 +38,10 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
     }
     setIsEdit(false)
     setEditContent('')
+  }
+
+  const Codisave = () => {
+    axios.put(requests.detailHelpCodi + `${params.HelpCodiId}/`)
   }
 
   return (
@@ -56,7 +60,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
                 {comment.content}
               </Message>
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-                {category === "closet" ? <CodiSave src={codiSave}/> : null}
+                {category === "closet" ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
                 <Date>
                   {comment.createAt.slice(11,16)}
                 </Date>

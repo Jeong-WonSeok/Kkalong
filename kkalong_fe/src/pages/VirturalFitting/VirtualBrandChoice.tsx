@@ -6,7 +6,6 @@ import SpaoIcon from "../../assets/icon/Brand/spao.png";
 import HnMIcon from "../../assets/icon/Brand/h&m.png";
 import EightSecondsIcon from "../../assets/icon/Brand/eight.png";
 import ZaraIcon from "../../assets/icon/Brand/zara.png";
-import backArrow from "../../assets/icon/Nav/BackArrow.png"
 
 import Search from "../../components/ui/Search";
 import FooterBar from "../../components/ui/FooterBar";
@@ -17,6 +16,7 @@ import requests from '../../api/requests'
 
 interface BrandType {
   img: string;
+  name: string;
   brand_id: number;
 }
 
@@ -26,37 +26,50 @@ export default function VirtualBrandChoice() {
 
 
   useEffect(() => {
+    // axios.get(requests.brand)
+    //   .then(res => {
+    //     setBrand(res.data)
+    //   })
+    //   .catch(err => console.error(err))
     setBrand([
       {
         img: SpaoIcon,
+        name: "spao",
         brand_id: 1,
       },
       {
         img: HnMIcon,
+        name: "HnM",
         brand_id: 2,
       },
       {
         img: ZaraIcon,
+        name: "Zara",
         brand_id: 3,
       },
       {
         img: EightSecondsIcon,
+        name: "EightSeconds",
         brand_id: 4,
       },
       {
         img: SpaoIcon,
+        name: "spao",
         brand_id: 1,
       },
       {
         img: HnMIcon,
+        name: "HnM",
         brand_id: 2,
       },
       {
         img: ZaraIcon,
+        name: "Zara",
         brand_id: 3,
       },
       {
         img: EightSecondsIcon,
+        name: "EightSeconds",
         brand_id: 4,
       },
     ]);
@@ -76,7 +89,7 @@ export default function VirtualBrandChoice() {
       <Search Search={SearchBrand}>브랜드 검색</Search>
       <VirtualLine></VirtualLine>
       <VirtualBrandButtonDiv>
-        {Brand.map((logo) => {
+        {Brand.length && Brand.map((logo) => {
           return (
             <VirtualBrandButton
               src={logo.img}
@@ -97,23 +110,17 @@ const VirtualBrandChoiceDiv = styled.div`
   min-width: 100%;
 `;
 
-//뒤로가기
-const VirtualBrandChoiceBackArrow = styled.img`
-  width : 30px;
-  height : 30px;
-`
-
-
-const VirtualBrandChoiceText = styled.text`
+const VirtualBrandChoiceText = styled.span`
   font-family: var(--base-font-600);
 `;
+
 const VirtualUserSearch = styled.text`
   margin-left: 10px;
 `;
 
 const VirtualLine = styled.hr`
-  width: 90%;
-  border: 1px solid #ded6c6;
+  width: 100%;
+  border: 1px solid var(--primary-color-300);
   margin-top: 15px;
 `;
 
@@ -124,10 +131,9 @@ const VirtualBrandButtonDiv = styled.div`
 `;
 
 const VirtualBrandButton = styled.img`
-  width: 20%;
-  height: 30px;
-  padding: 3px;
-  margin: 3px;
-  border: 1px solid #000000;
+  width: 100px;
+  height: 40px;
+  margin: 9px;
+  border: 1px solid var(--primary-color-900);
   border-radius: 50px;
 `;
