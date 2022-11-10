@@ -183,29 +183,42 @@ public class CommunityService {
     }
 
     public Reply insertReply(ReplyRequestDto replyInfo, User userInfo, Help help) {
-        Reply reply = Reply.builder()
+        Reply reply;
+        if(replyInfo.getCodi_id() == null) {
+            reply = Reply.builder()
                 .content(replyInfo.getContent())
                 .user(userInfo)
                 .help(help)
-                .cody(codyRepository.findById(replyInfo.getCodi_id()))
                 .build();
+        }else {
+            int cody_id = replyInfo.getCodi_id();
+            reply = Reply.builder()
+                .content(replyInfo.getContent())
+                .user(userInfo)
+                .help(help)
+                .cody(codyRepository.findById(cody_id))
+                .build();
+        }
         replyRepository.save(reply);
         return reply;
+    }
+
+    public void updateHelp(int help_id, HelpRequestDto helpInfo) {
+        helpRepository.updateHelp(help_id, helpInfo.getContent(), helpInfo.getTitle(), helpInfo.getOpen(), helpInfo.getRange(), helpInfo.getImg());
     }
 
     public void deleteReply(int reply_id) { replyRepository.deleteById(reply_id); }
 
     public void updateReply(int reply_id, ReplyRequestDto replyInfo) {
-        replyRepository.updateReply(reply_id, replyInfo.getContent() );
-
+        replyRepository.updateReply(reply_id, replyInfo.getContent(), replyInfo.getCodi_id() );
     }
 
     public ReplyCodyDto getCody(int cody_id){
-        System.out.println(cody_id);
+
         Cody cody = codyRepository.findById(cody_id);
-        System.out.println(cody.getId());
         ReplyCodyDto codyDto = new ReplyCodyDto();
-        codyDto.setImg(cody.getImg());
+        codyDto.setCody_img(cody.getImg());
+        codyDto.setCody_id(cody_id);
 
         return codyDto;
     }
