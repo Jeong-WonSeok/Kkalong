@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { BestDresserArticle } from "../Community/MainCommunity";
@@ -18,6 +18,7 @@ import { UserType } from "./MyPage";
 
 
 export default function MyPageArticle() {
+  const params = useParams()
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
   const [User, setUser] = useState<UserType>()
@@ -27,9 +28,22 @@ export default function MyPageArticle() {
   useEffect(() => {
     setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async() => {
-      const res = await axios.get(requests.myWrite)
-      setBestArticles(res.data.Best)
-      setHelpArticles(res.data.Help)
+      if (params.user_id) {
+        // 정보 요청이 안됨...
+        const Input = {value: Number(params.userId)}
+        const res = await axios.get(requests.otherProfile, {params: Input})
+        setUser(res.data.user)
+        
+        // 글쓴이의 글 목록 불러오기
+        const wirte = await axios.get(requests.myWrite, {params: {value: User!.user_id}})
+        setBestArticles(wirte.data.Best)
+        setHelpArticles(wirte.data.Help)
+        
+      } else {
+        const res = await axios.get(requests.myWrite)
+        setBestArticles(res.data.Best)
+        setHelpArticles(res.data.Help)
+      }
     }
 
     start()
@@ -39,7 +53,7 @@ export default function MyPageArticle() {
   return (
     <MyPageArticleContainer>
       <TopNav type={""}>
-        <MyPageArticleBackArrow src={backArrow} onClick={()=> navigate('/myPage')}></MyPageArticleBackArrow>
+        <MyPageArticleBackArrow src={backArrow} onClick={()=> navigate(-1)}></MyPageArticleBackArrow>
         <MyPageArticleText>{User?.nickname} 님의 게시글</MyPageArticleText>
         <div style={{ width: "30px", height: "30px" }}></div>
       </TopNav>

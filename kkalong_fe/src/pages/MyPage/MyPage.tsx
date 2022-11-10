@@ -37,12 +37,8 @@ export default function MyPage() {
     app.style.marginTop = '0'
     const start = async() => {
       if (params.userId) {
-        const Input = {value: params.userId}
-        const res = await axios.get(requests.otherProfile, {
-          params: {
-            value: Number(params.userId)
-          }
-        })
+        const Input = {value: Number(params.userId)}
+        const res = await axios.get(requests.otherProfile, {params: Input})
         setUser(res.data.user)
       } else {
         setUser(JSON.parse(localStorage?.getItem('userProfile')as string))

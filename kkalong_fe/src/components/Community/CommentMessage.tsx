@@ -48,7 +48,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
     <Container>
       <MessageContextContainer>
         <MessageContainer style={{justifyContent: 'start'}}>
-          <Profile Image={comment.user.profile_img} Size={30}/>
+          <Profile Image={comment.user.profile_img} Size={30} id={comment.user.user_id}/>
         </MessageContainer>
         <MessageContainer>
           <NickName>{comment.user.nickname}</NickName>

@@ -10,7 +10,7 @@ export default function HelpCodi({article} : {article: HelpCodiArticle}) {
     <div onClick={()=>navigate(`/community/HelpCodi/${article.Help.help_id}`)}>
     <Container style={{backgroundImage: `url(${FirebaseUrl(article)})`}}>
       <ProfileContainer>
-      <Profile Image={article.Help.user.profile_img} Size={17}/>
+      <Profile Image={article.Help.user.profile_img} Size={17} id={article.Help.user.user_id}/>
         <span>{article.Help.user.nickname}</span>
       </ProfileContainer>
       
