@@ -49,7 +49,7 @@ public class FittingService {
         ClothesResponseDto clothesDto = new ClothesResponseDto();
         clothesDto.setImg(clothes.getImg());
         clothesDto.setName(clothes.getName());
-        clothesDto.setType(clothes.getType());
+        clothesDto.setMainCategory(clothes.getMain_category());
         clothesDto.setUrl(clothes.getUrl());
         return clothesDto;
     }

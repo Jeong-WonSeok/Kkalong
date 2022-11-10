@@ -18,10 +18,8 @@ public class Closet {
     @Column(name="closet_id", nullable = false)
     private int id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column
     private boolean base;
 
     @ManyToOne(fetch = FetchType.LAZY)

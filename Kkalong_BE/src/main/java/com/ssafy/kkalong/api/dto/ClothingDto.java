@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @Builder
@@ -12,7 +11,15 @@ import java.util.List;
 @NoArgsConstructor
 public class ClothingDto {
     private int closet_id;
-    private String closet_name;
-    private List<ClothingDto> clothings;
-    private List<CodyDto> codies;
+    private String img;
+    private String mainCategory;
+    private String subCategory;
+    private boolean spring;
+    private boolean summer;
+    private boolean fall;
+    private boolean winter;
+    private String color;
+    private String gender;
+    private int brand_id;
+    private String url;
 }
