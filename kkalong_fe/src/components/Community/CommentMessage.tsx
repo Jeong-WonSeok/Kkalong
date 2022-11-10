@@ -10,9 +10,11 @@ import codiSave from '../../assets/icon/Community/codiSave.png'
 import Edit from '../../assets/icon/Community/Edit.png'
 import Trash from '../../assets/icon/Community/Trash.png'
 import { useParams } from 'react-router-dom'
+import { UserType } from '../../pages/MyPage/MyPage'
 
 export default function CommentMessage({comment, category, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
-  const [EditContent, setEditContent] = useState('')
+  const currentUser = JSON.parse(localStorage?.getItem('userProfile')as string) as UserType
+  const [EditContent, setEditContent] = useState(comment.content)
   const [IsEdit, setIsEdit] = useState(false)
   const params = useParams()
 
@@ -26,11 +28,12 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
   }
 
   const EditMessage = async(idx: number) => {
+    const data = {content : EditContent}
     if (category === "bestdress"){
-      const res= await axios.put(requests.detailBestDress + params.BestDressId + requests.comment + String(idx), EditContent)
+      const res= await axios.put(requests.detailBestDress + params.BestDressId + requests.comment + String(idx), data)
       CommentsEdit(idx, res.data)
     } else {
-      const res = await axios.put(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx), EditContent)
+      const res = await axios.put(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx), data)
       CommentsEdit(idx, res.data)
     }
     setIsEdit(false)
@@ -40,12 +43,14 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
   return (
     <Container>
       <MessageContextContainer>
-        <Profile Image={comment.user.profile_img} Size={30}/>
+        <MessageContainer style={{justifyContent: 'start'}}>
+          <Profile Image={comment.user.profile_img} Size={30}/>
+        </MessageContainer>
         <MessageContainer>
           <NickName>{comment.user.nickname}</NickName>
           <MessageContextContainer>
             {!IsEdit && 
-            <div>
+            <MessageContextContainer>
               <Message>
                 {category === "closet" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
                 {comment.content}
@@ -53,28 +58,28 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
                 {category === "closet" ? <CodiSave src={codiSave}/> : null}
                 <Date>
-                  {comment.create_at.slice(11,16)}
+                  {comment.createAt.slice(11,16)}
                 </Date>
               </MessageContainer>
-            </div>}
+            </MessageContextContainer>}
 
             {/* 수정 취소 버튼 추가해야됨 */}
             {IsEdit && 
-            <div>
-              <EditMessageInput value={comment.content} onChange={(e: any)=> setEditContent(e.target.value)}/>
+            <MessageContextContainer style={{alignItems: 'center', justifyContent: 'space-between'}}>
+              <EditMessageInput value={EditContent} onChange={(e: any)=> setEditContent(e.target.value)}/>
               <Button onClick={()=> EditMessage(comment.comment_id)}>수정</Button>
-            </div>
+            </MessageContextContainer>
             }
             
           </MessageContextContainer>
         </MessageContainer>
       </MessageContextContainer>
       {/* 추후 작성한 유저만 수정 삭제 할 수 있도록 */}
-      {/* {comment.user.user_id === localStorage.get(User).user_id && 
+      {comment.user.user_id === currentUser.user_id && 
       <MessageContextContainer>
         <UpdateImg src={Edit} onClick={()=> setIsEdit(true)}/>
         <UpdateImg src={Trash} onClick={()=> CommentDelete(comment.comment_id)}/>
-      </MessageContextContainer>} */}
+      </MessageContextContainer>}
     </Container>
   )
 }
@@ -117,18 +122,20 @@ const Message = styled.div`
 const EditMessageInput = styled.input`
   width: 70%;
   max-width: 200px;
-  height: 24px;
+  height: 20px;
   font-size: 13px;
   border-radius: 10px;
   background-color: var(--primary-color-100);
-  padding: 3px 7px;
+  padding: 3px 0;
+  text-indent: 5px;
   font-family: var(--base-font-300);
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);
 `
 
 const Button = styled.button`
   width: 54px;
-  height: 24px;
+  height: 27px;
+  padding: 3px;
   border-radius: 10px;
   border: 0;
   font-family: var(--base-font-400);

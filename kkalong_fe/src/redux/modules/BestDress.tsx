@@ -35,21 +35,14 @@ export const getBest3 = () => async (dispatch: Dispatch) => {
 
   
   const res = await axios.get(requests.best3)
-  console.log(res.data)
-
-  const Best3 = res.data
-
-  dispatch({type: GET_BEST_SUCCESS, payload: Best3})
+  dispatch({type: GET_BEST_SUCCESS, payload: res.data})
 }
 
 export const getBestDress = () => async (dispatch: Dispatch) => {
   dispatch({type: GET_DATA_PENDING})
 
   const res = await axios.get(requests.bestDress)
-  console.log(res.data)
-
-  const BestDress = res.data
-  dispatch({type: GET_DATA_SUCCESS, payload: BestDress})
+  dispatch({type: GET_DATA_SUCCESS, payload: res.data})
 }
 
 // 액션에 따른 state 변경 
@@ -61,7 +54,7 @@ export default handleActions({
       ...state,
       pending: true,
       error: false,
-      BestDress: empty,
+      BestDress: [],
     }
   },
   [GET_DATA_SUCCESS]: (state, {payload}) => {
@@ -86,7 +79,7 @@ export default handleActions({
       ...state,
       pending: true,
       error: false,
-      Best3: empty,
+      Best3: [],
     }
   },
   [GET_BEST_SUCCESS]: (state, {payload}) => {

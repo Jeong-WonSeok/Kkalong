@@ -31,8 +31,8 @@ export default function AddBestDress() {
         const res = await axios.get(requsets.detailBestDress + String(params.Id))
         const BestDress = res.data as ArticleType
         setSendData({
-          post_img: BestDress.post_img,
-          content: BestDress.post_content 
+          post_img: BestDress.Best.img,
+          content: BestDress.Best.content 
         })
         const Picture = document.getElementById("SelectPicture") as HTMLDivElement
         // 위에 레이어 모두 삭제후
@@ -78,24 +78,16 @@ export default function AddBestDress() {
   }
 
   const Submit = async () => {
+    const header = {
+      'Content-Type': 'multipart/form-data',
+      'Accept' : '*/*'}
     const result = FormDataChange(SendData)
     // FormData의 value 확인
-    console.log(result.get("file"))
-    console.log(result.get("content"))
-    
     if (params.Id) {
-      await axios.put(requsets.detailBestDress + params.Id, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        },
-        data: result})
+      await axios.put(requsets.detailBestDress + params.Id, result, {headers: header})
       navigate(`community/BestDress/${params.Id}`)
     } else {
-      const res = await axios.post(requsets.bestDress, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Content-Type을 반드시 이렇게 하여야 한다.
-        },
-        data: result})
+      const res = await axios.post(requsets.bestDress, result, {headers: header})
       navigate(`community/BestDress/${res.data.post_id}`)
     }
   }

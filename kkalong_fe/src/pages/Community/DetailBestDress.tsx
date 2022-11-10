@@ -43,6 +43,7 @@ export default function DetailBestDress() {
   useEffect(() => {
     async function getDetail() {
       const res = await axios.get(requests.detailBestDress + params.BestDressId)
+      console.log(res.data)
       setArticle(res.data)
     }
     getDetail()
@@ -108,18 +109,19 @@ export default function DetailBestDress() {
 
       <Container>
         <ContentContainer>
-          <ContentImg src={Article?.post_img}/>
+          <ContentImg src={Article?.Best.img}/>
         </ContentContainer>
         <ContentInfoContainer>
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
+            {Article?.user && 
             <ProfileContainer>
               <Profile Image={Article!.user.profile_img} Size={30}/>
               <CustomText>{Article!.user.nickname}</CustomText>
-            </ProfileContainer>
+            </ProfileContainer>}
             <LikeContainer>
               {!!!Like && <Likeimg Like={Like} src={like} onClick={()=> setLike(!!!Like)}/>}
               {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=> setLike(!!!Like)}/>}
-              <CustomText style={{fontSize: '13px'}}>{Article?.like}</CustomText>
+              <CustomText style={{fontSize: '13px'}}>{Article?.Best.likeCount}</CustomText>
             </LikeContainer>
           </div>
           <CustomText style={{fontFamily: 'var(--base-font-200)', padding: '5px 15px 0px'}}>{Article?.post_content}</CustomText>
@@ -129,7 +131,7 @@ export default function DetailBestDress() {
 
         <CommentContainer
          Comments={Article?.comment ? Article?.comment : defaultComment}
-          article_id={Article?.post_id ? Article?.post_id : 1}
+          article_id={Article?.Best.id ? Article?.Best.id : 1}
           category={"bestdress"}
           CommentsInput={CommentsInput}
           CommentsDelete={CommentsDelete}
