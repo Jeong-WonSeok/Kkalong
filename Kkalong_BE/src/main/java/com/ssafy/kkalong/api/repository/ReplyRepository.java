@@ -20,8 +20,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer> {
 
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "update reply set content = :content where reply_id = :reply_id")
-    void updateReply(int reply_id, String content);
+    @Query(nativeQuery = true, value = "update reply set content = :content, cody_id = :cody_id where reply_id = :reply_id")
+    void updateReply(int reply_id, String content, Integer cody_id);
 
 
 }

@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReplyRequestDto {
     private String content;
-    private int codi_id;
+    private Integer codi_id;
 }
