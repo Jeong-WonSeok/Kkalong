@@ -115,7 +115,7 @@ export default function AddClothes() {
   );
 }
 
-const CamDiv = styled.div`
+export const CamDiv = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -123,7 +123,7 @@ const CamDiv = styled.div`
   overflow: hidden;
 `
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   position: fixed;
   bottom: 0;
   left: auto;
@@ -134,7 +134,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `
 
-const CaptureButton = styled.div`
+export const CaptureButton = styled.div`
   background-color: white;
   width: 50px;
   height: 50px;
@@ -144,7 +144,7 @@ const CaptureButton = styled.div`
   z-index: 5;
 `
 
-const ChildCaptureButton = styled.div`
+export const ChildCaptureButton = styled.div`
   left: -7.5px;
   top: -7.5px;
   position: absolute;
