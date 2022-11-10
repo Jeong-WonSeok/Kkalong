@@ -342,11 +342,17 @@ public class CommunityController {
             User temp_user = rpl.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
 
+
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getImg());
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
+            ReplyCodyDto cody = new ReplyCodyDto();
+            if (rpl.getCody()!=null){
+                cody = new ReplyCodyDto(rpl.getCody().getId(), rpl.getCody().getImg());
+            }
+            reply.put("cody", cody);
             reply.put("content", rpl.getContent());
             reply.put("user", comment_user);
             reply.put("comment_id", rpl.getId());
@@ -368,6 +374,51 @@ public class CommunityController {
         communityService.deleteHelp(help_id);
     }
 
+    @PutMapping("helpcodi/{help_id}")
+    public ResponseEntity<?> udpateHelp(@PathVariable int help_id, @RequestBody HelpRequestDto helpInfo){
+        Map<String, Object> result = new HashMap<>();
+        communityService.updateHelp(help_id, helpInfo);
+
+        List<Reply> replyList = communityService.selectReply(help_id);
+        List<Map<String, Object>> commentArr = new ArrayList<>();
+
+        HelpResponseDto helpDto = communityService.selectHelp(help_id);
+        BestDressUserDto userDto = new BestDressUserDto();
+        User user = communityService.selectUserHelp(help_id);
+        userDto.setNickname((user.getNickname()));
+        userDto.setProfile_image(user.getImg());
+        userDto.setUser_id(user.getId());
+        userDto.setEmail(user.getEmail());
+
+        helpDto.setUser(userDto);
+        result.put("createAt", communityService.selectHelpCreateAt(help_id));
+
+
+        for (Reply rpl : replyList) {
+            Map<String, Object> reply = new HashMap<>();
+            User temp_user = rpl.getUser();
+            BestDressUserDto comment_user = new BestDressUserDto();
+
+            comment_user.setNickname(temp_user.getNickname());
+            comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setUser_id(temp_user.getId());
+            comment_user.setEmail(temp_user.getEmail());
+
+            reply.put("content", rpl.getContent());
+            reply.put("user", comment_user);
+            reply.put("comment_id", rpl.getId());
+            reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
+            commentArr.add(reply);
+
+        }
+
+
+        result.put("Help", helpDto);
+        result.put("comment", commentArr);
+
+
+        return ResponseEntity.ok().body(result);
+    }
 
     @PostMapping("/helpcodi")
     public ResponseEntity<?> insertHelp(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody HelpRequestDto helpInfo) {
@@ -411,17 +462,19 @@ public class CommunityController {
 
     @PostMapping("helpcodi/{help_id}/comment")
     public ResponseEntity<?> replyRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ReplyRequestDto replyInfo, @PathVariable int help_id) {
-        System.out.println("help" + help_id);
+
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> user_id = new HashMap<>();
         Map<String, Object> codi = new HashMap<>();
 
+        ReplyCodyDto cody = new ReplyCodyDto();
+        if(replyInfo.getCodi_id() != null){
+            cody = communityService.getCody(replyInfo.getCodi_id());
+
+        }
         Help help = communityService.getHelp(help_id);
         User user = communityService.getUser(userInfo.getEmail());
         Reply reply = communityService.insertReply(replyInfo, user, help);
-        ReplyCodyDto cody = communityService.getCody(replyInfo.getCodi_id());
-
-        codi.put("codi_img", cody);
 
         user_id.put("nickname", user.getNickname());
         user_id.put("profile_img", user.getImg());
@@ -431,7 +484,7 @@ public class CommunityController {
 
         result.put("content", reply.getContent());
         result.put("user", user_id);
-        result.put("codi_id", codi);
+        result.put("codi_id", cody);
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
@@ -447,23 +500,23 @@ public class CommunityController {
     public ResponseEntity<?> updateReply(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int help_id, @PathVariable int reply_id, @RequestBody ReplyRequestDto replyInfo){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> userMap = new HashMap<>();
-        Map<String, Object> codi = new HashMap<>();
-
 
         communityService.updateReply(reply_id, replyInfo);
         Reply reply = communityService.getReply(reply_id);
         User user = communityService.getUser(userInfo.getEmail());
+        ReplyCodyDto cody = new ReplyCodyDto();
+        if(replyInfo.getCodi_id() != null){
+            cody = communityService.getCody(replyInfo.getCodi_id());
+        }
 
-        ReplyCodyDto cody = communityService.getCody(reply.getCody().getId());
 
-        codi.put("codi_img", cody);
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getImg());
         userMap.put("user_id", user.getId());
         userMap.put("email", user.getEmail());
         result.put("content", reply.getContent());
         result.put("user", userMap);
-        result.put("codi_id", codi);
+        result.put("codi_id", cody);
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
