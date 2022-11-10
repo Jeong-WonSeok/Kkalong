@@ -2,6 +2,7 @@ package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.User;
+import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
 import com.ssafy.kkalong.security.UserDetailsImpl;
@@ -20,6 +21,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    ClosetService closetService;
 
     private final JwtProvider jwtProvider;
 

@@ -65,12 +65,9 @@ public class ClosetController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"}, value = "/clothing")
-    public ResponseEntity<?> registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("clothing") ClothingDto clothingDto, @RequestPart("img") MultipartFile img){
+    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("clothing") ClothingDto clothingDto, @RequestPart("img") MultipartFile img){
         Map<String, Object> result = new HashMap<>();
-
-        Clothing clothing = closetService.registerClothing(clothingDto, img);
-
-        return ResponseEntity.ok().body(result);
+        closetService.registerClothing(userInfo.getId(), clothingDto, img);
     }
 
 }

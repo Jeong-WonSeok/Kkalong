@@ -1,40 +1,29 @@
 package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.ClothingDto;
-import com.ssafy.kkalong.api.entity.Brand;
-import com.ssafy.kkalong.api.entity.Closet;
-import com.ssafy.kkalong.api.entity.Clothing;
-import com.ssafy.kkalong.api.entity.User;
-import com.ssafy.kkalong.api.repository.BrandRepository;
-import com.ssafy.kkalong.api.repository.ClosetClothingRepository;
-import com.ssafy.kkalong.api.repository.ClosetRepository;
-import com.ssafy.kkalong.api.repository.ClothingRepository;
+import com.ssafy.kkalong.api.entity.*;
+import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ClosetService {
 
-    @Autowired
-    ClosetRepository closetRepository;
-    @Autowired
-    ClothingRepository clothingRepository;
-    @Autowired
-    BrandRepository brandRepository;
-    @Autowired
-    FirebaseService firebaseService;
-    @Autowired
-    ClosetClothingRepository closetClothingRepository;
+    private final UserRepository userRepository;
+    private final ClosetRepository closetRepository;
+    private final ClothingRepository clothingRepository;
+    private final BrandRepository brandRepository;
+    private final FirebaseService firebaseService;
+    private final ClosetClothingRepository closetClothingRepository;
 
     public List<Closet> getClosetsByUserId(User user) {
         return closetRepository.findAllByUser(user);
@@ -76,7 +65,8 @@ public class ClosetService {
         return colorList;
     }
 
-    public Clothing registerClothing(ClothingDto clothingDto, MultipartFile img) {
+    public Clothing registerClothing(int user_id, ClothingDto clothingDto, MultipartFile img) {
+        User user = userRepository.findById(user_id);
         Clothing clothing = Clothing.builder()
                 .main_category(clothingDto.getMainCategory())
                 .sub_category(clothingDto.getSubCategory())
@@ -85,12 +75,21 @@ public class ClosetService {
                 .fall(clothingDto.isFall())
                 .winter(clothingDto.isWinter())
                 .color(clothingDto.getColor())
-                .gender(clothingDto.getGender())
+                .gender(user.getGender())
                 .brand(brandRepository.findById(clothingDto.getBrand_id()))
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
+        Clothing savedClothing = clothingRepository.findById(clothing_id);
         String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
-
+        //옷장과 옷 매핑
+        Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
+        if(baseCloset.getId() != clothingDto.getCloset_id()){
+            Closet currCloset = closetRepository.findById(clothingDto.getCloset_id());
+            ClosetClothing closetClothing = ClosetClothing.builder().closet(currCloset).clothing(savedClothing).build();
+            closetClothingRepository.save(closetClothing);
+        }
+        ClosetClothing closetClothing = ClosetClothing.builder().closet(baseCloset).clothing(savedClothing).build();
+        ClosetClothing cl = closetClothingRepository.save(closetClothing);
         return clothing;
     }
 }
