@@ -160,7 +160,7 @@ const VirtualBrandButton = styled.img`
   border-radius: 50px;
 `;
 
-const NoData = styled.div`
+export const NoData = styled.div`
   font-family: var(--base-font-300);
   font-size: 1rem;
   text-align: center;

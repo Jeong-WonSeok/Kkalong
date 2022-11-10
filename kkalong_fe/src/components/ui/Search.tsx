@@ -17,7 +17,6 @@ export default function Search({children, Search, StopSearch}: {children: any, S
   }
 
   const Stop = () => {
-    console.log()
     setSearchText('')
     StopSearch(false)
   }

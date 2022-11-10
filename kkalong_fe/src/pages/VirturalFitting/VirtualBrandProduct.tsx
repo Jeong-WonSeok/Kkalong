@@ -1,16 +1,39 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BackArrow } from "../Community/MainBestDress";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+
 import backArrow from "../../assets/icon/Nav/BackArrow.png";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { BackArrow } from "../Community/MainBestDress";
+
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
 
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+
+interface ClothType {
+  clothes_id: number
+  img : string
+  name : string
+  type : string
+  url : string
+}
+
 export default function VirtualBrandProduct() {
   const clothes = useLocation();
+  const navigate = useNavigate();
+  const params = useParams()
+  const [Clothes, setClothes] = useState<ClothType>()
 
-    const navigate = useNavigate();
-
-
+  useEffect(()=>{
+    axios.get(requests.brand + params.brand_id + params.clothes_id)
+      .then(res => {
+        setClothes(res.data)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  },[])
 
   return (
     <VirtualBrandProductDiv>
@@ -38,9 +61,10 @@ const VirtualBrandProductDiv = styled.div`
   flex-direction: column;
 `;
 
-const BrandProductName = styled.text`
+const BrandProductName = styled.p`
+  font-size: 1.2rem;
   font-family: var(--base-font-500);
-  margin: 30px 30px;
+  margin: 20px 10px;
 `;
 
 const BrandProductImgDiv = styled.div`
@@ -56,26 +80,28 @@ const BrandProductImg = styled.img`
 `;
 
 const BrandProductBuyDiv = styled.div`
+  position: fixed;
+  bottom: 70px;
+  max-width: 360px;
+  width: 100%;
+  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 50px 30px;
 `;
 
 const BrandProductBuy = styled.button`
   border: none;
-  background-color: #cba171;
-  margin: auto 20px;
-  width: 30%;
+  background-color: var(--primary-color-300);
+  margin: auto;
+  height: 30px;
+  width: 150px;
+  font-size: 0.9rem;
   font-family: var(--base-font-400);
   border-radius: 10px;
 `;
 
-const BrandProductFitting = styled.button`
-  border: none;
-  background-color: #aa8b77;
-  margin: auto 20px;
-  width: 30%;
-  font-family: var(--base-font-400);
-  border-radius: 10px;
+const BrandProductFitting = styled(BrandProductBuy)`
+  background-color: var(--primary-color-600);
+  color: white;
 `;
