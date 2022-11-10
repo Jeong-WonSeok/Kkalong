@@ -67,9 +67,10 @@ export default function VirtualBrand() {
             <div style={{width:"30px", height:"30px"}}></div>
         </TopNav>
       <VirtualBrandProductDiv>
-        {BrnadClothes.map((clothes) => {
+        {BrnadClothes.map((clothes, idx) => {
           return (
             <VirtualBrandProduct
+              key={idx}
               src={clothes.img}
               onClick={() =>
                 navigate(`${clothes.clothes_id}`, { state: clothes })

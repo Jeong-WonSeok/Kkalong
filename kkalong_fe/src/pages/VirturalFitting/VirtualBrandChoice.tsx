@@ -23,6 +23,8 @@ interface BrandType {
 export default function VirtualBrandChoice() {
   const navigate = useNavigate();
   const [Brand, setBrand] = useState(Array<BrandType>);
+  const [SearchBrandList, setSearchBrandList] = useState(Array<BrandType>)
+  const [IsSearch, setIsSearch] = useState(false)
 
 
   useEffect(() => {
@@ -77,7 +79,11 @@ export default function VirtualBrandChoice() {
 
   // filter 로 구현할 예정임
   const SearchBrand = async(Text: string) => {
-    
+    const list = Brand.filter(brand => {
+      return brand.name.includes(Text)
+    })
+    setSearchBrandList(list)
+    setIsSearch(true)
   }
 
   return (
@@ -86,10 +92,11 @@ export default function VirtualBrandChoice() {
         <VirtualBrandChoiceText>브랜드 선택</VirtualBrandChoiceText>
         <div style={{width:"54px", height:"38px"}}></div>
       </TopNav>
-      <Search Search={SearchBrand}>브랜드 검색</Search>
+      <Search Search={SearchBrand} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
       <VirtualLine></VirtualLine>
       <VirtualBrandButtonDiv>
-        {Brand.length && Brand.map((logo) => {
+        {/* 검색중이 아닐때 나옴 */}
+        {!IsSearch && Brand.length && Brand.map((logo) => {
           return (
             <VirtualBrandButton
               src={logo.img}
@@ -97,6 +104,21 @@ export default function VirtualBrandChoice() {
             ></VirtualBrandButton>
           );
         })}
+        
+        {/* 검색중 */}
+        {IsSearch && SearchBrandList.length &&
+          Brand.map((logo) => {
+            return (
+              <VirtualBrandButton
+                src={logo.img}
+                onClick={() => navigate(`${logo.brand_id}`, { state: logo })}
+              ></VirtualBrandButton>
+            )
+          })}
+
+        {IsSearch && !SearchBrandList.length && <NoData>검색 결과가 없습니다</NoData>}
+
+
       </VirtualBrandButtonDiv>
       <FooterBar/>
     </VirtualBrandChoiceDiv>
@@ -137,3 +159,11 @@ const VirtualBrandButton = styled.img`
   border: 1px solid var(--primary-color-900);
   border-radius: 50px;
 `;
+
+const NoData = styled.div`
+  font-family: var(--base-font-300);
+  font-size: 1rem;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 5px;
+`
