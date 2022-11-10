@@ -1,5 +1,7 @@
 package com.ssafy.kkalong.api.entity;
 
+import com.ssafy.kkalong.api.dto.SignupDto;
+import com.ssafy.kkalong.common.UserRole;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -57,5 +59,9 @@ public class Clothing {
 
     @OneToMany(mappedBy = "clothing")
     List<Review> reviews = new ArrayList<>();
+
+    public void setClothingImgUrl(String imgUrl){
+        this.img = imgUrl;
+    }
 
 }

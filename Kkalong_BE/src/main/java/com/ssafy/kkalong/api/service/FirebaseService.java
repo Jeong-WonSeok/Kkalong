@@ -34,7 +34,7 @@ public class FirebaseService {
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing%2F"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/"+id+"?alt=media";
 
     }
 }

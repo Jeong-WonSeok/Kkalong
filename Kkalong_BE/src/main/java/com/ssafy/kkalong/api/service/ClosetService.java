@@ -81,6 +81,9 @@ public class ClosetService {
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
         String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
+        savedClothing.setClothingImgUrl(imgUrl);
+        clothingRepository.save(clothing);
+
         //옷장과 옷 매핑
         Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
         if(baseCloset.getId() != clothingDto.getCloset_id()){
