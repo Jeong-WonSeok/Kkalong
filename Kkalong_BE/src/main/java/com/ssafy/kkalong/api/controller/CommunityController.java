@@ -437,7 +437,7 @@ public class CommunityController {
         help.setOpen(helpInfo.getOpen());
         help.setTitle(helpInfo.getTitle());
         help.setRange(helpInfo.getRange());
-        help.setUser(new BestDressUserDto());
+        help.setUser(new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail()));
 
         result.put("Help", help);
         comment.put("content", null);
