@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReplyCodyDto {
-    private String img;
+    private int cody_id;
+    private String cody_img;
 }
