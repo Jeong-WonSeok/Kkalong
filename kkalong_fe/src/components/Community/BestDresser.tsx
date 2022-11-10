@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { BestDresserArticle } from "../../pages/Community/MainCommunity";
-import like from "../../assets/icon/Community/like.png";
 import { useNavigate } from "react-router-dom";
+
+import like from "../../assets/icon/Community/like.png";
+import defaultImg from "../../assets/icon/Community/defaultImg.png"
 import Profile from "./Profile";
+import FirebaseUrl from "../../hooks/FirebaseUrl";
 
 export default function BestDresser({
   article,
@@ -11,11 +14,11 @@ export default function BestDresser({
   article: BestDresserArticle;
 }) {
   const navigate = useNavigate();
-
+  
   return (
     <Container
-      style={{ backgroundImage: `url(${article.post_img})` }}
-      onClick={() => navigate(`/community/BestDress/${article.post_id}`)}
+      style={{ backgroundImage: `url(${article.Best.img ? FirebaseUrl(article) : defaultImg})` }}
+      onClick={() => navigate(`/community/BestDress/${article.Best.id}`)}
     >
       <ProfileContainer>
         <Profile Image={article.user.profile_img} Size={17} />
@@ -23,7 +26,7 @@ export default function BestDresser({
       </ProfileContainer>
       <LikeContainer>
         <LikeImg src={like} />
-        {article.like}
+        {article.Best.likeCount}
       </LikeContainer>
     </Container>
   );
