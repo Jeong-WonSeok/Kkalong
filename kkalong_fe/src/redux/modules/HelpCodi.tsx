@@ -4,9 +4,9 @@ import { HelpCodiArticle } from "../../pages/Community/MainCommunity";
 import axios from "../../api/axios";
 import requests from "../../api/requests";
 
-const GET_DATA_PENDING = 'Community/GET_DATA_PENDING' 
-const GET_DATA_SUCCESS = 'Community/GET_DATA_SUCCESS' 
-const GET_DATA_FAILURE = 'Community/GET_DATA_FAILURE' 
+const GET_HELP_PENDING = 'Community/GET_HELP_PENDING' 
+const GET_HELP_SUCCESS = 'Community/GET_HELP_SUCCESS' 
+const GET_HELP_FAILURE = 'Community/GET_HELP_FAILURE' 
 
 interface stateType {
   pending: boolean,
@@ -22,18 +22,16 @@ const initialState: stateType = {
 }
 
 export const getHelpCodi = () => async (dispatch: Dispatch) => {
-  dispatch({type: GET_DATA_PENDING})
+  dispatch({type: GET_HELP_PENDING})
 
   // 아직 페이지네이션 처리가 따로 되어있지 않음
   const res = await axios.get(requests.helpCodi)
-  const HelpCodi = res.data[0].Help
-
-  dispatch({type: GET_DATA_SUCCESS, payload: HelpCodi})
+  dispatch({type: GET_HELP_SUCCESS, payload: res.data})
 }
 
 // 액션에 따른 state 변경 
 export default handleActions({
-  [GET_DATA_PENDING]: (state, action) => {
+  [GET_HELP_PENDING]: (state, action) => {
     // 반환해줄 데이터
     return {
       pending: true,
@@ -41,15 +39,16 @@ export default handleActions({
       HelpCody: [],
     }
   },
-  [GET_DATA_SUCCESS]: (state, {payload}) => {
+  [GET_HELP_SUCCESS]: (state, {payload}) => {
     const adjust: Array<HelpCodiArticle> = payload as unknown as Array<HelpCodiArticle>
+    console.log('패알못 게시글', adjust)
     return {
       ...state,
       pending: false,
       HelpCody: state.HelpCody.concat(adjust)
     };
   },
-  [GET_DATA_FAILURE]: (state, action) => {
+  [GET_HELP_FAILURE]: (state, action) => {
     return {
       ...state,
       pending: false,

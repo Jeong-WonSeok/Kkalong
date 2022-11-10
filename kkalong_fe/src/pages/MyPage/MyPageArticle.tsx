@@ -25,7 +25,7 @@ export default function MyPageArticle() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async() => {
       const res = await axios.get(requests.myWrite)
       setBestArticles(res.data.Best)
@@ -80,7 +80,9 @@ export default function MyPageArticle() {
 const MyPageArticleContainer = styled.div`
 `;
 
-const MyPageArticleText = styled.div``;
+const MyPageArticleText = styled.div`
+  font-family: var(--base-font-600);
+`;
 
 const MyPageArticleBackArrow = styled.img`
   width: 30px;

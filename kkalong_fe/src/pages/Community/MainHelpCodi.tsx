@@ -49,7 +49,7 @@ export default function MainHelpCodi() {
         {HelpArticles.length > 0 && HelpArticles.map((HelpArticle, idx) => {
             return (
               <TitleDiv key={idx}>
-                Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
+                Q. {HelpArticle.Help.title.length > 25 ? HelpArticle.Help.title.slice(0,23) + '...' : HelpArticle.Help.title}
               </TitleDiv>
             )
           })}
@@ -63,7 +63,7 @@ export default function MainHelpCodi() {
       
       {IsCodi && HelpArticles.length > 0 && <CodiContainer>
         {HelpArticles.map((HelpArticle, idx) => {
-          if (HelpArticle.help_img) {
+          if (HelpArticle.Help.help_img) {
             return (
               <div key={idx}>
                 <HelpCodi article={HelpArticle}/> 
@@ -75,10 +75,10 @@ export default function MainHelpCodi() {
 
       {IsCloset && HelpArticles.length > 0 && <ClosetContainer>
           {HelpArticles.map((HelpArticle, idx) => {
-            if(!HelpArticle.help_img) {
+            if(!HelpArticle.Help.help_img) {
               return (
                 <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
-                  Q. {HelpArticle.title.length > 25 ? HelpArticle.title.slice(0,23) + '...' : HelpArticle.title}
+                  Q. {HelpArticle.Help.title.length > 25 ? HelpArticle.Help.title.slice(0,23) + '...' : HelpArticle.Help.title}
                 </TitleDiv>
                 )
             }

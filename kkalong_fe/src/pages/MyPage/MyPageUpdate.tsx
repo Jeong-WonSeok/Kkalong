@@ -23,7 +23,7 @@ export default function MyPageUpdate() {
   const [User, setUser] = useState<UserType>()  
 
   useEffect(()=>{
-    setUser(JSON.parse(localStorage?.getItem('useProfile')as string))
+    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
   },[])
 
   const CheckNinkname = async () => {
@@ -34,16 +34,23 @@ export default function MyPageUpdate() {
     setIsNickName(res.data.usable);
   }
 
-  const handleNickname = (e:any) => {
-
+  const Submit = async() => {
+    const res = await axios.post(requests.updateProfile, User)
+    setUser(res.data.user)
+    
+    alert('회원정보가 변경되었습니다.')
+    localStorage.setItem("userProfile", JSON.stringify(res.data.user));
+    navigate('/myPage')
   }
 
   return (
     <div>
       <TopNav type={""}>
-        <img src={backArrow} style={{width:"30px", height:"30px"}} onClick={()=>navigate(-1)}></img>
+        <div style={{width:"50px"}}>
+          <img src={backArrow} style={{width:"30px", height:"30px", paddingRight: "20px"}} onClick={()=>navigate(-1)}/>
+        </div>
         <SignupText>회원정보 수정</SignupText>
-        <div style={{width:"30px", height:"30px"}}></div>
+        <SubmitBtn onClick={Submit}>수정</SubmitBtn>
       </TopNav>
 
       <SignupDiv>
@@ -168,26 +175,15 @@ const SignupInputDiv = styled.div`
   position : relative;
 `
 
-//age Input
-const SignupNumberInput = styled.input.attrs(({type}) => ({
-  type: type || "number",
-}))`
-  border : none;
-  background-color: #F0F0F0;
-  padding : 5px;
-  font-size: 1rem;
-  border-radius : 10px;
-  text-indent : 25px;
-  width : 100%;
+const SubmitBtn = styled.button`
+  border: none;
+  background: var(--primary-color-400);
+  width: 50px;
+  height: 30px;
   font-family: var(--base-font-400);
-  ::-webkit-inner-spin-button{
-  -webkit-appearance: none; 
-  margin: 0; 
-  };
-  ::-webkit-outer-spin-button{
-  -webkit-appearance: none; 
-  margin: 0; 
-  };
+  font-size : 0.9rem;
+  color: white;
+  border-radius: 10px;
 `
 
 const SignupAgeIcon = styled.img`
@@ -208,4 +204,26 @@ const SpanTag = styled.span`
   top: 39px;
   font-size: 0.95rem;
   font-family: var(--base-font-400);
+`
+
+//age Input
+const SignupNumberInput = styled.input.attrs(({type}) => ({
+  type: type || "number",
+}))`
+  border : none;
+  background-color: #F0F0F0;
+  padding : 5px;
+  font-size: 1rem;
+  border-radius : 10px;
+  text-indent : 25px;
+  width : 100%;
+  font-family: var(--base-font-400);
+  ::-webkit-inner-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  };
+  ::-webkit-outer-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  };
 `
