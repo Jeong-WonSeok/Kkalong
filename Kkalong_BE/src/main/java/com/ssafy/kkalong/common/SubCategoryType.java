@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ClothesType {
+public enum SubCategoryType {
     TOP("TOP"),
     BOTTOM("BOTTOM"),
     OUTER("OUTER"),

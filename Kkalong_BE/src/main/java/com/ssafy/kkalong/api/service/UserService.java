@@ -25,6 +25,7 @@ public class UserService {
     private String mailSender;
 
     private final UserRepository userRepository;
+    private final ClosetRepository closetRepository;
     private final AuthCodeRepository authCodeRepository;
     private final FollowRepository followRepository;
     private final PostRepository postRepository;
@@ -89,6 +90,8 @@ public class UserService {
                 .role(UserRole.ROLE_USER)
                 .build();
         userRepository.save(user);
+        Closet closet = Closet.builder().name("전체").base(true).user(user).build();
+        closetRepository.save(closet);
         return user;
     }
 
@@ -96,6 +99,8 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         user.setUserInfo(signupDto);
         userRepository.save(user);
+        Closet closet = Closet.builder().name("전체").base(true).user(user).build();
+        closetRepository.save(closet);
         return user;
     }
 
@@ -111,7 +116,7 @@ public class UserService {
     }
 
     public List<Integer> getFollowingListBySenderId(int senderId){
-        User user = userRepository.findById(senderId).orElse(null);
+        User user = userRepository.findById(senderId);
         List<Follow> list = followRepository.findAllBySender(user);
         List<Integer> followingList = new ArrayList<>();
         for (Follow follow : list) {
@@ -120,7 +125,7 @@ public class UserService {
         return followingList;
     }
     public List<Integer> getFollowerListByReceiverId(int receiverId){
-        User user = userRepository.findById(receiverId).orElse(null);
+        User user = userRepository.findById(receiverId);
         List<Follow> list = followRepository.findAllByReceiver(user);
         List<Integer> followerList = new ArrayList<>();
         for(Follow follow : list){
@@ -131,8 +136,8 @@ public class UserService {
 
 
     public void sendFollowRequest(int sender_id, int receiver_id) {
-        User sender = userRepository.findById(sender_id).orElse(null);
-        User receiver = userRepository.findById(receiver_id).orElse(null);
+        User sender = userRepository.findById(sender_id);
+        User receiver = userRepository.findById(receiver_id);
         if(sender != null && receiver != null){
             Follow follow = followRepository.findBySenderAndReceiver(sender, receiver).orElse(null);
             if(follow!=null){
@@ -147,11 +152,11 @@ public class UserService {
     }
 
     public User getUserByUserId(int user_id) {
-        return userRepository.findById(user_id).orElse(null);
+        return userRepository.findById(user_id);
     }
 
     public List<PostInfoDto> getBestsByUserId(int user_id) {
-        User user = userRepository.findById(user_id).orElse(null);
+        User user = userRepository.findById(user_id);
         List<Post> list = postRepository.findAllByUserId(user_id);
         List<PostInfoDto> postInfos = new ArrayList<>();
         for (Post post : list) {
@@ -169,7 +174,7 @@ public class UserService {
     }
 
     public List<HelpInfoDto> getHelpsByUserId(int user_id) {
-        User user = userRepository.findById(user_id).orElse(null);
+        User user = userRepository.findById(user_id);
         List<Help> list = helpRepository.findAllByUserId(user_id);
         List<HelpInfoDto> helpInfos = new ArrayList<>();
         for (Help help : list) {

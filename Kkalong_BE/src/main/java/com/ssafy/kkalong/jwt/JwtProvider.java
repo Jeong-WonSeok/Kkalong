@@ -120,7 +120,7 @@ public final class JwtProvider {
     public User getUser(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         String user_id = String.valueOf(claims.getBody().get("user_id"));
-        return userRepository.findById(Integer.parseInt(user_id)).orElse(null);
+        return userRepository.findById(Integer.parseInt(user_id));
     }
 
 

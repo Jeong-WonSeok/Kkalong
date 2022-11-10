@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ClothingRepository extends JpaRepository<Clothing, Integer> {
+
     List<Clothing> findByBrand(Brand brand);
 
     Clothing findById(int clothing_id);
