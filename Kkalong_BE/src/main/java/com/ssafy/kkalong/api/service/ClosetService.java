@@ -1,14 +1,22 @@
 package com.ssafy.kkalong.api.service;
 
+import com.ssafy.kkalong.api.dto.ClothingDto;
+import com.ssafy.kkalong.api.entity.Brand;
 import com.ssafy.kkalong.api.entity.Closet;
+import com.ssafy.kkalong.api.entity.Clothing;
 import com.ssafy.kkalong.api.entity.User;
+import com.ssafy.kkalong.api.repository.BrandRepository;
+import com.ssafy.kkalong.api.repository.ClosetClothingRepository;
 import com.ssafy.kkalong.api.repository.ClosetRepository;
+import com.ssafy.kkalong.api.repository.ClothingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +27,14 @@ public class ClosetService {
 
     @Autowired
     ClosetRepository closetRepository;
+    @Autowired
+    ClothingRepository clothingRepository;
+    @Autowired
+    BrandRepository brandRepository;
+    @Autowired
+    FirebaseService firebaseService;
+    @Autowired
+    ClosetClothingRepository closetClothingRepository;
 
     public List<Closet> getClosetsByUserId(User user) {
         return closetRepository.findAllByUser(user);
@@ -58,5 +74,23 @@ public class ClosetService {
 
 
         return colorList;
+    }
+
+    public Clothing registerClothing(ClothingDto clothingDto, MultipartFile img) {
+        Clothing clothing = Clothing.builder()
+                .main_category(clothingDto.getMainCategory())
+                .sub_category(clothingDto.getSubCategory())
+                .spring(clothingDto.isSpring())
+                .summer(clothingDto.isSummer())
+                .fall(clothingDto.isFall())
+                .winter(clothingDto.isWinter())
+                .color(clothingDto.getColor())
+                .gender(clothingDto.getGender())
+                .brand(brandRepository.findById(clothingDto.getBrand_id()))
+                .build();
+        int clothing_id = clothingRepository.save(clothing).getId();
+        String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
+
+        return clothing;
     }
 }

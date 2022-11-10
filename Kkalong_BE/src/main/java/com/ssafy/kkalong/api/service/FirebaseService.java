@@ -15,14 +15,26 @@ public class FirebaseService {
     @Value("${app.firebase-bucket}")
     private String firebaseBucket;
 
-    public String uploadImageWithBackground(int id, String email,  MultipartFile file) throws IOException{
-        System.out.println(id);
-        System.out.println(email);
-
+    public String uploadImageWithBackground(int id, String email,  MultipartFile file) {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
-        InputStream content = new ByteArrayInputStream(file.getBytes());
-        Blob blob = bucket.create(id+"_"+email, content, file.getContentType());
+        try{
+            InputStream content = new ByteArrayInputStream(file.getBytes());
+            Blob blob = bucket.create(id+"_"+email, content, file.getContentType());
+        } catch (Exception e){
+            System.out.println("ByteArrayInputStream 예외 발생");
+        }
         return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/"+id+"_"+email+"?alt=media";
+    }
+
+    public String uploadClothingImgWithoutBackground(int id, MultipartFile file) {
+        Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+        try{
+            InputStream content = new ByteArrayInputStream(file.getBytes());
+            Blob blob = bucket.create(id+"", content, file.getContentType());
+        } catch(Exception e) {
+            System.out.println("ByteArrayInputStream 예외 발생");
+        }
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/"+id+"?alt=media";
 
     }
 }

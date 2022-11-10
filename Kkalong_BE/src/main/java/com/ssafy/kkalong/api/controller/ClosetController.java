@@ -1,7 +1,9 @@
 package com.ssafy.kkalong.api.controller;
 
 
+import com.ssafy.kkalong.api.dto.ClothingDto;
 import com.ssafy.kkalong.api.entity.Closet;
+import com.ssafy.kkalong.api.entity.Clothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.FirebaseService;
@@ -60,6 +62,15 @@ public class ClosetController {
         } else{
             return ResponseEntity.badRequest().body("이미지 파일이 없습니다");
         }
+    }
+
+    @PostMapping(consumes = {"multipart/form-data"}, value = "/clothing")
+    public ResponseEntity<?> registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("clothing") ClothingDto clothingDto, @RequestPart("img") MultipartFile img){
+        Map<String, Object> result = new HashMap<>();
+
+        Clothing clothing = closetService.registerClothing(clothingDto, img);
+
+        return ResponseEntity.ok().body(result);
     }
 
 }

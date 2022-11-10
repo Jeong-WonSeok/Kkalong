@@ -1,8 +1,6 @@
 package com.ssafy.kkalong.api.entity;
 
-import com.ssafy.kkalong.common.ClothesType;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,41 +18,28 @@ public class Clothing {
     @Column(name="clothing_id", nullable = false)
     private int id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String img;
-
     //옷장에 들어가는 옷은 null처리
-    @Column
     private int code;
 
-    @Column(nullable = false)
     private String color;
 
-    @Column(nullable = false)
-    private ClothesType type;
+    private String main_category;
 
-    @Column(nullable = false)
-    private String category;
+    private String sub_category;
 
-    @Column(nullable = false)
     private boolean spring;
 
-    @Column(nullable = false)
     private boolean summer;
 
-    @Column(nullable = false)
     private boolean fall;
 
-    @Column(nullable = false)
     private boolean winter;
 
-    @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
     private String url;
     
     @ManyToOne(fetch = FetchType.LAZY)
