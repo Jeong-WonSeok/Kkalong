@@ -4,7 +4,7 @@ export default function FormDataChange(data: any) {
 
   Object.entries(data).map(([key, value]) => {
     if (key.includes("img")) {
-      return formdata.append("file", value as any)
+      return formdata.append("post_img", value as any)
     } else {
       return formdata.append(String(key), value as any)
     }

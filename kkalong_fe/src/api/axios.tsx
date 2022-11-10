@@ -10,4 +10,7 @@ const instance = axios.create({
   },
 });
 
+// instance.defaults.headers.post['Accept'] = "*/*"
+// instance.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+
 export default instance;
