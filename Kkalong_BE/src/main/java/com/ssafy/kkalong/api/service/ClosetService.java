@@ -92,4 +92,23 @@ public class ClosetService {
         ClosetClothing cl = closetClothingRepository.save(closetClothing);
         return clothing;
     }
+
+    public ClothingDto getClothingInfoByClothingId(int clothing_id) {
+        Clothing clothing = clothingRepository.findById(clothing_id);
+        ClothingDto clothingDto = ClothingDto.builder()
+                .closet_id(-1)
+                .img(clothing.getImg())
+                .mainCategory(clothing.getMain_category())
+                .subCategory(clothing.getSub_category())
+                .spring(clothing.isSpring())
+                .summer(clothing.isSummer())
+                .fall(clothing.isFall())
+                .winter(clothing.isWinter())
+                .color(clothing.getColor())
+                .gender(clothing.getGender())
+                .brand_id(clothing.getBrand().getId())
+                .url(clothing.getUrl())
+                .build();
+        return clothingDto;
+    }
 }

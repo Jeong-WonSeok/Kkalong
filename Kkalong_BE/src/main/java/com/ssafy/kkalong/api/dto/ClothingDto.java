@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ClothingDto {
     private int closet_id;
+    private String img;
     private String mainCategory;
     private String subCategory;
     private boolean spring;
@@ -21,4 +22,5 @@ public class ClothingDto {
     private String color;
     private String gender;
     private int brand_id;
+    private String url;
 }
