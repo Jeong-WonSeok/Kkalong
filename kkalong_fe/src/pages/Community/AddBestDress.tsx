@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../../api/axios'
-import requsets from '../../api/requests'
+import requsests from '../../api/requests'
 
 import TopNav from '../../components/ui/TopNav'
 import { Container } from './MainCommunity'
@@ -27,8 +27,8 @@ export default function AddBestDress() {
   // 만약 Edit 상태라면 미리 데이터를 받아온다.
   useEffect(()=>{
     const Edit = async () => {
-      if (params.Id) {
-        const res = await axios.get(requsets.detailBestDress + String(params.Id))
+      if (params.BestDressId) {
+        const res = await axios.get(requsests.detailBestDress + params.BestDressId)
         const BestDress = res.data as ArticleType
         setSendData({
           post_img: BestDress.Best.img,
@@ -78,17 +78,19 @@ export default function AddBestDress() {
   }
 
   const Submit = async () => {
-    const header = {
-      'Content-Type': 'multipart/form-data',
-      'Accept' : '*/*'}
     const result = FormDataChange(SendData)
+    result.get('post_img')
     // FormData의 value 확인
-    if (params.Id) {
-      await axios.put(requsets.detailBestDress + params.Id, result, {headers: header})
-      navigate(`community/BestDress/${params.Id}`)
+    if (params.BestDressId) {
+      await axios.put(requsests.detailBestDress + params.Id, result,{headers: {'Content-Type': 'multipart/form-data'}})
+      navigate(`/community/BestDress/${params.Id}`)
     } else {
-      const res = await axios.post(requsets.bestDress, result, {headers: header})
-      navigate(`community/BestDress/${res.data.post_id}`)
+      await axios.post(requsests.bestDress, result, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then(res => {
+        console.log(res)
+        navigate(`/community/BestDress/${res.data.Best.id}`)
+      })
+      .catch(err => console.error(err))
     }
   }
 

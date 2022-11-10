@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../api/axios'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import requests from '../../api/requests'
@@ -8,8 +8,10 @@ export default function Modal(props: any) {
   // 삭제 axios 요청 보낼 예정
   const Delete = async () => {
     if (props.Page === "BestDress") {
-      await axios.delete(requests.detailBestDress + props.Id)
+      const res = await axios.delete(requests.detailBestDress + props.Id)
+      console.log(res.data)
       navigate('/community/BestDress')
+      
     } else {
       await axios.delete(requests.detailHelpCodi + props.Id)
       navigate('/community/HelpCodi')
@@ -64,7 +66,7 @@ const ModalDiv = styled.div`
   height: 120px;
   border-radius: 15px;
   background-color: white;
-  border: 1px solid var(--primary-color-750);
+  border: 3px solid var(--primary-color-750);
 `
 
 const ContentDiv = styled.div`

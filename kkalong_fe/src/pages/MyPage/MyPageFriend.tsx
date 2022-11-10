@@ -54,7 +54,7 @@ export default function MyPageArticle() {
       </TopNav>
 
     <MyPageArticleFriendContainer>
-      <Search Search={SearchFriend}>유저검색</Search>
+      <Search Search={SearchFriend} StopSearch={()=>setIsSearch(false)}>유저검색</Search>
 
       {/* 유저목록 */}
       {IsSearch ? 

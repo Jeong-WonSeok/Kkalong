@@ -1,11 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import defaultProfile from '../../assets/icon/Community/defaultProfile.png'
 import FirebaseUrl from '../../hooks/FirebaseUrl'
 
-export default function Profile({Image, Size} : {Image: string, Size: number}) {
+export default function Profile({Image, Size, id} : {Image: string, Size: number, id: number}) {
+  const navigate = useNavigate()
   return (
-    <ProfileImg style={{width: `${Size}px`, height: `${Size}px`}} src={Image !== null? Image : defaultProfile}/>
+    <ProfileImg 
+    style={{width: `${Size}px`, height: `${Size}px`}} 
+    src={Image !== null? Image : defaultProfile}
+    onClick={()=>{navigate(`/myPage/${id}`)}}/>
   )
 }
 

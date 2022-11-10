@@ -66,7 +66,7 @@ function App() {
             <Route path="/community" element={<MainCommunity />}></Route>
             <Route path="/community/BestDress" element={<MainBestDress />}></Route>
             <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/Add/:Id" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
             <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
             <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
