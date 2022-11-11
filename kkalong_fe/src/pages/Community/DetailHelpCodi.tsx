@@ -27,7 +27,10 @@ export interface commentType {
   },
   content: string,
   createAt: string,
-  codi_img: string | null,
+  cody: {
+    cody_id: number,
+    cody_img: string | null,
+  }
 }
 
 export interface ArticleType extends HelpCodiArticle{

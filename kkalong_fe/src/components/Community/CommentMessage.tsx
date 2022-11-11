@@ -56,7 +56,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
             {!IsEdit && 
             <MessageContextContainer>
               <Message>
-                {category === "closet" ? <CodiImg src={comment?.codi_img ? comment?.codi_img : ''}/> : null}
+                {category === "closet"  && comment?.cody.cody_img? <CodiImg src={comment!.cody.cody_img}/> : null}
                 {comment.content}
               </Message>
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
