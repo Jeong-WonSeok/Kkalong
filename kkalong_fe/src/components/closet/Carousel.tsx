@@ -8,7 +8,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import styled from "styled-components";
 import "./styles.css";
-
+import SwiperCore from "swiper";
 // import required modules
 import { EffectCoverflow, Pagination } from "swiper";
 import { ClothesProps } from "../../pages/Closet/MainCloset";
@@ -16,6 +16,11 @@ import add_closet from "../../assets/icon/Closet/add_closet.png";
 
 export default function Carousel({ sortclothes }: ClothesProps) {
   const navigate = useNavigate();
+  const [closetId, setClosetId] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperCore>();
+  // Swiper.on("transitionEnd", function () {
+  //   console.log("now index :::", Swiper.realIndex);
+  // });
   return (
     <>
       <Swiper
@@ -30,12 +35,17 @@ export default function Carousel({ sortclothes }: ClothesProps) {
           modifier: 1,
           slideShadows: true,
         }}
+        onSwiper={(swiper) => console.log(swiper)}
         // pagination={true}
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
         <SwiperSlide>
-          <SlideButton>
+          <SlideButton
+            onClick={() => {
+              setClosetId(1);
+            }}
+          >
             <img src={sortclothes[0]} />
           </SlideButton>
           <SwiperText>여름 데일리</SwiperText>

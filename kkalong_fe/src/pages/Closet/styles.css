@@ -1,0 +1,45 @@
+#app {
+  height: 100%;
+}
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  /* font-family: Helvetica Neue, Helvetica, Arial, sans-serif; */
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 150px;
+  height: 150px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 80%;
+  margin: auto;
+  background-size: contain;
+}
+
+.sample-canvas {
+  width: 300px;
+  height: 400px;
+  display: flex;
+  margin: 30px auto 10px auto;
+  border-radius: 20px;
+  border: solid #67564e 2px;
+}
