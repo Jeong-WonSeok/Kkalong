@@ -1,20 +1,29 @@
 package com.ssafy.kkalong.api.controller;
 
-
+import com.ssafy.kkalong.api.dto.ClosetInfoDto;
 import com.ssafy.kkalong.api.dto.ClothingDto;
+import com.ssafy.kkalong.api.dto.CodyDto;
+import com.ssafy.kkalong.api.dto.CodyResponseDto;
 import com.ssafy.kkalong.api.entity.Closet;
-import com.ssafy.kkalong.api.entity.Clothing;
+import com.ssafy.kkalong.api.entity.Cody;
+import com.ssafy.kkalong.api.entity.CodyClothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.*;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin(origins = {"*"})
@@ -30,43 +39,39 @@ public class ClosetController {
     FirebaseService firebaseService;
 
 
-
     @GetMapping("/all")
     public ResponseEntity<?> getAllClosetByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
-        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> result = new HashMap<>();
         User user = userService.getUserByUserId(userInfo.getId());
+        List<ClosetInfoDto> closetInfoDtos = new ArrayList<>();
         List<Closet> closets = closetService.getClosetsByUserId(user);
         for (Closet closet : closets) {
-            System.out.println();
+            ClosetInfoDto closetInfoDto = ClosetInfoDto.builder()
+                    .closet_id(closet.getId())
+                    .name(closet.getName())
+                    .clothings(closetService.findAllClothingByCloset(closet))
+                    .codies(closetService.findAllCodybyCloset(closet))
+                    .build();
+            closetInfoDtos.add(closetInfoDto);
         }
+        result.put("closets", closetInfoDtos);
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping("/removeBg")
-    public ResponseEntity<?> removeBackgroundAndGetColorInfo(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile file) throws Exception {
+    @PostMapping(value = "/removeBg")
+    public ResponseEntity<?> removeBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
         Map<String, Object> result = new HashMap<>();
-        if (file!=null) {
-//            MultipartFile bgRemovedImg = closetService.removeBackGround(userInfo.getId(), imgUrl);
-//            List<String> extractedColors = closetService.getColorInfos(bgRemovedImg);
-//            RemoveBgDto removeBgDto = RemoveBgDto.builder()
-//                    .file(bgRemovedImg)
-//                    .color(extractedColors)
-//                    .build();
-//            result.put("img", removeBgDto);
-            String imgUrl = firebaseService.uploadImageWithBackground(userInfo.getId(), userInfo.getEmail(), file);
-            System.out.println(imgUrl);
-            String removedBgImgUrl = closetService.removeBackGround(imgUrl);
-            System.out.println(removedBgImgUrl);
-
-            return ResponseEntity.ok().body(result);
-        } else{
-            return ResponseEntity.badRequest().body("이미지 파일이 없습니다");
-        }
+        List<String> colors = new ArrayList<>();
+        colors.add("파랑색");
+        colors.add("초록색");
+        result.put("img", closetService.removeBackGround(userInfo.getId(), img));
+        result.put("color", colors);
+        return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping(consumes = {"multipart/form-data"}, value = "/clothing")
-    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("clothing") ClothingDto clothingDto, @RequestPart("img") MultipartFile img){
-        closetService.registerClothing(userInfo.getId(), clothingDto, img);
+    @PostMapping(value = "/clothing")
+    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ClothingDto clothingDto){
+        closetService.registerClothing(userInfo.getId(), clothingDto);
     }
 
     @GetMapping("/clothing/{clothing_id}")
@@ -77,4 +82,29 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PostMapping(consumes = {"multipart/form-data"}, value ="/cody")
+    public void registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
+        closetService.registerCody(userInfo.getId(), codyDto, img);
+    }
+
+    @GetMapping("/cody/{cody_id}")
+    public ResponseEntity<?> getCodyInfoByCodyId(@PathVariable int cody_id){
+        Map<String, Object> result = new HashMap<>();
+        Cody cody = closetService.getCodyInfoByCodyId(cody_id);
+        CodyResponseDto codyResponseDto = CodyResponseDto.builder()
+                .cody_id(cody.getId())
+                .img(cody.getImg())
+                .name(cody.getName())
+                .open(cody.getOpen())
+                .build();
+        result.put("cody", codyResponseDto);
+        List<CodyClothing> codyClothings = closetService.findAllCodyClothingByCody(cody);
+        ArrayList<ClothingDto> clothings = new ArrayList<>();
+        for (CodyClothing codyClothing: codyClothings) {
+            ClothingDto clothingDto = closetService.getClothingInfoByClothingId(codyClothing.getClothing().getId());
+            clothings.add(clothingDto);
+        }
+        result.put("clothings", clothings);
+        return ResponseEntity.ok().body(result);
+    }
 }
