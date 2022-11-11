@@ -2,7 +2,7 @@ import axios from "axios";
 
 let token = ''
 if (localStorage.getItem('token')) {
-  token = JSON.parse(localStorage.getItem('token') as string)
+  token = localStorage.getItem('token')?.replaceAll('"', '') as string
 }
 
 const instance = axios.create({
