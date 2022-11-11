@@ -29,4 +29,6 @@ public class Closet {
     @OneToMany(mappedBy = "closet")
     private List<ClosetClothing> clothings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "closet")
+    private List<ClosetCody> codies = new ArrayList<>();
 }

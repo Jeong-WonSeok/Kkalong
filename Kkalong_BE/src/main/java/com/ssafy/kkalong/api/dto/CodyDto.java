@@ -12,7 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 public class CodyDto {
     private int closet_id;
-    private String closet_name;
-    private List<CodyDto> clothings;
-    private List<CodyDto> codies;
+    private int user_id;
+    private int creater_id;
+    private String name;
+    private String style;
+    private boolean spring;
+    private boolean summer;
+    private boolean fall;
+    private boolean winter;
+    private List<Integer> clothings;
 }

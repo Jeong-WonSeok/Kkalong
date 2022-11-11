@@ -34,7 +34,18 @@ public class FirebaseService {
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing_"+id+"?alt=media";
 
+    }
+
+    public String uploadCodyImg(int id, MultipartFile file) {
+        Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+        try{
+            InputStream content = new ByteArrayInputStream(file.getBytes());
+            Blob blob = bucket.create(id+"", content, file.getContentType());
+        } catch(Exception e) {
+            System.out.println("ByteArrayInputStream 예외 발생");
+        }
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/cody_"+id+"?alt=media";
     }
 }

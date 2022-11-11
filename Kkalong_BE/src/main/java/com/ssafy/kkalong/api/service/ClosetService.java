@@ -1,10 +1,10 @@
 package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.ClothingDto;
+import com.ssafy.kkalong.api.dto.CodyDto;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +24,9 @@ public class ClosetService {
     private final BrandRepository brandRepository;
     private final FirebaseService firebaseService;
     private final ClosetClothingRepository closetClothingRepository;
+    private final CodyRepository codyRepository;
+    private final CodyClothingRepository codyClothingRepository;
+    private final ClosetCodyRepository closetCodyRepository;
 
     public List<Closet> getClosetsByUserId(User user) {
         return closetRepository.findAllByUser(user);
@@ -92,7 +95,7 @@ public class ClosetService {
             closetClothingRepository.save(closetClothing);
         }
         ClosetClothing closetClothing = ClosetClothing.builder().closet(baseCloset).clothing(savedClothing).build();
-        ClosetClothing cl = closetClothingRepository.save(closetClothing);
+        closetClothingRepository.save(closetClothing);
         return clothing;
     }
 
@@ -113,5 +116,50 @@ public class ClosetService {
                 .url(clothing.getUrl())
                 .build();
         return clothingDto;
+    }
+
+    public Cody registerCody(int user_id, CodyDto codyDto, MultipartFile img) {
+        Cody cody = Cody.builder()
+                .creator(codyDto.getCreater_id())
+                .user(userRepository.findById(codyDto.getUser_id()))
+                .name(codyDto.getName())
+                .open(codyDto.getCreater_id()==codyDto.getUser_id()?true:false)
+                .style(codyDto.getStyle())
+                .spring(codyDto.isSpring())
+                .summer(codyDto.isSummer())
+                .fall(codyDto.isFall())
+                .winter(codyDto.isWinter())
+                .build();
+        int cody_id = codyRepository.save(cody).getId();
+        Cody savedCody = codyRepository.findById(cody_id);
+        String imgUrl = firebaseService.uploadCodyImg(cody_id, img);
+        savedCody.setCodyImgUrl(imgUrl);
+        codyRepository.save(savedCody);
+
+        //코디 옷 매칭
+        for(int clothing_id : codyDto.getClothings()){
+            Clothing clothing = clothingRepository.findById(clothing_id);
+            CodyClothing codyClothing = CodyClothing.builder().cody(savedCody).clothing(clothing).build();
+            codyClothingRepository.save(codyClothing);
+        }
+
+        //옷장 코디 매칭
+        Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
+        if(baseCloset.getId() != codyDto.getCloset_id()){
+            Closet currCloset = closetRepository.findById(codyDto.getCloset_id());
+            ClosetCody closetCody = ClosetCody.builder().closet(currCloset).cody(savedCody).build();
+            closetCodyRepository.save(closetCody);
+        }
+        ClosetCody closetCody = ClosetCody.builder().closet(baseCloset).cody(savedCody).build();
+        closetCodyRepository.save(closetCody);
+        return cody;
+    }
+
+    public Cody getCodyInfoByCodyId(int cody_id) {
+        return codyRepository.findById(cody_id);
+    }
+
+    public List<CodyClothing> findAllCodyClothingByCody(Cody cody) {
+        return codyClothingRepository.findAllByCody(cody);
     }
 }
