@@ -43,7 +43,6 @@ export default function DetailBestDress() {
   useEffect(() => {
     async function getDetail() {
       const res = await axios.get(requests.detailBestDress + params.BestDressId)
-      console.log(res.data)
       setArticle(res.data)
     }
     getDetail()
@@ -115,7 +114,7 @@ export default function DetailBestDress() {
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
             {Article?.user && 
             <ProfileContainer>
-              <Profile Image={Article!.user.profile_img} Size={30}/>
+              <Profile Image={Article!.user.profile_img} Size={30} id={Article!.user.user_id}/>
               <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>}
             <LikeContainer>

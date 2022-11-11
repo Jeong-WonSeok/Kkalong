@@ -20,9 +20,9 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
 
   const CommentDelete = async(idx: number) => {
     if (category === "bestdress"){
-      await axios.delete(requests.detailBestDress + params.BestDressId + requests.comment + String(idx))
+      await axios.delete(requests.detailBestDress + params.BestDressId + requests.comment + comment.comment_id)
     } else {
-      await axios.delete(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx))
+      await axios.delete(requests.detailHelpCodi + params.HelpCodiId + requests.comment + comment.comment_id)
     }
     CommentsDelete(idx)
   }
@@ -40,11 +40,15 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
     setEditContent('')
   }
 
+  const Codisave = () => {
+    axios.put(requests.detailHelpCodi + `${params.HelpCodiId}/`)
+  }
+
   return (
     <Container>
       <MessageContextContainer>
         <MessageContainer style={{justifyContent: 'start'}}>
-          <Profile Image={comment.user.profile_img} Size={30}/>
+          <Profile Image={comment.user.profile_img} Size={30} id={comment.user.user_id}/>
         </MessageContainer>
         <MessageContainer>
           <NickName>{comment.user.nickname}</NickName>
@@ -56,7 +60,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
                 {comment.content}
               </Message>
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-                {category === "closet" ? <CodiSave src={codiSave}/> : null}
+                {category === "closet" ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
                 <Date>
                   {comment.createAt.slice(11,16)}
                 </Date>

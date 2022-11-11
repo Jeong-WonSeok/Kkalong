@@ -31,7 +31,7 @@ export default function FooterBar() {
         NewWord = 'closet'
         return NewWord
       })
-    } else if (url.includes('mirror')) {
+    } else if (url.includes('VirtualFitting')) {
       return setSelectCategory(current => {
         let NewWord = current
         NewWord = 'mirror'
@@ -70,7 +70,7 @@ export default function FooterBar() {
         추천
       </FooterImgContainer>
       <MirrorContainer>
-        <MirrorImg src={mirror} onClick={() => GoNavigate("mirror")} />
+        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting/VirtualBrandChoice/")} />
         가상피팅
       </MirrorContainer>
       <FooterImgContainer>
