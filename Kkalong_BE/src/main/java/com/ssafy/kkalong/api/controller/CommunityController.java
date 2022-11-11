@@ -485,7 +485,7 @@ public class CommunityController {
 
         result.put("content", reply.getContent());
         result.put("user", user_id);
-        result.put("codi_id", cody);
+        result.put("cody", cody);
         result.put("comment_id", reply.getId());
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
@@ -518,7 +518,7 @@ public class CommunityController {
         userMap.put("email", user.getEmail());
         result.put("content", reply.getContent());
         result.put("user", userMap);
-        result.put("codi_id", cody);
+        result.put("cody", cody);
         result.put("comment_id", reply.getId());
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
