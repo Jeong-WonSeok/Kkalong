@@ -17,6 +17,10 @@ export default function AddClothes() {
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.margin = '0'
+
+    return () => {
+      app.style.marginTop = '60px'
+    }
   },[])
 
 
@@ -139,19 +143,19 @@ export const CaptureButton = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   position: relative;
   z-index: 5;
 `
 
 export const ChildCaptureButton = styled.div`
-  left: -7.5px;
-  top: -7.5px;
+  left: -8.5px;
+  top: -8.5px;
   position: absolute;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   z-index: 3;
 `
 
