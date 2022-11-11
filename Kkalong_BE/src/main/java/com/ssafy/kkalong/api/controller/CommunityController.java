@@ -257,6 +257,7 @@ public class CommunityController {
         user_id.put("email", user.getEmail());
         //createAt 넣어야 댐
 
+        result.put("comment_id", comment.getId());
         result.put("content", comment.getContent());
         result.put("user", user_id);
         result.put("createAt", communityService.selectCommentCreateAt(comment.getId()));
@@ -285,6 +286,7 @@ public class CommunityController {
         userMap.put("email", user.getEmail());
         result.put("content", comment.getContent());
         result.put("user", userMap);
+        result.put("comment_id", comment.getId());
         result.put("createAt", communityService.selectCommentCreateAt(comment.getId()));
 
         return ResponseEntity.ok().body(result);
@@ -437,7 +439,7 @@ public class CommunityController {
         help.setOpen(helpInfo.getOpen());
         help.setTitle(helpInfo.getTitle());
         help.setRange(helpInfo.getRange());
-        help.setUser(new BestDressUserDto());
+        help.setUser(new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail()));
 
         result.put("Help", help);
         comment.put("content", null);
@@ -470,7 +472,6 @@ public class CommunityController {
         ReplyCodyDto cody = new ReplyCodyDto();
         if(replyInfo.getCodi_id() != null){
             cody = communityService.getCody(replyInfo.getCodi_id());
-
         }
         Help help = communityService.getHelp(help_id);
         User user = communityService.getUser(userInfo.getEmail());
@@ -485,6 +486,7 @@ public class CommunityController {
         result.put("content", reply.getContent());
         result.put("user", user_id);
         result.put("codi_id", cody);
+        result.put("comment_id", reply.getId());
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);
@@ -517,6 +519,7 @@ public class CommunityController {
         result.put("content", reply.getContent());
         result.put("user", userMap);
         result.put("codi_id", cody);
+        result.put("comment_id", reply.getId());
         result.put("createAt", communityService.selectReplyCreateAt(reply.getId()));
 
         return ResponseEntity.ok().body(result);

@@ -7,10 +7,10 @@ pip install uvicorn
 uvicorn main:app --reload
 """
 
-# from typing import Optional
-# from fastapi import FastAPI
-# import removeBg
-# app = FastAPI()
+from typing import Optional
+from fastapi import FastAPI
+import removeBg
+app = FastAPI()
 #
 # @app.get("/api/removeBg/{imgUrl}")
 # def removeBackground(imgUrl: Optional[str] =None):
