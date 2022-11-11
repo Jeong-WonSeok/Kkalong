@@ -29,6 +29,16 @@ public class ClosetService {
     private final CodyClothingRepository codyClothingRepository;
     private final ClosetCodyRepository closetCodyRepository;
 
+    public Object registerCloset(int user_id, String value) {
+        User user = userRepository.findById(user_id);
+        Closet closet = Closet.builder()
+                .base(false)
+                .user(user)
+                .name(value)
+                .build();
+        return closetRepository.save(closet).getId();
+    }
+
     public List<Closet> getClosetsByUserId(User user) {
         return closetRepository.findAllByUser(user);
     }
@@ -170,4 +180,5 @@ public class ClosetService {
         }
         return codyResponseDtos;
     }
+
 }
