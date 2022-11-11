@@ -2,6 +2,7 @@ package com.ssafy.kkalong.api.service;
 
 import com.ssafy.kkalong.api.dto.ClothingDto;
 import com.ssafy.kkalong.api.dto.CodyDto;
+import com.ssafy.kkalong.api.dto.CodyResponseDto;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -32,43 +33,24 @@ public class ClosetService {
         return closetRepository.findAllByUser(user);
     }
 
-    public String removeBackGround(String imgUrl) {
-        String url = "http://localhost:8000/api/removeBg/"+imgUrl;
-        System.out.println("restTemplate Url: "+url);
-        RestTemplate restTemplate = new RestTemplate();
-        String s = restTemplate.getForObject(url,String.class);
-        return s;
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//
-//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-////        String imageFileString = getBase64String(file);
-////        body.add("filename", id +"."+file.getContentType());
-//        body.add("image", file);
-//
-//        System.out.println(file.getOriginalFilename()+","+file.getContentType());
-//
-//        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-//        HttpEntity<?> response = restTemplate.postForEntity(url, requestEntity, String.class);
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        System.out.println(response.getBody());
-//        MultipartFile bgRemovedImg = objectMapper.readValue((byte[]) response.getBody(), MultipartFile.class);
+    public String removeBackGround(int user_id, MultipartFile file) {
+//        String url = "http://localhost:8000/api/removeBg/"+imgUrl;
+//        System.out.println("restTemplate Url: "+url);
+//        RestTemplate restTemplate = new RestTemplate();
+//        String s = restTemplate.getForObject(url,String.class);
+//        return s;
+
+        return firebaseService.uploadClothingImgWithoutBackground(user_id, file);
     }
 
-//    private String getBase64String(MultipartFile multipartFile) throws Exception {
-//        byte[] bytes = multipartFile.getBytes();
-//        return Base64.getEncoder().encodeToString(bytes);
-//    }
-
-    public List<String> getColorInfos(MultipartFile bgRemovedImg) {
+    public List<String> getColorInfos() {
         List<String> colorList = new ArrayList<>();
-
-
+        colorList.add("파랑색");
+        colorList.add("초록색");
         return colorList;
     }
 
-    public Clothing registerClothing(int user_id, ClothingDto clothingDto, MultipartFile img) {
+    public Clothing registerClothing(int user_id, ClothingDto clothingDto) {
         User user = userRepository.findById(user_id);
         Clothing clothing = Clothing.builder()
                 .main_category(clothingDto.getMainCategory())
@@ -79,13 +61,14 @@ public class ClosetService {
                 .winter(clothingDto.isWinter())
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
+                .img(clothingDto.getImg()) //임시 대처
                 .brand(brandRepository.findById(clothingDto.getBrand_id()))
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
-        String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
-        savedClothing.setClothingImgUrl(imgUrl);
-        clothingRepository.save(clothing);
+//        String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
+//        savedClothing.setClothingImgUrl(imgUrl);
+//        clothingRepository.save(clothing);
 
         //옷장과 옷 매핑
         Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
@@ -161,5 +144,30 @@ public class ClosetService {
 
     public List<CodyClothing> findAllCodyClothingByCody(Cody cody) {
         return codyClothingRepository.findAllByCody(cody);
+    }
+
+    public List<ClothingDto> findAllClothingByCloset(Closet closet) {
+        List<ClosetClothing> closetClothings = closetClothingRepository.findAllByCloset(closet);
+        List<ClothingDto> clothingDtos = new ArrayList<>();
+        for (ClosetClothing closetClothing : closetClothings){
+            clothingDtos.add(getClothingInfoByClothingId(closetClothing.getClothing().getId()));
+        }
+        return clothingDtos;
+    }
+
+    public List<CodyResponseDto> findAllCodybyCloset(Closet closet) {
+
+        List<ClosetCody> closetCodies = closetCodyRepository.findAllByCloset(closet);
+        List<CodyResponseDto> codyResponseDtos = new ArrayList<>();
+        for(ClosetCody closetCody : closetCodies){
+            CodyResponseDto codyResponseDto = CodyResponseDto.builder()
+                    .cody_id(closetCody.getCody().getId())
+                    .img(closetCody.getCody().getImg())
+                    .name(closetCody.getCody().getName())
+                    .open(closetCody.getCody().getOpen())
+                    .build();
+            codyResponseDtos.add(codyResponseDto);
+        }
+        return codyResponseDtos;
     }
 }

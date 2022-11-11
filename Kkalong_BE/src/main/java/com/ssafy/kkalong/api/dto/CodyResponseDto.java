@@ -15,5 +15,4 @@ public class CodyResponseDto {
     private String img;
     private String name;
     private boolean open;
-    private String personal_color;
 }
