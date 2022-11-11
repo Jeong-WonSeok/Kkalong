@@ -1,9 +1,6 @@
 package com.ssafy.kkalong.api.controller;
 
-import com.ssafy.kkalong.api.dto.ClosetInfoDto;
-import com.ssafy.kkalong.api.dto.ClothingDto;
-import com.ssafy.kkalong.api.dto.CodyDto;
-import com.ssafy.kkalong.api.dto.CodyResponseDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.Closet;
 import com.ssafy.kkalong.api.entity.Cody;
 import com.ssafy.kkalong.api.entity.CodyClothing;
@@ -58,7 +55,14 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping(value = "/removeBg")
+    @PostMapping("/closet")
+    public ResponseEntity<?> registerCloset(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody StringDto stringDto) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        result.put("closet_id", closetService.registerCloset(userInfo.getId(), stringDto.getValue()));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/removeBg")
     public ResponseEntity<?> removeBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
         Map<String, Object> result = new HashMap<>();
         List<String> colors = new ArrayList<>();
