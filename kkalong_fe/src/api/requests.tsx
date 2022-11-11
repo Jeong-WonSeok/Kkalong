@@ -17,6 +17,7 @@ const requests = {
   otherProfile: "/user/profile/", // ${} 으로 동적 라우팅
   otherWrite: "/user/write/", // ${} 으로 동적 라우팅
   Profile: "/user/social/login",
+  changeImg: "user/profile/Img",
   // 커뮤니티
   best3: "/community/best",
   bestDress: "/community/bestdress",

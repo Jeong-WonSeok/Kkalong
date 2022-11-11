@@ -160,7 +160,7 @@ const Best3Container = styled.img`
   min-height: 100px;
 `
 
-const CategoryText = styled.p`
+export const CategoryText = styled.p`
   line-height: 0;
   font-family: var(--base-font-600);
 `
