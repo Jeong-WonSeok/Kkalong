@@ -79,10 +79,13 @@ export default function PlusCodi() {
   const removeObjectFromCanvas = () => {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };
-  fabric.Image.fromURL("../../img/codi1.png", function (img) {
-    var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
-    canvas.add(oImg);
-  });
+  // fabric.Image.fromURL(
+  //   "http://k7b302.p.ssafy.io/api/v1/user/social/login",
+  //   function (img) {
+  //     var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
+  //     canvas.add(oImg);
+  //   }
+  // );
   return (
     <div>
       <div>

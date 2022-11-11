@@ -75,7 +75,7 @@ export default function Carousel({ sortclothes }: ClothesProps) {
 let SwiperText = styled.p`
   color: black;
   display: flex;
-  margin-left: 60px;
+  margin-left: 40px;
   font-family: var(--base-font-400);
   font-size: 18px;
 `;
@@ -86,16 +86,16 @@ let SwiperText = styled.p`
 //   border: #e5ddce 4px solid;
 // `;
 let SlideButton = styled.button`
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   border: #e5ddce 4px solid;
   border-radius: 20px;
   background-color: white;
 `;
 
 let SlideButton2 = styled.button`
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   border: #e5ddce 4px dotted;
   border-radius: 20px;
   background-color: white;
