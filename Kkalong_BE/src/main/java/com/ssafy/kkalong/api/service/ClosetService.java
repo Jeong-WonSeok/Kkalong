@@ -43,14 +43,14 @@ public class ClosetService {
         return closetRepository.findAllByUser(user);
     }
 
-    public String removeBackGround(int user_id, MultipartFile file) {
-//        String url = "http://localhost:8000/api/removeBg/"+imgUrl;
-//        System.out.println("restTemplate Url: "+url);
-//        RestTemplate restTemplate = new RestTemplate();
-//        String s = restTemplate.getForObject(url,String.class);
-//        return s;
+    public String removeClothingImgBackground(int user_id, MultipartFile file) {
 
-        return firebaseService.uploadClothingImgWithoutBackground(user_id, file);
+        firebaseService.uploadClothingImgWithBackground(user_id, file);
+
+        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id;
+        RestTemplate restTemplate = new RestTemplate();
+        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
+        return "good";
     }
 
     public List<String> getColorInfos() {
