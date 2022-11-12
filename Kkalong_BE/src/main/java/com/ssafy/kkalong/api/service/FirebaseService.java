@@ -15,15 +15,15 @@ public class FirebaseService {
     @Value("${app.firebase-bucket}")
     private String firebaseBucket;
 
-    public String uploadImageWithBackground(int id, MultipartFile file) {
+    public String uploadClothingImgWithBackground(int id, MultipartFile file) {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
             InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("clothing_bg_"+id, content, file.getContentType());
+            Blob blob = bucket.create("user_"+id+"_clothing_bg", content, file.getContentType());
         } catch (Exception e){
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing_bg_"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/user_"+id+"+_clothing_bg?alt=media";
     }
 
     public String uploadClothingImgWithoutBackground(int id, MultipartFile file) {
