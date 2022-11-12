@@ -9,13 +9,30 @@ uvicorn main:app --reload
 
 from typing import Optional
 from fastapi import FastAPI
+import pyrebase
 import removeBg
+
 app = FastAPI()
-#
-# @app.get("/api/removeBg/{imgUrl}")
-# def removeBackground(imgUrl: Optional[str] =None):
-#     result = removeBg.remove("https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/-1_ducky_313%40naver.com?alt=media")
-#     return str(result)
+
+config = {
+    "apiKey": "AIzaSyA-HIC901h-tMYrEOiMgv4fKau6bkoCQjs",
+    "authDomain": "kkalong-b4cec.firebaseapp.com",
+    "projectId": "kkalong-b4cec",
+    "storageBucket": "kkalong-b4cec.appspot.com",
+    "serviceAccount": "serviceAccountKey.json",
+    "messagingSenderId": "926796121811",
+    "appId": "1:926796121811:web:7d5ef2a7e8e5f0c3f73626",
+    "measurementId": "G-TZ3DZ6YPBC"
+}
+
+firebase_storage = pyrebase.initialize_app(config)
+storage = firebase_storage.storage()
+
+@app.get("/api/remove_clothing_bg/{user_id}")
+def remove_clothing_background(user_id: Optional[str] =None):
+    storage.child("3.png").put("please.png")
+    # result = removeBg.removeClothingImgBg(user_id)
+    # return str(result)
 
 
 # @app.get("/api/keyword/{keyword}")

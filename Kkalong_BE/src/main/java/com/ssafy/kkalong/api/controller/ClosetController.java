@@ -9,6 +9,7 @@ import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +26,19 @@ import java.util.Map;
 
 @CrossOrigin(origins = {"*"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/closet")
 public class ClosetController {
 
-    @Autowired
-    ClosetService closetService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    FirebaseService firebaseService;
+    private final ClosetService closetService;
+    private final UserService userService;
+    private final FirebaseService firebaseService;
 
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllClosetByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
+    @GetMapping("/all/{user_id}")
+    public ResponseEntity<?> getAllClosetByUserId(@PathVariable int user_id){
         Map<String, Object> result = new HashMap<>();
-        User user = userService.getUserByUserId(userInfo.getId());
+        User user = userService.getUserByUserId(user_id);
         List<ClosetInfoDto> closetInfoDtos = new ArrayList<>();
         List<Closet> closets = closetService.getClosetsByUserId(user);
         for (Closet closet : closets) {
@@ -63,12 +62,12 @@ public class ClosetController {
     }
 
     @PostMapping("/removeBg")
-    public ResponseEntity<?> removeBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
+    public ResponseEntity<?> removeClothingImgBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
         Map<String, Object> result = new HashMap<>();
         List<String> colors = new ArrayList<>();
         colors.add("파랑색");
         colors.add("초록색");
-        result.put("img", closetService.removeBackGround(userInfo.getId(), img));
+        result.put("img", closetService.removeClothingImgBackground(userInfo.getId(), img));
         result.put("color", colors);
         return ResponseEntity.ok().body(result);
     }

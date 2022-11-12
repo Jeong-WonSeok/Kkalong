@@ -6,6 +6,7 @@ import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
 import com.ssafy.kkalong.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,19 +17,14 @@ import java.util.Map;
 
 @CrossOrigin(origins = {"*"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    UserService userService;
-    @Autowired
-    ClosetService closetService;
-
+    private final UserService userService;
+    private final ClosetService closetService;
     private final JwtProvider jwtProvider;
 
-    public UserController(JwtProvider jwtProvider) {
-        this.jwtProvider = jwtProvider;
-    }
 
     @GetMapping("/social/login")
     public ResponseEntity<?> signUp(@AuthenticationPrincipal UserDetailsImpl userInfo) {
