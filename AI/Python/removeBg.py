@@ -1,26 +1,20 @@
-import torch
-import os
-from carvekit.api.high import HiInterface
+import PIL.Image
 
-def remove(id):
-    # imgUrl :str = 'https://firebasestorage.googleapis.com'+'/'+'v0'+'/'+'b'+'/'+'kkalong-b4cec.appspot.com'+'/'+'o'+'/' + id + '?alt=media'
-    imgUrl = os.path.join('https:','firebasestorage.googleapis.com','v0','b','kkalong-b4cec.appspot.com','o', id +'?alt=media')
-    print(imgUrl)
-    interface = HiInterface(object_type="hairs-like",  # Can be "object" or "hairs-like".
-                            batch_size_seg=5,
-                            batch_size_matting=1,
-                            device='cuda' if torch.cuda.is_available() else 'cpu',
-                            seg_mask_size=640,  # Use 640 for Tracer B7 and 320 for U2Net
-                            matting_mask_size=2048,
-                            trimap_prob_threshold=231,
-                            trimap_dilation=30,
-                            trimap_erosion_iters=5,
-                            fp16=False)
-    images_without_background = interface([imgUrl])
+from carvekit.api.interface import Interface
+from carvekit.ml.wrap.fba_matting import FBAMatting
+from carvekit.ml.wrap.tracer_b7 import TracerUniversalB7
+from carvekit.pipelines.postprocessing import MattingMethod
+from carvekit.pipelines.preprocessing import PreprocessingStub
+from carvekit.trimap.generator import TrimapGenerator
 
-    cat_wo_bg = images_without_background[0]
-    cat_wo_bg.save('2.png')
-    return "good"
-
-
-remove('7')
+def remove_clothing_background(user_id, extension):
+    # Check doc strings for more information
+    seg_net = TracerUniversalB7(device='cpu', batch_size=1)
+    fba = FBAMatting(device='cpu', input_tensor_size=2048, batch_size=1)
+    trimap = TrimapGenerator()
+    preprocessing = PreprocessingStub()
+    postprocessing = MattingMethod(matting_module=fba, trimap_generator=trimap, device='cpu')
+    interface = Interface(pre_pipe=preprocessing, post_pipe=postprocessing, seg_pipe=seg_net)
+    image = PIL.Image.open('carvekit-data/img3.png')
+    clothing_rmbg = interface([image])[0]
+    clothing_rmbg.save('user_'+user_id+'_clothing_rmbg.png')

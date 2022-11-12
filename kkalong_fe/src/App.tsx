@@ -32,6 +32,7 @@ import AddHelpCodi from "./pages/Community/AddHelpCodi";
 import WeatherPage from "./pages/Recommend/WeatherPage";
 import DailyRecommend from "./pages/Recommend/DailyRecommend";
 // AIFitting
+import VirtualPicture from "./pages/VirturalFitting/VirtualPicture";
 import VirtualBrandChoice from "./pages/VirturalFitting/VirtualBrandChoice";
 import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
 import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
@@ -99,6 +100,7 @@ function App() {
             <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
             <Route path="/myPage/:userId" element={<MyPage />}></Route>
             <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
+            <Route path="/VirtualFitting/" element={<VirtualPicture />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>

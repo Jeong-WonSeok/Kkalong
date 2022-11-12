@@ -1,34 +1,24 @@
 package com.ssafy.kkalong.api.controller;
 
-import com.google.firebase.auth.FirebaseAuthException;
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.CommunityService;
-import com.ssafy.kkalong.api.service.FirebaseService;
-import com.ssafy.kkalong.common.BaseEntity;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.*;
+
 
 @CrossOrigin(origins = {"*"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/community")
 public class CommunityController {
 
-    //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    CommunityService communityService;
+    private final CommunityService communityService;
 
     @PostMapping("/imgTest")
     public ResponseEntity<?> imgTest(@RequestBody MultipartFile m){

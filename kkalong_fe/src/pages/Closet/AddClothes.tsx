@@ -17,6 +17,10 @@ export default function AddClothes() {
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.margin = '0'
+
+    return () => {
+      app.style.marginTop = '60px'
+    }
   },[])
 
 
@@ -115,7 +119,7 @@ export default function AddClothes() {
   );
 }
 
-const CamDiv = styled.div`
+export const CamDiv = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -123,7 +127,7 @@ const CamDiv = styled.div`
   overflow: hidden;
 `
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   position: fixed;
   bottom: 0;
   left: auto;
@@ -134,24 +138,24 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `
 
-const CaptureButton = styled.div`
+export const CaptureButton = styled.div`
   background-color: white;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   position: relative;
   z-index: 5;
 `
 
-const ChildCaptureButton = styled.div`
-  left: -7.5px;
-  top: -7.5px;
+export const ChildCaptureButton = styled.div`
+  left: -8.5px;
+  top: -8.5px;
   position: absolute;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   z-index: 3;
 `
 

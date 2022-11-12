@@ -13,6 +13,10 @@ export default function StartPage() {
     setTimeout(()=>{
       navigate('/login')
     }, 3500)
+
+    return () => {
+      app.style.marginTop = '60px'
+    }
   }, [])
 
   return (
