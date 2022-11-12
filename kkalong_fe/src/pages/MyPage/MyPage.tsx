@@ -18,6 +18,7 @@ import FooterBar from '../../components/ui/FooterBar';
 export interface UserType {
   user_id : number
   email : string
+  profile_img: string
   nickname : string
   gender : string
   age : number
@@ -37,6 +38,7 @@ export default function MyPage() {
     app.style.marginTop = '0'
     const start = async() => {
       if (params.userId) {
+        // 정보 요청이 안됨...
         const Input = {value: Number(params.userId)}
         const res = await axios.get(requests.otherProfile, {params: Input})
         setUser(res.data.user)
@@ -50,6 +52,30 @@ export default function MyPage() {
     }
   },[])
 
+  const InputClick = () => {
+    document.getElementById('Input')?.click()
+  }
+
+  const ChangeProfile = (e:any) => {
+    if (!params.userId) {
+      const img = document.getElementById('UserProfile') as HTMLImageElement
+      const ImgUrl = URL.createObjectURL(e.target.files[0])
+      // 완성되기 전까지 임시로
+      img.src = ImgUrl
+      // axios.post(requests.changeImg,{profile_img: e.target.files[0]}) 
+      //   .then(res => {
+      //     setUser((current) => ({
+      //       ...current as UserType,
+      //       profile_img: res.data
+      //     }))
+      //     localStorage.setItem("userProfile", JSON.stringify(User));
+      //   })
+      //   .catch(err => {
+      //     alert('에러가 발생하였습니다. 다시 시도해주세요')
+      //   })
+    }
+  }
+
   return (
     <div>
       <MyPageDiv>
@@ -61,7 +87,8 @@ export default function MyPage() {
           </div>
           <NickNameP>{User?.nickname} 님!</NickNameP>
         </MyPageTextDiv>
-        <MyPageImg src={MyImg}></MyPageImg>
+        <MyPageImg id="UserProfile" src={MyImg} onClick={InputClick}></MyPageImg>
+        {!params.user_id && <ChangeImgInput id="Input" type="file" accept='image/*' onChange={ChangeProfile}/>}
         <MyPageFollowDiv>
           <MyPageFollow>팔로우 {User?.followings.length ? User?.followings.length : 0}</MyPageFollow>
           <MyPageLine></MyPageLine>
@@ -209,9 +236,7 @@ const MyPageButtonIcon = styled.img`
 //버튼 text
 const MyPageButtonText = styled.text`
   margin-left : 20px;
-  font-family: var(--base-font-500);
-  
-  
+  font-family: var(--base-font-500); 
 `
 
 //버튼 move
@@ -219,6 +244,8 @@ const MyPageButtonMove = styled.img`
 margin: auto 0;
 width: 10px;
 height: 15px;
+`
 
-  
+const ChangeImgInput = styled.input`
+  display: none;
 `
