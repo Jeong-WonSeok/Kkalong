@@ -447,9 +447,9 @@ public class CommunityController {
         commentUser.put("profile_img", null);
         comment.put("comment_id", null);
         comment.put("user", commentUser);
-        codi.put("codi_img", null);
+        codi.put("cody_img", null);
 
-        comment.put("codi_id", codi);
+        comment.put("cody", codi);
 
         result.put("comment", comment);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
