@@ -8,8 +8,11 @@ import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +48,12 @@ public class ClosetService {
 
     public String removeClothingImgBackground(int user_id, MultipartFile file) {
 
-        firebaseService.uploadClothingImgWithBackground(user_id, file);
-
-        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id;
-        RestTemplate restTemplate = new RestTemplate();
-        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
-        return "good";
+        return firebaseService.uploadClothingImgWithBackground(user_id, file);
+//        String[] s = StringUtils.split(file.getOriginalFilename(), ".");
+//        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id+"/"+s[1];
+//        RestTemplate restTemplate = new RestTemplate();
+//        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
+//        return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/test.jpg?alt=media";
     }
 
     public List<String> getColorInfos() {

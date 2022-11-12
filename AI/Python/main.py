@@ -9,7 +9,7 @@ uvicorn main:app --reload
 
 from typing import Optional
 from fastapi import FastAPI
-import pyrebase
+# import pyrebase
 import removeBg
 
 app = FastAPI()
@@ -25,14 +25,15 @@ config = {
     "measurementId": "G-TZ3DZ6YPBC"
 }
 
-firebase_storage = pyrebase.initialize_app(config)
-storage = firebase_storage.storage()
+# firebase_storage = pyrebase.initialize_app(config)
+# storage = firebase_storage.storage()
 
-@app.get("/api/remove_clothing_bg/{user_id}")
-def remove_clothing_background(user_id: Optional[str] =None):
-    storage.child("3.png").put("please.png")
-    # result = removeBg.removeClothingImgBg(user_id)
-    # return str(result)
+@app.get("/api/remove_clothing_bg/{user_id}/{extension}")
+def remove_clothing_background(user_id: Optional[str] =None, extension: Optional[str] =None):
+    # storage.child("3.png").put("please.png")
+    print(user_id)
+    result = removeBg.remove_clothing_background(user_id, extension)
+    return str(result)
 
 
 # @app.get("/api/keyword/{keyword}")
