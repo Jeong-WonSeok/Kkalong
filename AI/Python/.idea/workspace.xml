@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="75b52907-6ad3-4ed1-ba52-a73214170242" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Crawling/.idea/Crawling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/.idea/Crawling.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Crawling/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Crawling/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Crawling/brandCrwaling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/brandCrwaling.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Crawling/Data/brandR.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/main.py" beforeDir="false" />
@@ -150,6 +146,7 @@
       <workItem from="1668228591772" duration="1550000" />
       <workItem from="1668238232035" duration="17479000" />
       <workItem from="1668270792054" duration="3658000" />
+      <workItem from="1668383570398" duration="197000" />
     </task>
     <servers />
   </component>
