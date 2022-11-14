@@ -3,8 +3,9 @@ import sys
 sys.path.append("ShowMeTheColor/src")
 import personal
 
-system("cd")
 
 def personal_color(img):
-    result = personal.personalColor("jeong.jpg")
+    result = personal.personalColor(img)
     return result
+
+print(personal_color("./sampleData/IU.jpg"))

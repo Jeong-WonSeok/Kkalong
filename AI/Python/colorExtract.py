@@ -42,6 +42,7 @@ color_chip_rgb = [[255, 255, 255], [217, 217, 215], [156, 156, 155], [83, 86, 91
 
 def image_preprocess(target_item):
 
+
     image = cv2.imread(target_item, cv2.IMREAD_UNCHANGED)
     ct = ColorThief(target_item)
 
@@ -67,6 +68,5 @@ def image_preprocess(target_item):
     # plt.show()
 
 
-image_preprocess()
 
 
