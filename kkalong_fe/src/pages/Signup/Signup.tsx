@@ -209,7 +209,7 @@ export default function Signup() {
     return (
       <div>
         <TopNav type={"Line"}>
-          <BackArrowImg src={BackArrow} onClick={() => navigate("/login")} />
+          <BackArrowImg src={BackArrow} onClick={() =>navigate(-1)} />
           <SignupText>회원가입</SignupText>
           <div style={{ width: "30px", height: "30px" }}></div>
         </TopNav>
@@ -464,7 +464,7 @@ export default function Signup() {
   }
 }
 
-const BackArrowImg = styled.img`
+export const BackArrowImg = styled.img`
   width: 30px;
   height: 30px;
 `;
@@ -477,7 +477,7 @@ const SignupDiv = styled.div`
   align-items: center;
 `;
 
-const SignupText = styled.span`
+export const SignupText = styled.span`
   font-family: var(--base-font-600);
   line-height: 2;
 `;
