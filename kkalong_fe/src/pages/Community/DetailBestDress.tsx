@@ -50,7 +50,7 @@ export default function DetailBestDress() {
       setArticle(res.data)
 
       setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
-      setLike(Article!.like.includes(User!.user_id))
+      setLike(Article?.like.includes(User!.user_id) ? Article?.like.includes(User!.user_id) : false)
     }
     getDetail()
   }, [])
@@ -126,7 +126,7 @@ export default function DetailBestDress() {
       <TopNav type="">
         <IconImg src={BackArrow} onClick={()=>navigate(-1)}/>
         <NavText>도전! 베스트 드레서✨</NavText>
-        <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/>
+        {User?.user_id === Article?.user.user_id ? <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
       </TopNav>
 
       {IsMenu && <MenuModal 
@@ -161,7 +161,7 @@ export default function DetailBestDress() {
         <CommentContainer
          Comments={Article?.comment ? Article?.comment : defaultComment}
           article_id={Article?.Best.id ? Article?.Best.id : 1}
-          creator={Article!.user.user_id}
+          creator={Article?.user.user_id ? Article?.user.user_id : 0}
           category={"bestdress"}
           CommentsInput={CommentsInput}
           CommentsDelete={CommentsDelete}

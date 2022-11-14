@@ -16,6 +16,7 @@ import Menu from '../../assets/icon/Nav/menu.png'
 import Closet from '../../assets/icon/Footer/select_closet.png'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
+import { UserType } from '../MyPage/MyPage'
 
 export interface commentType {
   comment_id: number,
@@ -45,12 +46,14 @@ export default function DetailHelpCodi() {
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
   const [Article, setArticle] = useState<ArticleType>()
+  const [User, setUser] = useState<UserType>()
 
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
       console.log(res.data)
       setArticle(res.data)
+      setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     }
 
     start()
@@ -111,7 +114,8 @@ export default function DetailHelpCodi() {
       <TopNav type={''}>
         <MenuImg src={BackArrow} onClick={()=>navigate('/community/HelpCodi')}/>
         <NavText>도와주세요 패알못😂</NavText>
-        <MenuImg src={Menu} onClick={()=>setIsMenu(true)}/>
+        {User?.user_id === Article?.Help.user.user_id && <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/>}
+        
       </TopNav>
 
       {IsMenu && <MenuModal 
@@ -120,7 +124,7 @@ export default function DetailHelpCodi() {
       Id={Number(params.HelpCodiId)} 
       openModal={ModalChange}
       closeModal={()=> setIsMenu(false)}/>}
-      {IsModal && <Modal Page={"BestDress"} Id={Number(params.BestDressId)} CloseModal={()=>setIsModal(false)}/>}
+      {IsModal && <Modal Page={"HelpCodi"} Id={Number(params.HelpCodiId)} CloseModal={()=>setIsModal(false)}/>}
 
       <Container >
         <ImgContainer>

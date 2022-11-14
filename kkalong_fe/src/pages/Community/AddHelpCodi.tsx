@@ -151,12 +151,19 @@ export default function AddHelpCodi() {
   const Submit = async () => {
     // 코디 피드백
     if (params.Category === "Codi") {
-
-    // 코디 추천
-    } else {
       const res = await axios.post(requests.helpCodi, SendData)
       console.log(res)
       navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+    // 코디 추천
+    } else {
+      if (params.HelpCodiId) {
+        await axios.put(requests.detailHelpCodi + params.HelpCodiId, SendData)
+        navigate(`/community/HelpCodi/${params.HelpCodiId}`)
+      } else {
+        const res = await axios.post(requests.helpCodi, SendData)
+        console.log(res)
+        navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+      } 
     }
   }
 
