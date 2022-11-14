@@ -13,21 +13,26 @@ import BackArrow from "../../assets/icon/Nav/BackArrow.png";
 
 import TopNav from "../../components/ui/TopNav";
 import { BackArrowImg, SignupText } from "../Signup/Signup";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { login } from "../../redux/modules/User";
 
 
 export default function Login() {
   const LOGIN = "user/LOGIN";
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const {error, User} = useAppSelector(state => state.User)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let [alert, setAlert] = useState(false);
+  
 
   // 화면의 상하단 margin 제거
   useEffect(() => {
     const app = document.getElementById("App") as HTMLDivElement;
     app.style.margin = "0";
   }, []);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  let [alert, setAlert] = useState(false);
-  const dispatch = useDispatch();
+
 
   const onChangeEmail = (e: any) => {
     setEmail(e.target.value);
@@ -37,39 +42,46 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
-  const onLoginButton = (e: any) => {
+  const onLoginButton = async (e: any) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
-    axios
-      .post(
-        requests.login,
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: { "Content-type": `application/json` },
-        }
-      )
-      .then((response) => {
-        const token = response.data.result;
-        console.log(response.data.result);
-        localStorage.setItem("token", JSON.stringify(token.token));
-        localStorage.setItem("userProfile", JSON.stringify(token.user));
 
-        navigate("/closet");
-        const decode: any = jwtDecode(token);
-        const email = decode.email;
-        const id = decode.id;
+    await dispatch(login(email, password))
+    if (error) { 
+      setAlert(true)
+    } else {
+      navigate('/closet')
+    }
+    // console.log(email);
+    // console.log(password);
+    // axios
+    //   .post(
+    //     requests.login,
+    //     {
+    //       email: email,
+    //       password: password,
+    //     },
+    //     {
+    //       headers: { "Content-type": `application/json` },
+    //     }
+    //   )
+    //   .then((response) => {
+    //     const token = response.data.result;
+    //     console.log(response.data.result);
+    //     localStorage.setItem("token", JSON.stringify(token.token));
+    //     localStorage.setItem("userProfile", JSON.stringify(token.user));
 
-        // dispatch({ type: LOGIN, email: email, id: id });
-      })
-      .catch((error) => {
-        console.log(error);
-        setAlert((alert = true));
-        console.log(alert);
-      });
+    //     navigate("/closet");
+    //     const decode: any = jwtDecode(token);
+    //     const email = decode.email;
+    //     const id = decode.id;
+
+    //     // dispatch({ type: LOGIN, email: email, id: id });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setAlert((alert = true));
+    //     console.log(alert);
+    //   });
   };
   return (
     <div>

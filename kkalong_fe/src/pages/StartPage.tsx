@@ -55,10 +55,11 @@ export default function StartPage() {
 
 const Container = styled.div`
   max-width: 360px;
-  height: 100%;
+  height: 100vh;
   display: flex;
+  position: relative;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 `
 
@@ -122,7 +123,8 @@ const ChangeP = styled(ContentP)`
 ` 
 
 const LoginContainer = styled.div`
-  margin-top: 60%;
+  position: absolute;
+  bottom: 30px;
 `
 
 const SocialLoginButton = styled.div`
