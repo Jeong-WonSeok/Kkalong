@@ -145,6 +145,7 @@ export default function DetailHelpCodi() {
         Comments={Article?.comment ? Article?.comment : defaultComment} 
         article_id={Article?.Help?.help_id ? Article?.Help?.help_id : 1}
         category={Article?.Help?.open ? "closet" : "cody"}
+        creator={Article?.Help.user.user_id ? Article?.Help.user.user_id : 1}
         CommentsInput={CommentsInput}
         CommentsDelete={CommentsDelete}
         CommentsEdit={CommentsEdit}/>

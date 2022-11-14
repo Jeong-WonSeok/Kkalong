@@ -12,7 +12,7 @@ import Trash from '../../assets/icon/Community/Trash.png'
 import { useParams } from 'react-router-dom'
 import { UserType } from '../../pages/MyPage/MyPage'
 
-export default function CommentMessage({comment, category, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
+export default function CommentMessage({comment, category, creator, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, creator:number, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
   const currentUser = JSON.parse(localStorage?.getItem('userProfile')as string) as UserType
   const [EditContent, setEditContent] = useState(comment.content)
   const [IsEdit, setIsEdit] = useState(false)
@@ -41,7 +41,7 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
   }
 
   const Codisave = () => {
-    axios.put(requests.detailHelpCodi + `${params.HelpCodiId}/`)
+    axios.put(requests.detailHelpCodi + `${params.HelpCodiId}/` + comment!.cody.cody_id)
   }
 
   return (
@@ -56,11 +56,11 @@ export default function CommentMessage({comment, category, CommentsDelete, Comme
             {!IsEdit && 
             <MessageContextContainer>
               <Message>
-                {category === "closet"  && comment?.cody.cody_img? <CodiImg src={comment!.cody.cody_img}/> : null}
+                {category === "closet"  && comment?.cody.cody_img? <CodiImg src={comment!.cody.cody_img} alt="코디"/> : null}
                 {comment.content}
               </Message>
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-                {category === "closet" ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
+                {category === "closet" && comment?.cody.cody_id && creator === currentUser.user_id ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
                 <Date>
                   {comment.createAt.slice(11,16)}
                 </Date>

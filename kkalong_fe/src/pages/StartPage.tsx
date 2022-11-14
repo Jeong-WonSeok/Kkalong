@@ -21,8 +21,10 @@ export default function StartPage() {
 
   return (
     <Container>
-      <KkalongImg src={Kkalong}/>
-      <SunGlassesImg src={SunGlasses} />
+      <ImgDiv>
+        <KkalongImg src={Kkalong}/>
+        <SunGlassesImg src={SunGlasses} />
+      </ImgDiv>
     </Container>
   )
 }
@@ -88,8 +90,12 @@ const KkalongImg = styled.img`
 
 const SunGlassesImg = styled.img`
   position: absolute;
-  left: 78px;
-  top: 355px;
+  left: -5px;
+  top: 30px;
   width: 60px;
   animation: ${SunGlassPoint} 1.2s cubic-bezier(0.455, 0.030, 0.515, 0.955) 1.5s both;
+`
+
+const ImgDiv = styled.div`
+  position: relative
 `
