@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 
-import KakaoLoginLogo from "../assets/icon/Login/SocialLogin/kakao.png";
-import GoogleLoginLogo from "../assets/icon/Login/SocialLogin/google.png";
 import KakaoBtn from "../assets/icon/Login/SocialLogin/kakaoBtn.png"
 import GoogleBtn from "../assets/icon/Login/SocialLogin/googleBtn.png"
 
@@ -22,12 +20,8 @@ export default function StartPage() {
 
   useEffect(()=>{
     setTimeout(()=>{
-      if (idx < 3) {
-        setIdx(idx + 1)
-      } else {
-        setIdx(0)
-      }
-    }, 1290)
+      setIdx((idx + 1) % 4)
+    }, 1300)
   }, [idx])
 
   return (
@@ -124,7 +118,7 @@ const ChangeP = styled(ContentP)`
   display: inline-block;
   color: var(--primary-color-900);
   line-height: 2;
-  animation: ${titleAnimation} 1.3s 1.3s infinite;
+  animation: ${titleAnimation} 1.31s 1.3s infinite;
 ` 
 
 const LoginContainer = styled.div`

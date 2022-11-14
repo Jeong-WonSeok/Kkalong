@@ -13,8 +13,8 @@ import { CodiBackground, SelectContainer, ImgContainer,SelectImg, SelectSpan } f
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
-import index from '../Recommend'
-import { original } from '@reduxjs/toolkit'
+import { UserType } from '../MyPage/MyPage'
+
 
 interface SendType {
   img: String,
@@ -29,18 +29,6 @@ interface CodyType {
   name: string,
   creater: number,
   open: boolean
-}
-
-interface User {
-  user_id : number
-  email : string
-  nickname : string
-  gender : string
-  age : number
-  height : number
-  weight : number
-  follwers : Array<number>
-  followings : Array<number>
 }
 
 export default function AddHelpCodi() {
@@ -89,15 +77,22 @@ export default function AddHelpCodi() {
 
   // 코디 선택하는 로직, 옷장 완성되고 나서 진행
   const SelectCody = async (e:any) => {
-    // const user = localStorage.getItem('useProfile') as User
-    // const res = await axios.get(requests.closet + user.user_id)
-    // setCodyList(res.data.closets[0].codies)
-    setCodyList([{
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAA0YOa2BQN1ttzmrK1Bdfnw_Y4u_oMD3vpA&usqp=CAU',
-      name: '여름코디',
-      creater: 1,
-      open: true
-    }])
+    const user = JSON.parse(localStorage.getItem('userProfile') as string) as UserType
+    const res = await axios.get(requests.closet + user.user_id)
+    if (!res.data.closets.length) {
+      setCodyList([])
+    } else if (!res.data.closets[0].codies.length) {
+      setCodyList([])
+    } else {
+      setCodyList(res.data.closets[0].codies)
+    }
+    
+    // setCodyList([{
+    //   img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAA0YOa2BQN1ttzmrK1Bdfnw_Y4u_oMD3vpA&usqp=CAU',
+    //   name: '여름코디',
+    //   creater: 1,
+    //   open: true
+    // }])
     setIsSelectCody(true)
   }
 
@@ -237,7 +232,7 @@ export default function AddHelpCodi() {
             <TopSliderButton></TopSliderButton>
           </TopSlider>
           <CodyListContainer>
-            {CodyList.map((Cody, idx) => {
+            {CodyList.length && CodyList.map((Cody, idx) => {
               return(
                 <CodyInfoContainer key={idx} onClick={()=>ChangePicture(idx)}>
                   <CodyImg src={Cody.img}/>
@@ -245,6 +240,12 @@ export default function AddHelpCodi() {
                 </CodyInfoContainer>
               )
             })}
+            {!CodyList.length && 
+              <CodyNone>
+                <CodyNoneP>등록된 코디가 없어요</CodyNoneP>
+                <CodyMakeBtn onClick={()=> navigate('/pluscodi/Codi')}>코디 만들기</CodyMakeBtn>
+              </CodyNone>
+            }
           </CodyListContainer>
         </CodyContainer>
       }
@@ -252,7 +253,7 @@ export default function AddHelpCodi() {
       <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>
       <ContextArea id="Context" placeholder='내용을 입력해주세요' value={SendData?.content} onChange={resize}>{SendData?.content}</ContextArea>
 
-      <LabelContainer>
+      {params.Category === "Closet" && <LabelContainer>
         <Label>옷장 공개 범위</Label>
         <SelectOpen onChange={HandleOpen}>
           {SelectOptions.map((Option, idx) => {
@@ -272,7 +273,7 @@ export default function AddHelpCodi() {
             
           })}
         </SelectOpen>
-      </LabelContainer>
+      </LabelContainer>}
 
       </AddContainer>
 
@@ -428,4 +429,30 @@ const CodyP = styled.p`
   font-size: 14px;
   margin: 5px;
   text-align: center;
+`
+
+const CodyNone = styled.div`
+  height: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const CodyNoneP = styled.p`
+  font-family: var(--base-font-300);
+  font-size: 1.1rem;
+  margin: 0 0 15px;
+`
+
+const CodyMakeBtn = styled.button`
+  border: none;
+  border-radius: 10px;
+  width: 100px;
+  height: 30px;
+  font-size: 1rem;
+  color: white;
+  font-family: var(--base-font-300);
+  background-color: var(--primary-color-500);
 `
