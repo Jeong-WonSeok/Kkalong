@@ -84,7 +84,7 @@ const FriendProfileName = styled.text`
   font-family: var(--base-font-400);
 `;
 
-const FollowBtn = styled.button`
+export const FollowBtn = styled.button`
   border: none;
   font-family: var(--base-font-400);
   font-size: 0.8rem;

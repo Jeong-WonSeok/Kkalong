@@ -30,6 +30,7 @@ export default function AddBestDress() {
       if (params.BestDressId) {
         const res = await axios.get(requsests.detailBestDress + params.BestDressId)
         const BestDress = res.data as ArticleType
+        console.log(res.data)
         setSendData({
           post_img: BestDress.Best.img,
           content: BestDress.Best.content 

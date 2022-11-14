@@ -13,6 +13,7 @@ import MemberUpdateIcon from '../../assets/icon/MyPage/memberUpdate.png'
 import MoveIcon from '../../assets/icon/MyPage/move.png'
 
 import FooterBar from '../../components/ui/FooterBar';
+import { FollowBtn } from '../../components/User/Friend';
 
 
 export interface UserType {
@@ -32,6 +33,7 @@ export default function MyPage() {
   const params = useParams()
   const navigate = useNavigate();
   const [User, setUser] = useState<UserType>()  
+  const currentUser = JSON.parse(localStorage?.getItem('userProfile')as string)
 
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
@@ -39,8 +41,7 @@ export default function MyPage() {
     const start = async() => {
       if (params.userId) {
         // 정보 요청이 안됨...
-        const Input = {value: Number(params.userId)}
-        const res = await axios.get(requests.otherProfile, {params: Input})
+        const res = await axios.get(requests.otherProfile + params.userId)
         setUser(res.data.user)
       } else {
         setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
@@ -76,6 +77,29 @@ export default function MyPage() {
     }
   }
 
+  const Follow = (id: number) => {
+    const data = {
+      follower_id: id
+    }
+    axios.post(requests.follow, data)
+    if (User?.followers.includes(id)) {
+      const newFollwer =  User.followers.filter(follower_id => {
+        return follower_id !== id
+      })
+      setUser((current) => ({
+        ...current as UserType,
+        followers: newFollwer
+      }))
+      localStorage.setItem("userProfile", JSON.stringify(User));
+    } else {
+      setUser((current) => ({
+        ...current as UserType,
+        followers: User?.followers.push(id) as unknown as Array<number>
+      }))
+      localStorage.setItem("userProfile", JSON.stringify(User));
+    }
+  }
+
   return (
     <div>
       <MyPageDiv>
@@ -89,10 +113,12 @@ export default function MyPage() {
         </MyPageTextDiv>
         <MyPageImg id="UserProfile" src={MyImg} onClick={InputClick}></MyPageImg>
         {!params.user_id && <ChangeImgInput id="Input" type="file" accept='image/*' onChange={ChangeProfile}/>}
+        
         <MyPageFollowDiv>
           <MyPageFollow>팔로우 {User?.followings.length ? User?.followings.length : 0}</MyPageFollow>
           <MyPageLine></MyPageLine>
           <MyPageFollow>팔로워 {User?.followers.length ? User?.followers.length : 0}</MyPageFollow>
+          {params.user_id && <OtherPeopleBtn onClick={() => Follow(User!.user_id)}>{currentUser.followings.includes(User!.user_id) ? "언팔로우" : "팔로우" }</OtherPeopleBtn>}
         </MyPageFollowDiv>
       </MyPageDiv>
 
@@ -248,4 +274,8 @@ height: 15px;
 
 const ChangeImgInput = styled.input`
   display: none;
+`
+
+const OtherPeopleBtn = styled(FollowBtn)`
+    margin : 10px;
 `
