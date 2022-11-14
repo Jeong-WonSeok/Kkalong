@@ -5,13 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75b52907-6ad3-4ed1-ba52-a73214170242" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Crawling/brand/brandCrwaling2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/brand/brandCrwaling2.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Crawling/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/../Crawling/brand/chromedriver.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Python.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Python.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/sampleData/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowMeTheColor" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/colorExtract.py" beforeDir="false" afterPath="$PROJECT_DIR$/colorExtract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/pytorch.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/imgparsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/imgparsing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/personalColor.py" beforeDir="false" afterPath="$PROJECT_DIR$/personalColor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_1_clothing_rmbg.png" beforeDir="false" afterPath="$PROJECT_DIR$/sampleData/user_1_clothing_rmbg.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +84,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/multicampus/Desktop/자율PJT/S07P31B302/AI/Python&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/multicampus/Desktop/자율PJT/S07P31B302/AI/Python/2D-Human-Parsing/pretrained&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -87,6 +95,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python\2D-Human-Parsing\pretrained" />
+      <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python\sampleData" />
       <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python" />
       <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python\Self-Correction-Human-Parsing\checkpoint" />
       <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python\Self-Correction-Human-Parsing\dataset" />
@@ -146,6 +156,9 @@
       <workItem from="1668228591772" duration="1550000" />
       <workItem from="1668238232035" duration="17479000" />
       <workItem from="1668270792054" duration="3142000" />
+      <workItem from="1668384241220" duration="1362000" />
+      <workItem from="1668387752869" duration="6297000" />
+      <workItem from="1668412791233" duration="2345000" />
     </task>
     <servers />
   </component>
@@ -195,10 +208,10 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Python$inference_acc.coverage" NAME="inference_acc Coverage Results" MODIFIED="1668146747411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/2D-Human-Parsing/inference" />
     <SUITE FILE_PATH="coverage/Python$removeBg.coverage" NAME="removeBg Coverage Results" MODIFIED="1668272029918" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Python$detect_face.coverage" NAME="detect_face Coverage Results" MODIFIED="1668270298871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis" />
-    <SUITE FILE_PATH="coverage/Python$colorExtract.coverage" NAME="colorExtract Coverage Results" MODIFIED="1668267650096" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$detect_face.coverage" NAME="detect_face Coverage Results" MODIFIED="1668387911762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis" />
+    <SUITE FILE_PATH="coverage/Python$colorExtract.coverage" NAME="colorExtract Coverage Results" MODIFIED="1668385741742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Python$main.coverage" NAME="main Coverage Results" MODIFIED="1668269857320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ShowMeTheColor/src" />
-    <SUITE FILE_PATH="coverage/Python$personalColor.coverage" NAME="personalColor Coverage Results" MODIFIED="1668273517741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$personalColor.coverage" NAME="personalColor Coverage Results" MODIFIED="1668392322985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Python$imgparsing.coverage" NAME="imgparsing Coverage Results" MODIFIED="1668145602841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">

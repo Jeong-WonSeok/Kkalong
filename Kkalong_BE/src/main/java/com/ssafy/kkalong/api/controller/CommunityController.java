@@ -183,9 +183,8 @@ public class CommunityController {
     //베스트 드레서 수정
     @PutMapping("/bestdress/{post_id}")
     public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq, @PathVariable int post_id) {
-        System.out.println("adfsafasfsafaffasffasfafsfsaf");
+
         Map<String, Object> result = new HashMap<>();
-        System.out.println(bestReq.getPost_img().getOriginalFilename());
         communityService.updatePost(bestReq, post_id);
 
         User user = communityService.selectUser(post_id);
@@ -256,8 +255,9 @@ public class CommunityController {
     }
 
     @DeleteMapping("/bestdress/{post_id}/comment/{comment_id}")
-    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int conment_id) {
-        communityService.deleteComment(conment_id);
+    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int comment_id) {
+        System.out.println(comment_id);
+        communityService.deleteComment(comment_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
@@ -484,6 +484,7 @@ public class CommunityController {
 
     @DeleteMapping("/helpcodi/{help_id}/comment/{reply_id}")
     public ResponseEntity<?> deleteReply(@PathVariable int help_id, @PathVariable int reply_id){
+        System.out.println(reply_id);
         communityService.deleteReply(reply_id);
         return ResponseEntity.ok().body("삭제 성공");
     }

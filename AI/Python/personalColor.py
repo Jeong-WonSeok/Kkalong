@@ -5,7 +5,6 @@ import personal
 
 system("cd")
 
-result = personal.personalColor("3.jpg")
-# personal.personalColor("3.jpg")
-
-print(result)
+def personal_color(img):
+    result = personal.personalColor("jeong.jpg")
+    return result

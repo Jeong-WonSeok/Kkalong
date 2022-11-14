@@ -11,6 +11,7 @@ from typing import Optional
 from fastapi import FastAPI
 # import pyrebase
 import removeBg
+import personalColor
 
 app = FastAPI()
 
@@ -35,6 +36,10 @@ def remove_clothing_background(user_id: Optional[str] =None, extension: Optional
     result = removeBg.remove_clothing_background(user_id, extension)
     return str(result)
 
+@app.get("api/personal_color/{img}")
+def personal_color_info(img: Optional[str] = None):
+    result = personalColor.personal_color(img)
+    return str(result)
 
 # @app.get("/api/keyword/{keyword}")
 # def read_keyword(keyword: Optional[str] = None):
