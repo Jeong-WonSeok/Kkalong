@@ -261,4 +261,7 @@ public class CommunityService {
         return "" + replyRepository.findById(reply_id).getCreatedAt();
     }
 
+    public boolean existsLike(User user, Post post) {
+        return postLikeRepository.existsByPostAndUser(post, user);
+    }
 }

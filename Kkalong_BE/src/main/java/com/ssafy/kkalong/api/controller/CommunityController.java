@@ -126,6 +126,10 @@ public class CommunityController {
     @PostMapping("/bestdress/{post_id}")
     public ResponseEntity<?> likeClick(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int post_id){
         User user = communityService.getUser(userInfo.getEmail());
+        Post post = communityService.getPost(post_id);
+        if(communityService.existsLike(user, post)){
+           return ResponseEntity.ok().body("이미 좋아요 클릭하셨습니다. ");
+        }
         communityService.updateLike(user, post_id);
         List<Integer> likeList = communityService.selectLike(post_id);
         Map<String, Object> result = new HashMap<>();
