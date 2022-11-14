@@ -28,6 +28,7 @@ public class UserService {
     private final ClosetRepository closetRepository;
     private final AuthCodeRepository authCodeRepository;
     private final FollowRepository followRepository;
+    private final LoveRepository loveRepository;
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final HelpRepository helpRepository;
@@ -88,6 +89,9 @@ public class UserService {
                 .weight(signupDto.getWeight())
                 .provider(signupDto.getProvider())
                 .role(UserRole.ROLE_USER)
+                .profile_img("https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/profile_img.jpg?alt=media")
+                .loving(false)
+                .lover_id(-1)
                 .build();
         userRepository.save(user);
         Closet closet = Closet.builder().name("전체").base(true).user(user).build();
@@ -134,12 +138,33 @@ public class UserService {
         return followerList;
     }
 
+    public List<Integer> getLovingListBySenderId(int sender_id) {
+        User user = userRepository.findById(sender_id);
+        List<Love> list = loveRepository.findAllBySender(user);
+        List<Integer> lovingList = new ArrayList<>();
+        for(Love love : list){
+            lovingList.add(love.getReceiver().getId());
+        }
+        return lovingList;
+    }
 
-    public void sendFollowRequest(int sender_id, int receiver_id) {
+    public List<Integer> getLoverListByReceiverId(int receiver_id) {
+        User user = userRepository.findById(receiver_id);
+        List<Love> list = loveRepository.findAllByReceiver(user);
+        List<Integer> loverList = new ArrayList<>();
+        for(Love love : list){
+            loverList.add(love.getSender().getId());
+        }
+        return loverList;
+    }
+
+
+
+    public List<Integer> sendFollowRequest(int sender_id, int receiver_id) {
         User sender = userRepository.findById(sender_id);
         User receiver = userRepository.findById(receiver_id);
         if(sender != null && receiver != null){
-            Follow follow = followRepository.findBySenderAndReceiver(sender, receiver).orElse(null);
+            Follow follow = followRepository.findBySenderAndReceiver(sender, receiver);
             if(follow!=null){
                 followRepository.deleteById(follow.getId());
             } else{
@@ -148,7 +173,7 @@ public class UserService {
             }
 
         }
-
+        return getFollowingListBySenderId(sender_id);
     }
 
     public User getUserByUserId(int user_id) {
@@ -166,7 +191,7 @@ public class UserService {
                     .like(postLikeRepository.countByPostId(post.getId()))
                     .user_id(user.getId())
                     .nickname(user.getNickname())
-                    .profile_img(user.getImg())
+                    .profile_img(user.getProfile_img())
                     .build();
             postInfos.add(postInfoDto);
         }
@@ -186,10 +211,46 @@ public class UserService {
                     .title(help.getTitle())
                     .user_id(user.getId())
                     .nickname(user.getNickname())
-                    .profile_img(user.getImg())
+                    .profile_img(user.getProfile_img())
                     .build();
             helpInfos.add(helpInfoDto);
         }
         return helpInfos;
+    }
+
+    public void sendLoveRequest(int sender_id, int receiver_id) {
+        User sender = userRepository.findById(sender_id);
+        User receiver = userRepository.findById(receiver_id);
+        if(sender != null && receiver != null){
+            Love receivedLove = loveRepository.findBySenderAndReceiver(receiver, sender); //상대방이 보낸 요청이 있는지 확인
+            Love requestedLove = loveRepository.findBySenderAndReceiver(sender, receiver); //내가 보낸 요청이 있는지 화인
+            if(receivedLove!=null){//상대방의 요청이 있음
+                if(requestedLove !=null){ //애인 중이다가 내가 취소
+                    sender.resetLoveInfo();
+                    receiver.resetLoveInfo();
+                    userRepository.save(sender);
+                    userRepository.save(receiver);
+                    loveRepository.deleteById(requestedLove.getId());
+                } else { //애인으로 탄생
+                    sender.setLoveInfo(receiver_id);
+                    receiver.setLoveInfo(sender_id);
+                    userRepository.save(sender);
+                    userRepository.save(receiver);
+                    Love newLove = Love.builder().sender(sender).receiver(receiver).build();
+                    loveRepository.save(newLove);
+                }
+            } else{ //상대방 요청 없음
+                if(requestedLove !=null){ //보냈던 내 요청만 취소
+                    loveRepository.deleteById(requestedLove.getId());
+                } else { //처음으로 내가 보내기
+                    Love newLove = Love.builder().sender(sender).receiver(receiver).build();
+                    loveRepository.save(newLove);
+                }
+            }
+        }
+    }
+
+    public List<User> getUserIncludingNickname(String nickname) {
+        return userRepository.findByNicknameContainingIgnoreCase(nickname);
     }
 }

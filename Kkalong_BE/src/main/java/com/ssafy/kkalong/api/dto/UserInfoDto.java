@@ -21,5 +21,10 @@ public class UserInfoDto {
     private String provider;
     private List<Integer> followers;
     private List<Integer> followings;
-
+    private String profile_img;
+    private String face_img;
+    private String body_img;
+    private boolean loving;
+    private int lover_id;
+    private String personal_color;
 }

@@ -6,18 +6,13 @@ import com.ssafy.kkalong.api.entity.Cody;
 import com.ssafy.kkalong.api.entity.CodyClothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
-import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +27,6 @@ public class ClosetController {
 
     private final ClosetService closetService;
     private final UserService userService;
-    private final FirebaseService firebaseService;
-
 
     @GetMapping("/all/{user_id}")
     public ResponseEntity<?> getAllClosetByUserId(@PathVariable int user_id){

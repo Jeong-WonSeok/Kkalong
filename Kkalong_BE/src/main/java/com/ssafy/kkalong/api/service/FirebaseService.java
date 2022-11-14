@@ -26,18 +26,6 @@ public class FirebaseService {
         return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/user_"+id+"_clothing_bg?alt=media";
     }
 
-    public String uploadClothingImgWithoutBackground(int id, MultipartFile file) {
-        Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
-        try{
-            InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("clothing_rmbg_"+id, content, file.getContentType());
-        } catch(Exception e) {
-            System.out.println("ByteArrayInputStream 예외 발생");
-        }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing_bg_"+id+"?alt=media";
-
-    }
-
     public String uploadCodyImg(int id, MultipartFile file) {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
@@ -47,5 +35,18 @@ public class FirebaseService {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
         return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/cody_"+id+"?alt=media";
+    }
+
+    public String uploadUserProfileImg(int id, MultipartFile file) {
+        Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
+        try{
+            InputStream content = new ByteArrayInputStream(file.getBytes());
+            Blob blob = bucket.create("profile_"+id, content, file.getContentType());
+        } catch(Exception e) {
+            System.out.println("ByteArrayInputStream 예외 발생");
+        }
+
+
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing%2Fprofile_"+id+"?alt=media";
     }
 }

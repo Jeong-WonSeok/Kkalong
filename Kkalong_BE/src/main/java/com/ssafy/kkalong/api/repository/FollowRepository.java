@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Integer> {
 
-    Optional<Follow> findBySenderAndReceiver(User sender, User receiver);
+    Follow findBySenderAndReceiver(User sender, User receiver);
 
     List<Follow> findAllBySender(User sender);
 

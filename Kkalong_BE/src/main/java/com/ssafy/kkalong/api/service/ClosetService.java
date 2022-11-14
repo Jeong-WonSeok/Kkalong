@@ -48,12 +48,12 @@ public class ClosetService {
 
     public String removeClothingImgBackground(int user_id, MultipartFile file) {
 
-        return firebaseService.uploadClothingImgWithBackground(user_id, file);
-//        String[] s = StringUtils.split(file.getOriginalFilename(), ".");
-//        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id+"/"+s[1];
-//        RestTemplate restTemplate = new RestTemplate();
-//        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
-//        return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/test.jpg?alt=media";
+        firebaseService.uploadClothingImgWithBackground(user_id, file);
+        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id;
+        RestTemplate restTemplate = new RestTemplate();
+        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
+//        return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/user_"+user_id+"_clothing_rmbg?alt=media";
+        return removedBgImgUrl;
     }
 
     public List<String> getColorInfos() {
@@ -75,7 +75,7 @@ public class ClosetService {
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
                 .img(clothingDto.getImg()) //임시 대처
-                .brand(brandRepository.findById(clothingDto.getBrand_id()))
+//                .brand(brandRepository.findById(clothingDto.getBrand_id()))
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
