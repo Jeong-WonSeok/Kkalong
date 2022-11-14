@@ -3,6 +3,7 @@ package com.ssafy.kkalong.api.controller;
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.CommunityService;
+import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.util.*;
 public class CommunityController {
 
     private final CommunityService communityService;
+    private final FirebaseService firebaseService;
 
     @PostMapping("/imgTest")
     public ResponseEntity<?> imgTest(@RequestBody MultipartFile m){
-
         return ResponseEntity.ok().body(m.getOriginalFilename());
     }
 
@@ -126,6 +127,10 @@ public class CommunityController {
     @PostMapping("/bestdress/{post_id}")
     public ResponseEntity<?> likeClick(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int post_id){
         User user = communityService.getUser(userInfo.getEmail());
+        Post post = communityService.getPost(post_id);
+        if(communityService.existsLike(user, post)){
+           return ResponseEntity.ok().body("이미 좋아요 클릭하셨습니다. ");
+        }
         communityService.updateLike(user, post_id);
         List<Integer> likeList = communityService.selectLike(post_id);
         Map<String, Object> result = new HashMap<>();
@@ -136,12 +141,9 @@ public class CommunityController {
 
     //bestDressRegister 등록
     @PostMapping(value = "/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq)
-    {
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("post_img") MultipartFile post_img, @RequestPart("content") String content) {
 
         Map<String, Object> result = new HashMap<>();
-//        result.put("img", img);
-        //유저 정보 가져오기
         User user = communityService.getUser(userInfo.getEmail());
 
         BestDressUserDto post_user = new BestDressUserDto();
@@ -152,7 +154,9 @@ public class CommunityController {
         post_user.setEmail(user.getEmail());
 
         // DB 등록
-        Post post = communityService.insertBestDress(bestReq, user);
+        int next_post_id = communityService.findNextPostId();
+        String post_img_url = firebaseService.uploadPostImg(next_post_id, post_img);
+        Post post = communityService.insertBestDress(post_img_url, content, user);
         BestDressResponseInterface postDto = communityService.selectPost(post.getId());
 
         //댓글 리스트 가져오기
@@ -167,7 +171,7 @@ public class CommunityController {
         result.put("user_id", post_user);
         result.put("comment", comment);
         result.put("createAt", communityService.selectPostCreateAt(post.getId()));
-        result.put("filename", bestReq.getPost_img().getOriginalFilename());
+        result.put("filename", post_img_url);
 
         return ResponseEntity.ok().body(result);
     }
@@ -183,9 +187,8 @@ public class CommunityController {
     //베스트 드레서 수정
     @PutMapping("/bestdress/{post_id}")
     public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq, @PathVariable int post_id) {
-        System.out.println("adfsafasfsafaffasffasfafsfsaf");
+
         Map<String, Object> result = new HashMap<>();
-        System.out.println(bestReq.getPost_img().getOriginalFilename());
         communityService.updatePost(bestReq, post_id);
 
         User user = communityService.selectUser(post_id);
@@ -207,13 +210,10 @@ public class CommunityController {
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getProfile_img());
             comment_user.setEmail(temp_user.getEmail());
-
-
             comment.put("content", comm.getContent());
             comment.put("user_id", comment_user);
             comment.put("comment_id", comm.getId());
             comment.put("createAt", "" + communityService.selectCommentCreateAt(comm.getId()));
-
             commentArr.add(comment);
         }
 
@@ -256,8 +256,9 @@ public class CommunityController {
     }
 
     @DeleteMapping("/bestdress/{post_id}/comment/{comment_id}")
-    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int conment_id) {
-        communityService.deleteComment(conment_id);
+    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int comment_id) {
+        System.out.println(comment_id);
+        communityService.deleteComment(comment_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
@@ -328,12 +329,10 @@ public class CommunityController {
         helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
-
         for (Reply rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
             User temp_user = rpl.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
-
 
             comment_user.setNickname(temp_user.getNickname());
             comment_user.setProfile_image(temp_user.getProfile_img());
@@ -350,14 +349,9 @@ public class CommunityController {
             reply.put("comment_id", rpl.getId());
             reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(reply);
-
         }
-
-
         result.put("Help", helpDto);
         result.put("comment", commentArr);
-
-
         return ResponseEntity.ok().body(result);
     }
 
@@ -385,7 +379,6 @@ public class CommunityController {
         helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
-
         for (Reply rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
             User temp_user = rpl.getUser();
@@ -401,14 +394,9 @@ public class CommunityController {
             reply.put("comment_id", rpl.getId());
             reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(reply);
-
         }
-
-
         result.put("Help", helpDto);
         result.put("comment", commentArr);
-
-
         return ResponseEntity.ok().body(result);
     }
 
@@ -437,9 +425,9 @@ public class CommunityController {
         commentUser.put("profile_img", null);
         comment.put("comment_id", null);
         comment.put("user", commentUser);
-        codi.put("codi_img", null);
+        codi.put("cody_img", null);
 
-        comment.put("codi_id", codi);
+        comment.put("cody", codi);
 
         result.put("comment", comment);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
@@ -484,6 +472,7 @@ public class CommunityController {
 
     @DeleteMapping("/helpcodi/{help_id}/comment/{reply_id}")
     public ResponseEntity<?> deleteReply(@PathVariable int help_id, @PathVariable int reply_id){
+        System.out.println(reply_id);
         communityService.deleteReply(reply_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
@@ -500,7 +489,6 @@ public class CommunityController {
         if(replyInfo.getCodi_id() != null){
             cody = communityService.getCody(replyInfo.getCodi_id());
         }
-
 
         userMap.put("nickname", user.getNickname());
         userMap.put("profile_img", user.getProfile_img());

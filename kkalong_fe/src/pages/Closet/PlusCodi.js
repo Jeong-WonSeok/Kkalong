@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import modalBar from "../../assets/icon/Closet/modalBar.png";
 import img1 from "../../img/img1.png";
 import img2 from "../../img/img2.png";
@@ -19,6 +19,7 @@ import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 
 export default function PlusCodi() {
   const navigate = useNavigate();
+  const params = useParams();
   let [modal, setModal] = useState(false);
   const modalClose = () => {
     setModal(!modal);
@@ -83,6 +84,7 @@ export default function PlusCodi() {
     var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
     canvas.add(oImg);
   });
+  
   return (
     <div>
       <div>

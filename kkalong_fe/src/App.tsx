@@ -80,6 +80,7 @@ function App() {
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>
+            <Route path="/pluscodi/:Category" element={<PlusCodi />}></Route>
             <Route path="/codiedit" element={<CodiEdit />}></Route>
             <Route path="/closetasset" element={<ClosetAsset />}></Route>
             <Route path="/threetest" element={<ThreeTest />}></Route>

@@ -28,6 +28,11 @@
   src: url("../assets/fonts/IBMPlexSansKR-SemiBold.ttf");
 }
 
+@font-face {
+  font-family: "Recipe-Bold";
+  src: url("../assets/fonts/Recipekorea.ttf");
+}
+
 :root {
   // 색깔 설정
   --primary-color-100: #fff5f4;
@@ -50,4 +55,6 @@
   --base-font-400: "IBMSans-Medium";
   --base-font-500: "IBMSans-SemiBold";
   --base-font-600: "IBMSans-Bold";
+
+  --main-font-100: "Recipe-Bold";
 }
