@@ -11,6 +11,7 @@ const GET_LOGIN_FAILURE = 'Profile/GET_LOGIN_FAILURE'
 
 const FOLLOW_SUCCESS = 'Profile/FOLLOW_SUCCESS'
 const PROFILE_CHANGE_SUCCESS = 'Profile/PROFILE_CHANGE_SUCCESS'
+const LOVING_SUCCESS = 'Profile/LOVING_SUCCESS'
 
 // 다른유저 정보 조희
 const GET_OTHER_PENDING = 'Profile/GET_OTHER_PENDING' 
@@ -53,6 +54,7 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
     })
 }
 
+// 사진 바꾸기
 export const ProfileChange = (img: File) => async (dispatch: Dispatch) => {
   const formdata = new FormData()
   formdata.append('profile_img', img)
@@ -61,6 +63,7 @@ export const ProfileChange = (img: File) => async (dispatch: Dispatch) => {
   dispatch({type: PROFILE_CHANGE_SUCCESS, payload: res.data.profile_img})
 }
 
+// 다른이의 페이지 보여주기
 export const otherProfile = (user_id: number) => async (dispatch: Dispatch) => {
   dispatch({type: GET_OTHER_PENDING})
 
@@ -72,10 +75,18 @@ export const otherProfile = (user_id: number) => async (dispatch: Dispatch) => {
     })
 }
 
+// 팔로우 요청
 export const follow = (user_id: string) => async (dispatch: Dispatch) => {
   await axios.post(requests.follow + user_id)
     .then(res => {
       dispatch({type: FOLLOW_SUCCESS, payload: res.data.followings})
+    })
+}
+
+export const lover = (user_id: string) => async (dispatch:Dispatch) => {
+  await axios.post(requests.loving + user_id)
+    .then(res => {
+      dispatch({type: LOVING_SUCCESS, payload: Number(user_id)})
     })
 }
 
@@ -146,4 +157,14 @@ export default handleActions({
       }
     }
   },
+  [LOVING_SUCCESS]: (state, {payload}) => {
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        loving: !state.User.loving,
+        lover_id: (!state.User.loving ? payload as unknown as number : -1)
+      }
+    }
+  }
 }, initialState)

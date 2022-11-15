@@ -79,7 +79,8 @@ function App() {
             {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
-            <Route path="/closet/:UserId" element={<MainCloset />}></Route>
+            <Route path="/closet/:userId" element={<MainCloset />}></Route>
+            <Route path="/closet/:userId/pluscodi" element={<PlusCodi />}></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>

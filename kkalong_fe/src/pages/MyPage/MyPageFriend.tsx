@@ -34,11 +34,13 @@ export default function MyPageArticle() {
   const [IsSearch, setIsSearch] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const [SearchFriendList, setSearchFriendList] = useState(Array<FriendType>)
+  const [RequestLover, setRequestLover] = useState(Array<Number>)
   
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.myFriend)
       setFrineds(res.data.friends)
+      setRequestLover(res.data.lovers)
     }
     start()
     
@@ -63,8 +65,8 @@ export default function MyPageArticle() {
 
       {/* 유저목록 */}
       {IsSearch ? 
-      SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
-      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
+      SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch} Request={[]} NotLove={true}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
+      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch} Request={RequestLover} NotLove={false}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
 
 
       <FooterBar/>

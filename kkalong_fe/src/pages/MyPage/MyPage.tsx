@@ -8,11 +8,11 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import { follow, otherProfile, ProfileChange } from '../../redux/modules/User';
 
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
-import MyImg from '../../assets/icon/MyPage/My.png'
 import ArticleIcon from '../../assets/icon/MyPage/article.png'
 import FriendIcon from '../../assets/icon/MyPage/friend.png'
 import MemberUpdateIcon from '../../assets/icon/MyPage/memberUpdate.png'
 import MoveIcon from '../../assets/icon/MyPage/move.png'
+import ClosetIcon from '../../assets/icon/MyPage/closet.png'
 
 import FooterBar from '../../components/ui/FooterBar';
 import { FollowBtn } from '../../components/User/Friend';
@@ -23,6 +23,8 @@ export interface otherUserType {
   followers : Array<number>
   followings : Array<number>
   profile_img : string
+  loving : boolean
+  lover_id : null | number
 }
 
 export interface UserType extends otherUserType{
@@ -31,6 +33,11 @@ export interface UserType extends otherUserType{
   age : number
   height : number
   weight : number
+  face_img : string
+  body_img : string
+  loving : boolean
+  lover_id : null | number
+  personal_color : string
 }
 
 export default function MyPage() {
@@ -39,6 +46,7 @@ export default function MyPage() {
   const dispatch = useAppDispatch()
   const {User, otherUser} = useAppSelector(state => state.User)
   const [ProfileUser, setProfileUser] = useState<UserType | otherUserType>()  
+  const [IsLover, setIsLover] = useState(false)
 
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
@@ -48,6 +56,9 @@ export default function MyPage() {
         // 정보 요청이 안됨...
         dispatch(otherProfile(Number(params.userId)))
         setProfileUser(otherUser)
+        if (User.lover_id === otherUser.user_id && otherUser.lover_id === User.user_id) {
+          setIsLover(true)
+        }
       } else {
         setProfileUser(User)
       }
@@ -126,6 +137,15 @@ export default function MyPage() {
         </MyPageUnderButton>
       </div>
       }
+
+      {IsLover && 
+        <MyPageUnderButton onClick={()=>navigate(`/closet/${ProfileUser?.user_id}`)}>
+        <MyPageIconTextDiv>
+          <MyPageButtonIcon src={ClosetIcon}/>
+          <MyPageButtonText>옷장</MyPageButtonText>
+        </MyPageIconTextDiv>
+        <MyPageButtonMove src={MoveIcon}/>
+      </MyPageUnderButton>}
 
       </MyPageUnderDiv>
       <FooterBar/>

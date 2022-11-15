@@ -35,24 +35,24 @@ export default function MyFollow() {
     const start = async () => {
       if (params.userId) {
         setProfileUser(otherUser)
-        if (window.location.href.includes('Follow')) {
-          const res = await axios.get(requests.followers + params.userId)
-          setFollowList(res.data.followers)
-          setCategory('팔로잉')
-        } else {
+        if (window.location.href.includes('Following')) {
           const res = await axios.get(requests.followings + params.userId)
           setFollowList(res.data.followings)
+          setCategory('팔로잉')
+        } else {
+          const res = await axios.get(requests.followers + params.userId)
+          setFollowList(res.data.followers)
           setCategory('팔로워')
         }
       } else {
         setProfileUser(User)
-        if (window.location.href.includes('Follow')) {
-          const res = await axios.get(requests.followers + User.user_id)
-          setFollowList(res.data.followers)
-          setCategory('팔로잉')
-        } else {
+        if (window.location.href.includes('Following')) {
           const res = await axios.get(requests.followings + User.user_id)
           setFollowList(res.data.followings)
+          setCategory('팔로잉')
+        } else {
+          const res = await axios.get(requests.followers + User.user_id)
+          setFollowList(res.data.followers)
           setCategory('팔로워')
         }
       }
@@ -65,14 +65,15 @@ export default function MyFollow() {
   return (
     <div>
       <TopNav type={''}>
-        <BackArrowImg src={BackArrow} onClick={()=> navigate(-1)}/>
+        <BackArrowImg style={{padding: '5px 0'}} src={BackArrow} onClick={()=> navigate(-1)}/>
         <CategoryText>{ProfileUser?.nickname} 님의 {Category}</CategoryText>
         <div style={{width: '30px', height: '30px'}}></div>
       </TopNav>
 
       <Container>
-        <Friend Friend={FollowList} IsSearch={false}></Friend>
+        <Friend Friend={FollowList} IsSearch={false} Request={[]} NotLove={true}></Friend>
       </Container>
+      
     </div>
   )
 }
@@ -80,6 +81,6 @@ export default function MyFollow() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
+  max-width: 360px;
+  padding: 10px;
 `
