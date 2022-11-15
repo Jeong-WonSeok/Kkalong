@@ -10,6 +10,7 @@ const GET_LOGIN_SUCCESS = 'Profile/GET_LOGIN_SUCCESS'
 const GET_LOGIN_FAILURE = 'Profile/GET_LOGIN_FAILURE' 
 
 const FOLLOW_SUCCESS = 'Profile/FOLLOW_SUCCESS'
+const PROFILE_CHANGE_SUCCESS = 'Profile/PROFILE_CHANGE_SUCCESS'
 
 // 다른유저 정보 조희
 const GET_OTHER_PENDING = 'Profile/GET_OTHER_PENDING' 
@@ -50,6 +51,14 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
     }).catch(err => {
       dispatch({type:GET_LOGIN_FAILURE})
     })
+}
+
+export const ProfileChange = (img: File) => async (dispatch: Dispatch) => {
+  const formdata = new FormData()
+  formdata.append('profile_img', img)
+
+  const res = await axios.post(requests.changeImg, formdata)
+  dispatch({type: PROFILE_CHANGE_SUCCESS, payload: res.data.profile_img})
 }
 
 export const otherProfile = (user_id: number) => async (dispatch: Dispatch) => {
@@ -127,5 +136,14 @@ export default handleActions({
         followings: payload as unknown as Array<number>  
       }
     }
-  }
+  },
+  [PROFILE_CHANGE_SUCCESS]: (state, {payload}) => {
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        profile_img: payload as unknown as string
+      }
+    }
+  },
 }, initialState)

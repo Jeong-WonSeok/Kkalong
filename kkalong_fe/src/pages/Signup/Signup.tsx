@@ -393,7 +393,7 @@ export default function Signup() {
                 }}
               />
               <SignupIcon src={AgeIcon} />
-              <InfoSpan>cm</InfoSpan>
+              <InfoSpan>살</InfoSpan>
             </SignupBodyDiv>
             <SignupBodyDiv>
               <SignupGenderInfoInput

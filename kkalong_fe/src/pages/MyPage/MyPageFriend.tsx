@@ -15,6 +15,7 @@ import { UserType } from "./MyPage";
 
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppSelector } from "../../hooks/reduxHook";
 
 export interface FriendType {
   user_id : number
@@ -24,16 +25,17 @@ export interface FriendType {
   lover_id : number
 }
 
+// TODO : 애인신청 로직 설정
+
 export default function MyPageArticle() {
   const navigate = useNavigate();
-  const [User, setUser] = useState<UserType>()
+  const { User } = useAppSelector(state => state.User)
   const [Friends, setFrineds] = useState(Array<FriendType>)
   const [IsSearch, setIsSearch] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const [SearchFriendList, setSearchFriendList] = useState(Array<FriendType>)
   
   useEffect(()=>{
-    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async () => {
       const res = await axios.get(requests.myFriend)
       setFrineds(res.data.friends)
@@ -64,6 +66,7 @@ export default function MyPageArticle() {
       SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
       Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
 
+
       <FooterBar/>
     </MyPageArticleFriendContainer>
     </div>
@@ -75,8 +78,6 @@ const MyPageArticleFriendContainer = styled.div`
   flex-direction: column;
   padding: 10px;
 `;
-
-
 
 // 뒤로가기버튼
 const TopDivBackArrow = styled.img`

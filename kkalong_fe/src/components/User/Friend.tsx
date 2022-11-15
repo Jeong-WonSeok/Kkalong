@@ -5,36 +5,17 @@ import { UserType } from '../../pages/MyPage/MyPage';
 import { FriendType } from '../../pages/MyPage/MyPageFriend';
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { follow } from '../../redux/modules/User';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 
 export default function Friend({Friend, IsSearch}: {Friend: Array<FriendType>, IsSearch: boolean}) {
-  const [User, setUser] = useState<UserType>()
-
-  useEffect(()=>{
-    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
-  },[])
+  const dispatch = useAppDispatch()
+  const {User} = useAppSelector(state => state.User)
+  const wow = ['1','2','3','4']
 
   // 팔로우 로직
   const Follow = (id: number) => {
-    const data = {
-      follower_id: id
-    }
-    axios.post(requests.follow, data)
-    if (User?.followers.includes(id)) {
-      const newFollwer =  User.followers.filter(follwer_id => {
-        return follwer_id !== id
-      })
-      setUser((current) => ({
-        ...current as UserType,
-        followers: newFollwer
-      }))
-      localStorage.setItem("userProfile", JSON.stringify(User));
-    } else {
-      setUser((current) => ({
-        ...current as UserType,
-        followers: User?.followers.push(id) as unknown as Array<number>
-      }))
-      localStorage.setItem("userProfile", JSON.stringify(User));
-    }
+    dispatch(follow(String(id)))
   }
   
   return (

@@ -20,6 +20,7 @@ import Modal from '../../components/Community/Modal'
 
 import {commentType} from './DetailHelpCodi'
 import { UserType } from '../MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export interface ArticleType extends BestDresserArticle{
   comment: Array<commentType>,
@@ -36,11 +37,12 @@ export default function DetailBestDress() {
   const [IsMenu, setIsMenu] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
+  const { User } = useAppSelector(state => state.User)
   const navigate = useNavigate()
   const params = useParams()
   // 객체 타입지정
   const [Article, setArticle] = useState<ArticleType>()
-  const [User, setUser] = useState<UserType>()
+  const [LikeCount, setLikeCount] = useState(0)
   const [Like, setLike] = useState(false)
 
   useEffect(() => {
@@ -48,9 +50,8 @@ export default function DetailBestDress() {
       const res = await axios.get(requests.detailBestDress + params.BestDressId)
       console.log(res.data)
       setArticle(res.data)
-
-      setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
-      setLike(Article?.like.includes(User!.user_id) ? Article?.like.includes(User!.user_id) : false)
+      setLikeCount(res.data.Best.likeCount)
+      setLike(res.data.like.includes(User!.user_id) ? true : false)
     }
     getDetail()
   }, [])
@@ -99,23 +100,24 @@ export default function DetailBestDress() {
   }
 
   // 게시글 좋아요
-  const PostLike = () => {
-    axios.post(requests.detailBestDress + Article?.Best.id)
+  const PostLike = async () => {
+    const res = await axios.post(requests.detailBestDress + Article?.Best.id)
     setLike(!Like)
-    if (Like) {
+    if (!Like) {
       setArticle((current) => {
         let newArticle = current as ArticleType
-        newArticle.like.push(User!.user_id)
+        newArticle.like = res.data.like
         newArticle.Best.likeCount = newArticle.like.length
         return newArticle
       })
     } else {
       setArticle((current) => {
         let newArticle = current as ArticleType
-        newArticle!.like.filter(num => {
+        const result = newArticle!.like.filter(num => {
           return num !== User!.user_id
         })
-        newArticle.Best.likeCount = newArticle.like.length
+        newArticle!.like = result
+        newArticle.Best.likeCount = result.length
         return newArticle
       })
     }
@@ -148,9 +150,9 @@ export default function DetailBestDress() {
               <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>}
             <LikeContainer>
-              {!!!Like && <Likeimg Like={Like} src={LikeImg} onClick={PostLike}/>}
-              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={PostLike}/>}
-              <CustomText style={{fontSize: '13px'}}>{Article?.Best.likeCount}</CustomText>
+              {!!!Like && <Likeimg Like={Like} src={LikeImg} onClick={()=>{PostLike(); setLikeCount(LikeCount+1)}}/>}
+              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=>{PostLike(); setLikeCount(LikeCount-1)}}/>}
+              <CustomText style={{fontSize: '13px'}}>{LikeCount}</CustomText>
             </LikeContainer>
           </div>
           <CustomText style={{fontFamily: 'var(--base-font-200)', padding: '5px 15px 0px'}}>{Article?.Best.content}</CustomText>

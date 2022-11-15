@@ -38,7 +38,7 @@ export default function MyFollow() {
         if (window.location.href.includes('Follow')) {
           const res = await axios.get(requests.followers + params.userId)
           setFollowList(res.data.followers)
-          setCategory('팔로우')
+          setCategory('팔로잉')
         } else {
           const res = await axios.get(requests.followings + params.userId)
           setFollowList(res.data.followings)
@@ -49,7 +49,7 @@ export default function MyFollow() {
         if (window.location.href.includes('Follow')) {
           const res = await axios.get(requests.followers + User.user_id)
           setFollowList(res.data.followers)
-          setCategory('팔로우')
+          setCategory('팔로잉')
         } else {
           const res = await axios.get(requests.followings + User.user_id)
           setFollowList(res.data.followings)

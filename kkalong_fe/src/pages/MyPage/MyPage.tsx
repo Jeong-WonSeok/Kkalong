@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import axios from '../../api/axios'
 import requests from '../../api/requests'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
-import { follow, otherProfile } from '../../redux/modules/User';
+import { follow, otherProfile, ProfileChange } from '../../redux/modules/User';
 
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
 import MyImg from '../../assets/icon/MyPage/My.png'
@@ -50,7 +50,6 @@ export default function MyPage() {
         setProfileUser(otherUser)
       } else {
         setProfileUser(User)
-        console.log(User)
       }
     }
     start()
@@ -69,17 +68,7 @@ export default function MyPage() {
       const ImgUrl = URL.createObjectURL(e.target.files[0])
       // 완성되기 전까지 임시로
       img.src = ImgUrl
-      // axios.post(requests.changeImg,{profile_img: e.target.files[0]}) 
-      //   .then(res => {
-      //     setUser((current) => ({
-      //       ...current as UserType,
-      //       profile_img: res.data
-      //     }))
-      //     localStorage.setItem("userProfile", JSON.stringify(User));
-      //   })
-      //   .catch(err => {
-      //     alert('에러가 발생하였습니다. 다시 시도해주세요')
-      //   })
+      dispatch(ProfileChange(e.target.files[0]))
     }
   }
 
@@ -98,13 +87,13 @@ export default function MyPage() {
           </div>
           <NickNameP>{ProfileUser?.nickname} 님!</NickNameP>
         </MyPageTextDiv>
-        <MyPageImg id="UserProfile" src={MyImg} onClick={InputClick}></MyPageImg>
+        <MyPageImg id="UserProfile" src={ProfileUser?.profile_img} onClick={InputClick}></MyPageImg>
         {!params.user_id && <ChangeImgInput id="Input" type="file" accept='image/*' onChange={ChangeProfile}/>}
         
         <MyPageFollowDiv>
-          <MyPageFollow onClick={()=>navigate('Follow')}>팔로우 {ProfileUser?.followings.length ? ProfileUser?.followings.length : 0}</MyPageFollow>
-          <MyPageLine onClick={()=>navigate('Following')}></MyPageLine>
-          <MyPageFollow>팔로워 {ProfileUser?.followers.length ? ProfileUser?.followers.length : 0}</MyPageFollow>
+          <MyPageFollow onClick={()=>navigate('Following')}>팔로우 {ProfileUser?.followings.length ? ProfileUser?.followings.length : 0}</MyPageFollow>
+          <MyPageLine></MyPageLine>
+          <MyPageFollow onClick={()=>navigate('Follow')}>팔로워 {ProfileUser?.followers.length ? ProfileUser?.followers.length : 0}</MyPageFollow>
           {params.user_id && <OtherPeopleBtn onClick={() => Follow(User!.user_id)}>{User.followings.includes(User!.user_id) ? "언팔로우" : "팔로우" }</OtherPeopleBtn>}
         </MyPageFollowDiv>
       </MyPageDiv>
