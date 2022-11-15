@@ -12,6 +12,7 @@ from fastapi import FastAPI
 import os
 import pyrebase
 import removeBg
+import colorExtract
 import personalColor
 
 app = FastAPI()
@@ -47,8 +48,9 @@ def remove_clothing_background(clothing_id: Optional[str]=None):
 @app.get("/api/clothing_color/{clothing_id}")
 def extract_clothing_color(clothing_id: Optional[str] =None):
     storage.child("").download("clothing_"+clothing_id, "clothing_extract_color.png")
-    
-
+    result = colorExtract.image_preprocess("clothing_extract_color.png")
+    os.remove('clothing_extract_color.png')
+    return str(result)
 
 @app.get("/api/personal_color/{profile_img}")
 def personal_color_info(profile_img: Optional[str] = None):
