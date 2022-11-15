@@ -1,13 +1,27 @@
-import React, {useState} from "react";
-import styled from "styled-components";
+import React, {useEffect, useState} from "react";
+import styled, { css, keyframes } from "styled-components";
 
+type animationType = {
+  Open: boolean
+  FirstNot: number
+}
 
-//placeholder 설정 해야됨
-export default function Search({children, Search, StopSearch}: {children: any, Search: (Text: string) => Promise<void>, StopSearch: (value: React.SetStateAction<boolean>) => void}) {
+export default function Search({children, Open, Search, StopSearch}: {children: any, Open:boolean,  Search: (Text: string) => Promise<void>, StopSearch: (value: React.SetStateAction<boolean>) => void}) {
   const [SearchText, setSearchText] = useState('')
+  // 배경창 처음표시시 애니메이션 효과를 안받기위해서 설정하는 값
+  const [FirstNot, setFirstNot] = useState(-1)
+
+  useEffect(() => {
+    setFirstNot(FirstNot+1)
+  
+    return () => {
+      setFirstNot(0)
+    }
+  }, [Open])
+  
 
   const IfEnter = (e:any) => {
-    if(e.target.value === "Enter") {
+    if(e.key === "Enter") {
       SendText()
     }
   }
@@ -22,11 +36,11 @@ export default function Search({children, Search, StopSearch}: {children: any, S
   }
 
   return (
-      <SearchContainer>
+      <SearchContainer Open={Open} FirstNot={FirstNot}>
         <TextP>{children}</TextP>
         <SearchDiv>
           <div style={{position: 'relative', width: '70%'}}>
-            <SearchInput placeholder="검색어를 입력해주세요" value={SearchText} onChange={(e:any)=>setSearchText(e.target.value)} onKeyUp={IfEnter}/>
+            <SearchInput placeholder="검색어를 입력해주세요" value={SearchText} onChange={(e:any)=>setSearchText(e.target.value)} onKeyPress={IfEnter}/>
             {SearchText && <StopDiv onClick={Stop}>X</StopDiv>}
           </div>
           <SearchButton onClick={SendText}>검색</SearchButton>
@@ -35,8 +49,42 @@ export default function Search({children, Search, StopSearch}: {children: any, S
   ); 
 }
 
-const SearchContainer = styled.div`
+const EnterSearch = keyframes`
+  0% {
+    height: 0;
+    -webkit-transform: translateY(-100px);
+            transform: translateY(-100px);
+    opacity: 0;
+  };
+  100% {
+    height: auto;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  };
+`
+
+const ExitSearch = keyframes`
+  0% {
+    height: auto;
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    height: 0;
+    -webkit-transform: translateY(-1000px);
+            transform: translateY(-1000px);
+    opacity: 0;
+  }
+`
+
+const SearchContainer = styled.div<animationType>`
   margin-bottom: 10px;
+  display: ${props => props.FirstNot ? '' : 'none'};
+  animation: ${props => props.Open ? 
+   css `${EnterSearch} 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both` :
+   css `${ExitSearch} 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both`};
 `
 
 const TextP = styled.p`

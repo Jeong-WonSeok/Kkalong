@@ -14,6 +14,8 @@ const requests = {
   searchFriend: "/user/friend/", // 이건 어떻게 구현될지 모르겠음
   updateProfile: "/user/profile/update",
   follow: "/user/follow/", // ${} 으로 동적 라우팅
+  followers: "/user/followers/",
+  followings: "/user/followings/",
   otherProfile: "/user/profile/", // ${} 으로 동적 라우팅
   otherWrite: "/user/write/", // ${} 으로 동적 라우팅
   Profile: "/user/social/login",

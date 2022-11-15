@@ -83,6 +83,13 @@ export default function Login() {
     //     console.log(alert);
     //   });
   };
+
+  const EnterInput = (e:any) => {
+    if (e.key === "Enter") {
+      onLoginButton(e)
+    }
+  }
+
   return (
     <div>
     <TopNav type={"Line"}>
@@ -107,6 +114,7 @@ export default function Login() {
           placeholder="비밀번호"
           type="password"
           onChange={onChangePassword}
+          onKeyPress={EnterInput}
         ></PasswordInput>
       </LoginInputDiv>
       {alert === false ? null : (
@@ -168,7 +176,7 @@ const EmailInput = styled.input`
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent: 20px;
+  text-indent: 10px;
 
   border-radius: 10px;
 `;
@@ -181,7 +189,7 @@ const PasswordInput = styled.input`
   font-family: var(--base-font-300);
   width: 100%;
   height: 30px;
-  text-indent: 20px;
+  text-indent: 10px;
   border-radius: 10px;
 `;
 //로그인 버튼

@@ -20,8 +20,8 @@ export default function Friend({Friend, IsSearch}: {Friend: Array<FriendType>, I
     }
     axios.post(requests.follow, data)
     if (User?.followers.includes(id)) {
-      const newFollwer =  User.followers.filter(follower_id => {
-        return follower_id !== id
+      const newFollwer =  User.followers.filter(follwer_id => {
+        return follwer_id !== id
       })
       setUser((current) => ({
         ...current as UserType,

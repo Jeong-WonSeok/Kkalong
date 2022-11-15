@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
+import { follow, otherProfile } from '../../redux/modules/User';
 
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
 import MyImg from '../../assets/icon/MyPage/My.png'
@@ -15,25 +17,28 @@ import MoveIcon from '../../assets/icon/MyPage/move.png'
 import FooterBar from '../../components/ui/FooterBar';
 import { FollowBtn } from '../../components/User/Friend';
 
-
-export interface UserType {
+export interface otherUserType {
   user_id : number
-  email : string
-  profile_img: string
   nickname : string
+  followers : Array<number>
+  followings : Array<number>
+  profile_img : string
+}
+
+export interface UserType extends otherUserType{
+  email : string
   gender : string
   age : number
   height : number
   weight : number
-  followers : Array<number>
-  followings : Array<number>
 }
 
 export default function MyPage() {
   const params = useParams()
   const navigate = useNavigate();
-  const [User, setUser] = useState<UserType>()  
-  const currentUser = JSON.parse(localStorage?.getItem('userProfile')as string)
+  const dispatch = useAppDispatch()
+  const {User, otherUser} = useAppSelector(state => state.User)
+  const [ProfileUser, setProfileUser] = useState<UserType | otherUserType>()  
 
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
@@ -41,10 +46,11 @@ export default function MyPage() {
     const start = async() => {
       if (params.userId) {
         // 정보 요청이 안됨...
-        const res = await axios.get(requests.otherProfile + params.userId)
-        setUser(res.data.user)
+        dispatch(otherProfile(Number(params.userId)))
+        setProfileUser(otherUser)
       } else {
-        setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
+        setProfileUser(User)
+        console.log(User)
       }
     }
     start()
@@ -78,26 +84,7 @@ export default function MyPage() {
   }
 
   const Follow = (id: number) => {
-    const data = {
-      follower_id: id
-    }
-    axios.post(requests.follow, data)
-    if (User?.followers.includes(id)) {
-      const newFollwer =  User.followers.filter(follower_id => {
-        return follower_id !== id
-      })
-      setUser((current) => ({
-        ...current as UserType,
-        followers: newFollwer
-      }))
-      localStorage.setItem("userProfile", JSON.stringify(User));
-    } else {
-      setUser((current) => ({
-        ...current as UserType,
-        followers: User?.followers.push(id) as unknown as Array<number>
-      }))
-      localStorage.setItem("userProfile", JSON.stringify(User));
-    }
+    dispatch(follow(String(id)))
   }
 
   return (
@@ -109,16 +96,16 @@ export default function MyPage() {
             <MyPageHelloText>안녕하세요!</MyPageHelloText>
             <MyPageHelloIcon src={HelloIcon}></MyPageHelloIcon>
           </div>
-          <NickNameP>{User?.nickname} 님!</NickNameP>
+          <NickNameP>{ProfileUser?.nickname} 님!</NickNameP>
         </MyPageTextDiv>
         <MyPageImg id="UserProfile" src={MyImg} onClick={InputClick}></MyPageImg>
         {!params.user_id && <ChangeImgInput id="Input" type="file" accept='image/*' onChange={ChangeProfile}/>}
         
         <MyPageFollowDiv>
-          <MyPageFollow>팔로우 {User?.followings.length ? User?.followings.length : 0}</MyPageFollow>
-          <MyPageLine></MyPageLine>
-          <MyPageFollow>팔로워 {User?.followers.length ? User?.followers.length : 0}</MyPageFollow>
-          {params.user_id && <OtherPeopleBtn onClick={() => Follow(User!.user_id)}>{currentUser.followings.includes(User!.user_id) ? "언팔로우" : "팔로우" }</OtherPeopleBtn>}
+          <MyPageFollow onClick={()=>navigate('Follow')}>팔로우 {ProfileUser?.followings.length ? ProfileUser?.followings.length : 0}</MyPageFollow>
+          <MyPageLine onClick={()=>navigate('Following')}></MyPageLine>
+          <MyPageFollow>팔로워 {ProfileUser?.followers.length ? ProfileUser?.followers.length : 0}</MyPageFollow>
+          {params.user_id && <OtherPeopleBtn onClick={() => Follow(User!.user_id)}>{User.followings.includes(User!.user_id) ? "언팔로우" : "팔로우" }</OtherPeopleBtn>}
         </MyPageFollowDiv>
       </MyPageDiv>
 

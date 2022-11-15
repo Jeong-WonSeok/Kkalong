@@ -2,24 +2,35 @@ import { handleActions } from "redux-actions";
 import { Dispatch } from 'redux';
 import axios from "../../api/axios";
 import requests from '../../api/requests'
-import { UserType } from "../../pages/MyPage/MyPage";
+import { otherUserType, UserType } from "../../pages/MyPage/MyPage";
 
 // User 정보 조회
-const GET_LOGIN_PENDING = 'Community/GET_LOGIN_PENDING' 
-const GET_LOGIN_SUCCESS = 'Community/GET_LOGIN_SUCCESS' 
-const GET_LOGIN_FAILURE = 'Community/GET_LOGIN_FAILURE' 
+const GET_LOGIN_PENDING = 'Profile/GET_LOGIN_PENDING' 
+const GET_LOGIN_SUCCESS = 'Profile/GET_LOGIN_SUCCESS' 
+const GET_LOGIN_FAILURE = 'Profile/GET_LOGIN_FAILURE' 
+
+const FOLLOW_SUCCESS = 'Profile/FOLLOW_SUCCESS'
+
+// 다른유저 정보 조희
+const GET_OTHER_PENDING = 'Profile/GET_OTHER_PENDING' 
+const GET_OTHER_SUCCESS = 'Profile/GET_OTHER_SUCCESS' 
+const GET_OTHER_FAILURE = 'Profile/GET_OTHER_FAILURE' 
+
+
 
 export interface stateType {
   pending: boolean,
   error: boolean,
-  User: UserType
+  User: UserType,
+  otherUser: otherUserType
 }
 
 // 초기값 설정
 const initialState: stateType = {
   pending: false,
   error: false,
-  User: {} as UserType
+  User: {} as UserType,
+  otherUser: {} as otherUserType
 }
 
 // 상위 3개 게시물 표시
@@ -41,6 +52,24 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
     })
 }
 
+export const otherProfile = (user_id: number) => async (dispatch: Dispatch) => {
+  dispatch({type: GET_OTHER_PENDING})
+
+  await axios.get(requests.otherProfile + String(user_id))
+    .then(res => {
+      dispatch({type: GET_OTHER_SUCCESS, payload: res.data.user})
+    }).catch(err=> {
+      dispatch({type:GET_OTHER_FAILURE})
+    })
+}
+
+export const follow = (user_id: string) => async (dispatch: Dispatch) => {
+  await axios.post(requests.follow + user_id)
+    .then(res => {
+      dispatch({type: FOLLOW_SUCCESS, payload: res.data.followings})
+    })
+}
+
 // 액션에 따른 state 변경 
 export default handleActions({
   [GET_LOGIN_PENDING]: (state, action) => {
@@ -53,6 +82,7 @@ export default handleActions({
   },
   [GET_LOGIN_SUCCESS]: (state, {payload}) => {
     const adjust: UserType = payload as unknown as UserType
+    console.log(adjust)
     return {
       ...state,
       pending: false,
@@ -65,5 +95,37 @@ export default handleActions({
       pending: false,
       error: true
     };
+  },
+  [GET_OTHER_PENDING]: (state, action) => {
+    // 반환해줄 데이터
+    return {
+      ...state,
+      pending: true,
+      error: false,
+    }
+  },
+  [GET_OTHER_SUCCESS]: (state, {payload}) => {
+    const adjust: otherUserType = payload as unknown as otherUserType
+    return {
+      ...state,
+      pending: false,
+      otherUser: adjust
+    };
+  },
+  [GET_OTHER_FAILURE]: (state, action) => {
+    return {
+      ...state,
+      pending: false,
+      error: true
+    };
+  },
+  [FOLLOW_SUCCESS]: (state, {payload}) => {
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        followings: payload as unknown as Array<number>  
+      }
+    }
   }
 }, initialState)

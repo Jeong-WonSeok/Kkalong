@@ -114,7 +114,7 @@ export default function DetailHelpCodi() {
       <TopNav type={''}>
         <MenuImg src={BackArrow} onClick={()=>navigate('/community/HelpCodi')}/>
         <NavText>도와주세요 패알못😂</NavText>
-        {User?.user_id === Article?.Help.user.user_id && <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/>}
+        {User?.user_id === Article?.Help.user.user_id ? <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
         
       </TopNav>
 

@@ -42,6 +42,7 @@ import MyPageFriend from "./pages/MyPage/MyPageFriend";
 import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
 import MyPageArticle from "./pages/MyPage/MyPageArticle";
 import PersonalInfo from "./pages/PersonalInfo";
+import MyFollow from "./pages/MyPage/MyFollow";
 
 // import Example from "./components/closet/Example";
 // import Scene from "../public/Scene";
@@ -64,6 +65,7 @@ function App() {
 
             {/* 출시를 위한 개인정보 처리방침 url */}
             <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
+            {/* 커뮤니티 */}
             <Route path="/community" element={<MainCommunity />}></Route>
             <Route path="/community/BestDress" element={<MainBestDress />}></Route>
             <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
@@ -74,6 +76,7 @@ function App() {
             <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
             <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
+            {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
             <Route path="/closet/:UserId" element={<MainCloset />}></Route>
@@ -87,20 +90,18 @@ function App() {
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
-            <Route
-              path="/community/BestDress"
-              element={<MainBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/:BestDressId"
-              element={<DetailBestDress />}
-            ></Route>
+            {/* 마이페이지 */}
             <Route path="/myPage" element={<MyPage />}></Route>
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
             <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
             <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
+            <Route path="/myPage/Follow" element={<MyFollow />}></Route>
+            <Route path="/myPage/Following" element={<MyFollow />}></Route>
             <Route path="/myPage/:userId" element={<MyPage />}></Route>
+            <Route path="/myPage/:userId/Follow" element={<MyFollow />}></Route>
+            <Route path="/myPage/:userId/Following" element={<MyFollow />}></Route>
             <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
+            {/* 가상피팅 */}
             <Route path="/VirtualFitting/" element={<VirtualPicture />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
             <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import BackArrowIcon from "../../assets/icon/Nav/BackArrow.png";
+import SearchIcon from '../../assets/icon/Nav/search.png'
 
 
 import Profile from "../../components/Community/Profile";
@@ -18,8 +19,9 @@ import requests from '../../api/requests'
 export interface FriendType {
   user_id : number
   nickname  : string
-  img : string
-  lover : boolean
+  profile_img : string
+  isLoving : boolean
+  lover_id : number
 }
 
 export default function MyPageArticle() {
@@ -27,6 +29,7 @@ export default function MyPageArticle() {
   const [User, setUser] = useState<UserType>()
   const [Friends, setFrineds] = useState(Array<FriendType>)
   const [IsSearch, setIsSearch] = useState(false)
+  const [IsModal, setIsModal] = useState(false)
   const [SearchFriendList, setSearchFriendList] = useState(Array<FriendType>)
   
   useEffect(()=>{
@@ -50,16 +53,16 @@ export default function MyPageArticle() {
       <TopNav type={""}>
         <TopDivBackArrow src={BackArrowIcon} onClick={()=>navigate(-1)} />
         <TopDivText>{User?.nickname}님의 친구</TopDivText>
-        <div style={{width:"30px", height:"30px"}}></div>
+        <SearchImg src={SearchIcon} onClick={()=>setIsModal(!IsModal)}/>
       </TopNav>
 
     <MyPageArticleFriendContainer>
-      <Search Search={SearchFriend} StopSearch={()=>setIsSearch(false)}>유저검색</Search>
+      <Search  Search={SearchFriend} Open={IsModal} StopSearch={()=>setIsSearch(false)}>유저검색</Search>
 
       {/* 유저목록 */}
       {IsSearch ? 
       SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
-      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch}/> : <NoneFriend>아직 친구가 없어요</NoneFriend>}
+      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
 
       <FooterBar/>
     </MyPageArticleFriendContainer>
@@ -79,11 +82,16 @@ const MyPageArticleFriendContainer = styled.div`
 const TopDivBackArrow = styled.img`
   width: 30px;
   height: 30px;
-
 `;
+
+const SearchImg = styled.img`
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+`
 // ..의 친구
 const TopDivText = styled.text`
-  font-family: var(--base-font-600);
+  font-family: var(--base-font-500);
 `;
 
 const NoneFriend = styled.div`
