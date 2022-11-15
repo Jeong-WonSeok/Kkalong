@@ -51,7 +51,7 @@ public class ClosetService {
     }
 
     public String getColorInfos(int next_clothing_id) {
-        String url = "http://localhost:8000/api/personal_color/"+next_clothing_id;
+        String url = "http://localhost:8000/api/clothing_color/"+next_clothing_id;
         RestTemplate restTemplate = new RestTemplate();
         String color = restTemplate.getForObject(url,String.class);
         return color;

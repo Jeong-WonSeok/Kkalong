@@ -1,19 +1,12 @@
-"""
- - fast api 설치
-pip install fastapi
-pip install uvicorn
-
-서버 실행 명령어 ->
-uvicorn main:app --reload
-"""
-
 from typing import Optional
 from fastapi import FastAPI
 import os
+import sys
 import pyrebase
 import removeBg
 import colorExtract
-import personalColor
+sys.path.append("personalColor/src")
+import personal
 
 app = FastAPI()
 
@@ -34,7 +27,7 @@ storage = firebase_storage.storage()
 
 @app.get("/api/remove_clothing_bg/{clothing_id}")
 def remove_clothing_background(clothing_id: Optional[str]=None):
-    storage.child("").download("clothing_"+clothing_id, "clothing_with_background.png")
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
     print("finished downloading file")
     result = removeBg.remove_clothing_background(clothing_id)
     print("finished removing background")
@@ -47,12 +40,13 @@ def remove_clothing_background(clothing_id: Optional[str]=None):
 
 @app.get("/api/clothing_color/{clothing_id}")
 def extract_clothing_color(clothing_id: Optional[str] =None):
-    storage.child("").download("clothing_"+clothing_id, "clothing_extract_color.png")
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_extract_color.png")
     result = colorExtract.image_preprocess("clothing_extract_color.png")
     os.remove('clothing_extract_color.png')
     return str(result)
 
-@app.get("/api/personal_color/{profile_img}")
-def personal_color_info(profile_img: Optional[str] = None):
-    result = personalColor.personal_color(profile_img)
+@app.get("/api/personal_color/{user_id}")
+def personal_color_info(user_id: Optional[str] = None):
+    storage.child("").download("face_"+user_id, "face_img.png")
+    result = personal.personalColor("face_img.png")
     return str(result)

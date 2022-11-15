@@ -20,11 +20,11 @@ public class FirebaseService {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
             InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("clothing_"+id, content, file.getContentType());
+            Blob blob = bucket.create("clothing_"+id+".png", content, file.getContentType());
         } catch (Exception e){
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing_"+id+"_clothing_bg?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/clothing_"+id+".png?alt=media";
     }
 
     public String uploadCodyImg(int id, MultipartFile file) {
@@ -35,7 +35,7 @@ public class FirebaseService {
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/cody_"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/cody_"+id+".png?alt=media";
     }
 
     public String uploadUserProfileImg(int id, MultipartFile file) {
@@ -46,7 +46,7 @@ public class FirebaseService {
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/profile_"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/profile_"+id+".png?alt=media";
     }
 
     public String uploadPostImg(int id, MultipartFile file) {
@@ -57,6 +57,6 @@ public class FirebaseService {
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
-        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/post_"+id+"?alt=media";
+        return "https://firebasestorage.googleapis.com/v0/b/"+firebaseBucket+"/o/post_"+id+".png?alt=media";
     }
 }

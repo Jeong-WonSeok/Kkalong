@@ -58,8 +58,13 @@ public class ClosetController {
     public ResponseEntity<?> removeClothingImgBackground(@RequestBody MultipartFile img) {
         Map<String, Object> result = new HashMap<>();
         int next_clothing_id = closetService.findNextClothingId();
-        result.put("img", closetService.removeClothingImgBackground(next_clothing_id, img));
-        result.put("color", closetService.getColorInfos(next_clothing_id));
+        System.out.println(next_clothing_id);
+        String img_url = closetService.removeClothingImgBackground(next_clothing_id, img);
+        img_url = img_url.substring(1, img_url.length()-1);
+        String color = closetService.getColorInfos(next_clothing_id);
+        color = color.substring(1, color.length()-1);
+        result.put("img", img_url);
+        result.put("color", color);
         return ResponseEntity.ok().body(result);
     }
 
