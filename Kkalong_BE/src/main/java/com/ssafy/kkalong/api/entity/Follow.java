@@ -24,5 +24,4 @@ public class Follow {
     @JoinColumn(name="receiver")
     private User receiver;
 
-    private Boolean lover;
 }

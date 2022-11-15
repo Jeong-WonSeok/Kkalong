@@ -2,18 +2,22 @@ import axios from '../../api/axios'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook'
+import { getHelpCodi } from '../../redux/modules/HelpCodi'
+import { getBestDress } from '../../redux/modules/BestDress'
 
 export default function Modal(props: any) {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   // 삭제 axios 요청 보낼 예정
   const Delete = async () => {
     if (props.Page === "BestDress") {
       const res = await axios.delete(requests.detailBestDress + props.Id)
-      console.log(res.data)
+      dispatch(getBestDress)
       navigate('/community/BestDress')
-      
     } else {
       await axios.delete(requests.detailHelpCodi + props.Id)
+      dispatch(getHelpCodi)
       navigate('/community/HelpCodi')
     }
   }
@@ -30,7 +34,7 @@ export default function Modal(props: any) {
         <LineDiv></LineDiv>
 
         <ButtonContainer>
-          <ButtonDiv onClick={props.CloseModal} style={{borderRight: '1px solid var(--primary-color-750)'}}>
+          <ButtonDiv onClick={props.CloseModal} style={{borderRight: '2px solid var(--primary-color-750)'}}>
             <ButtonP>
               아니요
             </ButtonP>
@@ -66,7 +70,7 @@ const ModalDiv = styled.div`
   height: 120px;
   border-radius: 15px;
   background-color: white;
-  border: 3px solid var(--primary-color-750);
+  border: 2px solid var(--primary-color-750);
 `
 
 const ContentDiv = styled.div`
@@ -84,7 +88,7 @@ const ContentP = styled.p`
 `
 const LineDiv = styled.div`
   width: 100%;
-  height: 1px;
+  height: 2px;
   background-color: var(--primary-color-750);
 `
 

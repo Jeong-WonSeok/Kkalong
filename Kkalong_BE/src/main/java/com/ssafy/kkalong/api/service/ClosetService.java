@@ -8,11 +8,8 @@ import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +22,6 @@ public class ClosetService {
     private final UserRepository userRepository;
     private final ClosetRepository closetRepository;
     private final ClothingRepository clothingRepository;
-    private final BrandRepository brandRepository;
     private final FirebaseService firebaseService;
     private final ClosetClothingRepository closetClothingRepository;
     private final CodyRepository codyRepository;
@@ -46,21 +42,19 @@ public class ClosetService {
         return closetRepository.findAllByUser(user);
     }
 
-    public String removeClothingImgBackground(int user_id, MultipartFile file) {
-
-        return firebaseService.uploadClothingImgWithBackground(user_id, file);
-//        String[] s = StringUtils.split(file.getOriginalFilename(), ".");
-//        String url = "http://localhost:8000/api/remove_clothing_bg/"+user_id+"/"+s[1];
-//        RestTemplate restTemplate = new RestTemplate();
-//        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
-//        return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/test.jpg?alt=media";
+    public String removeClothingImgBackground(int next_clothing_id, MultipartFile file) {
+        firebaseService.uploadClothingImgWithBackground(next_clothing_id, file);
+        String url = "http://localhost:8000/api/remove_clothing_bg/"+next_clothing_id;
+        RestTemplate restTemplate = new RestTemplate();
+        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
+        return removedBgImgUrl;
     }
 
-    public List<String> getColorInfos() {
-        List<String> colorList = new ArrayList<>();
-        colorList.add("파랑색");
-        colorList.add("초록색");
-        return colorList;
+    public String getColorInfos(int next_clothing_id) {
+        String url = "http://localhost:8000/api/clothing_color/"+next_clothing_id;
+        RestTemplate restTemplate = new RestTemplate();
+        String color = restTemplate.getForObject(url,String.class);
+        return color;
     }
 
     public Clothing registerClothing(int user_id, ClothingDto clothingDto) {
@@ -75,7 +69,7 @@ public class ClosetService {
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
                 .img(clothingDto.getImg()) //임시 대처
-                .brand(brandRepository.findById(clothingDto.getBrand_id()))
+//                .brand(brandRepository.findById(clothingDto.getBrand_id()))
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
@@ -184,4 +178,12 @@ public class ClosetService {
         return codyResponseDtos;
     }
 
+    public int findNextClothingId() {
+        int count = clothingRepository.countBy();
+        if(count==0){
+            return 1;
+        } else{
+            return clothingRepository.findMaxClothingId()+1;
+        }
+    }
 }

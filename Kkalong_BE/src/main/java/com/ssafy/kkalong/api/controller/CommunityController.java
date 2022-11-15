@@ -3,6 +3,7 @@ package com.ssafy.kkalong.api.controller;
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.CommunityService;
+import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.util.*;
 public class CommunityController {
 
     private final CommunityService communityService;
+    private final FirebaseService firebaseService;
 
     @PostMapping("/imgTest")
     public ResponseEntity<?> imgTest(@RequestBody MultipartFile m){
-
         return ResponseEntity.ok().body(m.getOriginalFilename());
     }
 
@@ -40,7 +41,7 @@ public class CommunityController {
             User user = communityService.selectUser(bd.getId());
 
             String nick = user.getNickname();
-            String profile_img = user.getImg();
+            String profile_img = user.getProfile_img();
 
             temp.put("Best", bd);
             temp_u.put("user_id", user.getId());
@@ -67,7 +68,7 @@ public class CommunityController {
             User user = communityService.selectUser(bd.getId());
 
             String nick = user.getNickname();
-            String profile_img = user.getImg();
+            String profile_img = user.getProfile_img();
 
             temp.put("Best", bd);
             temp_u.put("user_id", user.getId());
@@ -87,7 +88,7 @@ public class CommunityController {
 
         Map<String, Object> result = new HashMap<>();
         User user = communityService.selectUser(post_id);
-        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getProfile_img(), user.getEmail());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
@@ -103,7 +104,7 @@ public class CommunityController {
 
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setProfile_image(temp_user.getProfile_img());
             comment_user.setEmail(temp_user.getEmail());
 
             comment.put("content", comm.getContent());
@@ -126,6 +127,11 @@ public class CommunityController {
     @PostMapping("/bestdress/{post_id}")
     public ResponseEntity<?> likeClick(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable int post_id){
         User user = communityService.getUser(userInfo.getEmail());
+        Post post = communityService.getPost(post_id);
+        if(communityService.existsLike(user, post)){
+            communityService.duplicateLike(user, post);
+            return ResponseEntity.ok().body("좋아요가 취소되었습니다.");
+        }
         communityService.updateLike(user, post_id);
         List<Integer> likeList = communityService.selectLike(post_id);
         Map<String, Object> result = new HashMap<>();
@@ -135,24 +141,23 @@ public class CommunityController {
     }
 
     //bestDressRegister 등록
-    @PostMapping(value = "/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq)
-    {
+    @PostMapping(consumes = {"multipart/form-data"}, value = "/bestdress")
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestParam("post_img") MultipartFile post_img, @RequestParam("content") String content) {
 
         Map<String, Object> result = new HashMap<>();
-//        result.put("img", img);
-        //유저 정보 가져오기
         User user = communityService.getUser(userInfo.getEmail());
 
         BestDressUserDto post_user = new BestDressUserDto();
         // 게시물 주인 정보 넣기
         post_user.setUser_id((user.getId()));
         post_user.setNickname(user.getNickname());
-        post_user.setProfile_image(user.getImg());
+        post_user.setProfile_image(user.getProfile_img());
         post_user.setEmail(user.getEmail());
 
         // DB 등록
-        Post post = communityService.insertBestDress(bestReq, user);
+        int next_post_id = communityService.findNextPostId();
+        String post_img_url = firebaseService.uploadPostImg(next_post_id, post_img);
+        Post post = communityService.insertBestDress(post_img_url, content, user);
         BestDressResponseInterface postDto = communityService.selectPost(post.getId());
 
         //댓글 리스트 가져오기
@@ -167,7 +172,7 @@ public class CommunityController {
         result.put("user_id", post_user);
         result.put("comment", comment);
         result.put("createAt", communityService.selectPostCreateAt(post.getId()));
-        result.put("filename", bestReq.getPost_img().getOriginalFilename());
+        result.put("filename", post_img_url);
 
         return ResponseEntity.ok().body(result);
     }
@@ -176,21 +181,19 @@ public class CommunityController {
     @DeleteMapping("/bestdress/{post_id}")
     public ResponseEntity<?> deletePost(@PathVariable int post_id) {
         communityService.deletePost(post_id);
-
         return ResponseEntity.ok().body("삭제 성공");
     }
 
     //베스트 드레서 수정
     @PutMapping("/bestdress/{post_id}")
     public ResponseEntity<?> UpdatePost(@AuthenticationPrincipal UserDetailsImpl userInfo, BestDressRequestDto bestReq, @PathVariable int post_id) {
-        System.out.println("adfsafasfsafaffasffasfafsfsaf");
+
         Map<String, Object> result = new HashMap<>();
-        System.out.println(bestReq.getPost_img().getOriginalFilename());
         communityService.updatePost(bestReq, post_id);
 
         User user = communityService.selectUser(post_id);
 
-        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail());
+        BestDressUserDto userDto = new BestDressUserDto(user.getId(), user.getNickname(), user.getProfile_img(), user.getEmail());
 
         BestDressResponseInterface post = communityService.selectPost(post_id);
 
@@ -205,15 +208,12 @@ public class CommunityController {
 
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setProfile_image(temp_user.getProfile_img());
             comment_user.setEmail(temp_user.getEmail());
-
-
             comment.put("content", comm.getContent());
             comment.put("user_id", comment_user);
             comment.put("comment_id", comm.getId());
             comment.put("createAt", "" + communityService.selectCommentCreateAt(comm.getId()));
-
             commentArr.add(comment);
         }
 
@@ -242,7 +242,7 @@ public class CommunityController {
         Comment comment = communityService.insertComment(commentInfo, user, post);
 
         user_id.put("nickname", user.getNickname());
-        user_id.put("profile_img", user.getImg());
+        user_id.put("profile_img", user.getProfile_img());
         user_id.put("user_id", user.getId());
         user_id.put("email", user.getEmail());
         //createAt 넣어야 댐
@@ -256,8 +256,9 @@ public class CommunityController {
     }
 
     @DeleteMapping("/bestdress/{post_id}/comment/{comment_id}")
-    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int conment_id) {
-        communityService.deleteComment(conment_id);
+    public ResponseEntity<?> deleteComment(@PathVariable int post_id, @PathVariable int comment_id) {
+        System.out.println(comment_id);
+        communityService.deleteComment(comment_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
 
@@ -271,7 +272,7 @@ public class CommunityController {
         User user = communityService.getUser(userInfo.getEmail());
 
         userMap.put("nickname", user.getNickname());
-        userMap.put("profile_img", user.getImg());
+        userMap.put("profile_img", user.getProfile_img());
         userMap.put("user_id", user.getId());
         userMap.put("email", user.getEmail());
         result.put("content", comment.getContent());
@@ -298,7 +299,7 @@ public class CommunityController {
             BestDressUserDto userDto = new BestDressUserDto();
             User user = communityService.selectUserHelp(h.getHelp_id());
             userDto.setNickname(user.getNickname());
-            userDto.setProfile_image(user.getImg());
+            userDto.setProfile_image(user.getProfile_img());
             userDto.setUser_id(user.getId());
             userDto.setEmail(user.getEmail());
 
@@ -321,22 +322,20 @@ public class CommunityController {
         BestDressUserDto userDto = new BestDressUserDto();
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
-        userDto.setProfile_image(user.getImg());
+        userDto.setProfile_image(user.getProfile_img());
         userDto.setUser_id(user.getId());
         userDto.setEmail(user.getEmail());
 
         helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
 
-
         for (Reply rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
             User temp_user = rpl.getUser();
             BestDressUserDto comment_user = new BestDressUserDto();
 
-
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setProfile_image(temp_user.getProfile_img());
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
@@ -350,14 +349,9 @@ public class CommunityController {
             reply.put("comment_id", rpl.getId());
             reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(reply);
-
         }
-
-
         result.put("Help", helpDto);
         result.put("comment", commentArr);
-
-
         return ResponseEntity.ok().body(result);
     }
 
@@ -378,13 +372,12 @@ public class CommunityController {
         BestDressUserDto userDto = new BestDressUserDto();
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
-        userDto.setProfile_image(user.getImg());
+        userDto.setProfile_image(user.getProfile_img());
         userDto.setUser_id(user.getId());
         userDto.setEmail(user.getEmail());
 
         helpDto.setUser(userDto);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
-
 
         for (Reply rpl : replyList) {
             Map<String, Object> reply = new HashMap<>();
@@ -392,7 +385,7 @@ public class CommunityController {
             BestDressUserDto comment_user = new BestDressUserDto();
 
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getImg());
+            comment_user.setProfile_image(temp_user.getProfile_img());
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
@@ -401,14 +394,9 @@ public class CommunityController {
             reply.put("comment_id", rpl.getId());
             reply.put("createAt", communityService.selectReplyCreateAt(rpl.getId()));
             commentArr.add(reply);
-
         }
-
-
         result.put("Help", helpDto);
         result.put("comment", commentArr);
-
-
         return ResponseEntity.ok().body(result);
     }
 
@@ -429,7 +417,7 @@ public class CommunityController {
         help.setOpen(helpInfo.getOpen());
         help.setTitle(helpInfo.getTitle());
         help.setRange(helpInfo.getRange());
-        help.setUser(new BestDressUserDto(user.getId(), user.getNickname(), user.getImg(), user.getEmail()));
+        help.setUser(new BestDressUserDto(user.getId(), user.getNickname(), user.getProfile_img(), user.getEmail()));
 
         result.put("Help", help);
         comment.put("content", null);
@@ -437,9 +425,9 @@ public class CommunityController {
         commentUser.put("profile_img", null);
         comment.put("comment_id", null);
         comment.put("user", commentUser);
-        codi.put("codi_img", null);
+        codi.put("cody_img", null);
 
-        comment.put("codi_id", codi);
+        comment.put("cody", codi);
 
         result.put("comment", comment);
         result.put("createAt", communityService.selectHelpCreateAt(help_id));
@@ -468,7 +456,7 @@ public class CommunityController {
         Reply reply = communityService.insertReply(replyInfo, user, help);
 
         user_id.put("nickname", user.getNickname());
-        user_id.put("profile_img", user.getImg());
+        user_id.put("profile_img", user.getProfile_img());
         user_id.put("user_id", user.getId());
         user_id.put("eamil", user.getEmail());
         //createAt 넣어야 댐
@@ -484,6 +472,7 @@ public class CommunityController {
 
     @DeleteMapping("/helpcodi/{help_id}/comment/{reply_id}")
     public ResponseEntity<?> deleteReply(@PathVariable int help_id, @PathVariable int reply_id){
+        System.out.println(reply_id);
         communityService.deleteReply(reply_id);
         return ResponseEntity.ok().body("삭제 성공");
     }
@@ -501,9 +490,8 @@ public class CommunityController {
             cody = communityService.getCody(replyInfo.getCodi_id());
         }
 
-
         userMap.put("nickname", user.getNickname());
-        userMap.put("profile_img", user.getImg());
+        userMap.put("profile_img", user.getProfile_img());
         userMap.put("user_id", user.getId());
         userMap.put("email", user.getEmail());
         result.put("content", reply.getContent());

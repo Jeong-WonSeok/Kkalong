@@ -43,9 +43,7 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.0'
-//    implementation 'com.google.firebase:firebase-admin:9.0.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.5'
 
 }
