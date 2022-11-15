@@ -28,9 +28,9 @@ public class Clothing {
 
     private String color;
 
-    private String main_category;
+    private int main_category;
 
-    private String sub_category;
+    private int sub_category;
 
     private boolean spring;
 
