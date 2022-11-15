@@ -55,13 +55,11 @@ public class ClosetController {
     }
 
     @PostMapping("/removeBg")
-    public ResponseEntity<?> removeClothingImgBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
+    public ResponseEntity<?> removeClothingImgBackground(@RequestBody MultipartFile img) {
         Map<String, Object> result = new HashMap<>();
-        List<String> colors = new ArrayList<>();
-        colors.add("파랑색");
-        colors.add("초록색");
-        result.put("img", closetService.removeClothingImgBackground(userInfo.getId(), img));
-        result.put("color", colors);
+        int next_clothing_id = closetService.findNextClothingId();
+        result.put("img", closetService.removeClothingImgBackground(next_clothing_id, img));
+        result.put("color", closetService.getColorInfos(next_clothing_id));
         return ResponseEntity.ok().body(result);
     }
 

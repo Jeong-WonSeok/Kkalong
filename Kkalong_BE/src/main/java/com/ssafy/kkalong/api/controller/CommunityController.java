@@ -140,8 +140,8 @@ public class CommunityController {
     }
 
     //bestDressRegister 등록
-    @PostMapping(value = "/bestdress")
-    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("post_img") MultipartFile post_img, @RequestPart("content") String content) {
+    @PostMapping(consumes = {"multipart/form-data"}, value = "/bestdress")
+    public ResponseEntity<?> bestDressRegister(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestParam("post_img") MultipartFile post_img, @RequestParam("content") String content) {
 
         Map<String, Object> result = new HashMap<>();
         User user = communityService.getUser(userInfo.getEmail());
@@ -180,7 +180,6 @@ public class CommunityController {
     @DeleteMapping("/bestdress/{post_id}")
     public ResponseEntity<?> deletePost(@PathVariable int post_id) {
         communityService.deletePost(post_id);
-
         return ResponseEntity.ok().body("삭제 성공");
     }
 

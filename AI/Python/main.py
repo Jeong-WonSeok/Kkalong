@@ -31,41 +31,26 @@ config = {
 firebase_storage = pyrebase.initialize_app(config)
 storage = firebase_storage.storage()
 
-@app.get("/api/remove_clothing_bg/{user_id}")
-def remove_clothing_background(user_id: Optional[str] =None):
-    storage.child("").download("user_"+user_id+"_clothing_bg", "clothing.png")
+@app.get("/api/remove_clothing_bg/{clothing_id}")
+def remove_clothing_background(clothing_id: Optional[str]=None):
+    storage.child("").download("clothing_"+clothing_id, "clothing_with_background.png")
     print("finished downloading file")
-    result = removeBg.remove_clothing_background(user_id)
+    result = removeBg.remove_clothing_background(clothing_id)
     print("finished removing background")
     storage.child(result).put(result)
     print("finished uploading file")
-    os.remove('clothing.png')
+    os.remove('clothing_with_background.png')
     os.remove(result)
     print("finished deleting file")
     return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
 
-<<<<<<< HEAD
-=======
-@app.get("/api/remove_clothing_bg/{user_id}/{extension}")
-def remove_clothing_background(user_id: Optional[str] =None, extension: Optional[str] =None):
-    # storage.child("3.png").put("please.png")
-    print(user_id)
-    result = removeBg.remove_clothing_background(user_id, extension)
+@app.get("/api/clothing_color/{clothing_id}")
+def extract_clothing_color(clothing_id: Optional[str] =None):
+    storage.child("").download("clothing_"+clothing_id, "clothing_extract_color.png")
+    
+
+
+@app.get("/api/personal_color/{profile_img}")
+def personal_color_info(profile_img: Optional[str] = None):
+    result = personalColor.personal_color(profile_img)
     return str(result)
-
-@app.get("api/personal_color/{img}")
-def personal_color_info(img: Optional[str] = None):
-    result = personalColor.personal_color(img)
-    return str(result)
-
-# @app.get("/api/keyword/{keyword}")
-# def read_keyword(keyword: Optional[str] = None):
-#     text = spellCheck.spellCehck_Busan(keyword)
-#     keyword = spellCheck.keyword_analysis(text)
-#     result = " ".join(keyword)
-#
-#     return str(result)
->>>>>>> 30b4e0e7f638f52ab9445993e39327d5ef98a80a
-
-
-
