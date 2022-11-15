@@ -28,16 +28,16 @@ bottom_wine = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로�
 bottom_black = ['블랙', '흑청', '다크 그레이']
 
 top_bottom = [
-              [top_white, bottom_blue], [top_white, bottom_navy], [top_white, bottom_white],
-              [top_white, bottom_khaki], [top_white, bottom_wine], [top_white, bottom_white],
-              [top_red, bottom_wine], [top_pink, bottom_blue], [top_pink, bottom_navy],
-              [top_pink, bottom_white], [top_pink, bottom_black], [top_orange, bottom_navy],
-              [top_yellow, bottom_blue], [top_yellow, bottom_navy], [top_yellow, bottom_white],
-              [top_yellow, bottom_wine], [top_green, bottom_navy], [top_green, bottom_black],
-              [top_blue, bottom_white], [top_blue, bottom_wine ], [top_blue, bottom_black],
-              [top_navy, bottom_blue], [top_navy, bottom_navy], [top_navy, bottom_white],
-              [top_navy, bottom_wine], [top_black, bottom_navy], [top_black, bottom_white],
-              [top_black, bottom_black], [top_gray, bottom_black], [top_gray, bottom_navy]
+                [top_white, bottom_blue], [top_white, bottom_navy], [top_white, bottom_white],
+                [top_white, bottom_khaki], [top_white, bottom_wine], [top_white, bottom_white],
+                [top_red, bottom_wine], [top_pink, bottom_blue], [top_pink, bottom_navy],
+                [top_pink, bottom_white], [top_pink, bottom_black], [top_orange, bottom_navy],
+                [top_yellow, bottom_blue], [top_yellow, bottom_navy], [top_yellow, bottom_white],
+                [top_yellow, bottom_wine], [top_green, bottom_navy], [top_green, bottom_black],
+                [top_blue, bottom_white], [top_blue, bottom_wine ], [top_blue, bottom_black],
+                [top_navy, bottom_blue], [top_navy, bottom_navy], [top_navy, bottom_white],
+                [top_navy, bottom_wine], [top_black, bottom_navy], [top_black, bottom_white],
+                [top_black, bottom_black], [top_gray, bottom_black], [top_gray, bottom_navy]
             ]
 
 # 날씨 매핑

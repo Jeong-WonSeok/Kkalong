@@ -50,6 +50,9 @@ public class CommunityService {
         return postRepository.findById(post_id);
     }
 
+    public boolean existsLike(User user, Post post) {
+        return postLikeRepository.existsByPostAndUser(post, user);
+    }
 
     // 도전 베스트드레서 등록
     public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
@@ -120,6 +123,8 @@ public class CommunityService {
         System.out.println(commentInfo.getContent());
         commentRepository.updateComment(content_id, commentInfo.getContent());
     }
+
+
 
     //=============================================================================
     //도와주세요 패알못
@@ -235,6 +240,11 @@ public class CommunityService {
         postLikeRepository.save(postLike);
     }
 
+    public void duplicateLike(User user, Post post){
+        postLikeRepository.deleteByPostAndUser(post, user);
+    }
+
+
     public List<Integer> selectLike(int post_id) {
         Post post = postRepository.findById(post_id);
         System.out.println(post.getId() + " " + post.getContent());
@@ -259,9 +269,5 @@ public class CommunityService {
     }
     public String selectReplyCreateAt(int reply_id){
         return "" + replyRepository.findById(reply_id).getCreatedAt();
-    }
-
-    public boolean existsLike(User user, Post post) {
-        return postLikeRepository.existsByPostAndUser(post, user);
     }
 }
