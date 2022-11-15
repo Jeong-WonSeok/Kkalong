@@ -36,4 +36,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(nativeQuery = true, value = "update post set content = :content , img = :img where post_id = :post_id ")
     void updatePost(String content, String img, int post_id);
 
+    @Query(value = "select max(p.id) from Post as p")
+    int findMaxPostId();
+
+    int countBy();
+
 }

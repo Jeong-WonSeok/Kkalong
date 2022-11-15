@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
-
 import os
 from collections import defaultdict
-
 from colorthief import ColorThief
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
@@ -44,8 +42,6 @@ color_chip_rgb = [[255, 255, 255], [217, 217, 215], [156, 156, 155], [83, 86, 91
 
 
 def image_preprocess(target_item):
-
-
     image = cv2.imread(target_item, cv2.IMREAD_UNCHANGED)
     ct = ColorThief(target_item)
 
@@ -68,7 +64,6 @@ def image_preprocess(target_item):
         idx += 1
 
     return color_name[min_idx]
-    # plt.show()
 
 
 
