@@ -5,24 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75b52907-6ad3-4ed1-ba52-a73214170242" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/2D-Human-Parsing" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IU.jpg" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sampleData/jeong.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/sampleData/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2D-Human-Parsing" beforeDir="false" afterPath="$PROJECT_DIR$/2D-Human-Parsing" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/main.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/colorExtract.py" beforeDir="false" afterPath="$PROJECT_DIR$/colorExtract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imgparsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/imgparsing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/personalColor.py" beforeDir="false" afterPath="$PROJECT_DIR$/personalColor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_1_clothing_rmbg.png" beforeDir="false" afterPath="$PROJECT_DIR$/sampleData/user_1_clothing_rmbg.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendCodi.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendCodi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/repository/PostLikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/repository/PostLikeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/service/CommunityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/service/CommunityService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +208,7 @@
     <SUITE FILE_PATH="coverage/Python$detect_face.coverage" NAME="detect_face Coverage Results" MODIFIED="1668387911762" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis" />
     <SUITE FILE_PATH="coverage/Python$colorExtract.coverage" NAME="colorExtract Coverage Results" MODIFIED="1668415480208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Python$main.coverage" NAME="main Coverage Results" MODIFIED="1668269857320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ShowMeTheColor/src" />
-    <SUITE FILE_PATH="coverage/Python$personalColor.coverage" NAME="personalColor Coverage Results" MODIFIED="1668415640840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Python$personalColor.coverage" NAME="personalColor Coverage Results" MODIFIED="1668415680189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Python$imgparsing.coverage" NAME="imgparsing Coverage Results" MODIFIED="1668145602841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
