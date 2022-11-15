@@ -31,7 +31,7 @@ public class FirebaseService {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
             InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("cody_"+id, content, file.getContentType());
+            Blob blob = bucket.create("cody_"+id+".png", content, file.getContentType());
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
@@ -42,7 +42,7 @@ public class FirebaseService {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
             InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("profile_"+id, content, file.getContentType());
+            Blob blob = bucket.create("profile_"+id+".png", content, file.getContentType());
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
@@ -53,7 +53,7 @@ public class FirebaseService {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         try{
             InputStream content = new ByteArrayInputStream(file.getBytes());
-            Blob blob = bucket.create("post_"+id, content, file.getContentType());
+            Blob blob = bucket.create("post_"+id+".png", content, file.getContentType());
         } catch(Exception e) {
             System.out.println("ByteArrayInputStream 예외 발생");
         }
