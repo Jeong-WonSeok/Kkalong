@@ -23,6 +23,7 @@ public class ClosetService {
     private final ClosetRepository closetRepository;
     private final ClothingRepository clothingRepository;
     private final FirebaseService firebaseService;
+    private final BrandRepository brandRepository;
     private final ClosetClothingRepository closetClothingRepository;
     private final CodyRepository codyRepository;
     private final CodyClothingRepository codyClothingRepository;
@@ -69,7 +70,7 @@ public class ClosetService {
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
                 .img(clothingDto.getImg()) //임시 대처
-//                .brand(brandRepository.findById(clothingDto.getBrand_id()))
+                .brand(brandRepository.findById(clothingDto.getBrand_id()))
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
@@ -92,7 +93,7 @@ public class ClosetService {
     public ClothingDto getClothingInfoByClothingId(int clothing_id) {
         Clothing clothing = clothingRepository.findById(clothing_id);
         ClothingDto clothingDto = ClothingDto.builder()
-                .closet_id(-1)
+//                .closet_id(-1)
                 .img(clothing.getImg())
                 .mainCategory(clothing.getMain_category())
                 .subCategory(clothing.getSub_category())
