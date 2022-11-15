@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75b52907-6ad3-4ed1-ba52-a73214170242" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2D-Human-Parsing" beforeDir="false" afterPath="$PROJECT_DIR$/2D-Human-Parsing" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShowMeTheColor" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/detect_face.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" beforeDir="false" afterPath="$PROJECT_DIR$/ShowMeTheColor/src/personal_color_analysis/personal_color.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommendCodi.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommendCodi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/controller/CommunityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/repository/PostLikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/repository/PostLikeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/service/CommunityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Kkalong_BE/src/main/java/com/ssafy/kkalong/api/service/CommunityService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,20 +66,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/multicampus/Desktop/자율PJT/S07P31B302/AI/Python/2D-Human-Parsing/pretrained&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/multicampus/Desktop/자율PJT/S07P31B302/AI/Python/2D-Human-Parsing/pretrained",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\multicampus\Desktop\자율PJT\S07P31B302\AI\Python\2D-Human-Parsing\pretrained" />
@@ -156,6 +146,7 @@
       <workItem from="1668384241220" duration="1362000" />
       <workItem from="1668387752869" duration="6297000" />
       <workItem from="1668412791233" duration="2825000" />
+      <workItem from="1668471417159" duration="1422000" />
     </task>
     <servers />
   </component>
@@ -200,6 +191,8 @@
       <path value="$PROJECT_DIR$/2D-Human-Parsing" />
       <path value="$PROJECT_DIR$/2D-Human-Parsing/Self-Correction-Human-Parsing" />
       <path value="$PROJECT_DIR$/Self-Correction-Human-Parsing" />
+      <path value="$PROJECT_DIR$/2D-Human-Parsing/inference/Self-Correction-Human-Parsing" />
+      <path value="$PROJECT_DIR$/ShowMeTheColor" />
     </ignored-roots>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
