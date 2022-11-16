@@ -41,6 +41,7 @@ import SwiperCore from "swiper";
 // import required modules
 import { EffectCoverflow, Pagination } from "swiper";
 import add_closet from "../../assets/icon/Closet/add_closet.png";
+import { loadSVGFromString } from "fabric/fabric-impl";
 export interface ClothesProps {
   sortclothes: string[];
 }
@@ -74,150 +75,200 @@ export default function MainCloset() {
     img6,
     img7,
   ]);
+  interface dataType {
+    closet_id: number;
+    clothings: any[];
+    codies: any[];
+    name: string;
+  }
+  let [closet, setCloset] = useState(Array<dataType>);
+
+  // useEffect(() => {
+  //   setCloset([
+
+  //   ]);
+  // }, []);
   let [sls, setSls] = useState("");
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
-  console.log(userId);
-  useEffect(() => {
-    const start = () => {
-      axios.get(requests.closet + userId).then((res) => {
-        console.log(res);
-      });
-    };
-    // const start = async () => {
-    //   if (params.UserId) {
-    //     // 타인이 볼 때
-    //     const res = await axios.get(requests.closet + params.UserId);
-    //   } else {
-    //     // 자기자신
-    //     const res = await axios.get(requests.closet + params.UserId);
-    //   }
-    // };
-    start();
-  });
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-
   const GoCody = () => {
     navigate("/codi");
   };
   const navigate = useNavigate();
   const [closetId, setClosetId] = useState(0);
   const [swiper, setSwiper] = useState<SwiperCore>();
+  // console.log(userId);
+
+  // const start = () => {
+  // axios
+  //   .get(requests.closet + userId)
+  //   .then((res) => {
+  //     let clo = [...closet];
+  //     [...closet] = res.data.closets;
+  //     setCloset(clo);
+  //     console.log(closet);
+  //   })
+  //   .catch((res) => {
+  //     console.log(res);
+  //   });
+  // };
+  let [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await axios(requests.closet + userId);
+      let clo = [...closet];
+      [...closet] = res.data.closets;
+      setCloset(clo);
+      console.log(closet);
+      setLoading(false);
+    };
+    fetchData();
+
+    // setLoading(true)
+    // const result = await axios
+    //     .get(requests.closet + userId)
+    //     .then((res) => {
+    //       closet = res.data.closets;
+    //       console.log(closet);
+    //     })
+    //     .catch((res) => {
+    //       console.log(res);
+    //     });
+    //   setLoading(false);
+    // };
+  }, []);
+  // const start = async () => {
+  //   if (params.UserId) {
+  //     // 타인이 볼 때
+  //     const res = await axios.get(requests.closet + params.UserId);
+  //   } else {
+  //     // 자기자신
+  //     const res = await axios.get(requests.closet + params.UserId);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await axios.get(requests.closet + userId);
+  //     return response.data;
+  //   }
+  //   fetchData().then((res) => {
+  //     setCloset(res);
+  //   });
+  // }, []);
+
   return (
-    <div style={{ marginBottom: "70px" }}>
-      <TopNav type={"menu"}>
-        <CategoryText1>옷장</CategoryText1>
-        <div style={{ width: "54px", height: "38px" }}>
-          <MenuIcon src={menu} />
+    <>
+      {loading ? (
+        <>loading...</>
+      ) : (
+        <div style={{ marginBottom: "70px" }}>
+          <TopNav type={"menu"}>
+            <CategoryText1>옷장</CategoryText1>
+            <div style={{ width: "54px", height: "38px" }}>
+              <MenuIcon src={menu} />
+            </div>
+          </TopNav>
+          <>
+            {/* <Carousel sortclothes={sortclothes} /> */}
+            <Swiper
+              effect={"coverflow"}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={"auto"}
+              coverflowEffect={{
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+              }}
+              onSwiper={(swiper) => console.log(swiper)}
+              modules={[EffectCoverflow, Pagination]}
+              className="mySwiper"
+            >
+              {closet.map((a, i) => {
+                return (
+                  <SwiperSlide>
+                    <SlideButton
+                      onClick={() => {
+                        setClosetId(closet[i].closet_id);
+                        console.log(closetId);
+                      }}
+                    >
+                      <img src={sortclothes[i]} />
+                    </SlideButton>
+                    <SwiperText>{closet[i].name}</SwiperText>
+                  </SwiperSlide>
+                );
+              })}
+
+              <SwiperSlide>
+                <SlideButton2
+                  onClick={() => {
+                    navigate("/addcloset");
+                  }}
+                >
+                  <ClosetIcon>
+                    <img src={add_closet} />
+                  </ClosetIcon>
+                  <BtnText>옷장 추가 하기</BtnText>
+                </SlideButton2>
+              </SwiperSlide>
+              {/* </SliderBorder> */}
+            </Swiper>
+
+            <SelectBtnContainer>
+              <SelectBtn
+                onClick={() => {
+                  navigate("/closet");
+                }}
+              >
+                <SelectColor1 />
+                <SelectText>옷장</SelectText>
+              </SelectBtn>
+              <img src={Bar} />
+              <SelectBtn onClick={GoCody}>
+                <SelectColor2 />
+                <SelectText>코디</SelectText>
+              </SelectBtn>
+            </SelectBtnContainer>
+          </>
+          <Category>
+            {clothes.map(function (a, i) {
+              return (
+                <ClothesBtn>
+                  <img src={clothes[i]} />
+                  <ClothesText>{cltext[i]}</ClothesText>
+                </ClothesBtn>
+              );
+            })}
+          </Category>
+          <SortClothesContainer>
+            {/* {closet[0].clothings.map(function (a, i) {
+              return (
+                <SortClothes>
+                  <ClothesImg src={closet[0].clothings[i].img} />
+                </SortClothes>
+              );
+            })} */}
+          </SortClothesContainer>
+
+          <AddClothesContainer>
+            <AddClothes
+              onClick={() => navigate("/closet/add", { state: { closetId } })}
+            >
+              <img src={camera} />
+            </AddClothes>
+          </AddClothesContainer>
+          <FooterBar />
         </div>
-      </TopNav>
-
-      <>
-        {/* <Carousel sortclothes={sortclothes} /> */}
-        <Swiper
-          effect={"coverflow"}
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={"auto"}
-          coverflowEffect={{
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-          onSwiper={(swiper) => console.log(swiper)}
-          // pagination={true}
-          modules={[EffectCoverflow, Pagination]}
-          className="mySwiper"
-        >
-          <SwiperSlide>
-            <SlideButton
-              onClick={() => {
-                setClosetId(1);
-                console.log(closetId);
-              }}
-            >
-              <img src={sortclothes[0]} />
-            </SlideButton>
-            <SwiperText>여름 데일리</SwiperText>
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideButton>
-              <img src={sortclothes[1]} />
-            </SlideButton>
-            <SwiperText>가을 데일리</SwiperText>
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideButton>
-              <img src={sortclothes[2]} />
-            </SlideButton>
-            <SwiperText>자주 입는 옷</SwiperText>
-          </SwiperSlide>
-
-          {/* <SliderBorder> */}
-          <SwiperSlide>
-            <SlideButton2
-              onClick={() => {
-                navigate("/addcloset");
-              }}
-            >
-              <ClosetIcon>
-                <img src={add_closet} />
-              </ClosetIcon>
-              <BtnText>옷장 추가 하기</BtnText>
-            </SlideButton2>
-          </SwiperSlide>
-          {/* </SliderBorder> */}
-        </Swiper>
-
-        <SelectBtnContainer>
-          <SelectBtn
-            onClick={() => {
-              navigate("/closet");
-            }}
-          >
-            <SelectColor1 />
-            <SelectText>옷장</SelectText>
-          </SelectBtn>
-          <img src={Bar} />
-          <SelectBtn onClick={GoCody}>
-            <SelectColor2 />
-            <SelectText>코디</SelectText>
-          </SelectBtn>
-        </SelectBtnContainer>
-      </>
-
-      <Category>
-        {clothes.map(function (a, i) {
-          return (
-            <ClothesBtn>
-              <img src={clothes[i]} />
-              <ClothesText>{cltext[i]}</ClothesText>
-            </ClothesBtn>
-          );
-        })}
-      </Category>
-
-      <SortClothesContainer>
-        {sortclothes.map(function (a, i) {
-          return (
-            <SortClothes>
-              <ClothesImg src={sortclothes[i]} />
-            </SortClothes>
-          );
-        })}
-      </SortClothesContainer>
-
-      <AddClothesContainer>
-        <AddClothes onClick={() => navigate("/closet/add")}>
-          <img src={camera} />
-        </AddClothes>
-      </AddClothesContainer>
-      <FooterBar />
-    </div>
+      )}
+    </>
   );
 }
 
