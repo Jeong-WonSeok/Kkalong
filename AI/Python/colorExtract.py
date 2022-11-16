@@ -71,8 +71,7 @@ def image_preprocess(target_item):
             min_idx = idx
         idx += 1
     image.close()
-    os.remove('image.png')
-    # os.remove('colorExtract.png')
+    os.remove('image.png');
     return color_name[min_idx]
 
 

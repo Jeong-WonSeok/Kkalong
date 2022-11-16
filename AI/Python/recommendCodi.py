@@ -151,29 +151,70 @@ male_bottom = [2]
 female_top = [1, 4, 5]
 female_bottom = [2, 3]
 
+top_spring = [set(top_12_16) + set(top_17_19) + set(top_20_22)]
+pants_spring = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
+onepiece_spring = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
+skirt_spring = [set(skirt_12_16) + set(skirt_17_19) + set(skirt_20_22)]
+outer_spring = [set(outer_12_16) + set(outer_17_19) + set(outer_20_22)]
+hat_spring = [set(hat_12_16) + set(hat_17_19) + set(hat_20_22)]
+shoes_spring = [set(shoes_12_16) + set(shoes_17_19) + set(shoes_20_22)]
 
-# def set_personal_color(user_personal_color):
-#     personal_color = ["검정색", "흰색", "회색", "라이트 그레이", "다크 그레이",
-#                       "아이보리", "네이비", "데님", "연청", "중청", "진청", "흑청"]  # 무채색은 필수로 넣음
-#
-#     if user_personal_color == "spring":
-#         personal_color.extend(["라즈베리", "페일 핑크", "코랄", "노란색", "머스타드", "금색",
-#                                "라이트 그린", "민트", "올리브 그린", "네온 블루", "라벤더", "갈색", "로즈 골드",
-#                                "레드 브라운", "카키 베이지", "카멜", "샌드", "베이지색"])
-#     elif user_personal_color == "summer":
-#         personal_color.extend(["라이트 핑크", "피치", "라이트 옐로우", "네온 그린", "민트",
-#                                "스카이 블루", "라벤더", "베이지색"])
-#     elif user_personal_color == "fall":
-#         personal_color.extend(["딥레드", "오렌지 핑크", "카키", "다크 그린", "자주",
-#                                "보라색", "다크 바이올렛", "버건디", "갈색", "로즈 골드", "레드 브라운", "카키 베이지",
-#                                "카멜"])
-#     else:
-#         personal_color.extend(["은색", "빨간색", "네온 핑크", "분홍색", "라이트 오렌지",
-#                                "네온 오렌지", "주황색", "녹색", "네온 블루", "파란색", "샌드"])
-#
-#     return personal_color
+top_summer = [set(top_23_26) + set(top_27)]
+pants_summer = [set(pants_23_26) + set(pants_27)]
+onepiece_summer = [set(onepiece_23_26) + set(onepiece_27)]
+skirt_summer = [set(skirt_23_26) + set(skirt_27)]
+outer_summer = [set(outer_23_26) + set(outer_27)]
+hat_suumer = [set(outer_23_26) + set(outer_27)]
+shoes_summer = [set(shoes_23_26) + set(shoes_27)]
+
+top_fall = [set(top_12_16) + set(top_17_19) + set(top_20_22)]
+pants_fall = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
+onepiece_fall = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
+skirt_fall = [set(skirt_12_16) + set(skirt_17_19) + set(skirt_20_22)]
+outer_fall = [set(outer_12_16) + set(outer_17_19) + set(outer_20_22)]
+hat_fall = [set(hat_12_16) + set(hat_17_19) + set(hat_20_22)]
+shoes_fall = [set(shoes_12_16) + set(shoes_17_19) + set(shoes_20_22)]
+
+top_winter = [set(top_6_11) + set(top_5)]
+pants_winter = [set(pants_6_11) + set(pants_5)]
+onepiece_winter = [set(onepiece_6_11) + set(onepiece_5)]
+skirt_winter = [set(skirt_6_11) + set(skirt_5)]
+outer_winter = [set(outer_6_11) + set(outer_5)]
+hat_winter = [set(hat_6_11) + set(hat_5)]
+shoes_winter = [set(shoes_6_11) + set(shoes_5)]
+
+
+def set_personal_color(user_personal_color):
+    personal_color = ["검정색", "흰색", "회색", "라이트 그레이", "다크 그레이",
+                        "아이보리", "네이비", "데님", "연청", "중청", "진청", "흑청"]  # 무채색은 필수로 넣음
+
+    if user_personal_color == "spring":
+        personal_color.extend(["라즈베리", "페일 핑크", "코랄", "노란색", "머스타드", "금색",
+                                "라이트 그린", "민트", "올리브 그린", "네온 블루", "라벤더", "갈색", "로즈 골드",
+                                "레드 브라운", "카키 베이지", "카멜", "샌드", "베이지색"])
+    elif user_personal_color == "summer":
+        personal_color.extend(["라이트 핑크", "피치", "라이트 옐로우", "네온 그린", "민트",
+                                "스카이 블루", "라벤더", "베이지색"])
+    elif user_personal_color == "fall":
+        personal_color.extend(["딥레드", "오렌지 핑크", "카키", "다크 그린", "자주",
+                                "보라색", "다크 바이올렛", "버건디", "갈색", "로즈 골드", "레드 브라운", "카키 베이지",
+                                "카멜"])
+    else:
+        personal_color.extend(["은색", "빨간색", "네온 핑크", "분홍색", "라이트 오렌지",
+                                "네온 오렌지", "주황색", "녹색", "네온 블루", "파란색", "샌드"])
+
+    return personal_color
 
 import random
+import pymysql
+import pandas as pd
+from sqlalchemy import create_engine
+
+def importDB():
+    engine = create_engine('mysql://ssafy:ssafy@localhost/kklaong', convert_unicode=True)
+    conn = engine.connect()
+    data = pd.read_sql_table('clothing', conn)
+    data.head()
 
 
 # 날씨 기반 추천
@@ -213,7 +254,58 @@ def mainChoice(gender, weather):
 
     return {"top": top, "bottom": bottom, "outer": outer, "shoes": 6, "bag": bag, "hat": hat}
 
-def weatherRecommend(gender, weather):
+def weatherRecommend(cody, season):
+
+    if season == 'spring':
+        if cody['top'] == 1:
+            top = top_spring
+        elif cody['top'] == 4:
+            top = onepiece_spring
+
+        if cody['bottom'] == 2:
+            bottom = pants_spring
+        elif cody['bottom'] == 3:
+            bottom = skirt_spring
+        else:
+            bottom = []
+
+
+    elif season == 'summer':
+        if cody['top'] == 1:
+            top = top_summer
+        elif cody['top'] == 4:
+            top = onepiece_summer
+
+        if cody['bottom'] == 2:
+            bottom = pants_summer
+        elif cody['bottom'] == 3:
+            bottom = skirt_summer
+        else:
+            bottom = []
+    elif season == 'fall':
+        if cody['top'] == 1:
+            top = top_fall
+        elif cody['top'] == 4:
+            top = onepiece_fall
+
+        if cody['bottom'] == 2:
+            bottom = pants_fall
+        elif cody['bottom'] == 3:
+            bottom = skirt_fall
+        else:
+            bottom = []
+    else:
+        if cody['top'] == 1:
+            top = top_winter
+        elif cody['top'] == 4:
+            top = onepiece_winter
+
+        if cody['bottom'] == 2:
+            bottom = pants_winter
+        elif cody['bottom'] == 3:
+            bottom = skirt_winter
+        else :
+            bottom = []
     return "a"
 
 def weatherRecommend(gender, weather, temp):
@@ -345,12 +437,20 @@ def weatherRecommend(gender, weather, temp):
         if col.__contains__(color["bottom"]):
             outer_color.append((col[1]))
     color["outer"] = random.choice(outer_color)
-
     # 모자 색 지정
 
-    return "a"
-
-def personalRecommend(gender, main, season ,personal):
+    return
+def personalRecommend(gender, weather, season ,personal_color):
+    personal = set_personal_color(personal_color)
+    select_color = random.choice(personal)
+    for top in color_top:
+        if top.__contains__(select_color):
+            top_color = top
+            break
+    top_clothes = setTopByGender(gender)
+    bottom_clothes = setBottomByGender(gender, top_clothes)
+    cody = mainChoice(gender, weather)
+    cody_sub = {1: top_clothes, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
 
     return "b"
 
