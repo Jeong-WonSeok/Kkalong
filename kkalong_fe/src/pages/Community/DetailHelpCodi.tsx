@@ -17,13 +17,14 @@ import Closet from '../../assets/icon/Footer/select_closet.png'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
 import { UserType } from '../MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export interface commentType {
   comment_id: number,
   user: {
     user_id: number,
     nickname: string,
-    profile_img: string,
+    profile_image: string,
     email: string,
   },
   content: string,
@@ -42,18 +43,17 @@ export interface ArticleType extends HelpCodiArticle{
 export default function DetailHelpCodi() {
   const navigate = useNavigate()
   const params = useParams()
+  const { User } = useAppSelector(state=> state.User)
   const [IsMenu, setIsMenu] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
   const [Article, setArticle] = useState<ArticleType>()
-  const [User, setUser] = useState<UserType>()
 
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
       console.log(res.data)
       setArticle(res.data)
-      setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     }
 
     start()
@@ -105,7 +105,7 @@ export default function DetailHelpCodi() {
 
   const ShowCloset = () => {
     // 작성자의 코디 페이지로 이동
-    navigate(`closet/${Article?.Help.user.user_id}`)
+    navigate(`/closet/${Article?.Help.user.user_id}`)
   }
 
 
@@ -114,7 +114,7 @@ export default function DetailHelpCodi() {
       <TopNav type={''}>
         <MenuImg src={BackArrow} onClick={()=>navigate('/community/HelpCodi')}/>
         <NavText>도와주세요 패알못😂</NavText>
-        {User?.user_id === Article?.Help.user.user_id && <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/>}
+        {User?.user_id === Article?.Help.user.user_id ? <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
         
       </TopNav>
 
@@ -132,7 +132,7 @@ export default function DetailHelpCodi() {
           {!!!Article?.Help?.open &&<CodiImg src={Article?.Help?.help_img}/>}
           <ProfileContainer>
             <div style={{display: 'flex' ,flexDirection: 'row'}}>
-              <Profile Image={Article?.Help?.user.profile_img ? Article?.Help?.user.profile_img : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
+              <Profile Image={Article?.Help?.user.profile_image ? Article?.Help?.user.profile_image : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
               <ProfileName>{Article?.Help?.user.nickname}</ProfileName>
             </div>
             {Article?.Help?.open && <ClosetButton onClick={ShowCloset}>
