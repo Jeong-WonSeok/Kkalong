@@ -83,7 +83,7 @@ export default function AddBestDress() {
     result.get('post_img')
     // FormData의 value 확인
     if (params.BestDressId) {
-      await axios.put(requsests.detailBestDress + params.Id, result,{headers: {'Content-Type': 'multipart/form-data'}})
+      await axios.put(requsests.detailBestDress + params.BestDressId, result,{headers: {'Content-Type': 'multipart/form-data'}})
       navigate(`/community/BestDress/${params.Id}`)
     } else {
       await axios.post(requsests.bestDress, result, {headers: {'Content-Type': 'multipart/form-data'}})

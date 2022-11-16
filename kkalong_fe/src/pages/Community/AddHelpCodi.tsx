@@ -13,7 +13,7 @@ import { CodiBackground, SelectContainer, ImgContainer,SelectImg, SelectSpan } f
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
-import { UserType } from '../MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 
 interface SendType {
@@ -34,6 +34,7 @@ interface CodyType {
 export default function AddHelpCodi() {
   const params = useParams()
   const navigate = useNavigate()
+  const { User } = useAppSelector(state => state.User)
   const [SendData, setSendData]= useState<SendType>()
   const [CodyList ,setCodyList] = useState(Array<CodyType>)
   const [IsSelectCody, setIsSelectCody] = useState(false)
@@ -77,8 +78,7 @@ export default function AddHelpCodi() {
 
   // 코디 선택하는 로직, 옷장 완성되고 나서 진행
   const SelectCody = async (e:any) => {
-    const user = JSON.parse(localStorage.getItem('userProfile') as string) as UserType
-    const res = await axios.get(requests.closet + user.user_id)
+    const res = await axios.get(requests.closet + User.user_id)
     if (!res.data.closets.length) {
       setCodyList([])
     } else if (!res.data.closets[0].codies.length) {
