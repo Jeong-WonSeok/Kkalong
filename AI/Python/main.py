@@ -6,7 +6,7 @@ import pyrebase
 import removeBg
 import colorExtract
 sys.path.append("personalColor/src")
-import personal
+import ShowMeTheColor
 
 app = FastAPI()
 
@@ -14,8 +14,8 @@ config = {
     "apiKey": "AIzaSyA-HIC901h-tMYrEOiMgv4fKau6bkoCQjs",
     "authDomain": "kkalong-b4cec.firebaseapp.com",
     "projectId": "kkalong-b4cec",
-    "databaseURL": "gs://kkalong-b4cec.appspot.com",
     "storageBucket": "kkalong-b4cec.appspot.com",
+    "databaseURL": "gs://kkalong-b4cec.appspot.com",
     "messagingSenderId": "926796121811",
     "appId": "1:926796121811:web:7d5ef2a7e8e5f0c3f73626",
     "measurementId": "G-TZ3DZ6YPBC",
