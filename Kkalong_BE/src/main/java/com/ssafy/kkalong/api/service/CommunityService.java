@@ -54,12 +54,13 @@ public class CommunityService {
         return postLikeRepository.existsByPostAndUser(post, user);
     }
 
+
     // 도전 베스트드레서 등록
-    public Post insertBestDress(BestDressRequestDto bestReq, User userInfo){
+    public Post insertBestDress(String post_img, String content, User userInfo){
         Post post = Post.builder()
                 //이미지 경로로 바꿔줄 예정
-                .img(bestReq.getPost_img().getOriginalFilename()) 
-                .content(bestReq.getContent())
+                .img(post_img)
+                .content(content)
                 .user(userInfo)
                 .build();
         postRepository.save(post);
@@ -270,4 +271,14 @@ public class CommunityService {
     public String selectReplyCreateAt(int reply_id){
         return "" + replyRepository.findById(reply_id).getCreatedAt();
     }
+
+    public int findNextPostId() {
+        int count = postRepository.countBy();
+        if(count==0){
+            return 1;
+        } else{
+            return postRepository.findMaxPostId()+1;
+        }
+    }
+
 }

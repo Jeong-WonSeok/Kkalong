@@ -1,16 +1,11 @@
-"""
- - fast api 설치
-pip install fastapi
-pip install uvicorn
-
-서버 실행 명령어 ->
-uvicorn main:app --reload
-"""
-
 from typing import Optional
 from fastapi import FastAPI
-# import pyrebase
+import os
+import sys
+import pyrebase
 import removeBg
+import colorExtract
+sys.path.append("personalColor/src")
 import ShowMeTheColor
 
 app = FastAPI()
@@ -23,31 +18,35 @@ config = {
     "serviceAccount": "serviceAccountKey.json",
     "messagingSenderId": "926796121811",
     "appId": "1:926796121811:web:7d5ef2a7e8e5f0c3f73626",
-    "measurementId": "G-TZ3DZ6YPBC"
+    "measurementId": "G-TZ3DZ6YPBC",
+    "serviceAccount": "serviceAccountKey.json"
 }
 
-# firebase_storage = pyrebase.initialize_app(config)
-# storage = firebase_storage.storage()
+firebase_storage = pyrebase.initialize_app(config)
+storage = firebase_storage.storage()
 
-@app.get("/api/remove_clothing_bg/{user_id}/{extension}")
-def remove_clothing_background(user_id: Optional[str] =None, extension: Optional[str] =None):
-    # storage.child("3.png").put("please.png")
-    print(user_id)
-    result = removeBg.remove_clothing_background(user_id, extension)
+@app.get("/api/remove_clothing_bg/{clothing_id}")
+def remove_clothing_background(clothing_id: Optional[str]=None):
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
+    print("finished downloading file")
+    result = removeBg.remove_clothing_background(clothing_id)
+    print("finished removing background")
+    storage.child(result).put(result)
+    print("finished uploading file")
+    os.remove('clothing_with_background.png')
+    os.remove(result)
+    print("finished deleting file")
+    return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
+
+@app.get("/api/clothing_color/{clothing_id}")
+def extract_clothing_color(clothing_id: Optional[str] =None):
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_extract_color.png")
+    result = colorExtract.image_preprocess("clothing_extract_color.png")
+    os.remove('clothing_extract_color.png')
     return str(result)
 
-@app.get("api/personal_color/{img}")
-def personal_color_info(img: Optional[str] = None):
-    result = ShowMeTheColor.personal_color(img)
+@app.get("/api/personal_color/{user_id}")
+def personal_color_info(user_id: Optional[str] = None):
+    storage.child("").download("face_"+user_id, "face_img.png")
+    result = personal.personalColor("face_img.png")
     return str(result)
-
-# @app.get("/api/keyword/{keyword}")
-# def read_keyword(keyword: Optional[str] = None):
-#     text = spellCheck.spellCehck_Busan(keyword)
-#     keyword = spellCheck.keyword_analysis(text)
-#     result = " ".join(keyword)
-#
-#     return str(result)
-
-
-

@@ -75,7 +75,7 @@ public final class JwtProvider {
         claims.put("nickname", user.getNickname());
         claims.put("provider", user.getProvider());
         claims.put("roles", authentication.getAuthorities());
-        claims.put("profileImgUrl", user.getImg());
+        claims.put("profileImgUrl", user.getProfile_img());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
@@ -96,7 +96,7 @@ public final class JwtProvider {
         claims.put("nickname", user.getNickname());
         claims.put("provider", user.getProvider());
         claims.put("roles", user.getRole());
-        claims.put("img", user.getImg());
+        claims.put("img", user.getProfile_img());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)

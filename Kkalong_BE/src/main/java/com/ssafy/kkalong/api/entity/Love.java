@@ -1,19 +1,21 @@
 package com.ssafy.kkalong.api.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Follow {
+public class Love {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="follow_id", nullable = false)
+    @Column(name="love_id", nullable = false)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

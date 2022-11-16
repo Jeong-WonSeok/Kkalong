@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ProfileInfoDto {
     private int user_id;
     private String nickname;
-    private String img;
-    private boolean lover;
+    private String profile_img;
+    private boolean isLoving;
+    private int lover_id;
 }

@@ -6,18 +6,13 @@ import com.ssafy.kkalong.api.entity.Cody;
 import com.ssafy.kkalong.api.entity.CodyClothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
-import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +27,6 @@ public class ClosetController {
 
     private final ClosetService closetService;
     private final UserService userService;
-    private final FirebaseService firebaseService;
-
 
     @GetMapping("/all/{user_id}")
     public ResponseEntity<?> getAllClosetByUserId(@PathVariable int user_id){
@@ -62,13 +55,16 @@ public class ClosetController {
     }
 
     @PostMapping("/removeBg")
-    public ResponseEntity<?> removeClothingImgBackground(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile img) throws Exception {
+    public ResponseEntity<?> removeClothingImgBackground(@RequestBody MultipartFile img) {
         Map<String, Object> result = new HashMap<>();
-        List<String> colors = new ArrayList<>();
-        colors.add("파랑색");
-        colors.add("초록색");
-        result.put("img", closetService.removeClothingImgBackground(userInfo.getId(), img));
-        result.put("color", colors);
+        int next_clothing_id = closetService.findNextClothingId();
+        System.out.println(next_clothing_id);
+        String img_url = closetService.removeClothingImgBackground(next_clothing_id, img);
+        img_url = img_url.substring(1, img_url.length()-1);
+        String color = closetService.getColorInfos(next_clothing_id);
+        color = color.substring(1, color.length()-1);
+        result.put("img", img_url);
+        result.put("color", color);
         return ResponseEntity.ok().body(result);
     }
 
