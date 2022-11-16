@@ -15,7 +15,7 @@ config = {
     "authDomain": "kkalong-b4cec.firebaseapp.com",
     "projectId": "kkalong-b4cec",
     "storageBucket": "kkalong-b4cec.appspot.com",
-    "serviceAccount": "serviceAccountKey.json",
+    "databaseURL": "gs://kkalong-b4cec.appspot.com",
     "messagingSenderId": "926796121811",
     "appId": "1:926796121811:web:7d5ef2a7e8e5f0c3f73626",
     "measurementId": "G-TZ3DZ6YPBC",
