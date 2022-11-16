@@ -9,7 +9,7 @@ const requests = {
   signupNext: "/user/signupNext",
 
   // 마이페이지
-  myWrite: "/user/write",
+  myWrite: "/user/write/",
   myFriend: "/user/friends",
   searchFriend: "/user/friend/", // 이건 어떻게 구현될지 모르겠음
   updateProfile: "/user/profile/update",

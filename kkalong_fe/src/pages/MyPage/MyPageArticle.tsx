@@ -20,7 +20,7 @@ import { useAppSelector } from "../../hooks/reduxHook";
 
 export default function MyPageArticle() {
   const params = useParams()
-  const { User } = useAppSelector(state => state.User)
+  const { User, otherUser } = useAppSelector(state => state.User)
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
@@ -29,19 +29,15 @@ export default function MyPageArticle() {
   useEffect(() => {
     const start = async() => {
       if (params.userId) {
-        // 정보 요청이 안됨...
-        const Input = {value: Number(params.userId)}
-        const res = await axios.get(requests.otherProfile, {params: Input})
-        
         // 글쓴이의 글 목록 불러오기
-        const wirte = await axios.get(requests.myWrite, {params: {value: User!.user_id}})
-        setBestArticles(wirte.data.Best)
-        setHelpArticles(wirte.data.Help)
+        const wirte = await axios.get(requests.myWrite + otherUser.user_id)
+        setBestArticles(wirte.data.Bests)
+        setHelpArticles(wirte.data.Helps)
         
       } else {
-        const res = await axios.get(requests.myWrite)
-        setBestArticles(res.data.Best)
-        setHelpArticles(res.data.Help)
+        const res = await axios.get(requests.myWrite + User.user_id)
+        setBestArticles(res.data.Bests)
+        setHelpArticles(res.data.Helps)
       }
     }
 
