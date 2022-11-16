@@ -74,7 +74,7 @@ export default function FooterBar() {
         추천
       </FooterImgContainer>
       <MirrorContainer SelectCategory={SelectCategory}>
-        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting/VirtualBrandChoice/")} />
+        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting")} />
         가상피팅
       </MirrorContainer>
       <FooterImgContainer>

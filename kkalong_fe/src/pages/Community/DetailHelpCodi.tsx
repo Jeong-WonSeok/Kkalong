@@ -23,7 +23,7 @@ export interface commentType {
   user: {
     user_id: number,
     nickname: string,
-    profile_img: string,
+    profile_image: string,
     email: string,
   },
   content: string,
@@ -132,7 +132,7 @@ export default function DetailHelpCodi() {
           {!!!Article?.Help?.open &&<CodiImg src={Article?.Help?.help_img}/>}
           <ProfileContainer>
             <div style={{display: 'flex' ,flexDirection: 'row'}}>
-              <Profile Image={Article?.Help?.user.profile_img ? Article?.Help?.user.profile_img : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
+              <Profile Image={Article?.Help?.user.profile_image ? Article?.Help?.user.profile_image : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
               <ProfileName>{Article?.Help?.user.nickname}</ProfileName>
             </div>
             {Article?.Help?.open && <ClosetButton onClick={ShowCloset}>

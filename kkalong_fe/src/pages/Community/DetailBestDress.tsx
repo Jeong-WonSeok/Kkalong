@@ -146,7 +146,7 @@ export default function DetailBestDress() {
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
             {Article?.user && 
             <ProfileContainer>
-              <Profile Image={Article!.user.profile_img} Size={30} id={Article!.user.user_id}/>
+              <Profile Image={Article!.user.profile_image} Size={30} id={Article!.user.user_id}/>
               <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>}
             <LikeContainer>
@@ -245,6 +245,7 @@ const Likeimg = styled.img<LikeType>`
   width: 20px;
   height: 20px;
   margin-right: 3px;
+  z-index: -1;
   animation: ${(props) => props.Like && css`${LikeJello} 0.9s both`};
 `
 
@@ -262,5 +263,5 @@ export const LineDiv = styled.div`
   max-width: 360px;
   margin: 10px 0; 
   height: 2px;
-  z-index: 3;
+  z-index: -1;
 `

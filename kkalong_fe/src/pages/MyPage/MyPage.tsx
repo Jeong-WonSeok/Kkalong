@@ -138,7 +138,7 @@ export default function MyPage() {
       </div>
       }
 
-      {IsLover && 
+      {User.loving && User.lover_id === ProfileUser?.user_id && 
         <MyPageUnderButton onClick={()=>navigate(`/closet/${ProfileUser?.user_id}`)}>
         <MyPageIconTextDiv>
           <MyPageButtonIcon src={ClosetIcon}/>
@@ -253,6 +253,8 @@ const MyPageIconTextDiv = styled.div`
 
 //버튼 아이콘
 const MyPageButtonIcon = styled.img`
+  width: 28px;
+  height: 28px;
 `
 
 //버튼 text

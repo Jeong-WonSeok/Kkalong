@@ -10,6 +10,7 @@ import NoLove from '../../assets/icon/User/NoLove.png'
 import MyLove from '../../assets/icon/User/MyLove.png'
 import RequestLove from '../../assets/icon/User/RequestLove.png'
 import alreadyLike from '../../assets/icon/Community/alreadyLike.png'
+import Lover from '../../assets/icon/MyPage/Lover.png'
 import { useNavigate } from 'react-router-dom';
 
 type loving = {
@@ -25,7 +26,6 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
 
   useEffect(()=> {
     if (Request.length > 0) {
-      console.log(Request)
       setReq(Request)
     }
   }, [])
@@ -35,8 +35,8 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
     dispatch(follow(String(id)))
   }
 
-  const postLove = (id: number) => {
-    dispatch(lover(String(id)))
+  const postLove = (id: number, request:boolean) => {
+    dispatch(lover(String(id), request))
   }
   
   return (
@@ -47,6 +47,7 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
           <FriendDiv key={idx}>
             <FriendProfileDiv>
               <FriendProfileImg src={person.profile_img} onClick={()=>navigate(`/myPage/${person.user_id}`)}></FriendProfileImg>
+              {User.loving && User.lover_id === person.user_id && <LoverDes src={Lover}/>}
               <FriendProfileName>{person?.nickname}</FriendProfileName>
             </FriendProfileDiv>
             <BtnContainer>
@@ -56,8 +57,8 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
                 !request && User?.lover_id === -1 ? NoLove 
                 : request && User?.lover_id === -1 ? RequestLove 
                 : !request && User?.lover_id === person.user_id ? MyLove 
-                : alreadyLike} 
-                onClick={()=>postLove(person?.user_id)}/>}
+                : User?.loving && User?.lover_id === person.user_id ? alreadyLike : ''} 
+                onClick={()=>postLove(person?.user_id, request)}/>}
             </BtnContainer>
           </FriendDiv>  
         )
@@ -81,8 +82,9 @@ const FriendProfileDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+  position: relative;
 `;
+
 //프로필 이미지
 const FriendProfileImg = styled.img`
   border: 1px solid #000000;
@@ -90,6 +92,14 @@ const FriendProfileImg = styled.img`
   width: 50px;
   height: 50px;
 `;
+
+const LoverDes = styled.img`
+  position:absolute;
+  width: 25px;
+  height: 25px;
+  bottom: 0;
+  left: 35px;
+`
 
 //프로필 이름
 const FriendProfileName = styled.text`

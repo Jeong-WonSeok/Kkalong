@@ -31,9 +31,11 @@ export default function CommentMessage({comment, category, creator, CommentsDele
     const data = {content : EditContent}
     if (category === "bestdress"){
       const res= await axios.put(requests.detailBestDress + params.BestDressId + requests.comment + String(idx), data)
+      console.log(res.data)
       CommentsEdit(idx, res.data)
     } else {
       const res = await axios.put(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx), data)
+      console.log(res.data)
       CommentsEdit(idx, res.data)
     }
     setIsEdit(false)
@@ -48,7 +50,7 @@ export default function CommentMessage({comment, category, creator, CommentsDele
     <Container>
       <MessageContextContainer>
         <MessageContainer style={{justifyContent: 'start'}}>
-          <Profile Image={comment.user.profile_img} Size={30} id={comment.user.user_id}/>
+          <Profile Image={comment.user.profile_image} Size={30} id={comment.user.user_id}/>
         </MessageContainer>
         <MessageContainer>
           <NickName>{comment.user.nickname}</NickName>

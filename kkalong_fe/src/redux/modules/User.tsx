@@ -11,6 +11,7 @@ const GET_LOGIN_FAILURE = 'Profile/GET_LOGIN_FAILURE'
 
 const FOLLOW_SUCCESS = 'Profile/FOLLOW_SUCCESS'
 const PROFILE_CHANGE_SUCCESS = 'Profile/PROFILE_CHANGE_SUCCESS'
+const LOVER_ID_SUCCESS = 'Profile/LOVER_ID_SUCCESS'
 const LOVING_SUCCESS = 'Profile/LOVING_SUCCESS'
 
 // 다른유저 정보 조희
@@ -83,10 +84,15 @@ export const follow = (user_id: string) => async (dispatch: Dispatch) => {
     })
 }
 
-export const lover = (user_id: string) => async (dispatch:Dispatch) => {
+export const lover = (user_id: string, req: boolean) => async (dispatch:Dispatch) => {
   await axios.post(requests.loving + user_id)
     .then(res => {
-      dispatch({type: LOVING_SUCCESS, payload: Number(user_id)})
+      if (req) {
+        dispatch({type: LOVING_SUCCESS, payload: res.data.loving[0]})
+      } else {
+        dispatch({type: LOVER_ID_SUCCESS, payload: res.data.loving[0]})
+      }
+      
     })
 }
 
@@ -157,13 +163,25 @@ export default handleActions({
       }
     }
   },
+  // 연애중 설정
   [LOVING_SUCCESS]: (state, {payload}) => {
+    const adjust = payload as unknown as number
     return {
       ...state,
       User: {
         ...state.User,
-        loving: !state.User.loving,
-        lover_id: (!state.User.loving ? payload as unknown as number : -1)
+        loving: true,
+        lover_id: (adjust !== undefined ? adjust : -1)
+      }
+    }
+  },
+  [LOVER_ID_SUCCESS]: (state, {payload}) => {
+    const adjust = payload as unknown as number
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        lover_id: (adjust !== undefined ? adjust : -1)
       }
     }
   }
