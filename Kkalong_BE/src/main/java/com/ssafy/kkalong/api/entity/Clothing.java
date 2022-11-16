@@ -32,18 +32,24 @@ public class Clothing {
 
     private int sub_category;
 
-    private boolean spring;
+    private int spring;
 
-    private boolean summer;
+    private int summer;
 
-    private boolean fall;
+    private int fall;
 
-    private boolean winter;
+    private int winter;
 
     private String gender;
 
     private String url;
-    
+
+    private String brand_name;
+
+    private String style;
+
+    private String season;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
