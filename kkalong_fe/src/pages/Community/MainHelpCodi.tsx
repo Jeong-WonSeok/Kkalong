@@ -13,6 +13,7 @@ import { PlusImg } from './MainBestDress'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddArticle from '../../assets/icon/Community/addArticle.png'
+import { NoData } from '../VirturalFitting/VirtualBrandChoice'
 
 type ButtonType = {
   tap?: boolean;
@@ -22,18 +23,23 @@ export default function MainHelpCodi() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { HelpCody } = useAppSelector(store => store.HelpCodi)
-  const [ HelpArticles, setHelpArticles ] = useState(Array<HelpCodiArticle>)
+  const { User } = useAppSelector(state => state.User)
+  const [ HelpCodies, setHelpCodi ] = useState(Array<HelpCodiArticle>)
+  const [ HelpCloset, setHelpCloset] = useState(Array<HelpCodiArticle>)
+  const [ FriendHelp, setFriendHelp ] = useState(Array<HelpCodiArticle>)
   const [ IsCodi, setIsCodi] = useState(true)
   const [ IsCloset, setIsCloset] = useState(false)
 
   useEffect(() => {
-    const newData: Array<HelpCodiArticle> = []
-    HelpCody.map(cody => {
-      const newObject = {...cody, user: {profile_img: '', nickname: '', user_id: 1}}
-      newData.push(newObject)
-      return
-    })
-    setHelpArticles(newData)    
+    setHelpCloset(HelpCody.filter(Help => {
+      return Help.Help.open
+    }))
+    setHelpCodi(HelpCody.filter(Help => {
+      return !Help.Help.open
+    }))
+    setFriendHelp(HelpCody.filter(Friend => {
+      return User.followings.includes(Friend.Help.user.user_id)
+    }))
   }, [])
   
   return (
@@ -46,7 +52,7 @@ export default function MainHelpCodi() {
 
       <CategoryText style={{marginLeft: '10px'}}>친구가 곤란해하고 있어요</CategoryText>
       <FriendContainer>
-        {HelpArticles.length > 0 && HelpArticles.map((HelpArticle, idx) => {
+        {FriendHelp.length > 0 && FriendHelp.map((HelpArticle, idx) => {
             return (
               <TitleDiv key={idx}>
                 Q. {HelpArticle.Help.title.length > 25 ? HelpArticle.Help.title.slice(0,23) + '...' : HelpArticle.Help.title}
@@ -61,29 +67,32 @@ export default function MainHelpCodi() {
         <TapButton tap={IsCloset} onClick={()=> {setIsCodi(false); setIsCloset(true)}}>옷장</TapButton>
       </ButtonContainer>
       
-      {IsCodi && HelpArticles.length > 0 && <CodiContainer>
-        {HelpArticles.map((HelpArticle, idx) => {
-          if (HelpArticle.Help.help_img) {
+      {IsCodi && HelpCodies.length > 0 && <CodiContainer>
+        {HelpCodies.map((Help, idx) => {
+          if (Help.Help.help_img) {
             return (
               <div key={idx}>
-                <HelpCodi article={HelpArticle}/> 
+                <HelpCodi article={Help}/> 
               </div> 
             )
           }
         })}
       </CodiContainer>}
+      {IsCodi && HelpCodies.length <= 0 && <NoData>데이터가 없어요</NoData>}
 
-      {IsCloset && HelpArticles.length > 0 && <ClosetContainer>
-          {HelpArticles.map((HelpArticle, idx) => {
-            if(!HelpArticle.Help.help_img) {
+      {IsCloset && HelpCloset.length > 0 && <ClosetContainer>
+          {HelpCloset.map((Help, idx) => {
+            if(!Help.Help.help_img) {
               return (
                 <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
-                  Q. {HelpArticle.Help.title.length > 25 ? HelpArticle.Help.title.slice(0,23) + '...' : HelpArticle.Help.title}
+                  Q. {Help.Help.title.length > 25 ? Help.Help.title.slice(0,23) + '...' : Help.Help.title}
                 </TitleDiv>
                 )
             }
           })}
         </ClosetContainer>}
+
+      {IsCloset && HelpCloset.length <= 0 && <NoData>데이터가 없어요</NoData>}
         
         <PlusDiv>
           <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  

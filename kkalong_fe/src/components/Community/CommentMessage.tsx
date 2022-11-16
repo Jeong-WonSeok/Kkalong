@@ -11,9 +11,10 @@ import Edit from '../../assets/icon/Community/Edit.png'
 import Trash from '../../assets/icon/Community/Trash.png'
 import { useParams } from 'react-router-dom'
 import { UserType } from '../../pages/MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export default function CommentMessage({comment, category, creator, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, creator:number, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
-  const currentUser = JSON.parse(localStorage?.getItem('userProfile')as string) as UserType
+  const { User } = useAppSelector(state => state.User)
   const [EditContent, setEditContent] = useState(comment.content)
   const [IsEdit, setIsEdit] = useState(false)
   const params = useParams()
@@ -31,9 +32,11 @@ export default function CommentMessage({comment, category, creator, CommentsDele
     const data = {content : EditContent}
     if (category === "bestdress"){
       const res= await axios.put(requests.detailBestDress + params.BestDressId + requests.comment + String(idx), data)
+      console.log(res.data)
       CommentsEdit(idx, res.data)
     } else {
       const res = await axios.put(requests.detailHelpCodi + params.HelpCodiId + requests.comment + String(idx), data)
+      console.log(res.data)
       CommentsEdit(idx, res.data)
     }
     setIsEdit(false)
@@ -48,7 +51,7 @@ export default function CommentMessage({comment, category, creator, CommentsDele
     <Container>
       <MessageContextContainer>
         <MessageContainer style={{justifyContent: 'start'}}>
-          <Profile Image={comment.user.profile_img} Size={30} id={comment.user.user_id}/>
+          <Profile Image={comment.user.profile_image} Size={30} id={comment.user.user_id}/>
         </MessageContainer>
         <MessageContainer>
           <NickName>{comment.user.nickname}</NickName>
@@ -60,7 +63,7 @@ export default function CommentMessage({comment, category, creator, CommentsDele
                 {comment.content}
               </Message>
               <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
-                {category === "closet" && comment?.cody.cody_id && creator === currentUser.user_id ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
+                {category === "closet" && comment?.cody.cody_id && creator === User.user_id ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
                 <Date>
                   {comment.createAt.slice(11,16)}
                 </Date>
@@ -79,7 +82,7 @@ export default function CommentMessage({comment, category, creator, CommentsDele
         </MessageContainer>
       </MessageContextContainer>
       {/* 추후 작성한 유저만 수정 삭제 할 수 있도록 */}
-      {comment.user.user_id === currentUser.user_id && 
+      {comment.user.user_id === User.user_id && 
       <MessageContextContainer>
         <UpdateImg src={Edit} onClick={()=> setIsEdit(true)}/>
         <UpdateImg src={Trash} onClick={()=> CommentDelete(comment.comment_id)}/>

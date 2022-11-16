@@ -91,7 +91,7 @@ export default function PlusCodi() {
         <TopNav type={""}>
           <BackBtn
             onClick={() => {
-              navigate("/closet");
+              navigate(-1);
             }}
           >
             <img src={left}></img>

@@ -238,6 +238,17 @@ public class UserService {
                     userRepository.save(receiver);
                     Love newLove = Love.builder().sender(sender).receiver(receiver).build();
                     loveRepository.save(newLove);
+                    //나와 애인에게 왔던 다른 요청들 삭제
+                    List<Love> loveRequestForMe = loveRepository.findAllByReceiver(sender);
+                    for(Love love : loveRequestForMe){
+                        if(love.getSender().getId() == receiver_id) continue;
+                        loveRepository.deleteById(love.getId());
+                    }
+                    List<Love> loveRequestForPartner = loveRepository.findAllByReceiver(receiver);
+                    for(Love love : loveRequestForPartner){
+                        if(love.getSender().getId() == sender_id) continue;
+                        loveRepository.deleteById(love.getId());
+                    }
                 }
             } else{ //상대방 요청 없음
                 if(requestedLove !=null){ //보냈던 내 요청만 취소
