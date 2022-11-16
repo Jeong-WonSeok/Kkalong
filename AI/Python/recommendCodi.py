@@ -43,7 +43,7 @@ outer_navy = ['네이비', '보라색', '데님', '파란색', '중청', '진청
 outer_gray = ['라이트 그레이', '회색', '다크 그레이']
 outer_black = ['블랙', '흑청']
 
-color_top = ["white", "red", "pink", "orange", "yellow", "greene", "blue", "navy", "black", "gray"]
+color_top = [top_white, top_black, top_blue, top_orange, top_pink, top_gray, top_navy, top_green, top_red, top_yellow]
 
 
 top_bottom = [
@@ -71,14 +71,14 @@ bottom_shoes = [
 top_outer = [
     [top_red, outer_brown], [top_red, outer_gray], [top_red, outer_white], [top_red, outer_black],
     [top_white, outer_blue], [top_white, outer_white], [top_white, outer_gray], [top_white, outer_navy], [top_white, outer_brown], [top_white, outer_black],
-    [top_gray, outer_black], [top_gray, outer_white], [top_gray, outer_navy], [top_gray, outer_brown]
+    [top_gray, outer_black], [top_gray, outer_white], [top_gray, outer_navy], [top_gray, outer_brown],
     [top_navy, outer_gray], [top_navy, outer_black], [top_navy, outer_white], [top_navy, outer_navy]
-    [top_yellow,]
-    [top_green]
-    [top_orange]
-    [top_pink]
-    [top_blue]
-    [top_black]
+    # [top_yellow,]
+    # [top_green]
+    # [top_orange]
+    # [top_pink]
+    # [top_blue]
+    # [top_black]
 ]
 # 날씨 매핑
 bag = [701, 702, 703, 704, 705, 706, 707]
@@ -146,42 +146,42 @@ outer_5 = [507, 509, 511]
 hat_5 = [801, 802, 803, 804]
 shoes_5 = [601, 602, 603, 604, 607, 609]
 
-male_top = [1, 5]
+male_top = [1]
 male_bottom = [2]
-female_top = [1, 4, 5]
+female_top = [1, 4]
 female_bottom = [2, 3]
 
-top_spring = [set(top_12_16) + set(top_17_19) + set(top_20_22)]
-pants_spring = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
-onepiece_spring = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
-skirt_spring = [set(skirt_12_16) + set(skirt_17_19) + set(skirt_20_22)]
-outer_spring = [set(outer_12_16) + set(outer_17_19) + set(outer_20_22)]
-hat_spring = [set(hat_12_16) + set(hat_17_19) + set(hat_20_22)]
-shoes_spring = [set(shoes_12_16) + set(shoes_17_19) + set(shoes_20_22)]
+top_spring = list(set(top_12_16) | set(top_17_19) | set(top_20_22))
+pants_spring = list(set(pants_12_16) | set(pants_17_19) | set(pants_20_22))
+onepiece_spring = list(set(pants_12_16) | set(pants_17_19) | set(pants_20_22))
+skirt_spring = list(set(skirt_12_16) | set(skirt_17_19) | set(skirt_20_22))
+outer_spring = list(set(outer_12_16) | set(outer_17_19) | set(outer_20_22))
+hat_spring = list(set(hat_12_16) | set(hat_17_19) | set(hat_20_22))
+shoes_spring = list(set(shoes_12_16) | set(shoes_17_19) | set(shoes_20_22))
 
-top_summer = [set(top_23_26) + set(top_27)]
-pants_summer = [set(pants_23_26) + set(pants_27)]
-onepiece_summer = [set(onepiece_23_26) + set(onepiece_27)]
-skirt_summer = [set(skirt_23_26) + set(skirt_27)]
-outer_summer = [set(outer_23_26) + set(outer_27)]
-hat_suumer = [set(outer_23_26) + set(outer_27)]
-shoes_summer = [set(shoes_23_26) + set(shoes_27)]
+top_summer = list(set(top_23_26) | set(top_27))
+pants_summer = list(set(pants_23_26) | set(pants_27))
+onepiece_summer = list(set(onepiece_23_26) | set(onepiece_27))
+skirt_summer = list(set(skirt_23_26) | set(skirt_27))
+outer_summer = list(set(outer_23_26) | set(outer_27))
+hat_summer = list(set(outer_23_26) | set(outer_27))
+shoes_summer = list(set(shoes_23_26) | set(shoes_27))
 
-top_fall = [set(top_12_16) + set(top_17_19) + set(top_20_22)]
-pants_fall = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
-onepiece_fall = [set(pants_12_16) + set(pants_17_19) + set(pants_20_22)]
-skirt_fall = [set(skirt_12_16) + set(skirt_17_19) + set(skirt_20_22)]
-outer_fall = [set(outer_12_16) + set(outer_17_19) + set(outer_20_22)]
-hat_fall = [set(hat_12_16) + set(hat_17_19) + set(hat_20_22)]
-shoes_fall = [set(shoes_12_16) + set(shoes_17_19) + set(shoes_20_22)]
+top_fall = list(set(top_12_16) | set(top_17_19) | set(top_20_22))
+pants_fall = list(set(pants_12_16) | set(pants_17_19) | set(pants_20_22))
+onepiece_fall = list(set(pants_12_16) | set(pants_17_19) | set(pants_20_22))
+skirt_fall = list(set(skirt_12_16) | set(skirt_17_19) | set(skirt_20_22))
+outer_fall = list(set(outer_12_16) | set(outer_17_19) | set(outer_20_22))
+hat_fall = list(set(hat_12_16) | set(hat_17_19) | set(hat_20_22))
+shoes_fall = list(set(shoes_12_16) | set(shoes_17_19) | set(shoes_20_22))
 
-top_winter = [set(top_6_11) + set(top_5)]
-pants_winter = [set(pants_6_11) + set(pants_5)]
-onepiece_winter = [set(onepiece_6_11) + set(onepiece_5)]
-skirt_winter = [set(skirt_6_11) + set(skirt_5)]
-outer_winter = [set(outer_6_11) + set(outer_5)]
-hat_winter = [set(hat_6_11) + set(hat_5)]
-shoes_winter = [set(shoes_6_11) + set(shoes_5)]
+top_winter = list(set(top_6_11) | set(top_5))
+pants_winter = list(set(pants_6_11) | set(pants_5))
+onepiece_winter = list(set(onepiece_6_11) | set(onepiece_5))
+skirt_winter = list(set(skirt_6_11) | set(skirt_5))
+outer_winter = list(set(outer_6_11) | set(outer_5))
+hat_winter = list(set(hat_6_11) | set(hat_5))
+shoes_winter = list(set(shoes_6_11) | set(shoes_5))
 
 
 def set_personal_color(user_personal_color):
@@ -195,6 +195,7 @@ def set_personal_color(user_personal_color):
     elif user_personal_color == "summer":
         personal_color.extend(["라이트 핑크", "피치", "라이트 옐로우", "네온 그린", "민트",
                                 "스카이 블루", "라벤더", "베이지색"])
+
     elif user_personal_color == "fall":
         personal_color.extend(["딥레드", "오렌지 핑크", "카키", "다크 그린", "자주",
                                 "보라색", "다크 바이올렛", "버건디", "갈색", "로즈 골드", "레드 브라운", "카키 베이지",
@@ -211,50 +212,68 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def importDB():
-    engine = create_engine('mysql://ssafy:ssafy@localhost/kklaong', convert_unicode=True)
-    conn = engine.connect()
-    data = pd.read_sql_table('clothing', conn)
-    data.head()
+    conn = create_engine('mysql+pymysql://ssafy:ssafy@localhost:3306/kkalong')
+    sql = "select * from clothing"
+    result = pd.read_sql_query(sql, conn)
+    return result
 
 
 # 날씨 기반 추천
 # 날씨, 성별, 메인 카테고리를 받아온다.
-def setTopByGender(gender):
+def setTopByGender(gender, df):
     cody = []
     if gender == 'M':
         cody.extend(male_top)
     else:
-        cody.extend(female_top)
-    return cody[random.randrange(1, len(cody) + 1)]
+        for i in female_top:
+            if (df['main_category'] == i).any():
+                cody.append(i)
+    if len(cody) == 2:
+        return cody[random.choices(range(1, len(cody) + 1), weights=[len(df['main_category'] == 1)/len(df['main_category']), len(df['main_category'] == 4)/len(df['main_category'])])[0]]
+    else:
+        return cody[0]
 
-def setBottomByGender(gender, top):
+def setBottomByGender(gender, top, df):
     cody = []
     if gender == 'M':
         cody.extend(male_bottom)
     else:
-        cody.extend(female_bottom)
+        for i in female_bottom:
+            if (df['main_category'] == i).any():
+                cody.append(i)
 
     if top == 4:
         return 0
     else:
-        return cody[random.randrange(1, len(cody) + 1)]
+        if len(cody) == 2:
+            return cody[random.choices(range(1, len(cody) + 1), weights=[len(df['main_category'] == 2)/len(df['main_category']), len(df['main_category'] == 3)/len(df['main_category'])])[0] ]
+        else:
+            return cody[0]
 
-def mainChoice(gender, weather):
+def mainChoice(gender, weather, df):
     # gender 입력받고 날씨 입력받아서 출력
-    top = setTopByGender(gender)
-    bottom = setBottomByGender()
-    bag = random.choice([0, 7])
-    hat = random.choice([0, 8])
-    if weather != 'summer':
+    top = setTopByGender(gender, df)
+    bottom = setBottomByGender(gender, top, df)
+
+    c_bag = random.choices([0, 7], weights=[0.6, 0.4])[0]
+    hat = random.choices([0, 8], weights=[0.8, 0.2])[0]
+
+    if weather == 'summer':
         outer = 0
     elif weather == 'fall' or weather == 'spring':
-        outer = random.choice([0, 5]);
+        outer = random.choices([0, 5], weights=[0.4, 0.6])[0]
     else:
-        outer = 1
+        outer = 5
 
-    return {"top": top, "bottom": bottom, "outer": outer, "shoes": 6, "bag": bag, "hat": hat}
+    return {"top": top, "bottom": bottom, "outer": outer, "shoes": 6, "bag": c_bag, "hat": hat}
 
-def weatherRecommend(cody, season):
+def seasonRecommend(cody, season, df):
+    top_df = set(df[df['main_category'] == 1]['sub_category'])
+    bottom_df = set(df[df['main_category'] == 2]['sub_category'])
+    outer_df = set(df[df['main_category'] == 5]['sub_category'])
+    shoes_df = set(df[df['main_category'] == 6]['sub_category'])
+    hat_df = set(df[df['main_category'] == 7]['sub_category'])
+    bag_df = set(df[df['main_category'] == 8]['sub_category'])
 
     if season == 'spring':
         if cody['top'] == 1:
@@ -269,7 +288,22 @@ def weatherRecommend(cody, season):
         else:
             bottom = []
 
-
+        if cody['outer'] != 0:
+            outer = outer_spring
+        else:
+            outer = []
+        if cody['shoes'] != 0:
+            shoes = shoes_spring
+        else:
+            shoes = []
+        if cody['outer'] != 0:
+            bag_a = bag
+        else:
+            bag_a = []
+        if cody['hat'] != 0:
+            hat = hat_spring
+        else:
+            hat = []
     elif season == 'summer':
         if cody['top'] == 1:
             top = top_summer
@@ -282,6 +316,23 @@ def weatherRecommend(cody, season):
             bottom = skirt_summer
         else:
             bottom = []
+
+        if cody['outer'] != 0:
+            outer = outer_summer
+        else:
+            outer = []
+        if cody['shoes'] != 0:
+            shoes = shoes_summer
+        else:
+            shoes = []
+        if cody['outer'] != 0:
+            bag_a = bag
+        else:
+            bag_a = []
+        if cody['hat'] != 0:
+            hat = hat_summer
+        else:
+            hat = []
     elif season == 'fall':
         if cody['top'] == 1:
             top = top_fall
@@ -294,6 +345,23 @@ def weatherRecommend(cody, season):
             bottom = skirt_fall
         else:
             bottom = []
+
+        if cody['outer'] != 0:
+            outer = outer_fall
+        else:
+            outer = []
+        if cody['shoes'] != 0:
+            shoes = shoes_fall
+        else:
+            shoes = []
+        if cody['outer'] != 0:
+            bag_a = bag
+        else:
+            bag_a = []
+        if cody['hat'] != 0:
+            hat = hat_fall
+        else:
+            hat = []
     else:
         if cody['top'] == 1:
             top = top_winter
@@ -304,13 +372,66 @@ def weatherRecommend(cody, season):
             bottom = pants_winter
         elif cody['bottom'] == 3:
             bottom = skirt_winter
-        else :
+        else:
             bottom = []
-    return "a"
 
-def weatherRecommend(gender, weather, temp):
+        if cody['outer'] != 0:
+            outer = outer_winter
+        else:
+            outer = []
+        if cody['shoes'] != 0:
+            shoes = shoes_winter
+        else:
+            shoes = []
+        if cody['outer'] != 0:
+            bag_a = bag
+        else:
+            bag_a = []
+        if cody['hat'] != 0:
+            hat = hat_winter
+        else:
+            hat = []
+
+    top_num = 0;
+    bottom_num = 0;
+    outer_num = 0;
+    shoes_num = 0;
+    bag_num = 0;
+    hat_num = 0;
+
+    top_and = list(set(top) & top_df)
+    if len(top_and) != 0:
+        top_num = random.choice(top_and)
+
+    bottom_and = list(set(bottom) & bottom_df)
+    if len(bottom_and) != 0:
+        bottom_num = random.choice(bottom_and)
+
+    outer_and = list(set(outer) & outer_df)
+    if len(outer_and) != 0:
+        outer_num = random.choice(outer_and)
+    shoes_and = list(set(shoes) & shoes_df)
+    if len(shoes_and) != 0:
+        shoes_num = random.choice(shoes_and)
+
+    bag_and = list(set(bag_a) & bag_df)
+    if len(bag_and) != 0:
+        bag_num = random.choice(bag_and)
+
+    hat_and = list(set(hat) & hat_df)
+    if len(hat_and) != 0:
+        hat_num = random.choice(hat_and)
+
+    return {1: top_num, 2: bottom_num, 3: 0, 4: 0, 5: outer_num, 6: shoes_num, 7: bag_num, 8: hat_num}
+
+
+def weatherRecommend(style, gender, weather, temp):
+    clothesDF = importDB()
+    styleDf = clothesDF[clothesDF['style'] == style]
     #gender 입력받고 날씨 입력받아서 출력
-    cody_main = mainChoice(gender, weather)
+
+    # {"top": 1 or 4, "bottom": 0 or 2 or 3, "outer": 0 or 5, "shoes": 6, "bag": 0 or 7, "hat": 0 or 8}
+    cody_main = mainChoice(gender, weather, styleDf)
     # main_category 정해짐
     # sub_category 정하기
     # 온도에 따라
@@ -318,7 +439,13 @@ def weatherRecommend(gender, weather, temp):
     #           상의   바지   스커트 원피스 아우터  신발   가방   모자
     cody_sub = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
     if cody_main["bag"] != 0:
-        cody_sub["bag"] = random.choice(bag)
+        for i in range(10):
+            if (styleDf['sub_category'] == random.choice(bag)).any():
+                cody_sub["bag"] = random.choice(bag)
+                cody_main["bag"] = 7
+                break
+            cody_main["bag"] = 0
+
 
     if temp >= 27:
         if cody_main['top'] == 4:
@@ -333,8 +460,6 @@ def weatherRecommend(gender, weather, temp):
 
         cody_sub[6] = random.choice(shoes_27)
 
-        if cody_main["hat"] != 0:
-            cody_sub[8] = random.choice(hat_27)
 
     elif 23 <= temp <= 26:
         if cody_main['top'] == 4:
@@ -434,23 +559,58 @@ def weatherRecommend(gender, weather, temp):
     # 아우터 색 계열 지정
     outer_color = []
     for col in top_outer:
-        if col.__contains__(color["bottom"]):
+        if col.__contains__(color["top"]):
             outer_color.append((col[1]))
     color["outer"] = random.choice(outer_color)
     # 모자 색 지정
+    # for col in top_hat:
+    #     if col.__contains__(color["top"]):
+    #         hat_color.append((col[1]))
+    print(color)
+    print(gender)
+    print(style)
+    print(weather)
+    print(temp)
+    return "a"
+def personalRecommend(style, gender, weather ,personal_color):
+    clothesDF = importDB()
+    styleDf = clothesDF[clothesDF['style'] == style]
 
-    return
-def personalRecommend(gender, weather, season ,personal_color):
+    cody = mainChoice(gender, weather, styleDf)
+    print(cody)
+    cody_sub = seasonRecommend(cody, weather, styleDf)
+    print(cody_sub)
+
+    top_color_total = list(styleDf[styleDf["main_category"] == 1]['color'].drop_duplicates())
+    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
+    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
+    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
     personal = set_personal_color(personal_color)
-    select_color = random.choice(personal)
+
+    top_total = list( set(personal) & set(top_color_total))
+
+    select_color = random.choice(top_total)
+
+    color = {"top": [], "bottom": [], "outer": [], "shoes": [], "bag": [], "hat": []}
     for top in color_top:
         if top.__contains__(select_color):
-            top_color = top
+            color["top"] = top
             break
-    top_clothes = setTopByGender(gender)
-    bottom_clothes = setBottomByGender(gender, top_clothes)
-    cody = mainChoice(gender, weather)
-    cody_sub = {1: top_clothes, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
+
+
+    bottom_color = []
+    for col in top_bottom:
+        if col.__contains__(color["top"]):
+            bottom_color.append(col[1])
+
+    # 아우터 색 계열 지정
+    outer_color = []
+    for col in top_outer:
+        if col.__contains__(color["top"]):
+            outer_color.append(col[1])
+    color["outer"] = random.choice(outer_color)
+    print(cody)
+    print(select_color)
 
     return "b"
 
@@ -458,6 +618,6 @@ def bodyShapeRecommend(gender, main, season, height, weight):
 
     return "c"
 
-def clothesInfoRecommend(gender, main, season, color):
+def clothesInfoRecommend(gender, season, color):
 
     return "d"
