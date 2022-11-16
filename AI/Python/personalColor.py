@@ -1,6 +1,6 @@
 from os import system, chdir
 import sys
-sys.path.append("personalColor/src")
+sys.path.append("ShowMeTheColor/src")
 import personal
 
 
