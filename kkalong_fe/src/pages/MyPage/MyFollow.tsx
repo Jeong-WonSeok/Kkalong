@@ -71,7 +71,7 @@ export default function MyFollow() {
       </TopNav>
 
       <Container>
-        <Friend Friend={FollowList} IsSearch={false} Request={[]} NotLove={true}></Friend>
+        <Friend Friend={FollowList} IsSearch={false} FriendsId={[]} Request={[]} NotLove={true}></Friend>
       </Container>
       
     </div>

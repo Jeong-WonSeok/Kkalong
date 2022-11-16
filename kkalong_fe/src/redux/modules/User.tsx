@@ -13,6 +13,7 @@ const FOLLOW_SUCCESS = 'Profile/FOLLOW_SUCCESS'
 const PROFILE_CHANGE_SUCCESS = 'Profile/PROFILE_CHANGE_SUCCESS'
 const LOVER_ID_SUCCESS = 'Profile/LOVER_ID_SUCCESS'
 const LOVING_SUCCESS = 'Profile/LOVING_SUCCESS'
+const CHANGE_USER_PROFILE = 'Profile/CHANGE_USER_PROFILE'
 
 // 다른유저 정보 조희
 const GET_OTHER_PENDING = 'Profile/GET_OTHER_PENDING' 
@@ -84,6 +85,7 @@ export const follow = (user_id: string) => async (dispatch: Dispatch) => {
     })
 }
 
+// 애인 신청
 export const lover = (user_id: string, req: boolean) => async (dispatch:Dispatch) => {
   await axios.post(requests.loving + user_id)
     .then(res => {
@@ -95,6 +97,12 @@ export const lover = (user_id: string, req: boolean) => async (dispatch:Dispatch
       
     })
 }
+
+// 유저 정보 변경
+export const ChangeProfile = (data: UserType) => async (dispatch: Dispatch) => {
+  const res = await axios.post(requests.updateProfile, data)
+  dispatch({type: CHANGE_USER_PROFILE, payload: res.data.user})
+} 
 
 // 액션에 따른 state 변경 
 export default handleActions({
@@ -182,6 +190,19 @@ export default handleActions({
       User: {
         ...state.User,
         lover_id: (adjust !== undefined ? adjust : -1)
+      }
+    }
+  },
+  [CHANGE_USER_PROFILE]: (state, {payload}) => {
+    const adjust = payload as unknown as UserType
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        nickname: adjust.nickname,
+        age: adjust.age,
+        height: adjust.height,
+        weight: adjust.weight
       }
     }
   }

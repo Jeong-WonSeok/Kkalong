@@ -31,6 +31,8 @@ export default function MyPageArticle() {
   const navigate = useNavigate();
   const { User } = useAppSelector(state => state.User)
   const [Friends, setFrineds] = useState(Array<FriendType>)
+  // 검색 시 친구를 최상단에 올려주기 위해 설정
+  const [FriendsId, setFriendsId] = useState(Array<Number>)
   const [IsSearch, setIsSearch] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const [SearchFriendList, setSearchFriendList] = useState(Array<FriendType>)
@@ -41,6 +43,9 @@ export default function MyPageArticle() {
       const res = await axios.get(requests.myFriend)
       setFrineds(res.data.friends)
       setRequestLover(res.data.lovers)
+      setFriendsId(res.data.friends.map((friend: any) => {
+        return friend.user_id
+      }))
     }
     start()
     
@@ -65,8 +70,8 @@ export default function MyPageArticle() {
 
       {/* 유저목록 */}
       {IsSearch ? 
-      SearchFriendList?.length ? <Friend Friend={SearchFriendList!} IsSearch={IsSearch} Request={[]} NotLove={true}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
-      Friends?.length ? <Friend Friend={Friends!} IsSearch={IsSearch} Request={RequestLover} NotLove={false}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
+      SearchFriendList?.length ? <Friend FriendsId={FriendsId} Friend={SearchFriendList!} IsSearch={IsSearch} Request={[]} NotLove={true}/> : <NoneFriend>검색 결과가 없습니다.</NoneFriend> :
+      Friends?.length ? <Friend FriendsId={FriendsId} Friend={Friends!} IsSearch={IsSearch} Request={RequestLover} NotLove={false}/> : !IsSearch && <NoneFriend>아직 친구가 없어요</NoneFriend>}
 
 
       <FooterBar/>

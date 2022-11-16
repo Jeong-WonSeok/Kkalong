@@ -12,21 +12,32 @@ import RequestLove from '../../assets/icon/User/RequestLove.png'
 import alreadyLike from '../../assets/icon/Community/alreadyLike.png'
 import Lover from '../../assets/icon/MyPage/Lover.png'
 import { useNavigate } from 'react-router-dom';
+import { LineDiv } from '../../pages/Community/DetailBestDress';
 
-type loving = {
-  loving: boolean // 내가 보낸거
-  request: boolean // 받은 애인 신청
-}
-
-export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Array<FriendType>, IsSearch: boolean, Request: Array<Number>, NotLove: boolean}) {
+export default function Friend(
+  {Friend, IsSearch, Request, NotLove, FriendsId}:
+  {Friend: Array<FriendType>, IsSearch: boolean, Request: Array<Number>, NotLove: boolean, FriendsId:Array<Number>}) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const {User} = useAppSelector(state => state.User)
   const [ Req, setReq ] = useState(Array<Number>)
+  const [SearchMyFriends, setSearchMyFriends] = useState(Array<FriendType>)
+  const [SearchFriends, setSearchFriends] = useState(Array<FriendType>)
 
   useEffect(()=> {
     if (Request.length > 0) {
       setReq(Request)
+    }
+
+    if (IsSearch) {
+      Friend.map(f => {
+        if (FriendsId.includes(f.user_id)){
+          setSearchMyFriends([...SearchMyFriends, f])
+        } else {
+          setSearchFriends([...SearchFriends, f])
+        }
+        return
+      })
     }
   }, [])
 
@@ -41,7 +52,7 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
   
   return (
     <div>
-      {Friend.map((person, idx) => {
+      {!IsSearch && Friend.map((person, idx) => {
         const request = Req.includes(person.user_id)
         return (
           <FriendDiv key={idx}>
@@ -54,15 +65,69 @@ export default function Friend({Friend, IsSearch, Request, NotLove}: {Friend: Ar
               <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
               {!person!.isLoving && !NotLove && 
               <LoverBtn src={
-                !request && User?.lover_id === -1 ? NoLove 
-                : request && User?.lover_id === -1 ? RequestLove 
-                : !request && User?.lover_id === person.user_id ? MyLove 
-                : User?.loving && User?.lover_id === person.user_id ? alreadyLike : ''} 
+                User?.loving && User?.lover_id === person.user_id ? alreadyLike
+                  : !request && User?.lover_id === -1 ? NoLove 
+                  : request && User?.lover_id === -1 ? RequestLove 
+                  : !request && User?.lover_id === person.user_id ? MyLove 
+                  : ''} 
                 onClick={()=>postLove(person?.user_id, request)}/>}
             </BtnContainer>
           </FriendDiv>  
         )
       })}
+
+      {IsSearch && <div>
+        <Category>친구들</Category>
+        {SearchMyFriends.map((person, idx) => {
+          const request = Req.includes(person.user_id)
+          return (
+            <FriendDiv key={idx}>
+              <FriendProfileDiv>
+                <FriendProfileImg src={person.profile_img} onClick={()=>navigate(`/myPage/${person.user_id}`)}></FriendProfileImg>
+                {User.loving && User.lover_id === person.user_id && <LoverDes src={Lover}/>}
+                <FriendProfileName>{person?.nickname}</FriendProfileName>
+              </FriendProfileDiv>
+              <BtnContainer>
+                <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
+                {!person!.isLoving && !NotLove && 
+                <LoverBtn src={
+                  User?.loving && User?.lover_id === person.user_id ? alreadyLike
+                  : !request && User?.lover_id === -1 ? NoLove 
+                  : request && User?.lover_id === -1 ? RequestLove 
+                  : !request && User?.lover_id === person.user_id ? MyLove 
+                  : ''} 
+                  onClick={()=>postLove(person?.user_id, request)}/>}
+              </BtnContainer>
+            </FriendDiv>
+          )     
+        })}
+        
+        <LineDiv></LineDiv>
+
+        {SearchFriends.map((person, idx) => {
+          const request = Req.includes(person.user_id)
+          return (
+            <FriendDiv key={idx}>
+              <FriendProfileDiv>
+                <FriendProfileImg src={person.profile_img} onClick={()=>navigate(`/myPage/${person.user_id}`)}></FriendProfileImg>
+                {User.loving && User.lover_id === person.user_id && <LoverDes src={Lover}/>}
+                <FriendProfileName>{person?.nickname}</FriendProfileName>
+              </FriendProfileDiv>
+              <BtnContainer>
+                <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
+                {!person!.isLoving && !NotLove && 
+                <LoverBtn src={
+                  User?.loving && User?.lover_id === person.user_id ? alreadyLike
+                  : !request && User?.lover_id === -1 ? NoLove 
+                  : request && User?.lover_id === -1 ? RequestLove 
+                  : !request && User?.lover_id === person.user_id ? MyLove 
+                  : ''} 
+                  onClick={()=>postLove(person?.user_id, request)}/>}
+              </BtnContainer>
+            </FriendDiv>
+          )     
+        })}
+        </div>}
    </div>
   )
 }
@@ -127,4 +192,10 @@ export const FollowBtn = styled.button`
 const LoverBtn = styled.img`
   width: 25px;
   height: 25px;
+`
+
+const Category = styled.p`
+  width: 100%;
+  font-family: var(--base-font-300);
+  font-size: 1rem;
 `

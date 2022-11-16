@@ -17,6 +17,7 @@ import Closet from '../../assets/icon/Footer/select_closet.png'
 import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
 import { UserType } from '../MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export interface commentType {
   comment_id: number,
@@ -42,18 +43,17 @@ export interface ArticleType extends HelpCodiArticle{
 export default function DetailHelpCodi() {
   const navigate = useNavigate()
   const params = useParams()
+  const { User } = useAppSelector(state=> state.User)
   const [IsMenu, setIsMenu] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
   const [Article, setArticle] = useState<ArticleType>()
-  const [User, setUser] = useState<UserType>()
 
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
       console.log(res.data)
       setArticle(res.data)
-      setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     }
 
     start()
