@@ -298,7 +298,7 @@ export default function Signup() {
     return (
       <div>
         <TopNav type={"Line"}>
-          <BackArrowImg src={BackArrow} onClick={() => navigate("/login")} />
+          <BackArrowImg src={BackArrow} onClick={() => navigate("/")} />
           <SignupText>회원가입</SignupText>
           <div style={{ width: "30px", height: "30px" }}></div>
         </TopNav>
@@ -393,7 +393,7 @@ export default function Signup() {
                 }}
               />
               <SignupIcon src={AgeIcon} />
-              <InfoSpan>cm</InfoSpan>
+              <InfoSpan>살</InfoSpan>
             </SignupBodyDiv>
             <SignupBodyDiv>
               <SignupGenderInfoInput
@@ -603,6 +603,14 @@ const SignupBodyInfoInput = styled.input`
   padding: 5px;
   text-indent: 25px;
   font-family: var(--base-font-400);
+  ::-webkit-inner-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  }
+  ::-webkit-outer-spin-button{
+  -webkit-appearance: none; 
+  margin: 0; 
+  }    
 `;
 
 const SignupGenderInfoInput = styled.select`
