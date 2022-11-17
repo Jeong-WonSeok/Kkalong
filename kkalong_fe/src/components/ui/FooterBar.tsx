@@ -11,6 +11,10 @@ import selectRecommend from "../../assets/icon/Footer/select_recommend.png";
 import MyPage from "../../assets/icon/Footer/MyPage.png";
 import selcetMyPage from "../../assets/icon/Footer/select_MyPage.png";
 
+type select = {
+  SelectCategory: string
+}
+
 export default function FooterBar() {
   const navigate = useNavigate();
   const [SelectCategory, setSelectCategory] = useState("closet");
@@ -69,8 +73,8 @@ export default function FooterBar() {
       <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend/weather')}/>
         추천
       </FooterImgContainer>
-      <MirrorContainer>
-        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting/VirtualBrandChoice/")} />
+      <MirrorContainer SelectCategory={SelectCategory}>
+        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting")} />
         가상피팅
       </MirrorContainer>
       <FooterImgContainer>
@@ -111,8 +115,8 @@ const FooterImgContainer = styled.div`
   padding: 0 8px;
 `;
 
-const MirrorContainer = styled(FooterImgContainer)`
-  background: #ded6c6;
+const MirrorContainer = styled(FooterImgContainer)<select>`
+  background: ${(props) => (props.SelectCategory === "mirror" ? "var(--primary-color-900)" : "#ded6c6")};
   color: white;
   padding: 8px;
   border-radius: 50%;

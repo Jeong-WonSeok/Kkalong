@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ClothesResponseDto {
     private String img;
     private String name;
-    private String mainCategory;
-    private String subCategory;
+    private int mainCategory;
+    private int subCategory;
     private String url;
 }

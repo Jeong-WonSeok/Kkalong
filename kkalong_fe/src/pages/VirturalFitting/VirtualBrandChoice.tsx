@@ -92,7 +92,7 @@ export default function VirtualBrandChoice() {
         <VirtualBrandChoiceText>브랜드 선택</VirtualBrandChoiceText>
         <div style={{width:"54px", height:"38px"}}></div>
       </TopNav>
-      <Search Search={SearchBrand} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
+      <Search Search={SearchBrand} Open={true} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
       <VirtualLine></VirtualLine>
       <VirtualBrandButtonDiv>
         {/* 검색중이 아닐때 나옴 */}

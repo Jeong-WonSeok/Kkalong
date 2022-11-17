@@ -4,44 +4,63 @@ import styled from 'styled-components';
 
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
+import { follow, otherProfile, ProfileChange } from '../../redux/modules/User';
 
 import HelloIcon from '../../assets/icon/MyPage/hello.png'
-import MyImg from '../../assets/icon/MyPage/My.png'
 import ArticleIcon from '../../assets/icon/MyPage/article.png'
 import FriendIcon from '../../assets/icon/MyPage/friend.png'
 import MemberUpdateIcon from '../../assets/icon/MyPage/memberUpdate.png'
 import MoveIcon from '../../assets/icon/MyPage/move.png'
+import ClosetIcon from '../../assets/icon/MyPage/closet.png'
 
 import FooterBar from '../../components/ui/FooterBar';
+import { FollowBtn } from '../../components/User/Friend';
 
-
-export interface UserType {
+export interface otherUserType {
   user_id : number
-  email : string
   nickname : string
+  followers : Array<number>
+  followings : Array<number>
+  profile_img : string
+  loving : boolean
+  lover_id : null | number
+}
+
+export interface UserType extends otherUserType{
+  email : string
   gender : string
   age : number
   height : number
   weight : number
-  followers : Array<number>
-  followings : Array<number>
+  face_img : string
+  body_img : string
+  loving : boolean
+  lover_id : null | number
+  personal_color : string
 }
 
 export default function MyPage() {
   const params = useParams()
   const navigate = useNavigate();
-  const [User, setUser] = useState<UserType>()  
+  const dispatch = useAppDispatch()
+  const {User, otherUser} = useAppSelector(state => state.User)
+  const [ProfileUser, setProfileUser] = useState<UserType | otherUserType>()  
+  const [IsLover, setIsLover] = useState(false)
 
   useEffect(()=>{
     const app = document.getElementById('App') as HTMLDivElement
     app.style.marginTop = '0'
     const start = async() => {
       if (params.userId) {
-        const Input = {value: Number(params.userId)}
-        const res = await axios.get(requests.otherProfile, {params: Input})
-        setUser(res.data.user)
+        // 정보 요청이 안됨...
+        dispatch(otherProfile(Number(params.userId)))
+        setProfileUser(otherUser)
+        if (User.lover_id === otherUser.user_id && otherUser.lover_id === User.user_id) {
+          setIsLover(true)
+        }
       } else {
-        setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
+        setProfileUser(User)
       }
     }
     start()
@@ -49,6 +68,24 @@ export default function MyPage() {
       app.style.marginTop = '60px'
     }
   },[])
+
+  const InputClick = () => {
+    document.getElementById('Input')?.click()
+  }
+
+  const ChangeProfile = (e:any) => {
+    if (!params.userId) {
+      const img = document.getElementById('UserProfile') as HTMLImageElement
+      const ImgUrl = URL.createObjectURL(e.target.files[0])
+      // 완성되기 전까지 임시로
+      img.src = ImgUrl
+      dispatch(ProfileChange(e.target.files[0]))
+    }
+  }
+
+  const Follow = (id: number) => {
+    dispatch(follow(String(id)))
+  }
 
   return (
     <div>
@@ -59,13 +96,16 @@ export default function MyPage() {
             <MyPageHelloText>안녕하세요!</MyPageHelloText>
             <MyPageHelloIcon src={HelloIcon}></MyPageHelloIcon>
           </div>
-          <NickNameP>{User?.nickname} 님!</NickNameP>
+          <NickNameP>{ProfileUser?.nickname} 님!</NickNameP>
         </MyPageTextDiv>
-        <MyPageImg src={MyImg}></MyPageImg>
+        <MyPageImg id="UserProfile" src={ProfileUser?.profile_img} onClick={InputClick}></MyPageImg>
+        {!params.user_id && <ChangeImgInput id="Input" type="file" accept='image/*' onChange={ChangeProfile}/>}
+        
         <MyPageFollowDiv>
-          <MyPageFollow>팔로우 {User?.followings.length ? User?.followings.length : 0}</MyPageFollow>
+          <MyPageFollow onClick={()=>navigate('Following')}>팔로우 {ProfileUser?.followings.length ? ProfileUser?.followings.length : 0}</MyPageFollow>
           <MyPageLine></MyPageLine>
-          <MyPageFollow>팔로워 {User?.followers.length ? User?.followers.length : 0}</MyPageFollow>
+          <MyPageFollow onClick={()=>navigate('Follow')}>팔로워 {ProfileUser?.followers.length ? ProfileUser?.followers.length : 0}</MyPageFollow>
+          {params.user_id && <OtherPeopleBtn onClick={() => Follow(User!.user_id)}>{User.followings.includes(User!.user_id) ? "언팔로우" : "팔로우" }</OtherPeopleBtn>}
         </MyPageFollowDiv>
       </MyPageDiv>
 
@@ -97,6 +137,15 @@ export default function MyPage() {
         </MyPageUnderButton>
       </div>
       }
+
+      {User.loving && User.lover_id === ProfileUser?.user_id && 
+        <MyPageUnderButton onClick={()=>navigate(`/closet/${ProfileUser?.user_id}`)}>
+        <MyPageIconTextDiv>
+          <MyPageButtonIcon src={ClosetIcon}/>
+          <MyPageButtonText>옷장</MyPageButtonText>
+        </MyPageIconTextDiv>
+        <MyPageButtonMove src={MoveIcon}/>
+      </MyPageUnderButton>}
 
       </MyPageUnderDiv>
       <FooterBar/>
@@ -204,14 +253,14 @@ const MyPageIconTextDiv = styled.div`
 
 //버튼 아이콘
 const MyPageButtonIcon = styled.img`
+  width: 28px;
+  height: 28px;
 `
 
 //버튼 text
 const MyPageButtonText = styled.text`
   margin-left : 20px;
-  font-family: var(--base-font-500);
-  
-  
+  font-family: var(--base-font-500); 
 `
 
 //버튼 move
@@ -219,6 +268,12 @@ const MyPageButtonMove = styled.img`
 margin: auto 0;
 width: 10px;
 height: 15px;
+`
 
-  
+const ChangeImgInput = styled.input`
+  display: none;
+`
+
+const OtherPeopleBtn = styled(FollowBtn)`
+    margin : 10px;
 `

@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class ClothingDto {
     private int closet_id;
     private String img;
-    private String mainCategory;
-    private String subCategory;
-    private boolean spring;
-    private boolean summer;
-    private boolean fall;
-    private boolean winter;
+    private int mainCategory;
+    private int subCategory;
+    private int spring;
+    private int summer;
+    private int fall;
+    private int winter;
     private String color;
     private String gender;
     private int brand_id;

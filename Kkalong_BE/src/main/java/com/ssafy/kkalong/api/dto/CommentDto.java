@@ -14,5 +14,4 @@ import lombok.NoArgsConstructor;
 public class CommentDto extends BaseEntity {
     private String content;
     private User user;
-
 }

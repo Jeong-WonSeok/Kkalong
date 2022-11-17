@@ -18,15 +18,28 @@ import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
-import { Category, ClothesImg, SortClothes, SortClothesContainer } from "./MainCloset";
+
+import axios from "../../api/axios";
+import requests from "../../api/requests";
+
+import {
+  Category,
+  ClothesImg,
+  SortClothes,
+  SortClothesContainer,
+} from "./MainCloset";
 
 export default function AddCloset() {
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    const app = document.getElementById('App') as HTMLDivElement
-    app.style.marginBottom = '0'
-  },[])
+  useEffect(() => {
+    const app = document.getElementById("App") as HTMLDivElement;
+    app.style.marginBottom = "0";
+
+    return () => {
+      app.style.marginTop = "60px";
+    };
+  }, []);
 
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
   let [cltext, setCltext] = useState([
@@ -46,6 +59,17 @@ export default function AddCloset() {
     img6,
     img7,
   ]);
+  let [input, setInput] = useState("");
+  const onChangeInput = (e: any) => {
+    setInput(e.target.value);
+  };
+  const onSubmit = (e: any) => {
+    console.log(input);
+    axios.post(requests.closetAdd, { value: input }).then((res) => {
+      console.log(res);
+      navigate("/closet");
+    });
+  };
   return (
     <div>
       <TopNav type={""}>
@@ -56,16 +80,18 @@ export default function AddCloset() {
         >
           <img src={left}></img>
         </BackBtn>
-        <ClosetName placeholder="이름을 입력해주세요" />
-        <ClosetEnter>
+        <ClosetName
+          onChange={onChangeInput}
+          placeholder="이름을 입력해주세요"
+        />
+        <ClosetEnter onClick={onSubmit}>
           <EnterText>저장</EnterText>
         </ClosetEnter>
       </TopNav>
-      
 
-    <ClosetImg src={sortclothes[0]} />
+      {/* <ClosetImg src={sortclothes[0]} /> */}
 
-    <Category>
+      {/* <Category>
       {clothes.map(function (a, i) {
         return (
           <ClothesBtn>
@@ -83,7 +109,7 @@ export default function AddCloset() {
           </SortClothes>
         );
       })}
-    </SortClothesContainer>
+    </SortClothesContainer> */}
     </div>
   );
 }

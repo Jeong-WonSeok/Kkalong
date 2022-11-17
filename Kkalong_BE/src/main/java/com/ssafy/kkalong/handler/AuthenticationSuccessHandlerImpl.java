@@ -52,7 +52,6 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
             }
 
         } else{ //kkalong 회원가입
-            System.out.println("kkalong 회원가입");
             // 전달받은 인증정보 SecurityContextHolder에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
             // JWT Token 발급
@@ -71,6 +70,12 @@ public class AuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticationSuc
                     .provider(user.getProvider())
                     .followers(userService.getFollowerListByReceiverId(user.getId()))
                     .followings(userService.getFollowingListBySenderId(user.getId()))
+                    .profile_img(user.getProfile_img())
+                    .body_img(user.getBody_img())
+                    .face_img(user.getFace_img())
+                    .loving(user.isLoving())
+                    .lover_id(user.getLover_id())
+                    .personal_color(user.getPersonal_color())
                     .build();
             result.put("token", token);
             result.put("user", userInfoDto);

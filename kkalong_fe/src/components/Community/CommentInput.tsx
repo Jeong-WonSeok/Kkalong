@@ -17,10 +17,12 @@ export default function CommentInput({article_id, category, CommentsInput} :{art
         codi_id: CodiImg
       }
       const res = await axios.post(requests.detailHelpCodi + article_id + requests.comment , data)
+      console.log(res.data)
       CommentsInput(res.data)
     } else {
       const data = {content: Message}
       const res = await axios.post(requests.detailBestDress + article_id + requests.comment, data)
+      console.log(res.data)
       CommentsInput(res.data)
     }
     setMessage('')

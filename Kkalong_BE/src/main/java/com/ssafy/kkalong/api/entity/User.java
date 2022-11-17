@@ -41,7 +41,17 @@ public class User {
     @Column(nullable = false)
     private String provider;
 
-    private String img;
+    private String profile_img;
+
+    private String face_img;
+
+    private String body_img;
+
+    private String personal_color;
+
+    private boolean loving;
+
+    private int lover_id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -75,6 +85,31 @@ public class User {
         this.age = signupDto.getAge();
         this.height = signupDto.getHeight();
         this.weight = signupDto.getWeight();
+        this.profile_img = "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/profile_img.jpg?alt=media";
+        this.loving = false;
+        this.lover_id = -1;
         this.role = UserRole.ROLE_USER;
+    }
+
+    public void setLoveInfo(int lover_id) {
+        this.loving = true;
+        this.lover_id = lover_id;
+    }
+
+    public void resetLoveInfo() {
+        this.loving = false;
+        this.lover_id = -1;
+    }
+
+    public void updateProfileImg(String profile_img){
+        this.profile_img = profile_img;
+    }
+
+    public void updateFaceImg(String face_img){
+        this.face_img = face_img;
+    }
+
+    public void updateBodyImg(String body_img){
+        this.body_img = body_img;
     }
 }

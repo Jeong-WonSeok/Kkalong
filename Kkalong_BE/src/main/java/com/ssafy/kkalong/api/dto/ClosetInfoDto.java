@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ClosetInfoDto{
     private int closet_id;
-    private String closet_name;
+    private String name;
     private List<ClothingDto> clothings;
-    private List<CodyDto> codies;
+    private List<CodyResponseDto> codies;
 }

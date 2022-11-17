@@ -14,25 +14,24 @@ import TopNav from "../../components/ui/TopNav";
 
 import backArrow from "../../assets/icon/Nav/BackArrow.png";
 import { UserType } from "./MyPage";
+import { useAppSelector } from "../../hooks/reduxHook";
 
 
 
 export default function MyPageArticle() {
   const params = useParams()
+  const { User } = useAppSelector(state => state.User)
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
   const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
-  const [User, setUser] = useState<UserType>()
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
     const start = async() => {
-      if (params.user_id) {
+      if (params.userId) {
         // 정보 요청이 안됨...
         const Input = {value: Number(params.userId)}
         const res = await axios.get(requests.otherProfile, {params: Input})
-        setUser(res.data.user)
         
         // 글쓴이의 글 목록 불러오기
         const wirte = await axios.get(requests.myWrite, {params: {value: User!.user_id}})

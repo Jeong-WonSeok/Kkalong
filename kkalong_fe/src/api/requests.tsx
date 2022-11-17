@@ -10,13 +10,17 @@ const requests = {
 
   // 마이페이지
   myWrite: "/user/write",
-  myFriend: "/user/friend",
+  myFriend: "/user/friends",
   searchFriend: "/user/friend/", // 이건 어떻게 구현될지 모르겠음
   updateProfile: "/user/profile/update",
   follow: "/user/follow/", // ${} 으로 동적 라우팅
+  loving: "/user/love/",
+  followers: "/user/followers/",
+  followings: "/user/followings/",
   otherProfile: "/user/profile/", // ${} 으로 동적 라우팅
   otherWrite: "/user/write/", // ${} 으로 동적 라우팅
   Profile: "/user/social/login",
+  changeImg: "user/profile/img",
   // 커뮤니티
   best3: "/community/best",
   bestDress: "/community/bestdress",
@@ -28,8 +32,9 @@ const requests = {
   // 옷장
   closet: "/closet/all/", // ${} 으로 동적 라우팅
   removeBackground: "/closet/removeBg",
-  addClothes: "/add/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
+  addClothes: "/closet/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
   codl: "/closet/cody",
+  closetAdd: "/closet/closet",
 
   // 가상피팅
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴

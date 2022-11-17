@@ -22,7 +22,7 @@ export interface BestDresserArticle {
   user: {
     user_id: number,
     nickname: string,
-    profile_img: string,
+    profile_image: string,
     email: string
   }
 }
@@ -38,7 +38,7 @@ export interface HelpCodiArticle {
     user: {
       user_id: number,
       nickname: string,
-      profile_img: string,
+      profile_image: string,
       email: string
     }
   }
@@ -160,7 +160,7 @@ const Best3Container = styled.img`
   min-height: 100px;
 `
 
-const CategoryText = styled.p`
+export const CategoryText = styled.p`
   line-height: 0;
   font-family: var(--base-font-600);
 `

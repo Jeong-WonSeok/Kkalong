@@ -2,27 +2,25 @@ package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.BrandResponseDto;
 import com.ssafy.kkalong.api.dto.ClothesResponseDto;
-import com.ssafy.kkalong.api.dto.ClothingDto;
-import com.ssafy.kkalong.api.entity.Brand;
 import com.ssafy.kkalong.api.entity.Clothing;
 import com.ssafy.kkalong.api.service.FittingService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @CrossOrigin(origins = {"*"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/aifitting")
 public class FittingController {
 
-    @Autowired
-    FittingService fittingService;
+    private final FittingService fittingService;
 
     @GetMapping("/brand")
     public ResponseEntity<?> selectAllBrand(){
