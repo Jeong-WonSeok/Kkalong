@@ -100,4 +100,16 @@ public class User {
         this.loving = false;
         this.lover_id = -1;
     }
+
+    public void updateProfileImg(String profile_img){
+        this.profile_img = profile_img;
+    }
+
+    public void updateFaceImg(String face_img){
+        this.face_img = face_img;
+    }
+
+    public void updateBodyImg(String body_img){
+        this.body_img = body_img;
+    }
 }

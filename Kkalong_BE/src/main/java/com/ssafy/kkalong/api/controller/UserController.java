@@ -2,7 +2,6 @@ package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.User;
-import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
@@ -152,14 +151,6 @@ public class UserController {
         return ResponseEntity.badRequest().body("존재하지 않는 사용자");
     }
 
-    @PostMapping("/profile/img")
-    public ResponseEntity<?> updateProfileImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile profile_img){
-        Map<String, Object> result = new HashMap<>();
-        String profile_img_url = firebaseService.uploadUserProfileImg(userInfo.getId(), profile_img);
-        result.put("profile_img", profile_img_url);
-        return ResponseEntity.ok().body(result);
-    }
-
     @PostMapping("/profile/update")
     public ResponseEntity<?> updateProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody SignupDto signupDto){
         Map<String, Object> result = new HashMap<>();
@@ -184,6 +175,39 @@ public class UserController {
                 .personal_color(user.getPersonal_color())
                 .build();
         result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/profile/img")
+    public ResponseEntity<?> updateProfileImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile profile_img){
+        Map<String, Object> result = new HashMap<>();
+        String profile_img_url = firebaseService.uploadUserProfileImg(userInfo.getId(), profile_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateProfileImg(profile_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("profile_img", savedUser.getProfile_img());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/face/img")
+    public ResponseEntity<?> updateFaceImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile face_img){
+        Map<String, Object> result = new HashMap<>();
+        String face_img_url = firebaseService.uploadUserFaceImg(userInfo.getId(), face_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateFaceImg(face_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("face_img", savedUser.getFace_img());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/body/img")
+    public ResponseEntity<?> updateBodyImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile body_img){
+        Map<String, Object> result = new HashMap<>();
+        String body_img_url = firebaseService.uploadUserBodyImg(userInfo.getId(), body_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateBodyImg(body_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("body_img", savedUser.getBody_img());
         return ResponseEntity.ok().body(result);
     }
 
