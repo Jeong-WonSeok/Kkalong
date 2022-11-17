@@ -1,28 +1,25 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react'
+import React, {useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Webcam from "react-webcam";
 
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
-import {CamDiv, ButtonContainer, CaptureButton, ChildCaptureButton} from '../Closet/AddClothes'
 import { CategoryText } from '../Community/MainCommunity';
-import Base64ToFile from '../../hooks/Base64ToFile.js'
 
 import File from '../../assets/icon/Virtual/folder.png'
 import DefaultImg from '../../assets/icon/Virtual/image.png'
-import Picture from '../../assets/icon/Closet/add_clothes.png'
-import Change from '../../assets/icon/Virtual/exchange.png'
-import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import Close from '../../assets/icon/Nav/close.png'
 
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
+import { ChangeBody } from '../../redux/modules/User';
 
 
 export default function VirtualPicture() {
   const navigate = useNavigate()
-  let videoStreamInUse = null;
+  const dispatch = useAppDispatch()
+  const { User } = useAppSelector(state => state.User)
   const [url, setUrl] = useState<string | ''>('');
   const [IsSelect, setIsSelect] = useState('')
   const [SendFile, setSendFile] = useState<File>()
@@ -31,14 +28,28 @@ export default function VirtualPicture() {
     if (IsSelect === 'Picture' && !url) {
       const app = document.getElementById('App') as HTMLDivElement
       app.style.margin = '0'
+      if ( !User.body_img ) {
+        const fileBtn = document.getElementById('fileBtn') as HTMLDivElement
+        fileBtn.style.opacity = '0.7'
+      }
     } 
     
     return () => {
       const app = document.getElementById('App') as HTMLDivElement
       app.style.marginTop = '60px'
+      const fileBtn = document.getElementById('fileBtn') as HTMLDivElement
+      fileBtn.style.opacity = '1'
     }
   },[IsSelect, url])
 
+  const useDefault = () => {
+    if (User.body_img) {
+      navigate('VirtualBrandChoice')
+    } else {
+      alert('기본으로 설정된 이미지가 없습니다. 파일을 등록해주세요')
+    }
+    
+  }
 
   // 파일선택
   const SelectFile = () => {
@@ -56,7 +67,7 @@ export default function VirtualPicture() {
     const formdata = new FormData()
     formdata.append('bodyImg', SendFile as File)
 
-    await axios.post(requests.bodyImg, formdata, {headers: {"Content-Type": "multipart/form-data"}})
+    await dispatch(ChangeBody(formdata, User.user_id))    
     navigate('VirtualBrandChoice/')
   }
 
@@ -71,7 +82,7 @@ export default function VirtualPicture() {
         <div style={{width: '56px', height: '36px'}}></div>
       </TopNav>
       <Container>
-        <BtnDiv onClick={()=> navigate('VirtualBrandChoice/')}>
+        <BtnDiv id="fileBtn" onClick={useDefault}>
           <Img><SelectImg style={{position: 'absolute', left: '-5px', top: '-5px'}}src={DefaultImg}/></Img>
           <SelectP>이전 이미지를 사용</SelectP>
         </BtnDiv>

@@ -36,6 +36,7 @@ export default function MainCloset() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
+  const { User } = useAppSelector(state => state.User)
   const settings = {
     className: "center",
     centerMode: true,
@@ -82,9 +83,12 @@ export default function MainCloset() {
 
   const GoCody = () => {
     if (params.userId) {
+      if (User.loving && User.lover_id === Number(params.userId)) {
+        navigate('codi')
+      }
       navigate('pluscodi')
     } else {
-      navigate('/pluscodi')
+      navigate('/codi')
     }
   };
 
@@ -139,7 +143,7 @@ export default function MainCloset() {
 
       <AddClothesContainer>
         <AddClothes onClick={() => navigate("/closet/add")}>
-          <img src={camera} />
+          <img src={camera} style={{width: '50px', height: '45px', marginTop: '5px'}}/>
         </AddClothes>
       </AddClothesContainer>
       <FooterBar />

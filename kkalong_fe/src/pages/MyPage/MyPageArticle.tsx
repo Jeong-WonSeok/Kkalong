@@ -33,7 +33,6 @@ export default function MyPageArticle() {
         const wirte = await axios.get(requests.myWrite + otherUser.user_id)
         setBestArticles(wirte.data.Bests)
         setHelpArticles(wirte.data.Helps)
-        
       } else {
         const res = await axios.get(requests.myWrite + User.user_id)
         setBestArticles(res.data.Bests)

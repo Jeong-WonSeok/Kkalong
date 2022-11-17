@@ -10,6 +10,9 @@ export default function CommentInput({article_id, category, CommentsInput} :{art
   const [CodiImg, setCodiImg] = useState(null as null | number)
 
   const SendMessage = async () => {
+    if (!Message) {
+      return
+    }
     // axios 요청 보내기
     if (category === "closet" || category == "cody") {
       const data = {
@@ -28,9 +31,15 @@ export default function CommentInput({article_id, category, CommentsInput} :{art
     setMessage('')
   }
 
+  const EnterInput = (e:any) => {
+    if (e.key === 'Enter') {
+      SendMessage()
+    }
+  }
+
   return (
     <Container>
-      <Input placeholder='댓글을 입력해주세요' value={Message} onChange={(e: any) => setMessage(e.target.value)}/>
+      <Input placeholder='댓글을 입력해주세요' value={Message} onChange={(e: any) => setMessage(e.target.value)} onKeyPress={EnterInput}/>
       <Button onClick={SendMessage}>작성</Button>
     </Container>  
   )

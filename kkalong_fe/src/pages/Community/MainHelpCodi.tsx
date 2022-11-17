@@ -22,11 +22,10 @@ type ButtonType = {
 export default function MainHelpCodi() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { HelpCody } = useAppSelector(store => store.HelpCodi)
+  const { HelpCody, FriendHelp } = useAppSelector(store => store.HelpCodi)
   const { User } = useAppSelector(state => state.User)
   const [ HelpCodies, setHelpCodi ] = useState(Array<HelpCodiArticle>)
   const [ HelpCloset, setHelpCloset] = useState(Array<HelpCodiArticle>)
-  const [ FriendHelp, setFriendHelp ] = useState(Array<HelpCodiArticle>)
   const [ IsCodi, setIsCodi] = useState(true)
   const [ IsCloset, setIsCloset] = useState(false)
 
@@ -36,9 +35,6 @@ export default function MainHelpCodi() {
     }))
     setHelpCodi(HelpCody.filter(Help => {
       return !Help.Help.open
-    }))
-    setFriendHelp(HelpCody.filter(Friend => {
-      return User.followings.includes(Friend.Help.user.user_id)
     }))
   }, [])
   
@@ -84,7 +80,7 @@ export default function MainHelpCodi() {
           {HelpCloset.map((Help, idx) => {
             if(!Help.Help.help_img) {
               return (
-                <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
+                <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/false/${idx}`)}>
                   Q. {Help.Help.title.length > 25 ? Help.Help.title.slice(0,23) + '...' : Help.Help.title}
                 </TitleDiv>
                 )

@@ -70,12 +70,12 @@ function App() {
             <Route path="/community/BestDress" element={<MainBestDress />}></Route>
             <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
             <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
+            <Route path="/community/BestDress/:IsAdd/:BestDressId" element={<DetailBestDress />}></Route>
             <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
             <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/:IsAdd/:HelpCodiId" element={<DetailHelpCodi />}></Route>
             {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>

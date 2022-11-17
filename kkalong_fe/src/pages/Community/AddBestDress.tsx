@@ -30,7 +30,6 @@ export default function AddBestDress() {
       if (params.BestDressId) {
         const res = await axios.get(requsests.detailBestDress + params.BestDressId)
         const BestDress = res.data as ArticleType
-        console.log(res.data)
         setSendData({
           post_img: BestDress.Best.img,
           content: BestDress.Best.content 
@@ -80,16 +79,16 @@ export default function AddBestDress() {
 
   const Submit = async () => {
     const result = FormDataChange(SendData)
-    result.get('post_img')
     // FormData의 value 확인
     if (params.BestDressId) {
-      await axios.put(requsests.detailBestDress + params.BestDressId, result,{headers: {'Content-Type': 'multipart/form-data'}})
-      navigate(`/community/BestDress/${params.Id}`)
+      const res = await axios.post(requsests.detailBestDress + params.BestDressId, result,{headers: {'Content-Type': 'multipart/form-data'}})
+      console.log(res)
+      navigate(`/community/BestDress/true/${params.BestDressId}`)
     } else {
       await axios.post(requsests.bestDress, result, {headers: {'Content-Type': 'multipart/form-data'}})
       .then(res => {
         console.log(res)
-        navigate(`/community/BestDress/${res.data.Best.id}`)
+        navigate(`/community/BestDress/true/${res.data.Best.id}`)
       })
       .catch(err => console.error(err))
     }

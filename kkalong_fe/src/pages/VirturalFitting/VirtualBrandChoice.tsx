@@ -6,8 +6,10 @@ import SpaoIcon from "../../assets/icon/Brand/spao.png";
 import HnMIcon from "../../assets/icon/Brand/h&m.png";
 import EightSecondsIcon from "../../assets/icon/Brand/eight.png";
 import ZaraIcon from "../../assets/icon/Brand/zara.png";
-
 import Search from "../../components/ui/Search";
+
+import SearchIcon from '../../assets/icon/Nav/search.png'
+
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
 
@@ -25,6 +27,7 @@ export default function VirtualBrandChoice() {
   const [Brand, setBrand] = useState(Array<BrandType>);
   const [SearchBrandList, setSearchBrandList] = useState(Array<BrandType>)
   const [IsSearch, setIsSearch] = useState(false)
+  const [IsModal, setIsModal] = useState(false)
 
 
   useEffect(() => {
@@ -90,10 +93,9 @@ export default function VirtualBrandChoice() {
     <VirtualBrandChoiceDiv>
       <TopNav type={"menu"}>
         <VirtualBrandChoiceText>브랜드 선택</VirtualBrandChoiceText>
-        <div style={{width:"54px", height:"38px"}}></div>
+        <SearchImg src={SearchIcon} onClick={()=>setIsModal(!IsModal)}/>
       </TopNav>
-      <Search Search={SearchBrand} Open={true} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
-      <VirtualLine></VirtualLine>
+      <Search Search={SearchBrand} Open={IsModal} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
       <VirtualBrandButtonDiv>
         {/* 검색중이 아닐때 나옴 */}
         {!IsSearch && Brand.length && Brand.map((logo) => {
@@ -136,15 +138,6 @@ const VirtualBrandChoiceText = styled.span`
   font-family: var(--base-font-600);
 `;
 
-const VirtualUserSearch = styled.text`
-  margin-left: 10px;
-`;
-
-const VirtualLine = styled.hr`
-  width: 100%;
-  border: 1px solid var(--primary-color-300);
-  margin-top: 15px;
-`;
 
 const VirtualBrandButtonDiv = styled.div`
   display: flex;
@@ -166,4 +159,10 @@ export const NoData = styled.div`
   text-align: center;
   margin: 0 auto;
   margin-top: 5px;
+`
+
+const SearchImg = styled.img`
+  width: 20px;
+  height: 20px;
+  padding: 8px 18px;
 `

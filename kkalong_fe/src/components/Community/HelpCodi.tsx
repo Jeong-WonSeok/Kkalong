@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import FirebaseUrl from '../../hooks/FirebaseUrl'
 import { HelpCodiArticle } from '../../pages/Community/MainCommunity'
 import Profile from './Profile'
+import defaultImg from '../../assets/icon/Community/defaultImg.png'
 
 export default function HelpCodi({article} : {article: HelpCodiArticle}) {
   const navigate = useNavigate()
   return (
-    <div onClick={()=>navigate(`/community/HelpCodi/${article.Help.help_id}`)}>
-    <Container style={{backgroundImage: `url(${FirebaseUrl(article)})`}}>
+    <div onClick={()=>navigate(`/community/HelpCodi/false/${article.Help.help_id}`)}>
+    <Container style={{backgroundImage: `url(${article.Help.help_img ? article.Help.help_img : defaultImg})`}}>
       <ProfileContainer>
-      <Profile Image={article.Help.user.profile_image} Size={17} id={article.Help.user.user_id}/>
+      <Profile Image={article.Help.user.profile_img} Size={17} id={article.Help.user.user_id}/>
         <span>{article.Help.user.nickname}</span>
       </ProfileContainer>
       
@@ -27,7 +27,7 @@ const Container = styled.div`
   width: 140px;
   height: 180px;
   padding: 10px;
-  border-radius: 30px;
+  border-radius: 30px 30px 0 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -4,9 +4,7 @@ import { BestDresserArticle } from "../../pages/Community/MainCommunity";
 import { useNavigate } from "react-router-dom";
 
 import like from "../../assets/icon/Community/like.png";
-import defaultImg from "../../assets/icon/Community/defaultImg.png"
 import Profile from "./Profile";
-import FirebaseUrl from "../../hooks/FirebaseUrl";
 
 export default function BestDresser({
   article,
@@ -17,12 +15,12 @@ export default function BestDresser({
   
   return (
     <Container
-      style={{ backgroundImage: `url(${article.Best.img ? FirebaseUrl(article) : defaultImg})` }}
-      onClick={() => navigate(`/community/BestDress/${article.Best.id}`)}
+      style={{ backgroundImage: `url(${article.Best.img})` }}
+      onClick={() => navigate(`/community/BestDress/false/${article.Best.id}`)}
     >
       <ProfileContainer>
-        <Profile Image={article.user.profile_image} Size={17} id={article.user.user_id}/>
-        <span>{article.user.nickname}</span>
+        <Profile Image={article.user.profile_img} Size={17} id={article.user.user_id}/>
+        <UserNickName>{article.user.nickname}</UserNickName>
       </ProfileContainer>
       <LikeContainer>
         <LikeImg src={like} />
@@ -43,6 +41,7 @@ const Container = styled.div`
   justify-content: space-between;
   margin: 0 5px 10px 5px;
   background-size: cover;
+  background-position: center;
   overflow: hidden;
 `
 
@@ -67,3 +66,8 @@ const LikeImg = styled.img`
   height: 18px;
   margin-right: 4px;
 `;
+
+const UserNickName = styled.span`
+  margin-top: 5px;
+  color : var(--primary-color-900);
+`

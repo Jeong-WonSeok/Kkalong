@@ -67,7 +67,7 @@ export default function MyPage() {
     return () => {
       app.style.marginTop = '60px'
     }
-  },[])
+  },[User, otherUser])
 
   const InputClick = () => {
     document.getElementById('Input')?.click()

@@ -22,7 +22,7 @@ export interface BestDresserArticle {
   user: {
     user_id: number,
     nickname: string,
-    profile_image: string,
+    profile_img: string,
     email: string
   }
 }
@@ -38,7 +38,7 @@ export interface HelpCodiArticle {
     user: {
       user_id: number,
       nickname: string,
-      profile_image: string,
+      profile_img: string,
       email: string
     }
   }
