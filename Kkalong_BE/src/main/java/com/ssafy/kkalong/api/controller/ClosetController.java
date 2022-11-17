@@ -1,72 +1,78 @@
 package com.ssafy.kkalong.api.controller;
 
-
-import com.ssafy.kkalong.api.dto.ClothingDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.Closet;
-import com.ssafy.kkalong.api.entity.Clothing;
+import com.ssafy.kkalong.api.entity.Cody;
+import com.ssafy.kkalong.api.entity.CodyClothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.ClosetService;
-import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin(origins = {"*"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/closet")
 public class ClosetController {
 
-    @Autowired
-    ClosetService closetService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    FirebaseService firebaseService;
+    private final ClosetService closetService;
+    private final UserService userService;
 
-
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllClosetByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo){
-        List<Map<String, Object>> result = new ArrayList<>();
-        User user = userService.getUserByUserId(userInfo.getId());
+    @GetMapping("/all/{user_id}")
+    public ResponseEntity<?> getAllClosetByUserId(@PathVariable int user_id){
+        Map<String, Object> result = new HashMap<>();
+        User user = userService.getUserByUserId(user_id);
+        List<ClosetInfoDto> closetInfoDtos = new ArrayList<>();
         List<Closet> closets = closetService.getClosetsByUserId(user);
         for (Closet closet : closets) {
-            System.out.println();
+            ClosetInfoDto closetInfoDto = ClosetInfoDto.builder()
+                    .closet_id(closet.getId())
+                    .name(closet.getName())
+                    .clothings(closetService.findAllClothingByCloset(closet))
+                    .codies(closetService.findAllCodybyCloset(closet))
+                    .build();
+            closetInfoDtos.add(closetInfoDto);
         }
+        result.put("closets", closetInfoDtos);
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping("/removeBg")
-    public ResponseEntity<?> removeBackgroundAndGetColorInfo(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile file) throws Exception {
+    @PostMapping("/closet")
+    public ResponseEntity<?> registerCloset(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody StringDto stringDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
-        if (file!=null) {
-//            MultipartFile bgRemovedImg = closetService.removeBackGround(userInfo.getId(), imgUrl);
-//            List<String> extractedColors = closetService.getColorInfos(bgRemovedImg);
-//            RemoveBgDto removeBgDto = RemoveBgDto.builder()
-//                    .file(bgRemovedImg)
-//                    .color(extractedColors)
-//                    .build();
-//            result.put("img", removeBgDto);
-            String imgUrl = firebaseService.uploadImageWithBackground(userInfo.getId(), userInfo.getEmail(), file);
-            System.out.println(imgUrl);
-            String removedBgImgUrl = closetService.removeBackGround(imgUrl);
-            System.out.println(removedBgImgUrl);
-
-            return ResponseEntity.ok().body(result);
-        } else{
-            return ResponseEntity.badRequest().body("이미지 파일이 없습니다");
-        }
+        result.put("closet_id", closetService.registerCloset(userInfo.getId(), stringDto.getValue()));
+        return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping(consumes = {"multipart/form-data"}, value = "/clothing")
-    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("clothing") ClothingDto clothingDto, @RequestPart("img") MultipartFile img){
-        closetService.registerClothing(userInfo.getId(), clothingDto, img);
+    @PostMapping(consumes = {"multipart/form-data"}, value = "/removeBg")
+    public ResponseEntity<?> removeClothingImgBackground(@RequestBody MultipartFile img) {
+        System.out.println("img file name:"+img.getOriginalFilename());
+        System.out.println("img content type:"+img.getContentType());
+        Map<String, Object> result = new HashMap<>();
+        int next_clothing_id = closetService.findNextClothingId();
+        System.out.println(next_clothing_id);
+        String img_url = closetService.removeClothingImgBackground(next_clothing_id, img);
+        img_url = img_url.substring(1, img_url.length()-1);
+        String color = closetService.getColorInfos(next_clothing_id);
+        color = color.substring(1, color.length()-1);
+        result.put("img", img_url);
+        result.put("color", color);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping(value = "/clothing")
+    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ClothingDto clothingDto){
+        closetService.registerClothing(userInfo.getId(), clothingDto);
     }
 
     @GetMapping("/clothing/{clothing_id}")
@@ -77,4 +83,29 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
+    @PostMapping(consumes = {"multipart/form-data"}, value ="/cody")
+    public void registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
+        closetService.registerCody(userInfo.getId(), codyDto, img);
+    }
+
+    @GetMapping("/cody/{cody_id}")
+    public ResponseEntity<?> getCodyInfoByCodyId(@PathVariable int cody_id){
+        Map<String, Object> result = new HashMap<>();
+        Cody cody = closetService.getCodyInfoByCodyId(cody_id);
+        CodyResponseDto codyResponseDto = CodyResponseDto.builder()
+                .cody_id(cody.getId())
+                .img(cody.getImg())
+                .name(cody.getName())
+                .open(cody.getOpen())
+                .build();
+        result.put("cody", codyResponseDto);
+        List<CodyClothing> codyClothings = closetService.findAllCodyClothingByCody(cody);
+        ArrayList<ClothingDto> clothings = new ArrayList<>();
+        for (CodyClothing codyClothing: codyClothings) {
+            ClothingDto clothingDto = closetService.getClothingInfoByClothingId(codyClothing.getClothing().getId());
+            clothings.add(clothingDto);
+        }
+        result.put("clothings", clothings);
+        return ResponseEntity.ok().body(result);
+    }
 }

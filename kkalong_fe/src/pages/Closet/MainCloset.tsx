@@ -102,6 +102,12 @@ export default function MainCloset() {
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
     navigate("/codi");
+
+    if (params.userId) {
+      navigate("pluscodi");
+    } else {
+      navigate("/pluscodi");
+    }
   };
 
   // const start = () => {

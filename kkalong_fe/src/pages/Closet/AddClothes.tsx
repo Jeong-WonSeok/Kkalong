@@ -13,6 +13,7 @@ import { ObjValueTuple } from "reselect/es/types";
 import { resolveTypeReferenceDirective } from "typescript";
 
 export default function AddClothes() {
+<<<<<<< HEAD
   const location = useLocation();
   const closetId = location.state.closetId;
   console.log(closetId);
@@ -197,6 +198,20 @@ export default function AddClothes() {
     "진청",
     "흑청",
   ];
+=======
+  const navigate = useNavigate()
+  const webcam = useRef<Webcam>(null)
+  const [url, setUrl] = useState<string | ''>('');
+  const seasons = ['봄', '여름', '가을', '겨울']
+  useEffect(()=>{
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.margin = '0'
+
+    return () => {
+      app.style.marginTop = '60px'
+    }
+  },[])
+>>>>>>> 6a3db80edb418123641efd3e675db6899dd2f924
 
   let [color, setColor] = useState("");
   let [subid, setSubid] = useState(0);
@@ -548,7 +563,7 @@ export default function AddClothes() {
   );
 }
 
-const CamDiv = styled.div`
+export const CamDiv = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -556,7 +571,7 @@ const CamDiv = styled.div`
   overflow: hidden;
 `;
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   position: fixed;
   bottom: 0;
   left: auto;
@@ -567,24 +582,24 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
-const CaptureButton = styled.div`
+export const CaptureButton = styled.div`
   background-color: white;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   position: relative;
   z-index: 5;
 `;
 
-const ChildCaptureButton = styled.div`
-  left: -7.5px;
-  top: -7.5px;
+export const ChildCaptureButton = styled.div`
+  left: -8.5px;
+  top: -8.5px;
   position: absolute;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px solid var(--primary-color-900);
   z-index: 3;
 `;
 

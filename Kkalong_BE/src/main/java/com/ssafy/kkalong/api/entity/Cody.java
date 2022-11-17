@@ -18,13 +18,23 @@ public class Cody {
     @Column(name="cody_id", nullable = false)
     private int id;
 
-    @Column(nullable = false)
     private String img;
 
-    @Column(nullable = false)
     private Boolean open;
 
     private int creator;
+
+    private String name;
+
+    private String style;
+
+    private boolean spring;
+
+    private boolean summer;
+
+    private boolean fall;
+
+    private boolean winter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
@@ -33,5 +43,10 @@ public class Cody {
     @OneToMany(mappedBy = "cody")
     private List<CodyClothing> clothings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cody")
+    List<ClosetCody> codies = new ArrayList<>();
 
+    public void setCodyImgUrl(String imgUrl){
+        this.img = imgUrl;
+    }
 }

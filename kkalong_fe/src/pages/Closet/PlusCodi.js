@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import modalBar from "../../assets/icon/Closet/modalBar.png";
 import img1 from "../../img/img1.png";
 import img2 from "../../img/img2.png";
@@ -19,6 +19,7 @@ import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 
 export default function PlusCodi() {
   const navigate = useNavigate();
+  const params = useParams();
   let [modal, setModal] = useState(false);
   const modalClose = () => {
     setModal(!modal);
@@ -79,6 +80,7 @@ export default function PlusCodi() {
   const removeObjectFromCanvas = () => {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };
+
   // fabric.Image.fromURL(
   //   "http://k7b302.p.ssafy.io/api/v1/user/social/login",
   //   function (img) {
@@ -86,13 +88,19 @@ export default function PlusCodi() {
   //     canvas.add(oImg);
   //   }
   // );
+
+  fabric.Image.fromURL("../../img/codi1.png", function (img) {
+    var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
+    canvas.add(oImg);
+  });
+
   return (
     <div>
       <div>
         <TopNav type={""}>
           <BackBtn
             onClick={() => {
-              navigate("/closet");
+              navigate(-1);
             }}
           >
             <img src={left}></img>

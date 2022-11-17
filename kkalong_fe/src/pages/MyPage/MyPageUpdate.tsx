@@ -15,15 +15,19 @@ import { UserType } from "./MyPage";
 import { NickNameP } from "../Signup/Signup";
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { ChangeProfile } from "../../redux/modules/User";
 
 export default function MyPageUpdate() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const { User } = useAppSelector(state => state.User)
   const [isClick, setIsClick] = useState(false)
   const [isNickName, setIsNickName] = useState(false)
-  const [User, setUser] = useState<UserType>()  
+  const [ ChangeUser, setChangeUser ] = useState<UserType>()
 
   useEffect(()=>{
-    setUser(JSON.parse(localStorage?.getItem('userProfile')as string))
+    setChangeUser(User)
   },[])
 
   const CheckNinkname = async () => {
@@ -35,11 +39,9 @@ export default function MyPageUpdate() {
   }
 
   const Submit = async() => {
-    const res = await axios.post(requests.updateProfile, User)
-    setUser(res.data.user)
+    dispatch(ChangeProfile(ChangeUser as UserType))
+    alert('회원정보가 변경되었습니다.') 
     
-    alert('회원정보가 변경되었습니다.')
-    localStorage.setItem("userProfile", JSON.stringify(res.data.user));
     navigate('/myPage')
   }
 
@@ -57,7 +59,7 @@ export default function MyPageUpdate() {
           <SignupInputText>닉네임</SignupInputText>
           <RowContainer>   
             <SignupNicknameDiv>
-              <SignupNicknameInput placeholder={User?.nickname} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, nickname: e.target.value}))}/>
+              <SignupNicknameInput placeholder={User?.nickname} onChange={(e:any)=>setChangeUser((currnet) => ({...currnet as UserType, nickname: e.target.value}))}/>
               <SignupAgeIcon src={NicknameIcon}/>
             </SignupNicknameDiv>
             <SignupNicknameCheck onClick={CheckNinkname}>중복확인</SignupNicknameCheck>
@@ -72,7 +74,7 @@ export default function MyPageUpdate() {
 
         <SignupInputText>나이</SignupInputText>
         <SignupNicknameDiv>
-          <SignupNumberInput value={User?.age} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, age: e.target.value}))}/>
+          <SignupNumberInput value={User?.age} onChange={(e:any)=>setChangeUser((currnet) => ({...currnet as UserType, age: e.target.value}))}/>
           <SignupAgeIcon src={AgeIcon}></SignupAgeIcon>
         </SignupNicknameDiv>
 
@@ -80,7 +82,7 @@ export default function MyPageUpdate() {
         <ColumnDiv>
         <SignupInputText>키</SignupInputText>
         <div>
-          <SignupNumberInput value={User?.height} onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, height: e.target.value}))}/>
+          <SignupNumberInput value={User?.height} onChange={(e:any)=>setChangeUser((currnet) => ({...currnet as UserType, height: e.target.value}))}/>
           <SignupInfoIcon src={HeightIcon}/>
           <SpanTag>cm</SpanTag>
         </div>
@@ -88,7 +90,7 @@ export default function MyPageUpdate() {
         <ColumnDiv>
         <SignupInputText>몸무게</SignupInputText>
         <div>
-          <SignupNumberInput value={User?.weight}  onChange={(e:any)=>setUser((currnet) => ({...currnet as UserType, weight: e.target.value}))}/>
+          <SignupNumberInput value={User?.weight}  onChange={(e:any)=>setChangeUser((currnet) => ({...currnet as UserType, weight: e.target.value}))}/>
           <SignupInfoIcon src={WeightIcon}/>
           <SpanTag>kg</SpanTag>
         </div>

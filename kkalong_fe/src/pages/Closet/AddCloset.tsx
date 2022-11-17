@@ -35,6 +35,10 @@ export default function AddCloset() {
   useEffect(() => {
     const app = document.getElementById("App") as HTMLDivElement;
     app.style.marginBottom = "0";
+
+    return () => {
+      app.style.marginTop = "60px";
+    };
   }, []);
 
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);

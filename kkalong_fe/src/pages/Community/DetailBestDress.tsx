@@ -7,7 +7,7 @@ import CommentContainer from '../../components/Community/CommentContainer'
 
 import BackArrow from '../../assets/icon/Nav/BackArrow.png'
 import Menu from '../../assets/icon/Nav/menu.png'
-import like from '../../assets/icon/Community/like.png'
+import LikeImg from '../../assets/icon/Community/like.png'
 import AlreadyLike from '../../assets/icon/Community/alreadyLike.png'
 
 import { BestDresserArticle, Container } from './MainCommunity'
@@ -19,10 +19,13 @@ import MenuModal from '../../components/Community/MenuModal'
 import Modal from '../../components/Community/Modal'
 
 import {commentType} from './DetailHelpCodi'
+import { UserType } from '../MyPage/MyPage'
+import { useAppSelector } from '../../hooks/reduxHook'
 
 export interface ArticleType extends BestDresserArticle{
-  post_content: string,
-  comment: Array<commentType>
+  comment: Array<commentType>,
+  createAt: string,
+  like: Array<number>
 }
 
 type LikeType = {
@@ -31,19 +34,24 @@ type LikeType = {
 
 export default function DetailBestDress() {
   // undefined 값을 없애주기 위해서 설정
-  const [Like, setLike] = useState(false)
   const [IsMenu, setIsMenu] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
+  const { User } = useAppSelector(state => state.User)
   const navigate = useNavigate()
   const params = useParams()
   // 객체 타입지정
   const [Article, setArticle] = useState<ArticleType>()
+  const [LikeCount, setLikeCount] = useState(0)
+  const [Like, setLike] = useState(false)
 
   useEffect(() => {
     async function getDetail() {
       const res = await axios.get(requests.detailBestDress + params.BestDressId)
+      console.log(res.data)
       setArticle(res.data)
+      setLikeCount(res.data.Best.likeCount)
+      setLike(res.data.like.includes(User!.user_id) ? true : false)
     }
     getDetail()
   }, [])
@@ -91,12 +99,36 @@ export default function DetailBestDress() {
     })))
   }
 
+  // 게시글 좋아요
+  const PostLike = async () => {
+    const res = await axios.post(requests.detailBestDress + Article?.Best.id)
+    setLike(!Like)
+    if (!Like) {
+      setArticle((current) => {
+        let newArticle = current as ArticleType
+        newArticle.like = res.data.like
+        newArticle.Best.likeCount = newArticle.like.length
+        return newArticle
+      })
+    } else {
+      setArticle((current) => {
+        let newArticle = current as ArticleType
+        const result = newArticle!.like.filter(num => {
+          return num !== User!.user_id
+        })
+        newArticle!.like = result
+        newArticle.Best.likeCount = result.length
+        return newArticle
+      })
+    }
+  }
+
   return (
     <div>
       <TopNav type="">
         <IconImg src={BackArrow} onClick={()=>navigate(-1)}/>
         <NavText>도전! 베스트 드레서✨</NavText>
-        <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/>
+        {User?.user_id === Article?.user.user_id ? <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
       </TopNav>
 
       {IsMenu && <MenuModal 
@@ -114,16 +146,16 @@ export default function DetailBestDress() {
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
             {Article?.user && 
             <ProfileContainer>
-              <Profile Image={Article!.user.profile_img} Size={30} id={Article!.user.user_id}/>
+              <Profile Image={Article!.user.profile_image} Size={30} id={Article!.user.user_id}/>
               <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>}
             <LikeContainer>
-              {!!!Like && <Likeimg Like={Like} src={like} onClick={()=> setLike(!!!Like)}/>}
-              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=> setLike(!!!Like)}/>}
-              <CustomText style={{fontSize: '13px'}}>{Article?.Best.likeCount}</CustomText>
+              {!!!Like && <Likeimg Like={Like} src={LikeImg} onClick={()=>{PostLike(); setLikeCount(LikeCount+1)}}/>}
+              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=>{PostLike(); setLikeCount(LikeCount-1)}}/>}
+              <CustomText style={{fontSize: '13px'}}>{LikeCount}</CustomText>
             </LikeContainer>
           </div>
-          <CustomText style={{fontFamily: 'var(--base-font-200)', padding: '5px 15px 0px'}}>{Article?.post_content}</CustomText>
+          <CustomText style={{fontFamily: 'var(--base-font-200)', padding: '5px 15px 0px'}}>{Article?.Best.content}</CustomText>
         </ContentInfoContainer>
         
         <LineDiv></LineDiv>
@@ -131,6 +163,7 @@ export default function DetailBestDress() {
         <CommentContainer
          Comments={Article?.comment ? Article?.comment : defaultComment}
           article_id={Article?.Best.id ? Article?.Best.id : 1}
+          creator={Article?.user.user_id ? Article?.user.user_id : 0}
           category={"bestdress"}
           CommentsInput={CommentsInput}
           CommentsDelete={CommentsDelete}
@@ -212,6 +245,7 @@ const Likeimg = styled.img<LikeType>`
   width: 20px;
   height: 20px;
   margin-right: 3px;
+  z-index: -1;
   animation: ${(props) => props.Like && css`${LikeJello} 0.9s both`};
 `
 
@@ -229,5 +263,5 @@ export const LineDiv = styled.div`
   max-width: 360px;
   margin: 10px 0; 
   height: 2px;
-  z-index: 3;
+  z-index: -1;
 `
