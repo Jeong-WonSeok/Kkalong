@@ -264,4 +264,8 @@ public class UserService {
     public List<User> getUserIncludingNickname(String nickname) {
         return userRepository.findByNicknameContainingIgnoreCase(nickname);
     }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
 }
