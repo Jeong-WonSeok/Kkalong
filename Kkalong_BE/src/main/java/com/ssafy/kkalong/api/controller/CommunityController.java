@@ -104,7 +104,7 @@ public class CommunityController {
 
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getProfile_img());
+            comment_user.setProfile_img(temp_user.getProfile_img());
             comment_user.setEmail(temp_user.getEmail());
 
             comment.put("content", comm.getContent());
@@ -151,7 +151,7 @@ public class CommunityController {
         // 게시물 주인 정보 넣기
         post_user.setUser_id((user.getId()));
         post_user.setNickname(user.getNickname());
-        post_user.setProfile_image(user.getProfile_img());
+        post_user.setProfile_img(user.getProfile_img());
         post_user.setEmail(user.getEmail());
 
         // DB 등록
@@ -208,7 +208,7 @@ public class CommunityController {
 
             comment_user.setUser_id(temp_user.getId());
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getProfile_img());
+            comment_user.setProfile_img(temp_user.getProfile_img());
             comment_user.setEmail(temp_user.getEmail());
             comment.put("content", comm.getContent());
             comment.put("user_id", comment_user);
@@ -299,7 +299,7 @@ public class CommunityController {
             BestDressUserDto userDto = new BestDressUserDto();
             User user = communityService.selectUserHelp(h.getHelp_id());
             userDto.setNickname(user.getNickname());
-            userDto.setProfile_image(user.getProfile_img());
+            userDto.setProfile_img(user.getProfile_img());
             userDto.setUser_id(user.getId());
             userDto.setEmail(user.getEmail());
 
@@ -322,7 +322,7 @@ public class CommunityController {
         BestDressUserDto userDto = new BestDressUserDto();
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
-        userDto.setProfile_image(user.getProfile_img());
+        userDto.setProfile_img(user.getProfile_img());
         userDto.setUser_id(user.getId());
         userDto.setEmail(user.getEmail());
 
@@ -335,7 +335,7 @@ public class CommunityController {
             BestDressUserDto comment_user = new BestDressUserDto();
 
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getProfile_img());
+            comment_user.setProfile_img(temp_user.getProfile_img());
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
@@ -372,7 +372,7 @@ public class CommunityController {
         BestDressUserDto userDto = new BestDressUserDto();
         User user = communityService.selectUserHelp(help_id);
         userDto.setNickname((user.getNickname()));
-        userDto.setProfile_image(user.getProfile_img());
+        userDto.setProfile_img(user.getProfile_img());
         userDto.setUser_id(user.getId());
         userDto.setEmail(user.getEmail());
 
@@ -385,7 +385,7 @@ public class CommunityController {
             BestDressUserDto comment_user = new BestDressUserDto();
 
             comment_user.setNickname(temp_user.getNickname());
-            comment_user.setProfile_image(temp_user.getProfile_img());
+            comment_user.setProfile_img(temp_user.getProfile_img());
             comment_user.setUser_id(temp_user.getId());
             comment_user.setEmail(temp_user.getEmail());
 
