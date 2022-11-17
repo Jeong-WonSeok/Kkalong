@@ -256,24 +256,24 @@ export default function AddClothes() {
       const byteArray = new Uint8Array(byteNumbers);
 
       let image = new Blob([byteArray], {
-        type: "image/jpeg",
+        type: "image/png",
       });
 
-      const myFile = new File([image], "image.jpeg", {
+      const myFile = new File([image], "image.png", {
         type: image.type,
       });
       console.log(image);
       setUrl(imageSrc);
       console.log(imageSrc);
       const formData = new FormData();
-      formData.append("img", image);
-
+      formData.append("img", myFile);
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
       const res = await axios
-        .post(requests.removeBackground, formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-          },
-        })
+        .post(requests.removeBackground, formData, config)
         .then((res) => {
           console.log(res);
         })
