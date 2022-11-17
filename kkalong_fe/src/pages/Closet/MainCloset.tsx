@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 
@@ -45,6 +45,7 @@ import { loadSVGFromString } from "fabric/fabric-impl";
 export interface ClothesProps {
   sortclothes: string[];
 }
+
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
@@ -98,6 +99,38 @@ export default function MainCloset() {
   const [closetId, setClosetId] = useState(0);
   const [swiper, setSwiper] = useState<SwiperCore>();
   // console.log(userId);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const onUploadImage = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", e.target.files[0]);
+      console.log(formData);
+      axios
+        .post(requests.removeBackground, formData, {
+          headers: {
+            enctype: "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    []
+  );
+
+  const onUploadImageButtonClick = useCallback(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    inputRef.current.click();
+  }, []);
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
@@ -226,7 +259,6 @@ export default function MainCloset() {
                   </SwiperSlide>
                 );
               })} */}
-
               <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
@@ -241,7 +273,6 @@ export default function MainCloset() {
               </SwiperSlide>
               {/* </SliderBorder> */}
             </Swiper>
-
             <SelectBtnContainer>
               <SelectBtn
                 onClick={() => {
@@ -284,7 +315,13 @@ export default function MainCloset() {
                 );
               })} */}
           </SortClothesContainer>
-
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={onUploadImage}
+          />
+          {/* <button onClick={onUploadImageButtonClick} /> */}
           <AddClothesContainer>
             <AddClothes
               onClick={() => navigate("/closet/add", { state: { closetId } })}
