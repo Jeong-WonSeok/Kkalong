@@ -240,6 +240,7 @@ export default function AddClothes() {
   //   }
   // };
   console.log(url);
+
   const capture = useCallback(async () => {
     const imageSrc = webcam.current?.getScreenshot();
     console.log(imageSrc);
@@ -264,11 +265,11 @@ export default function AddClothes() {
       console.log(image);
       setUrl(imageSrc);
       console.log(imageSrc);
-      // const formData = new FormData();
-      // formData.append("img", myFile);
+      const formData = new FormData();
+      formData.append("img", image);
 
       const res = await axios
-        .post(requests.removeBackground, myFile, {
+        .post(requests.removeBackground, formData, {
           headers: {
             "content-type": "multipart/form-data",
           },
