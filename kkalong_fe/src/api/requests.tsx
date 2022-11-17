@@ -30,6 +30,7 @@ const requests = {
   removeBackground: "/closet/removeBg",
   addClothes: "/closet/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
   codl: "/closet/cody",
+  closetAdd: "/closet/closet",
 
   // 가상피팅
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴

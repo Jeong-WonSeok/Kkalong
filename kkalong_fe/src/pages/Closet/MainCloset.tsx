@@ -115,18 +115,30 @@ export default function MainCloset() {
   //     console.log(res);
   //   });
   // };
-  let [loading, setLoading] = useState(false);
+  console.log(closet);
+  let [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await axios(requests.closet + userId);
-      let clo = [...closet];
-      [...closet] = res.data.closets;
-      setCloset(clo);
-      console.log(closet);
-      setLoading(false);
-    };
-    fetchData();
+    axios
+      .get(requests.closet + userId)
+      .then((res) => {
+        setCloset(res.data.closets);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+
+    // const fetchData = async () => {
+    //   // setLoading(true);
+    //   const res = await axios(requests.closet + userId);
+    //   console.log(res);
+    //   let clo = [...closet];
+    //   [...closet] = res.data.closets;
+    //   setCloset(clo);
+    //   console.log(closet);
+    //   setLoading(false);
+    // };
+    // fetchData();
 
     // setLoading(true)
     // const result = await axios
@@ -191,7 +203,7 @@ export default function MainCloset() {
               modules={[EffectCoverflow, Pagination]}
               className="mySwiper"
             >
-              {closet.map((a, i) => {
+              {/* {closet.map((a, i) => {
                 return (
                   <SwiperSlide>
                     <SlideButton
@@ -200,12 +212,12 @@ export default function MainCloset() {
                         console.log(closetId);
                       }}
                     >
-                      <img src={sortclothes[i]} />
+                      <img src={closet[i].clothings[i].img} alt="no" />
                     </SlideButton>
                     <SwiperText>{closet[i].name}</SwiperText>
                   </SwiperSlide>
                 );
-              })}
+              })} */}
 
               <SwiperSlide>
                 <SlideButton2
@@ -249,13 +261,20 @@ export default function MainCloset() {
             })}
           </Category>
           <SortClothesContainer>
-            {/* {closet[0].clothings.map(function (a, i) {
-              return (
-                <SortClothes>
-                  <ClothesImg src={closet[0].clothings[i].img} />
-                </SortClothes>
-              );
-            })} */}
+            {/* {closet[0].closet_id === closetId &&
+              closet[0].clothings.map(function (a, i) {
+                return (
+                  <SortClothes
+                    onClick={() => {
+                      axios.get(requests.addClothes + [i]).then((res) => {
+                        console.log(res);
+                      });
+                    }}
+                  >
+                    <ClothesImg src={closet[0].clothings[i].img} />
+                  </SortClothes>
+                );
+              })} */}
           </SortClothesContainer>
 
           <AddClothesContainer>

@@ -239,7 +239,7 @@ export default function AddClothes() {
   //     label.style.color = "black";
   //   }
   // };
-
+  console.log(url);
   const capture = useCallback(async () => {
     const imageSrc = webcam.current?.getScreenshot();
     console.log(imageSrc);
@@ -254,11 +254,25 @@ export default function AddClothes() {
       }
       const byteArray = new Uint8Array(byteNumbers);
 
-      let image = new Blob([byteArray], { type: "image/jpeg" });
+      let image = new Blob([byteArray], {
+        type: "image/jpeg",
+      });
+
+      const myFile = new File([image], "image.jpeg", {
+        type: image.type,
+      });
       console.log(image);
       setUrl(imageSrc);
+      console.log(imageSrc);
+      // const formData = new FormData();
+      // formData.append("img", myFile);
+
       const res = await axios
-        .post(requests.removeBackground, image)
+        .post(requests.removeBackground, myFile, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           console.log(res);
         })
