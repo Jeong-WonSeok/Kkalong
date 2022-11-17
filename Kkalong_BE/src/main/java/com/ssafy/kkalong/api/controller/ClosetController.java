@@ -55,7 +55,7 @@ public class ClosetController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"}, value = "/removeBg")
-    public ResponseEntity<?> removeClothingImgBackground(@RequestBody MultipartFile img) {
+    public ResponseEntity<?> removeClothingImgBackground(@RequestPart MultipartFile img) {
         System.out.println("img file name:"+img.getOriginalFilename());
         System.out.println("img content type:"+img.getContentType());
         Map<String, Object> result = new HashMap<>();
