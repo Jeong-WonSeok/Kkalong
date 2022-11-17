@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 
@@ -7,7 +7,7 @@ import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
 import axios from "../../api/axios";
 import requests from "../../api/requests";
-
+//import png
 import menu from "../../assets/icon/Nav/menu.png";
 import hat from "../../assets/icon/Closet/hat.png";
 import list from "../../assets/icon/Closet/list.png";
@@ -24,17 +24,29 @@ import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import Bar from "../../assets/icon/Closet/Bar.png";
 import camera from "../../assets/icon/Closet/add_clothes.png";
+
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../../components/closet/Carousel";
-// import { ClothesProps } from "../../components/closet/Carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "./styles.css";
+import SwiperCore from "swiper";
+
+// import required modules
+import { EffectCoverflow, Pagination } from "swiper";
+import add_closet from "../../assets/icon/Closet/add_closet.png";
+import { loadSVGFromString } from "fabric/fabric-impl";
 export interface ClothesProps {
   sortclothes: string[];
 }
 export default function MainCloset() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const params = useParams();
   const settings = {
     className: "center",
@@ -63,87 +75,227 @@ export default function MainCloset() {
     img6,
     img7,
   ]);
-  let [sls, setSls] = useState("");
+  interface dataType {
+    closet_id: number;
+    clothings: any[];
+    codies: any[];
+    name: string;
+  }
+  let [closet, setCloset] = useState(Array<dataType>);
 
-  useEffect(() => {
-    const start = async () => {
-      if (params.UserId) {
-        // 타인이 볼 때
-        const res = await axios.get(requests.closet + params.UserId)
-      } else {
-        // 자기자신
-        const res = await axios.get(requests.closet + params.UserId);
-      }
-    };
-    start();
-  });
+  // useEffect(() => {
+  //   setCloset([
+
+  //   ]);
+  // }, []);
+  let [sls, setSls] = useState("");
+  let userProfile: any = localStorage.getItem("userProfile");
+  userProfile = JSON.parse(userProfile);
+  let userId = userProfile.user_id;
 
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
+  const navigate = useNavigate();
+  const [closetId, setClosetId] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperCore>();
+  // console.log(userId);
 
   const GoCody = () => {
+    // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
+    navigate("/codi");
+
     if (params.userId) {
-      navigate('pluscodi')
+      navigate("pluscodi");
     } else {
-      navigate('/pluscodi')
+      navigate("/pluscodi");
     }
   };
 
+  // const start = () => {
+  // axios
+  //   .get(requests.closet + userId)
+  //   .then((res) => {
+  //     let clo = [...closet];
+  //     [...closet] = res.data.closets;
+  //     setCloset(clo);
+  //     console.log(closet);
+  //   })
+  //   .catch((res) => {
+  //     console.log(res);
+  //   });
+  // };
+  console.log(closet);
+  let [loading, setLoading] = useState(true);
+  useEffect(() => {
+    axios
+      .get(requests.closet + userId)
+      .then((res) => {
+        setCloset(res.data.closets);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+
+    // const fetchData = async () => {
+    //   // setLoading(true);
+    //   const res = await axios(requests.closet + userId);
+    //   console.log(res);
+    //   let clo = [...closet];
+    //   [...closet] = res.data.closets;
+    //   setCloset(clo);
+    //   console.log(closet);
+    //   setLoading(false);
+    // };
+    // fetchData();
+
+    // setLoading(true)
+    // const result = await axios
+    //     .get(requests.closet + userId)
+    //     .then((res) => {
+    //       closet = res.data.closets;
+    //       console.log(closet);
+    //     })
+    //     .catch((res) => {
+    //       console.log(res);
+    //     });
+    //   setLoading(false);
+    // };
+  }, []);
+  // const start = async () => {
+  //   if (params.UserId) {
+  //     // 타인이 볼 때
+  //     const res = await axios.get(requests.closet + params.UserId);
+  //   } else {
+  //     // 자기자신
+  //     const res = await axios.get(requests.closet + params.UserId);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await axios.get(requests.closet + userId);
+  //     return response.data;
+  //   }
+  //   fetchData().then((res) => {
+  //     setCloset(res);
+  //   });
+  // }, []);
+
   return (
-    <div style={{ marginBottom: "70px" }}>
-      <TopNav type={"menu"}>
-        <CategoryText1>옷장</CategoryText1>
-        <div style={{ width: "54px", height: "38px" }}>
-          <MenuIcon src={menu} />
+    <>
+      {loading ? (
+        <>loading...</>
+      ) : (
+        <div style={{ marginBottom: "70px" }}>
+          <TopNav type={"menu"}>
+            <CategoryText1>옷장</CategoryText1>
+            <div style={{ width: "54px", height: "38px" }}>
+              <MenuIcon src={menu} />
+            </div>
+          </TopNav>
+          <>
+            {/* <Carousel sortclothes={sortclothes} /> */}
+            <Swiper
+              effect={"coverflow"}
+              grabCursor={true}
+              centeredSlides={true}
+              slidesPerView={"auto"}
+              coverflowEffect={{
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+              }}
+              onSwiper={(swiper) => console.log(swiper)}
+              modules={[EffectCoverflow, Pagination]}
+              className="mySwiper"
+            >
+              {/* {closet.map((a, i) => {
+                return (
+                  <SwiperSlide>
+                    <SlideButton
+                      onClick={() => {
+                        setClosetId(closet[i].closet_id);
+                        console.log(closetId);
+                      }}
+                    >
+                      <img src={closet[i].clothings[i].img} alt="no" />
+                    </SlideButton>
+                    <SwiperText>{closet[i].name}</SwiperText>
+                  </SwiperSlide>
+                );
+              })} */}
+
+              <SwiperSlide>
+                <SlideButton2
+                  onClick={() => {
+                    navigate("/addcloset");
+                  }}
+                >
+                  <ClosetIcon>
+                    <img src={add_closet} />
+                  </ClosetIcon>
+                  <BtnText>옷장 추가 하기</BtnText>
+                </SlideButton2>
+              </SwiperSlide>
+              {/* </SliderBorder> */}
+            </Swiper>
+
+            <SelectBtnContainer>
+              <SelectBtn
+                onClick={() => {
+                  navigate("/closet");
+                }}
+              >
+                <SelectColor1 />
+                <SelectText>옷장</SelectText>
+              </SelectBtn>
+              <img src={Bar} />
+              <SelectBtn onClick={GoCody}>
+                <SelectColor2 />
+                <SelectText>코디</SelectText>
+              </SelectBtn>
+            </SelectBtnContainer>
+          </>
+          <Category>
+            {clothes.map(function (a, i) {
+              return (
+                <ClothesBtn>
+                  <img src={clothes[i]} />
+                  <ClothesText>{cltext[i]}</ClothesText>
+                </ClothesBtn>
+              );
+            })}
+          </Category>
+          <SortClothesContainer>
+            {/* {closet[0].closet_id === closetId &&
+              closet[0].clothings.map(function (a, i) {
+                return (
+                  <SortClothes
+                    onClick={() => {
+                      axios.get(requests.addClothes + [i]).then((res) => {
+                        console.log(res);
+                      });
+                    }}
+                  >
+                    <ClothesImg src={closet[0].clothings[i].img} />
+                  </SortClothes>
+                );
+              })} */}
+          </SortClothesContainer>
+
+          <AddClothesContainer>
+            <AddClothes
+              onClick={() => navigate("/closet/add", { state: { closetId } })}
+            >
+              <img src={camera} />
+            </AddClothes>
+          </AddClothesContainer>
+          <FooterBar />
         </div>
-      </TopNav>
-
-      <>
-        <Carousel sortclothes={sortclothes} />
-        <SelectBtnContainer>
-          <SelectBtn
-            onClick={() => {
-              navigate("/closet");
-            }}
-          >
-            <SelectColor1 />
-            <SelectText>옷장</SelectText>
-          </SelectBtn>
-          <img src={Bar} />
-          <SelectBtn onClick={GoCody}>
-            <SelectColor2 />
-            <SelectText>코디</SelectText>
-          </SelectBtn>
-        </SelectBtnContainer>
-      </>
-
-      <Category>
-        {clothes.map(function (a, i) {
-          return (
-            <ClothesBtn>
-              <img src={clothes[i]} />
-              <ClothesText>{cltext[i]}</ClothesText>
-            </ClothesBtn>
-          );
-        })}
-      </Category>
-
-      <SortClothesContainer>
-        {sortclothes.map(function (a, i) {
-          return (
-            <SortClothes>
-              <ClothesImg src={sortclothes[i]} />
-            </SortClothes>
-          );
-        })}
-      </SortClothesContainer>
-
-      <AddClothesContainer>
-        <AddClothes onClick={() => navigate("/closet/add")}>
-          <img src={camera} />
-        </AddClothes>
-      </AddClothesContainer>
-      <FooterBar />
-    </div>
+      )}
+    </>
   );
 }
 
@@ -281,4 +433,47 @@ const AddClothes = styled.button`
   background-color: white;
   background-size: auto;
   background-image: url("../../assets/icon/Closet/arrow-left.png");
+`;
+
+//carousel
+
+let SwiperText = styled.p`
+  color: black;
+  display: flex;
+  margin-left: 40px;
+  font-family: var(--base-font-400);
+  font-size: 18px;
+`;
+
+// let SliderBorder = styled.button`
+//   height: 250px;
+//   width: 250px;
+//   border: #e5ddce 4px solid;
+// `;
+let SlideButton = styled.button`
+  height: 150px;
+  width: 150px;
+  border: #e5ddce 4px solid;
+  border-radius: 20px;
+  background-color: white;
+`;
+
+let SlideButton2 = styled.button`
+  height: 150px;
+  width: 150px;
+  border: #e5ddce 4px dotted;
+  border-radius: 20px;
+  background-color: white;
+`;
+
+let BtnText = styled.p`
+  margin-top: 20px;
+  color: #e5ddce;
+`;
+
+const ClosetIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  display: flex;
+  margin: auto;
 `;
