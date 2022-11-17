@@ -24,9 +24,9 @@ spring:
       mail.smtp.ssl.enable: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
+    # url: jdbc:mysql://localhost:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
     url: jdbc:mysql://k7b302.p.ssafy.io:3306/kkalong?serverTimezone=UTC&characterEncoding=utf8
-#    username: ssafy
+    # username: ssafy
     username: b302
     password: ssafy
   security:
