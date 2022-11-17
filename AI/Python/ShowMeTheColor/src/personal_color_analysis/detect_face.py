@@ -33,6 +33,7 @@ class DetectFace:
     # return type : np.array
     def detect_face_part(self):
         face_parts = [[],[],[],[],[],[],[],[]]
+        print("img", self.img)
         # detect faces in the grayscale image
         rect = self.detector(cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY), 1)[0]
 

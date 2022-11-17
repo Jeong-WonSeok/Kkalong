@@ -60,25 +60,26 @@ top_bottom = [
             ]
 
 bottom_shoes = [
-    [bottom_blue, shoes_blue], [bottom_black, shoes_black], [bottom_blue, shoes_white], [bottom_blue, shoes_navy],
+    [bottom_blue, shoes_blue], [bottom_blue, shoes_black], [bottom_blue, shoes_white], [bottom_blue, shoes_navy],
     [bottom_navy, shoes_blue], [bottom_navy, shoes_black], [bottom_navy, shoes_white], [bottom_navy, shoes_navy],
-    [bottom_black, shoes_black], [bottom_blue, shoes_white],
-    [bottom_khaki, shoes_khaki], [bottom_khaki, shoes_black], [bottom_khaki, shoes_white],
-    [bottom_wine, shoes_wine], [bottom_khaki, shoes_black], [bottom_khaki, shoes_white],
-    [bottom_black, shoes_black], [bottom_black, shoes_white]
+    [bottom_black, shoes_black], [bottom_black, shoes_white], [bottom_black, shoes_navy],
+    [bottom_khaki, shoes_khaki], [bottom_khaki, shoes_black], [bottom_khaki, shoes_white], [bottom_khaki, shoes_navy],
+    [bottom_wine, shoes_wine], [bottom_wine, shoes_black], [bottom_wine, shoes_white], [bottom_wine, shoes_navy],
+    [bottom_black, shoes_black], [bottom_black, shoes_white], [bottom_black, shoes_navy],
+    [bottom_white, shoes_black], [bottom_white, shoes_navy], [bottom_white, shoes_white], [bottom_white, shoes_khaki],
             ]
 
 top_outer = [
     [top_red, outer_brown], [top_red, outer_gray], [top_red, outer_white], [top_red, outer_black],
     [top_white, outer_blue], [top_white, outer_white], [top_white, outer_gray], [top_white, outer_navy], [top_white, outer_brown], [top_white, outer_black],
     [top_gray, outer_black], [top_gray, outer_white], [top_gray, outer_navy], [top_gray, outer_brown],
-    [top_navy, outer_gray], [top_navy, outer_black], [top_navy, outer_white], [top_navy, outer_navy]
-    # [top_yellow,]
-    # [top_green]
-    # [top_orange]
-    # [top_pink]
-    # [top_blue]
-    # [top_black]
+    [top_navy, outer_gray], [top_navy, outer_black], [top_navy, outer_white], [top_navy, outer_navy],
+    [top_yellow, outer_brown], [top_yellow, outer_white],
+    [top_green, outer_green], [top_green, outer_black], [top_green, outer_navy],
+    [top_orange, outer_white], [top_orange, outer_black], [top_orange, outer_brown],
+    [top_pink, outer_brown], [top_pink, outer_black],
+    [top_blue, outer_blue], [top_blue, outer_black], [top_blue, outer_navy], [top_blue, outer_white],
+    [top_black, outer_black], [top_black, outer_navy], [top_black, outer_white], [top_black, outer_brown], [top_black, outer_green], [top_black, outer_gray]
 ]
 # 날씨 매핑
 bag = [701, 702, 703, 704, 705, 706, 707]
@@ -272,8 +273,8 @@ def seasonRecommend(cody, season, df):
     bottom_df = set(df[df['main_category'] == 2]['sub_category'])
     outer_df = set(df[df['main_category'] == 5]['sub_category'])
     shoes_df = set(df[df['main_category'] == 6]['sub_category'])
-    hat_df = set(df[df['main_category'] == 7]['sub_category'])
-    bag_df = set(df[df['main_category'] == 8]['sub_category'])
+    bag_df = set(df[df['main_category'] == 7]['sub_category'])
+    hat_df = set(df[df['main_category'] == 8]['sub_category'])
 
     if season == 'spring':
         if cody['top'] == 1:
@@ -296,7 +297,7 @@ def seasonRecommend(cody, season, df):
             shoes = shoes_spring
         else:
             shoes = []
-        if cody['outer'] != 0:
+        if cody['bag'] != 0:
             bag_a = bag
         else:
             bag_a = []
@@ -325,7 +326,7 @@ def seasonRecommend(cody, season, df):
             shoes = shoes_summer
         else:
             shoes = []
-        if cody['outer'] != 0:
+        if cody['bag'] != 0:
             bag_a = bag
         else:
             bag_a = []
@@ -354,7 +355,7 @@ def seasonRecommend(cody, season, df):
             shoes = shoes_fall
         else:
             shoes = []
-        if cody['outer'] != 0:
+        if cody['bag'] != 0:
             bag_a = bag
         else:
             bag_a = []
@@ -383,7 +384,7 @@ def seasonRecommend(cody, season, df):
             shoes = shoes_winter
         else:
             shoes = []
-        if cody['outer'] != 0:
+        if cody['bag'] != 0:
             bag_a = bag
         else:
             bag_a = []
@@ -392,12 +393,12 @@ def seasonRecommend(cody, season, df):
         else:
             hat = []
 
-    top_num = 0;
-    bottom_num = 0;
-    outer_num = 0;
-    shoes_num = 0;
-    bag_num = 0;
-    hat_num = 0;
+    top_num = 0
+    bottom_num = 0
+    outer_num = 0
+    shoes_num = 0
+    bag_num = 0
+    hat_num = 0
 
     top_and = list(set(top) & top_df)
     if len(top_and) != 0:
@@ -572,47 +573,98 @@ def weatherRecommend(style, gender, weather, temp):
     print(weather)
     print(temp)
     return "a"
+
 def personalRecommend(style, gender, weather ,personal_color):
     clothesDF = importDB()
     styleDf = clothesDF[clothesDF['style'] == style]
 
     cody = mainChoice(gender, weather, styleDf)
-    print(cody)
+
     cody_sub = seasonRecommend(cody, weather, styleDf)
-    print(cody_sub)
 
     top_color_total = list(styleDf[styleDf["main_category"] == 1]['color'].drop_duplicates())
-    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
-    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
-    # top_color_total = list(styleDf[styleDf["main_category"] == 1 | styleDf["main_category"] == 4]['color'].drop_duplicates())
+    bottom_color_total = list(styleDf[styleDf["main_category"] == 2]['color'].drop_duplicates())
+    outer_color_total = list(styleDf[styleDf["main_category"] == 5]['color'].drop_duplicates())
+    shoes_color_total = list(styleDf[styleDf["main_category"] == 6]['color'].drop_duplicates())
+    bag_color_total = list(styleDf[styleDf["main_category"] == 7]['color'].drop_duplicates())
+    hat_color_total = list(styleDf[styleDf["main_category"] == 8]['color'].drop_duplicates())
     personal = set_personal_color(personal_color)
 
-    top_total = list( set(personal) & set(top_color_total))
-
-    select_color = random.choice(top_total)
+    top_total = set(personal) & set(top_color_total)
 
     color = {"top": [], "bottom": [], "outer": [], "shoes": [], "bag": [], "hat": []}
+
+    temp_top = []
     for top in color_top:
-        if top.__contains__(select_color):
-            color["top"] = top
+        if len(set(top) & top_total) > 0:
+            temp_top.append(list(set(top) & top_total))
+
+    color["top"] = random.choice(temp_top)
+    color["bottom"] = color_select(color, bottom_color_total, "bottom")
+    color["shoes"] = color_select(color, shoes_color_total, "shoes")
+    color["outer"] = color_select(color, outer_color_total, "outer")
+    color["bag"] = color_select(color, bag_color_total, "bag")
+    color["hat"] = color_select(color, hat_color_total, "hat")
+
+    top_result = selectDbCody(cody, color, gender, "top").sample(n=1)
+    bottom_result = selectDbCody(cody, color, gender, "bottom").sample(n=1)
+    shoes_result = selectDbCody(cody, color, gender, "shoes").sample(n=1)
+    outer_result = selectDbCody(cody, color, gender, "outer").sample(n=1)
+    if len(outer_result) > 0:
+        outer_result.sample(n=1)
+    bag_result = selectDbCody(cody, color, gender, "bag")
+    if len(bag_result) > 0:
+        bag_result = bag_result.sample(n=1)
+    hat_result = selectDbCody(cody, color, gender, "hat")
+    if len(hat_result) > 0:
+        hat_result.sample(n=1)
+
+    result = {"top": top_result.to_dict('r'), "bottom": bottom_result.to_dict('r'),
+            "shoes": shoes_result.to_dict('r'), "outer": outer_result.to_dict('r'),
+            "bag": bag_result.to_dict('r'), "hat": hat_result.to_dict('r')}
+
+    return result
+
+def selectDbCody(cody, color, gender, category):
+    conn = create_engine('mysql+pymysql://ssafy:ssafy@localhost:3306/kkalong')
+    color_choice = []
+    if len(color[category]) > 0:
+        color_choice = random.choice(color[category])
+    sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B')".format(cody[category], color_choice, gender)
+    result = pd.read_sql_query(sql, conn)
+    return result
+
+
+def color_select(color, color_total, category):
+    color_temp = []
+
+    if category == "bottom":
+        for col in top_bottom:
+            if len(set(color["top"]) & set(col[0])) > 0:
+                color_temp.append(col[1])
+    elif category == "outer":
+        for col in top_outer:
+            if len(set(color["top"]) & set(col[0])) > 0:
+                color_temp.append(col[1])
+    elif category == "shoes":
+        for col in bottom_shoes:
+            if len(set(color["bottom"]) & set(col[0])) > 0:
+                color_temp.append(col[1])
+    else:
+        for col in top_bottom:
+            if len(set(color["top"]) & set(col[0])) > 0:
+                color_temp.append(col[1])
+
+    last_color = []
+    for i in range(10):
+        if len(color_temp) != 0:
+            color_choice = random.choice(color_temp)
+            last_color = list(set(color_choice) & set(color_total))
+
+        if len(last_color) > 0:
             break
 
-
-    bottom_color = []
-    for col in top_bottom:
-        if col.__contains__(color["top"]):
-            bottom_color.append(col[1])
-
-    # 아우터 색 계열 지정
-    outer_color = []
-    for col in top_outer:
-        if col.__contains__(color["top"]):
-            outer_color.append(col[1])
-    color["outer"] = random.choice(outer_color)
-    print(cody)
-    print(select_color)
-
-    return "b"
+    return last_color
 
 def bodyShapeRecommend(gender, main, season, height, weight):
 

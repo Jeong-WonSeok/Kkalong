@@ -34,7 +34,7 @@ export const OauthRedirect = () => {
     if (role === "ROLE_USER") {
       localStorage.setItem("token", token);
       axios
-        .get("http://k7b302.p.ssafy.io/api/v1/user/social/login", {
+        .get("http://k7b302.p.ssafy.io:8080/api/v1/user/social/login", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")!,
           },
