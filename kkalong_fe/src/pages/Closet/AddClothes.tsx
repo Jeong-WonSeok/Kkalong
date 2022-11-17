@@ -262,7 +262,6 @@ export default function AddClothes() {
       const myFile = new File([image], "image.png", {
         type: image.type,
       });
-      console.log(image);
       setUrl(imageSrc);
       console.log(imageSrc);
       const formData = new FormData();
