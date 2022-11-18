@@ -557,6 +557,7 @@ def temporalRecommend(cody_main, styleDf, temp):
     return cody_sub
 
 def weatherRecommend(style, gender, weather, temp):
+    temp = int(temp)
     clothesDF = importDB()
     styleDf = clothesDF[clothesDF['style'] == style]
     #gender 입력받고 날씨 입력받아서 출력
@@ -572,17 +573,12 @@ def weatherRecommend(style, gender, weather, temp):
     color = {"top": [], "bottom": [], "outer": [], "shoes": [], "bag": [], "hat": []}
 
     cody_top = list(styleDf[styleDf["main_category"] == 1]['sub_category'].drop_duplicates())
-    print(cody_top)
     cody_bottom = list(styleDf[styleDf["main_category"] == 2]['sub_category'].drop_duplicates())
-    print(cody_bottom)
     cody_outer = list(styleDf[styleDf["main_category"] == 5]['sub_category'].drop_duplicates())
-    print(cody_outer)
     cody_shoes = list(styleDf[styleDf["main_category"] == 6]['sub_category'].drop_duplicates())
-    print(cody_shoes)
 
     while(1):
         cody_sub = temporalRecommend(cody_main, styleDf, temp)
-        print(1, cody_sub[1], 2, cody_sub[2], 5, cody_sub[5], 6, cody_sub[6])
         if cody_sub[1] not in cody_top:
             continue
         if cody_sub[2] not in cody_bottom:
@@ -591,7 +587,7 @@ def weatherRecommend(style, gender, weather, temp):
             continue
         if cody_sub[6] not in cody_shoes:
             continue
-
+        print("돌리는중~")
         break
 
     top_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[1]]['color'].drop_duplicates())
