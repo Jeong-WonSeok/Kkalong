@@ -45,4 +45,12 @@ public class RecommendService {
         return personal_recommend;
     }
 
+    public HashMap<Object, Object> recommendWeather(String weather, String fall, String gender, String style) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url ="http://localhost:8000/api/weather_recommend/"+ weather +"/"+ fall+ "/" + gender +"/" + style;
+        HashMap<Object, Object> personal_recommend = restTemplate.getForObject(url, HashMap.class);
+        System.out.println(personal_recommend.getClass().getName());
+        return personal_recommend;
+    }
+
 }

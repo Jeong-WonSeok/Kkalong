@@ -53,10 +53,22 @@ public class    RecommendController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/weather/{today}/{time}/{x}/{y}")
-    public ResponseEntity<?> getWeather(@PathVariable String today, @PathVariable String time, @PathVariable String x, @PathVariable String y) throws JSONException, IOException {
-        Map<String, String> weather = weatherService.loadTodayWeather(x, y, today, time);
+    @GetMapping("/weather/{x}/{y}")
+    public ResponseEntity<?> getWeather(@PathVariable String x, @PathVariable String y) throws JSONException, IOException {
+        String today = "20221118";
+        String time = "1152";
+        Map<String, String> weather = weatherService.loadTodayWeather(x, y, today, time, "1500");
 
         return ResponseEntity.ok().body(weather);
+
     }
+
+    @PostMapping("/personal/{style}")
+    public ResponseEntity<?> WeatherRecommend(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable String style){
+        User user = userService.getUserByUserId(userInfo.getId());
+        HashMap<Object, Object> result = recommendService.recommendPersonal(style, "fall", user.getGender(), style);
+        return ResponseEntity.ok().body(result);
+    }
+
+
 }
