@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook'
+import { getHelpCodi } from '../../redux/modules/HelpCodi'
 
 import TopNav from '../../components/ui/TopNav'
 import FooterBar from '../../components/ui/FooterBar'
 import HelpCodi from '../../components/Community/HelpCodi'
 import { Container, HelpCodiArticle } from './MainCommunity'
-import { CategoryText } from './MainBestDress'
+import { CategoryText, PlusDiv } from './MainBestDress'
 import { PlusImg } from './MainBestDress'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddArticle from '../../assets/icon/Community/addArticle.png'
-
-
+import { NoData } from '../VirturalFitting/VirtualBrandChoice'
 
 type ButtonType = {
   tap?: boolean;
@@ -20,49 +21,25 @@ type ButtonType = {
 
 export default function MainHelpCodi() {
   const navigate = useNavigate()
-  const [ HelpArticles, setHelpArticles ] = useState(Array<HelpCodiArticle>)
+  const dispatch = useAppDispatch()
+  const { HelpCody } = useAppSelector(store => store.HelpCodi)
+  const { User } = useAppSelector(state => state.User)
+  const [ HelpCodies, setHelpCodi ] = useState(Array<HelpCodiArticle>)
+  const [ HelpCloset, setHelpCloset] = useState(Array<HelpCodiArticle>)
+  const [ FriendHelp, setFriendHelp ] = useState(Array<HelpCodiArticle>)
   const [ IsCodi, setIsCodi] = useState(true)
   const [ IsCloset, setIsCloset] = useState(false)
 
   useEffect(() => {
-    setHelpArticles([
-      {
-        help_id: 1,
-        help_img: 'https://i3.codibook.net/files/1978121543118/a553319d9394abde/70936325.jpg?class=big',
-        user_id: {
-          nickname: 'infp2',
-          profile: ''
-        },
-        help_title: '20대 남자인데 데이트 코디 어떤가요?'
-      },
-      {
-        help_id: 2,
-        help_img: 'https://i.pinimg.com/474x/85/06/4d/85064decf478772d1659c1aec4afd4b5.jpg',
-        user_id: {
-          nickname: 'poni',
-          profile: ''
-        },
-        help_title: '새내기 코디 어때요?'
-      },
-      {
-        help_id: 3,
-        help_img: 'https://i.pinimg.com/originals/94/8a/22/948a22cfbdd4554d964e7c4b84cc9a50.jpg',
-        user_id: {
-          nickname: 'Rabbit13',
-          profile: ''
-        },
-        help_title: '친구랑 홍대갈 예정인데 이 정도면 평타?'
-      },
-      {
-        help_id: 4,
-        help_img: 'https://i.pinimg.com/originals/4a/22/8b/4a228b0859fc11f0c28525d7cd0c059a.jpg',
-        user_id: {
-          nickname: 'loki535',
-          profile: ''
-        },
-        help_title: '겨울 데이트룩 괜찮은가요?'
-      },
-    ])
+    setHelpCloset(HelpCody.filter(Help => {
+      return Help.Help.open
+    }))
+    setHelpCodi(HelpCody.filter(Help => {
+      return !Help.Help.open
+    }))
+    setFriendHelp(HelpCody.filter(Friend => {
+      return User.followings.includes(Friend.Help.user.user_id)
+    }))
   }, [])
   
   return (
@@ -75,10 +52,10 @@ export default function MainHelpCodi() {
 
       <CategoryText style={{marginLeft: '10px'}}>친구가 곤란해하고 있어요</CategoryText>
       <FriendContainer>
-        {HelpArticles.map((HelpArticle, idx) => {
+        {FriendHelp.length > 0 && FriendHelp.map((HelpArticle, idx) => {
             return (
               <TitleDiv key={idx}>
-                Q. {HelpArticle.help_title.length > 25 ? HelpArticle.help_title.slice(0,23) + '...' : HelpArticle.help_title}
+                Q. {HelpArticle.Help.title.length > 25 ? HelpArticle.Help.title.slice(0,23) + '...' : HelpArticle.Help.title}
               </TitleDiv>
             )
           })}
@@ -90,25 +67,36 @@ export default function MainHelpCodi() {
         <TapButton tap={IsCloset} onClick={()=> {setIsCodi(false); setIsCloset(true)}}>옷장</TapButton>
       </ButtonContainer>
       
-      {IsCodi && <CodiContainer>
-        {HelpArticles.map((HelpArticle, idx) => {
-          return (
-            <HelpCodi article={HelpArticle}/> 
-          )
+      {IsCodi && HelpCodies.length > 0 && <CodiContainer>
+        {HelpCodies.map((Help, idx) => {
+          if (Help.Help.help_img) {
+            return (
+              <div key={idx}>
+                <HelpCodi article={Help}/> 
+              </div> 
+            )
+          }
         })}
       </CodiContainer>}
+      {IsCodi && HelpCodies.length <= 0 && <NoData>데이터가 없어요</NoData>}
 
-      {IsCloset && <ClosetContainer>
-          {HelpArticles.map((HelpArticle, idx) => {
-            return (
-            <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
-              Q. {HelpArticle.help_title.length > 25 ? HelpArticle.help_title.slice(0,23) + '...' : HelpArticle.help_title}
-            </TitleDiv>
-            )
+      {IsCloset && HelpCloset.length > 0 && <ClosetContainer>
+          {HelpCloset.map((Help, idx) => {
+            if(!Help.Help.help_img) {
+              return (
+                <TitleDiv key={idx} onClick={()=> navigate(`/community/HelpCodi/${idx}`)}>
+                  Q. {Help.Help.title.length > 25 ? Help.Help.title.slice(0,23) + '...' : Help.Help.title}
+                </TitleDiv>
+                )
+            }
           })}
         </ClosetContainer>}
+
+      {IsCloset && HelpCloset.length <= 0 && <NoData>데이터가 없어요</NoData>}
         
-        <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  
+        <PlusDiv>
+          <PlusImg src={AddArticle} onClick={()=> navigate('/community/HelpCodi/Add')}/>  
+        </PlusDiv>
       <FooterBar/>
     </div>
   )

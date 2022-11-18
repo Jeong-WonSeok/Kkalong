@@ -1,12 +1,20 @@
-import axios from 'axios';
+import axios from "axios";
+
+let token = "";
+if (localStorage.getItem("token")) {
+  token = localStorage.getItem("token")?.replaceAll('"', "") as string;
+}
 
 const instance = axios.create({
   // 배포용
-  // baseURL: "https://j7b102.p.ssafy.io/",
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://k7b302.p.ssafy.io/api/v1",
+  // baseURL: "http://localhost:8080/",
   headers: {
-    Authorization: 'Bearer ' + localStorage.getItem('token')!
-  },  
+    Authorization: `Bearer ${token}`,
+  },
 });
+
+// instance.defaults.headers.post['Accept'] = "*/*"
+// instance.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 
 export default instance;

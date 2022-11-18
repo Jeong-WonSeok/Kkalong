@@ -29,6 +29,7 @@ import img4 from "../../img/img4.png";
 import img5 from "../../img/img5.png";
 import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
+import { SelectBtnContainer } from "./MainCloset";
 
 export default function CodiPage() {
   const dispatch = useAppDispatch();
@@ -43,60 +44,49 @@ export default function CodiPage() {
     speed: 500,
   };
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
-  let [cltext, setCltext] = useState([
-    "전체",
-    "상의",
-    "겉옷",
-    "하의",
-    "신발",
-    "악세서리",
-  ]);
-  let [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-  ]);
+  let [cltext, setCltext] = useState(["전체","상의","겉옷","하의","신발","악세서리"]);
+  let [sortclothes, setSortclothes] = useState([img1,img2,img3,img4,img5,img6,img7]);
   let [btn, setBtn] = useState(false);
   let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   useEffect(() => {}, []);
 
   return (
     <div>
-      <TopNav type={""}>
-        <Logo src={logo} />
+      <TopNav type={"menu"}>
         <CategoryText1>코디</CategoryText1>
-        <div style={{ width: "30px", height: "30px" }}></div>
-        <MenuIcon src={menu} />
+        <div style={{width: '54px', height: '38px'}}>
+          <MenuIcon src={menu} />
+        </div>  
       </TopNav>
       <Carousel sortclothes={sortclothes} />
       <>
-        <SelectBtn1
+      <SelectBtnContainer>
+        <SelectBtn
           onClick={() => {
             navigate("/closet");
           }}
         >
           <SelectColor1 />
-          <SelectText1>옷장</SelectText1>
-        </SelectBtn1>
+          <SelectText>옷장</SelectText>
+        </SelectBtn>
         <img src={Bar} />
 
-        <SelectBtn2>
+        <SelectBtn>
           <SelectColor2 />
-          <SelectText2>코디</SelectText2>
-        </SelectBtn2>
+          <SelectText>코디</SelectText>
+        </SelectBtn>
+        </SelectBtnContainer>
       </>
       <>
+      <CodiContainer>
         {codi.map(function (a, i) {
           return (
             <ClothesCodi>
-              <img src={codi[i]} />
+              <CodiImg src={codi[i]} />
             </ClothesCodi>
           );
         })}
+
         <CodiPlus
           onClick={() => {
             navigate("/pluscodi");
@@ -104,89 +94,75 @@ export default function CodiPage() {
         >
           <img src={add_codi} />
         </CodiPlus>
+      </CodiContainer>
+
+        
         <FooterBar />
       </>
     </div>
   );
 }
 
-const Logo = styled.img`
-  width: 50px;
-  height: 30px;
-  margin: auto 0;
-`;
-
 const CategoryText1 = styled.p`
-  line-height: 0;
-  margin: auto;
-  font-family: var(--base-font-400);
+  margin: auto 0;
+  font-family: var(--base-font-600);
 `;
 
-const SelectText1 = styled.p`
-  line-height: 0;
-  margin-top: 10px;
+const SelectText = styled.p`
+  margin: 0;
   font-size: 15px;
   font-family: var(--base-font-400);
   color: #6b6060;
 `;
 
-const SelectText2 = styled.p`
-  line-height: 0;
-  margin-top: 10px;
-  font-size: 15px;
-  font-family: var(--base-font-400);
-  color: #6b6060;
-`;
 
 const MenuIcon = styled.img`
   width: 30px;
   height: 30px;
-  margin: auto 0;
+  padding: 4px 0;
 `;
 
-const SelectBtn1 = styled.button`
-  margin-top: 20px;
-  width: 190px;
+const SelectBtn = styled.button`
+  width: 170px;
   height: 30px;
   border-radius: 10px 10px 0px 0px;
   background-color: white;
   border: none;
   margin-right: 10px;
 `;
-const SelectColor1 = styled.div`
+
+const SelectColor2 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-500);
   border-radius: 10px 10px 0px 0px;
   margin-left: 0px;
   padding: 0px;
 `;
-const SelectColor2 = styled.div`
+const SelectColor1 = styled.div`
   height: 12px;
-  width: 190px;
+  width: 170px;
   background-color: var(--primary-color-800);
   border-radius: 10px 10px 0px 0px;
 `;
-const SelectBtn2 = styled.button`
-  margin-top: 20px;
-  width: 190px;
-  height: 30px;
-  border-radius: 10px 10px 0px 0px;
-  background-color: white;
-  margin-left: 5px;
-  border: none;
-`;
+
+const CodiContainer = styled.div`
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
 
 //코디 버튼
 const ClothesCodi = styled.button`
-  height: 150px;
-  width: 150px;
-  margin-top: 20px;
-  margin-left: 40px;
-  margin-right: auto;
+  height: 140px;
+  width: 140px;
+  margin: 20px;
   background-color: white;
   border-radius: 20px;
   border: solid 2px #e5ddce;
+  padding: 0;
 `;
 
 const AddClothes = styled.button`
@@ -204,15 +180,18 @@ const AddClothes = styled.button`
 `;
 
 const CodiPlus = styled.button`
-  height: 150px;
-  width: 150px;
-  margin-top: 20px;
-  margin-left: 40px;
-  margin-right: auto;
+  height: 140px;
+  width: 140px;
+  margin: 20px;
   background-color: white;
   border-radius: 20px;
   border: dotted 2px #e5ddce;
 `;
+
+const CodiImg = styled.img`
+  max-width: 140px;
+  max-height: 140px;
+`
 
 const BtnBar = styled.div`
   width: 1px;

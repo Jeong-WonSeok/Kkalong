@@ -1,11 +1,31 @@
+import { request } from 'http'
 import { useState } from 'react'
 import styled from 'styled-components'
+import axios from '../../api/axios'
+import requests from '../../api/requests'
+import { commentType } from '../../pages/Community/DetailHelpCodi'
 
-export default function CommentInput() {
+export default function CommentInput({article_id, category, CommentsInput} :{article_id: number, category:string, CommentsInput: (data: commentType) => void}) {
   const [Message, setMessage] = useState('')
+  const [CodiImg, setCodiImg] = useState(null as null | number)
 
-  const SendMessage = () => {
+  const SendMessage = async () => {
     // axios 요청 보내기
+    if (category === "closet" || category == "cody") {
+      const data = {
+        content: Message,
+        codi_id: CodiImg
+      }
+      const res = await axios.post(requests.detailHelpCodi + article_id + requests.comment , data)
+      console.log(res.data)
+      CommentsInput(res.data)
+    } else {
+      const data = {content: Message}
+      const res = await axios.post(requests.detailBestDress + article_id + requests.comment, data)
+      console.log(res.data)
+      CommentsInput(res.data)
+    }
+    setMessage('')
   }
 
   return (
@@ -18,11 +38,14 @@ export default function CommentInput() {
 
 const Container = styled.div`
   width: 100%;
+  max-width: 360px;
+  height: 30px;
+  background-color: white;
   display: flex;
   flex-direction: row;
   position: fixed;
-  bottom: 75px;
-  margin: 0 auto;
+  left: auto;
+  bottom: 70px;
   font-family: var(--base-font-400);
 `
 

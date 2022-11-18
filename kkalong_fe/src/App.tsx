@@ -1,64 +1,115 @@
+import React, { useEffect } from "react";
+import "./App.css";
+import "./styles/common.scss";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
+import FooterBar from "./components/ui/FooterBar";
+// Login
+import StartPage from "./pages/StartPage";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 
-import React from 'react';
-import './App.css';
-import './styles/common.scss'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components'
-import FooterBar from './components/ui/FooterBar';
-import Login from './pages/Login/Login'
-import Signup from './pages/Signup/Signup'
-import SignupNext from './pages/Signup/SignupNext'
+// Closet
 import MainCloset from "./pages/Closet/MainCloset";
-import MainCommunity from "./pages/Community/MainCommunity";
-import MainBestDress from "./pages/Community/MainBestDress";
-import DetailBestDress from "./pages/Community/DetailBestDress";
 import AddCloset from "./pages/Closet/AddCloset";
 import CodiPage from "./pages/Closet/CodiPage";
 import PlusCodi from "./pages/Closet/PlusCodi";
-import WeatherPage from "./pages/Closet/WeatherPage";
-import DailyRecommend from "./pages/Closet/DailyRecommend";
-import AddBestDress from './pages/Community/AddBestDress';
-import MyPage from './pages/MyPage/MyPage'
+import AddClothes from "./pages/Closet/AddClothes";
+import CodiEdit from "./components/closet/CodiEdit";
+import ClosetAsset from "./components/closet/ClosetAsset";
+import { OauthRedirect } from "./pages/Signup/OauthRedirect";
+import ThreeTest from "./pages/Closet/ThreeTest";
+// Community
+import MainCommunity from "./pages/Community/MainCommunity";
+import MainBestDress from "./pages/Community/MainBestDress";
+import DetailBestDress from "./pages/Community/DetailBestDress";
+import AddBestDress from "./pages/Community/AddBestDress";
 import MainHelpCodi from "./pages/Community/MainHelpCodi";
 import DetailHelpCodi from "./pages/Community/DetailHelpCodi";
-import AddSelectHelpCodi from './pages/Community/AddSelectHelpCodi';
-import AddHelpCodi from './pages/Community/AddHelpCodi';
+import AddSelectHelpCodi from "./pages/Community/AddSelectHelpCodi";
+import AddHelpCodi from "./pages/Community/AddHelpCodi";
+// Recommand
+import WeatherPage from "./pages/Recommend/WeatherPage";
+import DailyRecommend from "./pages/Recommend/DailyRecommend";
+// AIFitting
+import VirtualPicture from "./pages/VirturalFitting/VirtualPicture";
+import VirtualBrandChoice from "./pages/VirturalFitting/VirtualBrandChoice";
+import VirtualBrand from "./pages/VirturalFitting/VirtualBrand";
+import VirtualBrandProduct from "./pages/VirturalFitting/VirtualBrandProduct";
+// MyPage
+import MyPage from "./pages/MyPage/MyPage";
+import MyPageFriend from "./pages/MyPage/MyPageFriend";
+import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
+import MyPageArticle from "./pages/MyPage/MyPageArticle";
+import PersonalInfo from "./pages/PersonalInfo";
+import MyFollow from "./pages/MyPage/MyFollow";
 
+// import Example from "./components/closet/Example";
+// import Scene from "../public/Scene";
 
 function App() {
+  // 사용자의 화면에 맞춰서 크기조절
+  useEffect(()=>{
+    const windowHeight = window.innerHeight
+    const app = document.getElementById('App') as HTMLDivElement
+    app.style.minHeight = `${windowHeight - 130}px`
+  },[])
   return (
-    <div className="App">
-      <Router>                       
-        <Routes>
-          <Route path="/login" element={<Login/>}></Route>
-          <Route path="/signup" element={<Signup/>}></Route>
-          <Route path="/signupNext" element={<SignupNext/>}></Route>
-          <Route path='/community' element={<MainCommunity/>}></Route>
-          <Route path='/community/BestDress' element={<MainBestDress/>}></Route>
-          <Route path='/community/BestDress/Add' element={<AddBestDress/>}></Route>
-          <Route path='/community/BestDress/:BestDressId' element={<DetailBestDress/>}></Route>
-          <Route path='/community/HelpCodi' element={<MainHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/Add' element={<AddSelectHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/Add/:Category' element={<AddHelpCodi/>}></Route>
-          <Route path='/community/HelpCodi/:HelpCodiId' element={<DetailHelpCodi/>}></Route>
-          <Route path="/closet" element={<MainCloset />}></Route>
-          <Route path="/addcloset" element={<AddCloset />}></Route>
-          <Route path="/codi" element={<CodiPage />}></Route>
-          <Route path="/pluscodi" element={<PlusCodi />}></Route>
-          <Route path="/community" element={<MainCommunity />}></Route>
-          <Route path="/weather" element={<WeatherPage />}></Route>
-          <Route path="/daily" element={<DailyRecommend />}></Route>
-          <Route
-            path="/community/BestDress"
-            element={<MainBestDress />}
-          ></Route>
-          <Route
-            path="/community/BestDress/:BestDressId"
-            element={<DetailBestDress />}
-          ></Route>
-          <Route path="/myPage" element={<MyPage/>}></Route>
-        </Routes>
-      </Router>
+    <div id="container">
+      <div id="App">
+        <Router>
+          <Routes>
+            <Route path="/" element={<StartPage />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+
+            {/* 출시를 위한 개인정보 처리방침 url */}
+            <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
+            {/* 커뮤니티 */}
+            <Route path="/community" element={<MainCommunity />}></Route>
+            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
+            <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
+            <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
+            {/* 옷장 */}
+            <Route path="/closet" element={<MainCloset />}></Route>
+            <Route path="/closet/Add" element={<AddClothes />}></Route>
+            <Route path="/closet/:userId" element={<MainCloset />}></Route>
+            <Route path="/closet/:userId/pluscodi" element={<PlusCodi />}></Route>
+            <Route path="/addcloset" element={<AddCloset />}></Route>
+            <Route path="/codi" element={<CodiPage />}></Route>
+            <Route path="/pluscodi" element={<PlusCodi />}></Route>
+            <Route path="/pluscodi/:Category" element={<PlusCodi />}></Route>
+            <Route path="/codiedit" element={<CodiEdit />}></Route>
+            <Route path="/closetasset" element={<ClosetAsset />}></Route>
+            <Route path="/threetest" element={<ThreeTest />}></Route>
+            <Route path="/oauth2/redirect" element={<OauthRedirect />} />
+            <Route path="/recommend/weather" element={<WeatherPage />}></Route>
+            <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
+            {/* 마이페이지 */}
+            <Route path="/myPage" element={<MyPage />}></Route>
+            <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
+            <Route path="/myPage/Update/" element={<MyPageUpdate />}></Route>
+            <Route path="/myPage/Article/" element={<MyPageArticle />}></Route>
+            <Route path="/myPage/Follow" element={<MyFollow />}></Route>
+            <Route path="/myPage/Following" element={<MyFollow />}></Route>
+            <Route path="/myPage/:userId" element={<MyPage />}></Route>
+            <Route path="/myPage/:userId/Follow" element={<MyFollow />}></Route>
+            <Route path="/myPage/:userId/Following" element={<MyFollow />}></Route>
+            <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
+            {/* 가상피팅 */}
+            <Route path="/VirtualFitting/" element={<VirtualPicture />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
+            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
+          </Routes>
+        </Router>
+      </div>
     </div>
   );
 }

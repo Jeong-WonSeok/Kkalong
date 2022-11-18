@@ -1,25 +1,35 @@
-import React from 'react'
-import styled from 'styled-components'
-import { BestDresserArticle } from '../../pages/Community/MainCommunity'
-import like from '../../assets/icon/Community/like.png'
-import { useNavigate } from 'react-router-dom'
-import Profile from  './Profile'
+import React from "react";
+import styled from "styled-components";
+import { BestDresserArticle } from "../../pages/Community/MainCommunity";
+import { useNavigate } from "react-router-dom";
 
-export default function BestDresser({article} : {article:BestDresserArticle}) {
-  const navigate = useNavigate()
+import like from "../../assets/icon/Community/like.png";
+import defaultImg from "../../assets/icon/Community/defaultImg.png"
+import Profile from "./Profile";
+import FirebaseUrl from "../../hooks/FirebaseUrl";
 
+export default function BestDresser({
+  article,
+}: {
+  article: BestDresserArticle;
+}) {
+  const navigate = useNavigate();
+  
   return (
-    <Container style={{backgroundImage: `url(${article.post_img})`}} onClick={()=>navigate(`/community/BestDress/${article.post_id}`)}>
+    <Container
+      style={{ backgroundImage: `url(${article.Best.img ? FirebaseUrl(article) : defaultImg})` }}
+      onClick={() => navigate(`/community/BestDress/${article.Best.id}`)}
+    >
       <ProfileContainer>
-        <Profile Image={article.post_user.profile} Size={17}/>
-        <span>{article.post_user.nickname}</span>
+        <Profile Image={article.user.profile_image} Size={17} id={article.user.user_id}/>
+        <span>{article.user.nickname}</span>
       </ProfileContainer>
       <LikeContainer>
-        <LikeImg src={like}/>
-        {article.post_like}
+        <LikeImg src={like} />
+        {article.Best.likeCount}
       </LikeContainer>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -33,7 +43,7 @@ const Container = styled.div`
   justify-content: space-between;
   margin: 0 5px 10px 5px;
   background-size: cover;
-  overflow: hidden
+  overflow: hidden;
 `
 
 const ProfileContainer = styled.div`
@@ -42,7 +52,7 @@ const ProfileContainer = styled.div`
   font-size: 12px;
   display: flex;
   flex-direction: row;
-`
+`;
 
 const LikeContainer = styled.div`
   display: flex;
@@ -50,10 +60,10 @@ const LikeContainer = styled.div`
   justify-content: end;
   font-size: 12px;
   font-family: var(--base-font-400);
-`
+`;
 
 const LikeImg = styled.img`
   width: 18px;
   height: 18px;
   margin-right: 4px;
-`
+`;

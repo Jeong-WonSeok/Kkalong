@@ -2,102 +2,70 @@ import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
-import { getData } from '../../redux/modules/Community';
+import { getBest3, getBestDress } from '../../redux/modules/BestDress';
+import { getHelpCodi } from '../../redux/modules/HelpCodi';
 
 import BestDresser from '../../components/Community/BestDresser';
 import HelpCodi from '../../components/Community/HelpCodi';
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
+import FirebaseUrl from '../../hooks/FirebaseUrl';
+
 
 export interface BestDresserArticle {
-  post_id: number,
-  post_img: string,
-  post_user: {
-    nickname: string,
-    profile: string,
+  Best: {
+    content: string,
+    id: number,
+    img: string,
+    likeCount: number
   }
-  post_like: number
+  user: {
+    user_id: number,
+    nickname: string,
+    profile_image: string,
+    email: string
+  }
 }
 
 export interface HelpCodiArticle {
-  help_id: Number;
-  help_img: string;
-  user_id: {
-    nickname: string,
-    profile: string,
+  Help: {
+    help_id: number,
+    help_img: string,
+    range: string,
+    open: boolean,
+    title: string,
+    content: string,
+    user: {
+      user_id: number,
+      nickname: string,
+      profile_image: string,
+      email: string
+    }
   }
-  help_title: string
 }
 
 
 export default function MainCommunity() {
-  const {data} = useAppSelector(state => state.Community)
+  const {BestDress, Best3} = useAppSelector(state => state.BestDress)
+  const {HelpCody} = useAppSelector(state => state.HelpCodi)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [Best3, setBest3] = useState([
-    `https://m.rodenty.com/web/product/big/202204/88ead4b44cfbd86c80b237e0bbc4fc39.jpg`,
-    `https://static.lookpin.co.kr/20210830111703-9bf7/376bff1f9197214c2f17f2881ae8c68c.jpg?resize=880`,
-    `https://m.rodenty.com/web/product/big/202202/b9b6f434d554adbbae066c9d665004ab.jpg`
-  ])
-  const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
-  const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
-
-  const goBestDress = () => {
-    navigate('/community/BestDress')
-  }
+  // const [Best3Article, setBest3Article] = useState(Array<BestDresserArticle>)
+  // const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
+  // const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
 
   useEffect(() => {
-    dispatch(getData)
-
-    setBestArticles([
-      {
-        post_id: 1,
-        post_img: 'http://m.ippeumi.com/web/product/big/Vdaily20210410_25EA_j024.jpg',
-        post_user: {
-          nickname: 'loki535',
-          profile: ''
-        },
-        post_like: 13
-      },
-    ])
-    setHelpArticles([
-      {
-        help_id: 1,
-        help_img: 'https://i3.codibook.net/files/1978121543118/a553319d9394abde/70936325.jpg?class=big',
-        user_id: {
-          nickname: 'infp2',
-          profile: ''
-        },
-        help_title: '20대 남자인데 데이트 코디 어떤가요?'
-      },
-      {
-        help_id: 2,
-        help_img: 'https://i.pinimg.com/474x/85/06/4d/85064decf478772d1659c1aec4afd4b5.jpg',
-        user_id: {
-          nickname: 'poni',
-          profile: ''
-        },
-        help_title: '새내기 코디 어때요?'
-      },
-      {
-        help_id: 3,
-        help_img: 'https://i.pinimg.com/originals/94/8a/22/948a22cfbdd4554d964e7c4b84cc9a50.jpg',
-        user_id: {
-          nickname: 'Rabbit13',
-          profile: ''
-        },
-        help_title: '친구랑 홍대갈 예정인데 이 정도면 평타?'
-      },
-      {
-        help_id: 4,
-        help_img: 'https://i.pinimg.com/originals/4a/22/8b/4a228b0859fc11f0c28525d7cd0c059a.jpg',
-        user_id: {
-          nickname: 'loki535',
-          profile: ''
-        },
-        help_title: '겨울 데이트룩 괜찮은가요?'
-      },
-    ])
+    const start = async () => {
+      await dispatch(getBest3())
+      await dispatch(getBestDress())
+      await dispatch(getHelpCodi())
+      
+      // setBestArticles([...BestDress.splice(0,20)])
+      // setHelpArticles([...HelpCody.splice(0,20)])
+      // setBest3Article([...Best3])
+    }
+    start()
+    
   }, [])
   
   return (
@@ -111,22 +79,27 @@ export default function MainCommunity() {
       <List>
         <Category>오늘의 깔롱쟁이🏆</Category>
         {Best3.map((Best, index) => {
+          const url = FirebaseUrl(Best)
           if (index === 1) {
             return (
-              <Best3Container style={{margin: '0 20px'}} src={Best}/>
+              <div key={index} style={{display: 'inline'}}>
+                <Best3Container style={{margin: '0 20px'}} src={Best.Best.img}/>
+              </div>
             )
           } else {
             return (
-              <Best3Container src={Best}/>
+              <div key={index} style={{display: 'inline'}}>
+                <Best3Container src={url}/>
+              </div>
             )
           }
         })}
       </List>
 
       <List>
-        <Category onClick={goBestDress}>도전! 베스트 드레서✨</Category>
+        <Category onClick={()=>navigate('/community/BestDress')}>도전! 베스트 드레서✨</Category>
         <ArticleList>
-          {BestArticles.map((BestArticle, index) => {
+          {BestDress.length > 0 && BestDress.map((BestArticle, index) => {
             return (
               <div key={index}>
                 <BestDresser article={BestArticle}/>
@@ -139,7 +112,7 @@ export default function MainCommunity() {
       <List>
         <Category onClick={()=> navigate('/community/HelpCodi')}>도와주세요 패알못😂</Category>
         <ArticleList>
-          {HelpArticles.map((HelpArticle, index) => {
+          {HelpCody.map((HelpArticle, index) => {
             return (
               <div key={index}>
                 <HelpCodi article={HelpArticle}/>
@@ -176,6 +149,7 @@ const ArticleList = styled.div`
   display: flex;
   flex-direction: row;
   overflow: scroll;
+  min-height: 100px;
 `
 
 const Best3Container = styled.img`
@@ -183,9 +157,10 @@ const Best3Container = styled.img`
   height: 120px;
   border-radius: 20px;
   margin-top: 10px;
+  min-height: 100px;
 `
 
-const CategoryText = styled.p`
+export const CategoryText = styled.p`
   line-height: 0;
   font-family: var(--base-font-600);
 `

@@ -1,21 +1,22 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import FirebaseUrl from '../../hooks/FirebaseUrl'
 import { HelpCodiArticle } from '../../pages/Community/MainCommunity'
 import Profile from './Profile'
 
 export default function HelpCodi({article} : {article: HelpCodiArticle}) {
   const navigate = useNavigate()
   return (
-    <div  onClick={()=>navigate(`/community/HelpCodi/${article.help_id}`)}>
-    <Container style={{backgroundImage: `url(${article.help_img})`}}>
+    <div onClick={()=>navigate(`/community/HelpCodi/${article.Help.help_id}`)}>
+    <Container style={{backgroundImage: `url(${FirebaseUrl(article)})`}}>
       <ProfileContainer>
-      <Profile Image={article.user_id.profile} Size={17}/>
-        <span>{article.user_id.nickname}</span>
+      <Profile Image={article.Help.user.profile_image} Size={17} id={article.Help.user.user_id}/>
+        <span>{article.Help.user.nickname}</span>
       </ProfileContainer>
       
     </Container>
     <TitleContainer>
-      Q. {article.help_title.length < 15 ? article.help_title : article.help_title.slice(0, 15) + '...'}
+      Q. {article.Help.title.length < 15 ? article.Help.title : article.Help.title.slice(0, 15) + '...'}
     </TitleContainer>
     </div>
   )

@@ -11,13 +11,16 @@ import selectRecommend from "../../assets/icon/Footer/select_recommend.png";
 import MyPage from "../../assets/icon/Footer/MyPage.png";
 import selcetMyPage from "../../assets/icon/Footer/select_MyPage.png";
 
+type select = {
+  SelectCategory: string
+}
 
 export default function FooterBar() {
-  const navigate = useNavigate()
-  const [SelectCategory, setSelectCategory] = useState('closet')
-  let url = window.location.href
+  const navigate = useNavigate();
+  const [SelectCategory, setSelectCategory] = useState("closet");
+  let url = window.location.href;
 
-  useEffect(()=> {
+  useEffect(() => {
     // url 포함 여부로 체크
     url = window.location.href
     if (url.includes('community')) {
@@ -32,7 +35,7 @@ export default function FooterBar() {
         NewWord = 'closet'
         return NewWord
       })
-    } else if (url.includes('mirror')) {
+    } else if (url.includes('VirtualFitting')) {
       return setSelectCategory(current => {
         let NewWord = current
         NewWord = 'mirror'
@@ -44,7 +47,7 @@ export default function FooterBar() {
         NewWord = 'recommend'
         return NewWord
       })
-    } else if (url.includes('profile')) {
+    } else if (url.includes('myPage')) {
       return setSelectCategory(current => {
         let NewWord = current
         NewWord = 'profile'
@@ -54,29 +57,35 @@ export default function FooterBar() {
   },[url, selectCloset])
 
   const GoNavigate = (type: string) => {
-    navigate(`/${type}`)
-  }
-  
+    navigate(`/${type}`);
+  };
+
   return (
     <FooterDiv>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="closet" ? selectCloset : closet} onClick={()=>GoNavigate('closet')}/>
+        <FooterImg
+          src={SelectCategory === "closet" ? selectCloset : closet}
+          onClick={() => GoNavigate("closet")}
+        />
         옷장
       </FooterImgContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend')}/>
+      <FooterImg src={SelectCategory==="recommend" ? selectRecommend : recommend} onClick={()=>GoNavigate('recommend/weather')}/>
         추천
       </FooterImgContainer>
-      <MirrorContainer>
-        <MirrorImg src={mirror} onClick={()=>GoNavigate('mirror')}/>
+      <MirrorContainer SelectCategory={SelectCategory}>
+        <MirrorImg src={mirror} onClick={() => GoNavigate("VirtualFitting")} />
         가상피팅
       </MirrorContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="community" ? selectCommunity : community} onClick={()=>GoNavigate('community')}/>
+        <FooterImg
+          src={SelectCategory === "community" ? selectCommunity : community}
+          onClick={() => GoNavigate("community")}
+        />
         커뮤니티
       </FooterImgContainer>
       <FooterImgContainer>
-        <FooterImg src={SelectCategory==="profile" ? selcetMyPage : MyPage} onClick={()=>GoNavigate('profile')}/>
+        <FooterImg src={SelectCategory==="profile" ? selcetMyPage : MyPage} onClick={()=>GoNavigate('myPage')}/>
         프로필
       </FooterImgContainer>
     </FooterDiv>
@@ -87,13 +96,14 @@ const FooterDiv = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
-  max-width: 400px;
+  max-width: 360px;
   font-family: var(--base-font-300);
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 70px;
   background-color: white;
+  z-index: 9999;
 `;
 
 const FooterImgContainer = styled.div`
@@ -105,8 +115,8 @@ const FooterImgContainer = styled.div`
   padding: 0 8px;
 `;
 
-const MirrorContainer = styled(FooterImgContainer)`
-  background: #ded6c6;
+const MirrorContainer = styled(FooterImgContainer)<select>`
+  background: ${(props) => (props.SelectCategory === "mirror" ? "var(--primary-color-900)" : "#ded6c6")};
   color: white;
   padding: 8px;
   border-radius: 50%;
