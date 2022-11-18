@@ -4,15 +4,19 @@ import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.CommunityService;
 import com.ssafy.kkalong.api.service.RecommendService;
 import com.ssafy.kkalong.api.service.UserService;
+import com.ssafy.kkalong.api.service.WeatherService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +24,10 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend")
-public class RecommendController {
+public class    RecommendController {
 
+    @Autowired
+    WeatherService weatherService;
     @Autowired
     RecommendService recommendService;
     @Autowired
@@ -47,4 +53,10 @@ public class RecommendController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/weather/{today}/{time}/{x}/{y}")
+    public ResponseEntity<?> getWeather(@PathVariable String today, @PathVariable String time, @PathVariable String x, @PathVariable String y) throws JSONException, IOException {
+        Map<String, String> weather = weatherService.loadTodayWeather(x, y, today, time);
+
+        return ResponseEntity.ok().body(weather);
+    }
 }

@@ -6,19 +6,17 @@ from colorthief import ColorThief
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import colorsys
-from PIL import Image
-import urllib.request
 
 color_name = ['흰색', '라이트그레이', '회색', '다크 그레이', '검정색',
-            '딥레드', '빨간색', '라즈베리', '네온 핑크', '분홍색',
-            '라이트 핑크', '페일 핑크', '피치', '코랄', '라이트 오렌지',
-            '네온 오렌지', '오렌지 핑크', '주황색', '아이보리', '라이트 옐로우',
-            '노란색', '머스타드', '네온 그린', '라이트 그린', '민트',
-            '녹색', '올리브 그린', '카키', '다크 그린', '스카이 블루',
-            '네온 블루', '파란색', '네이비', '자주', '라벤더',
-            '보라색', '버건디', '갈색', '로즈골드', '레드 브라운',
-            '카키 베이지', '카멜', '샌드', '베이지색',
-            '데님', '연청', '중청', '진청', '흑청']
+              '딥레드', '빨간색', '라즈베리', '네온 핑크', '분홍색',
+              '라이트 핑크', '페일 핑크', '피치', '코랄', '라이트 오렌지',
+              '네온 오렌지', '오렌지 핑크', '주황색', '아이보리', '라이트 옐로우',
+              '노란색', '머스타드', '네온 그린', '라이트 그린', '민트',
+              '녹색', '올리브 그린', '카키', '다크 그린', '스카이 블루',
+              '네온 블루', '파란색', '네이비', '자주', '라벤더',
+              '보라색', '버건디', '갈색', '로즈골드', '레드 브라운',
+              '카키 베이지', '카멜', '샌드', '베이지색',
+              '데님', '연청', '중청', '진청', '흑청']
 
 color_chip_hsv = [[160, 0, 240], [40, 6, 203], [40, 1, 146], [145, 11, 82], [160, 0, 0],
                 [234, 152, 90], [237, 232, 111], [231, 157, 131], [215, 193, 116], [215, 224, 124],
@@ -44,14 +42,8 @@ color_chip_rgb = [[255, 255, 255], [217, 217, 215], [156, 156, 155], [83, 86, 91
 
 
 def image_preprocess(target_item):
-    urllib.request.urlretrieve(target_item, "image.png")
-    image = Image.open("image.png")
-    # print(target_item)
-    # image.show(image)
-    # image.save("colorExtract.png", "png")
-
-    # cv2.imshow(target_item)
-    ct = ColorThief("image.png")
+    image = cv2.imread(target_item, cv2.IMREAD_UNCHANGED)
+    ct = ColorThief(target_item)
 
     #이미지에서 가장 많은 비율을 차지하는 색깔 추출
     dominant_color = ct.get_color(quality=1)
@@ -70,11 +62,5 @@ def image_preprocess(target_item):
             min_dis = dis
             min_idx = idx
         idx += 1
-    image.close()
-    os.remove('image.png');
+
     return color_name[min_idx]
-
-
-
-
-
