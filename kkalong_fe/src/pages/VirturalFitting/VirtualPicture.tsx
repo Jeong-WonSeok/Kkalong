@@ -186,23 +186,26 @@ export default function VirtualPicture() {
           )}
         </div>
       )}
-      {/* 
-    {IsSelect === "Picture" && !url && <CamDiv>
-      <Webcam 
-        audio={false}
-        screenshotFormat="image/jpeg"
-        ref={webcam}
-        videoConstraints={videoConstraints}
-        onUserMediaError={() => window.alert('cant access your camera')}/>
-      <ButtonContainer>
-        <CaptureButton onClick={capture}>
-        <ChildCaptureButton></ChildCaptureButton>
-        </CaptureButton>
-        <ChangeDisplay onClick={ModeChange}>
-          <SelectImg src={Change}/>
-        </ChangeDisplay>
-      </ButtonContainer>
-    </CamDiv>} */}
+
+      {/* {IsSelect === "Picture" && !url && (
+        <CamDiv>
+          <Webcam
+            audio={false}
+            screenshotFormat="image/jpeg"
+            ref={webcam}
+            videoConstraints={videoConstraints}
+            onUserMediaError={() => window.alert("cant access your camera")}
+          />
+          <ButtonContainer>
+            <CaptureButton onClick={capture}>
+              <ChildCaptureButton></ChildCaptureButton>
+            </CaptureButton>
+            <ChangeDisplay onClick={ModeChange}>
+              <SelectImg src={Change} />
+            </ChangeDisplay>
+          </ButtonContainer>
+        </CamDiv>
+      )} */}
 
       {IsSelect === "Picture" && url && (
         <div>
