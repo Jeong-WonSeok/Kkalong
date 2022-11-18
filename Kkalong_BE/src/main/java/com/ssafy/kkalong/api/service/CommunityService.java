@@ -16,22 +16,14 @@ import java.util.List;
 @Service
 public class CommunityService {
 
-    @Autowired
-    PostRepository postRepository;
-    @Autowired
-    PostLikeRepository postLikeRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    CommentRepository commentRepository;
-    @Autowired
-    HelpRepository helpRepository;
-    @Autowired
-    ReplyRepository replyRepository;
-    @Autowired
-    CodyRepository codyRepository;
-    @Autowired
-    ClosetRepository closetRepository;
+    private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final HelpRepository helpRepository;
+    private final ReplyRepository replyRepository;
+    private final CodyRepository codyRepository;
+    private final ClosetRepository closetRepository;
     
 
     //좋아요 많은 순 3개 출력
