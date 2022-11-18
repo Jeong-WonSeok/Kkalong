@@ -1,10 +1,7 @@
 package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.*;
-import com.ssafy.kkalong.api.entity.Closet;
-import com.ssafy.kkalong.api.entity.Cody;
-import com.ssafy.kkalong.api.entity.CodyClothing;
-import com.ssafy.kkalong.api.entity.User;
+import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
@@ -71,8 +68,11 @@ public class ClosetController {
     }
 
     @PostMapping(value = "/clothing")
-    public void registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ClothingDto clothingDto){
-        closetService.registerClothing(userInfo.getId(), clothingDto);
+    public ResponseEntity<?> registerClothing(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody ClothingDto clothingDto){
+        Map<String, Object> result = new HashMap<>();
+        Clothing clothing = closetService.registerClothing(userInfo.getId(), clothingDto);
+        result.put("clothing_id", clothing.getId());
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/clothing/{clothing_id}")
