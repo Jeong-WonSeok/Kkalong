@@ -189,4 +189,9 @@ public class ClosetService {
             return clothingRepository.findMaxClothingId()+1;
         }
     }
+
+    public String getStyleByClothingId(int clothes_id) {
+        Clothing clothing= clothingRepository.findById(clothes_id);
+        return clothing.getStyle();
+    }
 }

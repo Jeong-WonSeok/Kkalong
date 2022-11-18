@@ -64,26 +64,27 @@ public class WeatherService {
         conn.disconnect();
         String result_json= sb.toString();
         //=======이 밑에 부터는 json에서 데이터 파싱해 오는 부분이다=====//
-        System.out.println(result_json);
+//        System.out.println(result_json);
         // response 키를 가지고 데이터를 파싱
         JSONObject jsonObj_1 = new JSONObject(result_json);
-        String response = jsonObj_1.getString("response");
+        JSONObject response = jsonObj_1.getJSONObject("response");
 
         // response 로 부터 body 찾기
-        JSONObject jsonObj_2 = new JSONObject(response);
-        String body = jsonObj_2.getString("body");
+//        JSONObject jsonObj_2 = new JSONObject(response);
+        JSONObject body = response.getJSONObject("body");
 
         // body 로 부터 items 찾기
-        JSONObject jsonObj_3 = new JSONObject(body);
-        String items = jsonObj_3.getString("items");
+//        JSONObject jsonObj_3 = new JSONObject(body);
+        JSONObject items = body.getJSONObject("items");
 
 
         // items로 부터 itemlist 를 받기
-        JSONObject jsonObj_4 = new JSONObject(items);
-        JSONArray jsonArray = jsonObj_4.getJSONArray("item");
+//        JSONObject jsonObj_4 = new JSONObject(items);
+//        System.out.println(items.toString());
+        JSONArray jsonArray = items.getJSONArray("item");
 
         for(int i=0;i<jsonArray.length();i++){
-            jsonObj_4 = jsonArray.getJSONObject(i);
+            JSONObject jsonObj_4 = jsonArray.getJSONObject(i);
             String fcstValue = jsonObj_4.getString("fcstValue");
             String category = jsonObj_4.getString("category");
             String fcstTime = jsonObj_4.getString("fcstTime");
