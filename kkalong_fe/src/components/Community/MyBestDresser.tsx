@@ -7,25 +7,35 @@ import like from "../../assets/icon/Community/like.png";
 import defaultImg from '../../assets/icon/Community/defaultImg.png'
 import Profile from "./Profile";
 
-export default function BestDresser({
+export interface BestArticle {
+  like: number,
+  nickname:string,
+  post_id: number,
+  post_img: string,
+  profile_img: string,
+  user_id: number
+}
+
+export default function MyBestDresser({
   article,
 }: {
-  article:  BestDresserArticle;
+  article: BestArticle ;
 }) {
+  console.log(article)
   const navigate = useNavigate();
   
   return (
     <Container
-      style={{ backgroundImage: `url(${article.Best.img ? article.Best.img : defaultImg})` }}
-      onClick={() => navigate(`/community/BestDress/false/${article.Best.id}`)}
+      style={{ backgroundImage: `url(${article.post_img ? article.post_img : defaultImg})` }}
+      onClick={() => navigate(`/community/BestDress/false/${article.post_id}`)}
     >
       <ProfileContainer>
-        <Profile Image={article.user.profile_img} Size={17} id={article.user.user_id}/>
-        <UserNickName>{article.user.nickname}</UserNickName>
+        <Profile Image={article.profile_img} Size={17} id={article.user_id}/>
+        <UserNickName>{article.nickname}</UserNickName>
       </ProfileContainer>
       <LikeContainer>
         <LikeImg src={like} />
-        {article.Best.likeCount}
+        {article.like}
       </LikeContainer>
     </Container>
   );

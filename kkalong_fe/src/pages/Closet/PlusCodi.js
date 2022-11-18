@@ -14,13 +14,21 @@ import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
 import CodiEdit from "../../components/closet/CodiEdit";
 import CanvasDraw from "react-canvas-draw";
+
 import { fabric } from "fabric";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+
+import axios from '../../api/axios'
+import requests from './../../api/requests';
 
 export default function PlusCodi() {
   const navigate = useNavigate();
   const params = useParams();
+  const dispatch = useAppDispatch()
+  const { User } = useAppSelector(state => state.User)
   let [modal, setModal] = useState(false);
+
   const modalClose = () => {
     setModal(!modal);
   };
@@ -36,6 +44,7 @@ export default function PlusCodi() {
   useEffect(() => {
     setCanvas(initCanvas());
   }, []);
+
   const downloadImage = () => {
     const ext = "png";
     const base64 = editor.canvas.toDataURL({
@@ -47,8 +56,8 @@ export default function PlusCodi() {
     link.download = `eraser_example.${ext}`;
     link.click();
   };
-  let [num, setNum] = useState("");
-  let [sortclothes, setSortclothes] = useState([
+  const [num, setNum] = useState("");
+  const [sortclothes, setSortclothes] = useState([
     img1,
     img2,
     img3,
@@ -58,7 +67,7 @@ export default function PlusCodi() {
     img7,
   ]);
 
-  let [sort, setSort] = useState([
+  const [sort, setSort] = useState([
     "전체",
     "상의",
     "하의",
@@ -77,13 +86,31 @@ export default function PlusCodi() {
       editor.canvas.renderAll();
     });
   };
+
   const removeObjectFromCanvas = () => {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };
+
   fabric.Image.fromURL("../../img/codi1.png", function (img) {
     var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
     canvas.add(oImg);
   });
+
+  const SaveCodi = async () => {
+    const res = await axios.post(requests.codl)
+    // 만약 타인의 옷장이고 커플이 아니라면
+    if (params.userId && !User.loving) {
+      dispatch(res)
+      // 다시 작성된 페이지로 이동
+      navigate(`/community/HelpCodi/${params.HelpCodiId}`)
+    // 타인의 옷장이지만 커플이라면
+    } else if (Number(params.userId) === User.lover_id && User.loving) {
+      navigate(`/community/HelpCodi/${params.HelpCodiId}`)
+    // 자신의 옷장
+    } else {
+      
+    }
+  }
   
   return (
     <div>
@@ -99,7 +126,7 @@ export default function PlusCodi() {
 
           <ClosetName placeholder="이름을 입력해주세요" />
           <ClosetEnter>
-            <EnterText>저장</EnterText>
+            <EnterText onClick={SaveCodi}>저장</EnterText>
           </ClosetEnter>
         </TopNav>
       </div>
