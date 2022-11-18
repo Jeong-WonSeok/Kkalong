@@ -45,6 +45,7 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.1.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.5'
+    implementation 'org.json:json:20211205'
 
 }
 
