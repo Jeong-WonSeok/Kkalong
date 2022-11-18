@@ -1,26 +1,20 @@
 package com.ssafy.kkalong.api.service;
 
-import com.ssafy.kkalong.api.entity.Clothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class RecommendService {
 
-    @Autowired
-    FirebaseService firebaseService;
+    private final FirebaseService firebaseService;
+    private final UserRepository userRepository;
 
-    @Autowired
-    UserRepository userRepository;
     public String insertPersonal(User user, MultipartFile img) {
 
         String img_url = firebaseService.uploadUserFaceImg(user.getId(), img);

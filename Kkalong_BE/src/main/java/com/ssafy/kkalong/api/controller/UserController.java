@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +56,6 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
@@ -85,7 +83,6 @@ public class UserController {
     @PostMapping("/signupNext")
     public ResponseEntity<?> signUpNext(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
@@ -113,7 +110,6 @@ public class UserController {
     @PostMapping("/signup/email")
     public ResponseEntity<?> authorizeEmail(@RequestBody final StringDto stringDto){
         Map<String, Object> result = new HashMap<>();
-
         if(userService.isEmailDuplicated(stringDto.getValue())){
             result.put("provider", userService.getProvider(stringDto.getValue()));
         } else{
@@ -136,7 +132,6 @@ public class UserController {
     @GetMapping("/profile/{user_id}")
     public ResponseEntity<?> getProfileByUserId(@PathVariable int user_id){
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.getUserByUserId(user_id);
         if (user != null) {
             ProfileDto profileDto = ProfileDto.builder()
@@ -154,7 +149,6 @@ public class UserController {
     @PostMapping("/profile/update")
     public ResponseEntity<?> updateProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody SignupDto signupDto){
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
