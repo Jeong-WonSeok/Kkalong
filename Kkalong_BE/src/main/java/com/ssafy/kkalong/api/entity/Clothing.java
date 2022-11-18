@@ -1,7 +1,5 @@
 package com.ssafy.kkalong.api.entity;
 
-import com.ssafy.kkalong.api.dto.SignupDto;
-import com.ssafy.kkalong.common.UserRole;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,13 +30,13 @@ public class Clothing {
 
     private int sub_category;
 
-    private int spring;
+    private boolean spring;
 
-    private int summer;
+    private boolean summer;
 
-    private int fall;
+    private boolean fall;
 
-    private int winter;
+    private boolean winter;
 
     private String gender;
 

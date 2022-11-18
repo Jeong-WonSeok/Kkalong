@@ -45,16 +45,16 @@ public class ClosetService {
 
     public String removeClothingImgBackground(int next_clothing_id, MultipartFile file) {
         firebaseService.uploadClothingImgWithBackground(next_clothing_id, file);
-//        String url = "http://localhost:8000/api/remove_clothing_bg/"+next_clothing_id;
-        String url = "http://70.12.130.101:8000/api/remove_clothing_bg/"+next_clothing_id;
+        String url = "http://localhost:8000/api/remove_clothing_bg/"+next_clothing_id;
+//        String url = "http://70.12.130.101:8000/api/remove_clothing_bg/"+next_clothing_id;
         RestTemplate restTemplate = new RestTemplate();
         String removedBgImgUrl = restTemplate.getForObject(url,String.class);
         return removedBgImgUrl;
     }
 
     public String getColorInfos(int next_clothing_id) {
-//        String url = "http://localhost:8000/api/clothing_color/"+next_clothing_id;
-        String url = "http://70.12.130.101:8000/api/clothing_color/"+next_clothing_id;
+        String url = "http://localhost:8000/api/clothing_color/"+next_clothing_id;
+//        String url = "http://70.12.130.101:8000/api/clothing_color/"+next_clothing_id;
         RestTemplate restTemplate = new RestTemplate();
         String color = restTemplate.getForObject(url,String.class);
         return color;
@@ -65,10 +65,11 @@ public class ClosetService {
         Clothing clothing = Clothing.builder()
                 .main_category(clothingDto.getMainCategory())
                 .sub_category(clothingDto.getSubCategory())
-                .spring(clothingDto.getSpring())
-                .summer(clothingDto.getSummer())
-                .fall(clothingDto.getFall())
-                .winter(clothingDto.getWinter())
+                .spring(clothingDto.isSpring())
+                .summer(clothingDto.isSummer())
+                .fall(clothingDto.isFall())
+                .winter(clothingDto.isWinter())
+                .style(clothingDto.getStyle())
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
                 .img(clothingDto.getImg()) //임시 대처
@@ -76,9 +77,6 @@ public class ClosetService {
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
-//        String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
-//        savedClothing.setClothingImgUrl(imgUrl);
-//        clothingRepository.save(clothing);
 
         //옷장과 옷 매핑
         Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
@@ -99,11 +97,12 @@ public class ClosetService {
                 .img(clothing.getImg())
                 .mainCategory(clothing.getMain_category())
                 .subCategory(clothing.getSub_category())
-                .spring(clothing.getSpring())
-                .summer(clothing.getSummer())
-                .fall(clothing.getFall())
-                .winter(clothing.getWinter())
+                .spring(clothing.isSpring())
+                .summer(clothing.isSummer())
+                .fall(clothing.isFall())
+                .winter(clothing.isWinter())
                 .color(clothing.getColor())
+                .style(clothing.getStyle())
                 .gender(clothing.getGender())
                 .brand_id(clothing.getBrand().getId())
                 .url(clothing.getUrl())
