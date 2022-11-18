@@ -11,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,24 +21,16 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recommend")
-public class    RecommendController {
+public class RecommendController {
 
-    @Autowired
-    WeatherService weatherService;
-    @Autowired
-    RecommendService recommendService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    CommunityService communityService;
+    private final WeatherService weatherService;
+    private final RecommendService recommendService;
+    private final UserService userService;
 
     @PostMapping(consumes = {"multipart/form-data"}, value = "/personal")
     public ResponseEntity<String> insertPersonal(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart MultipartFile img){
-
         User user = userService.getUserByUserId(userInfo.getId());
-
         String personal = recommendService.insertPersonal(user, img);
-
         return ResponseEntity.ok().body(personal);
     }
 
@@ -58,17 +47,13 @@ public class    RecommendController {
         String today = "20221118";
         String time = "1152";
         Map<String, String> weather = weatherService.loadTodayWeather(x, y, today, time, "1500");
-
         return ResponseEntity.ok().body(weather);
-
     }
 
-    @PostMapping("/personal/{style}")
+    @PostMapping("/weather/{style}")
     public ResponseEntity<?> WeatherRecommend(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable String style){
         User user = userService.getUserByUserId(userInfo.getId());
         HashMap<Object, Object> result = recommendService.recommendPersonal(style, "fall", user.getGender(), style);
         return ResponseEntity.ok().body(result);
     }
-
-
 }
