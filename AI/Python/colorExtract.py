@@ -62,5 +62,8 @@ def image_preprocess(target_item):
             min_dis = dis
             min_idx = idx
         idx += 1
-
     return color_name[min_idx]
+
+
+
+
