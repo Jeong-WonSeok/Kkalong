@@ -1,8 +1,8 @@
 import axios from "axios";
 
-let token = ''
-if (localStorage.getItem('token')) {
-  token = localStorage.getItem('token')?.replaceAll('"', '') as string
+let token = "";
+if (localStorage.getItem("token")) {
+  token = localStorage.getItem("token")?.replaceAll('"', "") as string;
 }
 
 const instance = axios.create({
@@ -10,7 +10,7 @@ const instance = axios.create({
   baseURL: "http://k7b302.p.ssafy.io/api/v1",
   // baseURL: "http://localhost:8080/",
   headers: {
-    Authorization: `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
   },
 });
 
