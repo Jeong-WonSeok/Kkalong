@@ -213,7 +213,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def importDB():
-    conn = create_engine('mysql+pymysql://ssafy:ssafy@localhost:3306/kkalong')
+    conn = create_engine('mysql+pymysql://b302:ssafy@k7b302.p.ssafy.io:3306/kkalong')
     sql = "select * from clothing"
     result = pd.read_sql_query(sql, conn)
     return result
@@ -262,7 +262,7 @@ def mainChoice(gender, weather, df):
     if weather == 'summer':
         outer = 0
     elif weather == 'fall' or weather == 'spring':
-        outer = random.choices([0, 5], weights=[0.4, 0.6])[0]
+        outer = random.choices([0, 5], weights=[0.3, 0.7])[0]
     else:
         outer = 5
 
@@ -424,20 +424,7 @@ def seasonRecommend(cody, season, df):
         hat_num = random.choice(hat_and)
 
     return {1: top_num, 2: bottom_num, 3: 0, 4: 0, 5: outer_num, 6: shoes_num, 7: bag_num, 8: hat_num}
-
-
-def weatherRecommend(style, gender, weather, temp):
-    clothesDF = importDB()
-    styleDf = clothesDF[clothesDF['style'] == style]
-    #gender 입력받고 날씨 입력받아서 출력
-
-    # {"top": 1 or 4, "bottom": 0 or 2 or 3, "outer": 0 or 5, "shoes": 6, "bag": 0 or 7, "hat": 0 or 8}
-    cody_main = mainChoice(gender, weather, styleDf)
-    # main_category 정해짐
-    # sub_category 정하기
-    # 온도에 따라
-
-    #           상의   바지   스커트 원피스 아우터  신발   가방   모자
+def temporalRecommend(cody_main, styleDf, temp):
     cody_sub = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0}
     if cody_main["bag"] != 0:
         for i in range(10):
@@ -446,7 +433,6 @@ def weatherRecommend(style, gender, weather, temp):
                 cody_main["bag"] = 7
                 break
             cody_main["bag"] = 0
-
 
     if temp >= 27:
         if cody_main['top'] == 4:
@@ -460,6 +446,7 @@ def weatherRecommend(style, gender, weather, temp):
             cody_sub[3] = random.choice(skirt_27)
 
         cody_sub[6] = random.choice(shoes_27)
+
 
 
     elif 23 <= temp <= 26:
@@ -489,6 +476,8 @@ def weatherRecommend(style, gender, weather, temp):
         elif cody_main['bottom'] == 3:
             cody_sub[3] = random.choice(skirt_20_22)
 
+        if cody_main["outer"] != 0:
+            cody_sub[5] = random.choice(outer_20_22)
         cody_sub[6] = random.choice(shoes_20_22)
 
         if cody_main["hat"] != 0:
@@ -506,6 +495,8 @@ def weatherRecommend(style, gender, weather, temp):
             cody_sub[3] = random.choice(skirt_17_19)
 
         cody_sub[6] = random.choice(shoes_17_19)
+        if cody_main["outer"] != 0:
+            cody_sub[5] = random.choice(outer_17_19)
 
         if cody_main["hat"] != 0:
             cody_sub[8] = random.choice(hat_17_19)
@@ -521,6 +512,8 @@ def weatherRecommend(style, gender, weather, temp):
         elif cody_main['bottom'] == 3:
             cody_sub[3] = random.choice(skirt_12_16)
 
+        if cody_main["outer"] != 0:
+            cody_sub[5] = random.choice(outer_12_16)
         cody_sub[6] = random.choice(shoes_12_16)
 
         if cody_main["hat"] != 0:
@@ -537,42 +530,108 @@ def weatherRecommend(style, gender, weather, temp):
         elif cody_main['bottom'] == 3:
             cody_sub[3] = random.choice(skirt_6_11)
 
+        if cody_main["outer"] != 0:
+            cody_sub[5] = random.choice(outer_6_11)
         cody_sub[6] = random.choice(shoes_6_11)
 
         if cody_main["hat"] != 0:
             cody_sub[8] = random.choice(hat_6_11)
 
+    else:
+        if cody_main['top'] == 4:
+            cody_sub[4] = random.choice(onepiece_5)
+        else:
+            cody_sub[1] = random.choice(top_5)
+
+        if cody_main['bottom'] == 2:
+            cody_sub[2] = random.choice(pants_5)
+        elif cody_main['bottom'] == 3:
+            cody_sub[3] = random.choice(skirt_5)
+
+        if cody_main["outer"] != 0:
+            cody_sub[5] = random.choice(outer_5)
+        cody_sub[6] = random.choice(shoes_5)
+
+        if cody_main["hat"] != 0:
+            cody_sub[8] = random.choice(hat_5)
+    return cody_sub
+
+def weatherRecommend(style, gender, weather, temp):
+    clothesDF = importDB()
+    styleDf = clothesDF[clothesDF['style'] == style]
+    #gender 입력받고 날씨 입력받아서 출력
+
+    # {"top": 1 or 4, "bottom": 0 or 2 or 3, "outer": 0 or 5, "shoes": 6, "bag": 0 or 7, "hat": 0 or 8}
+    cody_main = mainChoice(gender, weather, styleDf)
+    # main_category 정해짐
+    # sub_category 정하기
+    # 온도에 따라
+
+    #           상의   바지   스커트 원피스 아우터  신발   가방   모자
+
     color = {"top": [], "bottom": [], "outer": [], "shoes": [], "bag": [], "hat": []}
+
+    cody_top = list(styleDf[styleDf["main_category"] == 1]['sub_category'].drop_duplicates())
+    print(cody_top)
+    cody_bottom = list(styleDf[styleDf["main_category"] == 2]['sub_category'].drop_duplicates())
+    print(cody_bottom)
+    cody_outer = list(styleDf[styleDf["main_category"] == 5]['sub_category'].drop_duplicates())
+    print(cody_outer)
+    cody_shoes = list(styleDf[styleDf["main_category"] == 6]['sub_category'].drop_duplicates())
+    print(cody_shoes)
+
+    while(1):
+        cody_sub = temporalRecommend(cody_main, styleDf, temp)
+        print(1, cody_sub[1], 2, cody_sub[2], 5, cody_sub[5], 6, cody_sub[6])
+        if cody_sub[1] not in cody_top:
+            continue
+        if cody_sub[2] not in cody_bottom:
+            continue
+        if cody_sub[5] != 0 and cody_sub[5] not in cody_outer:
+            continue
+        if cody_sub[6] not in cody_shoes:
+            continue
+
+        break
+
+    top_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[1]]['color'].drop_duplicates())
+    bottom_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[2]]['color'].drop_duplicates())
+    outer_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[5]]['color'].drop_duplicates())
+    shoes_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[6]]['color'].drop_duplicates())
+    bag_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[7]]['color'].drop_duplicates())
+    hat_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[8]]['color'].drop_duplicates())
+
+    temp_top = []
+    for top in color_top:
+        if len(set(top) & set(top_color_total)) > 0:
+            temp_top.append(list(set(top) & set(top_color_total)))
     # 상의 색 계열 지정
-    color["top"] = random.choice(color_top)
-    # 하의 색 계열 지정
-    bottom_color = []
-    for col in top_bottom:
-        if col.__contains__(color["top"]):
-            bottom_color.append(col[1])
-    color["bottom"] = random.choice(bottom_color)
-    # 신발 색 계열 지정
-    shoes_color = []
-    for col in bottom_shoes:
-        if col.__contains__(color["bottom"]):
-            shoes_color.append((col[1]))
-    color["shoes"] = random.choice(shoes_color)
-    # 아우터 색 계열 지정
-    outer_color = []
-    for col in top_outer:
-        if col.__contains__(color["top"]):
-            outer_color.append((col[1]))
-    color["outer"] = random.choice(outer_color)
-    # 모자 색 지정
-    # for col in top_hat:
-    #     if col.__contains__(color["top"]):
-    #         hat_color.append((col[1]))
+    color["top"] = random.choice(temp_top)
+    color["bottom"] = color_select(color, bottom_color_total, "bottom")
+    color["shoes"] = color_select(color, shoes_color_total, "shoes")
+    color["outer"] = color_select(color, outer_color_total, "outer")
+    color["bag"] = color_select(color, bag_color_total, "bag")
+    color["hat"] = color_select(color, hat_color_total, "hat")
+    print(cody_main)
     print(color)
     print(gender)
-    print(style)
-    print(weather)
-    print(temp)
-    return "a"
+    top_result = selectDbCodyBySub(cody_main, color, cody_sub[1], gender, "top").sample(n=1)
+    bottom_result = selectDbCodyBySub(cody_main, color, cody_sub[2], gender, "bottom").sample(n=1)
+    shoes_result = selectDbCodyBySub(cody_main, color, cody_sub[6], gender, "shoes").sample(n=1)
+    outer_result = selectDbCodyBySub(cody_main, color, cody_sub[5], gender, "outer")
+    if len(outer_result) > 0:
+        outer_result.sample(n=1)
+    bag_result = selectDbCodyBySub(cody_main, color, cody_sub[6], gender, "bag")
+    if len(bag_result) > 0:
+        bag_result = bag_result.sample(n=1)
+    hat_result = selectDbCodyBySub(cody_main, color, cody_sub[7], gender, "hat")
+    if len(hat_result) > 0:
+        hat_result.sample(n=1)
+
+    result = {"top": top_result.to_dict('r'), "bottom": bottom_result.to_dict('r'),
+              "shoes": shoes_result.to_dict('r'), "outer": outer_result.to_dict('r'),
+              "bag": bag_result.to_dict('r'), "hat": hat_result.to_dict('r')}
+    return result
 
 def personalRecommend(style, gender, weather ,personal_color):
     clothesDF = importDB()
@@ -609,7 +668,7 @@ def personalRecommend(style, gender, weather ,personal_color):
     top_result = selectDbCody(cody, color, gender, "top").sample(n=1)
     bottom_result = selectDbCody(cody, color, gender, "bottom").sample(n=1)
     shoes_result = selectDbCody(cody, color, gender, "shoes").sample(n=1)
-    outer_result = selectDbCody(cody, color, gender, "outer").sample(n=1)
+    outer_result = selectDbCody(cody, color, gender, "outer")
     if len(outer_result) > 0:
         outer_result.sample(n=1)
     bag_result = selectDbCody(cody, color, gender, "bag")
@@ -626,11 +685,19 @@ def personalRecommend(style, gender, weather ,personal_color):
     return result
 
 def selectDbCody(cody, color, gender, category):
-    conn = create_engine('mysql+pymysql://ssafy:ssafy@localhost:3306/kkalong')
+    conn = create_engine('mysql+pymysql://b302:ssafy@k7b302.p.ssafy.io:3306/kkalong')
     color_choice = []
     if len(color[category]) > 0:
         color_choice = random.choice(color[category])
     sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B')".format(cody[category], color_choice, gender)
+    result = pd.read_sql_query(sql, conn)
+    return result
+def selectDbCodyBySub(cody, color, sub, gender, category):
+    conn = create_engine('mysql+pymysql://b302:ssafy@k7b302.p.ssafy.io:3306/kkalong')
+    color_choice = []
+    if len(color[category]) > 0:
+        color_choice = random.choice(color[category])
+    sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B') and sub_category='{3}'".format(cody[category], color_choice, gender, sub)
     result = pd.read_sql_query(sql, conn)
     return result
 

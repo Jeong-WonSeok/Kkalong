@@ -4,10 +4,12 @@ import com.ssafy.kkalong.api.entity.Clothing;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,4 +44,5 @@ public class RecommendService {
         System.out.println(personal_recommend.getClass().getName());
         return personal_recommend;
     }
+
 }
