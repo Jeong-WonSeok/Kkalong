@@ -84,8 +84,12 @@ public class ClosetController {
     }
 
     @PostMapping(consumes = {"multipart/form-data"}, value ="/cody")
-    public void registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
-        closetService.registerCody(userInfo.getId(), codyDto, img);
+    public ResponseEntity<?> registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
+        Map<String, Object> result = new HashMap<>();
+        Cody cody = closetService.registerCody(userInfo.getId(), codyDto, img);
+        result.put("cody_id", cody.getId());
+        result.put("img", cody.getImg());
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/cody/{cody_id}")

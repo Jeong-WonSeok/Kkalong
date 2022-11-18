@@ -44,14 +44,8 @@ color_chip_rgb = [[255, 255, 255], [217, 217, 215], [156, 156, 155], [83, 86, 91
 
 
 def image_preprocess(target_item):
-    urllib.request.urlretrieve(target_item, "image.png")
-    image = Image.open("image.png")
-    # print(target_item)
-    # image.show(image)
-    # image.save("colorExtract.png", "png")
-
-    # cv2.imshow(target_item)
-    ct = ColorThief("image.png")
+    image = cv2.imread(target_item, cv2.IMREAD_UNCHANGED)
+    ct = ColorThief(target_item)
 
     #이미지에서 가장 많은 비율을 차지하는 색깔 추출
     dominant_color = ct.get_color(quality=1)
@@ -70,11 +64,8 @@ def image_preprocess(target_item):
             min_dis = dis
             min_idx = idx
         idx += 1
-    image.close()
-    os.remove('image.png')
-    # os.remove('colorExtract.png')
-    return color_name[min_idx]
 
+    return color_name[min_idx]
 
 
 
