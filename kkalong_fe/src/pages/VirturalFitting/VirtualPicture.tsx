@@ -5,6 +5,7 @@ import Webcam from "react-webcam";
 
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
+// import {CamDiv, ButtonContainer, CaptureButton, ChildCaptureButton} from '../Closet/AddClothes'
 import { CategoryText } from "../Community/MainCommunity";
 import Base64ToFile from "../../hooks/Base64ToFile";
 

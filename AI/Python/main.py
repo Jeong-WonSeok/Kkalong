@@ -3,10 +3,18 @@ from fastapi import FastAPI
 import os
 import sys
 import pyrebase
+from PIL import Image
+from fastapi.encoders import jsonable_encoder
+
 import removeBg
 import colorExtract
-sys.path.append("personalColor/src")
-import ShowMeTheColor
+import recommendCodi
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
+
+sys.path.append("ShowMeTheColor/src")
+import personal
 
 app = FastAPI()
 
@@ -47,6 +55,35 @@ def extract_clothing_color(clothing_id: Optional[str] =None):
 
 @app.get("/api/personal_color/{user_id}")
 def personal_color_info(user_id: Optional[str] = None):
-    storage.child("").download("face_"+user_id, "face_img.png")
+    storage.child("").download("face_"+user_id+".png", "face_img.pnpytg")
+
     result = personal.personalColor("face_img.png")
-    return str(result)
+    os.remove('face_img.png')
+    return result.split('(')[-1].split(')')[0]
+
+@app.get("/api/personal_recommend/{personal_color}/{season}/{gender}/{style}")
+async def personal_recommend(personal_color : Optional[str] = None, season: Optional[str] = None,
+                        gender: Optional[str] = None, style: Optional[str] = None):
+    print(personal_color, season, gender, style)
+    while 1:
+        try:
+            result = recommendCodi.personalRecommend(style, gender, season, personal_color)
+            break
+        except:
+            continue
+    return result
+
+@app.get("/api/weather_recommend/{style}/{gender}/{season}/{temp}")
+async def personal_recommend(style : Optional[str] = None, gender: Optional[str] = None,
+                        season: Optional[str] = None, temp: Optional[str] = None):
+    while 1:
+        try:
+            result = recommendCodi.weatherRecommend(style, gender, season, temp)
+            break
+        except:
+            continue
+    return result
+
+
+
+
