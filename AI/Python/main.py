@@ -6,7 +6,7 @@ import pyrebase
 from PIL import Image
 from fastapi.encoders import jsonable_encoder
 
-# import removeBg
+import removeBg
 import colorExtract
 import recommendCodi
 from fastapi.responses import JSONResponse
@@ -33,25 +33,25 @@ config = {
 firebase_storage = pyrebase.initialize_app(config)
 storage = firebase_storage.storage()
 
-# @app.get("/api/remove_clothing_bg/{clothing_id}")
-# def remove_clothing_background(clothing_id: Optional[str]=None):
-#     storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
-#     print("finished downloading file")
-#     result = removeBg.remove_clothing_background(clothing_id)
-#     print("finished removing background")
-#     storage.child(result).put(result)
-#     print("finished uploading file")
-#     os.remove('clothing_with_background.png')
-#     os.remove(result)
-#     print("finished deleting file")
-#     return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
-#
-# @app.get("/api/clothing_color/{clothing_id}")
-# def extract_clothing_color(clothing_id: Optional[str] =None):
-#     storage.child("").download("clothing_"+clothing_id+".png", "clothing_extract_color.png")
-#     result = colorExtract.image_preprocess("clothing_extract_color.png")
-#     os.remove('clothing_extract_color.png')
-#     return str(result)
+@app.get("/api/remove_clothing_bg/{clothing_id}")
+def remove_clothing_background(clothing_id: Optional[str]=None):
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
+    print("finished downloading file")
+    result = removeBg.remove_clothing_background(clothing_id)
+    print("finished removing background")
+    storage.child(result).put(result)
+    print("finished uploading file")
+    os.remove('clothing_with_background.png')
+    os.remove(result)
+    print("finished deleting file")
+    return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
+
+@app.get("/api/clothing_color/{clothing_id}")
+def extract_clothing_color(clothing_id: Optional[str] =None):
+    storage.child("").download("clothing_"+clothing_id+".png", "clothing_extract_color.png")
+    result = colorExtract.image_preprocess("clothing_extract_color.png")
+    os.remove('clothing_extract_color.png')
+    return str(result)
 
 @app.get("/api/personal_color/{user_id}")
 def personal_color_info(user_id: Optional[str] = None):
