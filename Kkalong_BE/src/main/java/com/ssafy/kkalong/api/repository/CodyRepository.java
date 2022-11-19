@@ -15,4 +15,9 @@ public interface CodyRepository extends JpaRepository<Cody, Integer> {
     @Modifying
     @Query(nativeQuery = true, value = "update cody set open = true where cody_id = :cody_id")
     void updateCodi(int cody_id);
+
+    int countBy();
+
+    @Query(value = "select max(p.id) from Cody as p")
+    int findMaxCodyId();
 }
