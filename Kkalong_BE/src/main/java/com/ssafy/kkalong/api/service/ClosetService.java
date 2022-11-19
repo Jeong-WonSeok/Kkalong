@@ -110,23 +110,20 @@ public class ClosetService {
         return clothingDto;
     }
 
-    public Cody registerCody(int user_id, CodyDto codyDto, MultipartFile img) {
+    public Cody registerCody(int user_id, CodyDto codyDto) {
         Cody cody = Cody.builder()
                 .creator(codyDto.getCreater_id())
                 .user(userRepository.findById(codyDto.getUser_id()))
                 .name(codyDto.getName())
                 .open(codyDto.getCreater_id()==codyDto.getUser_id()?true:false)
                 .style(codyDto.getStyle())
+                .img(codyDto.getImg())
                 .spring(codyDto.isSpring())
                 .summer(codyDto.isSummer())
                 .fall(codyDto.isFall())
                 .winter(codyDto.isWinter())
                 .build();
-        int cody_id = codyRepository.save(cody).getId();
-        Cody savedCody = codyRepository.findById(cody_id);
-        String imgUrl = firebaseService.uploadCodyImg(cody_id, img);
-        savedCody.setCodyImgUrl(imgUrl);
-        codyRepository.save(savedCody);
+        Cody savedCody =  codyRepository.save(cody);
 
         //코디 옷 매칭
         for(int clothing_id : codyDto.getClothings()){
@@ -186,6 +183,15 @@ public class ClosetService {
             return 1;
         } else{
             return clothingRepository.findMaxClothingId()+1;
+        }
+    }
+
+    public int findNextCodyId() {
+        int count = codyRepository.countBy();
+        if(count==0){
+            return 1;
+        } else{
+            return codyRepository.findMaxCodyId()+1;
         }
     }
 

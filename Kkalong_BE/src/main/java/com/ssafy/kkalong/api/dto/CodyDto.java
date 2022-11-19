@@ -20,5 +20,6 @@ public class CodyDto {
     private boolean summer;
     private boolean fall;
     private boolean winter;
+    private String img;
     private List<Integer> clothings;
 }
