@@ -9,7 +9,7 @@
 #     블랙 계열 - 진청, 베이지, 블랙
 #     그레이 계열 - 블랙, 진청
 top_white = ["화이트", "아이보리", "샌드", "베이지", "페일 핑크"]
-top_red = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로즈 골드"]
+top_red = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로즈골드"]
 top_pink = ["라즈베리", "네온 핑크", "분홍색", "라이트 핑크", "피치", "오렌지 핑크"]
 top_orange = ['라이트 오렌지', '네온 오렌지', '주황색', '레드 브라운']
 top_yellow = ['라이트 옐로우', '노란색', '머스타드', '카멜']
@@ -24,7 +24,7 @@ bottom_navy = ['네이비', '보라색', '데님', '파란색', '중청']
 bottom_white = ["화이트", "아이보리", "샌드", "베이지", "페일 핑크", '라이트 그레이', '회색']
 bottom_khaki = ['네온 그린', '라이트 그린', '녹색', '올리브 그린', '카키', '다크 그린', '카키 베이지',
                 '라이트 옐로우', '노란색', '머스타드', '카멜', '라이트 오렌지', '네온 오렌지', '주황색', '레드 브라운']
-bottom_wine = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로즈 골드", "라즈베리", "네온 핑크", "분홍색", "라이트 핑크", "피치", "오렌지 핑크"]
+bottom_wine = ["딥레드", "빨간색", "자주", "버건디", "갈색", " 골드", "라즈베리", "네온 핑크", "분홍색", "라이트 핑크", "피치", "오렌지 핑크"]
 bottom_black = ['블랙', '흑청', '다크 그레이', '진청']
 
 shoes_blue = ['민트', '스카이 블루', '네온 블루', '라벤더', '연청']
@@ -32,11 +32,11 @@ shoes_navy = ['네이비', '보라색', '데님', '파란색', '중청']
 shoes_white = ["화이트", "아이보리", "샌드", "베이지", "페일 핑크", '라이트 그레이', '회색']
 shoes_khaki = ['네온 그린', '라이트 그린', '녹색', '올리브 그린', '카키', '다크 그린', '카키 베이지',
                 '라이트 옐로우', '노란색', '머스타드', '카멜', '라이트 오렌지', '네온 오렌지', '주황색', '레드 브라운']
-shoes_wine = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로즈 골드", "라즈베리", "네온 핑크", "분홍색", "라이트 핑크", "피치", "오렌지 핑크"]
+shoes_wine = ["딥레드", "빨간색", "자주", "버건디", "갈색", "로즈골드", "라즈베리", "네온 핑크", "분홍색", "라이트 핑크", "피치", "오렌지 핑크"]
 shoes_black = ['블랙', '흑청', '다크 그레이', '진청']
 
 outer_white = ["화이트", "아이보리", "베이지", "라이트 옐로우"]
-outer_brown = ["갈색", "로즈 골드", "페일 핑크", "피치", "주황색", "레드 브라운", "카멜"]
+outer_brown = ["갈색", "로즈골드", "페일 핑크", "피치", "주황색", "레드 브라운", "카멜"]
 outer_green = ['올리브 그린', '카키', '다크 그린', '카키 베이지']
 outer_blue = ['민트', '스카이 블루', '네온 블루', '라벤더', '연청']
 outer_navy = ['네이비', '보라색', '데님', '파란색', '중청']
@@ -191,7 +191,7 @@ def set_personal_color(user_personal_color):
 
     if user_personal_color == "spring":
         personal_color.extend(["라즈베리", "페일 핑크", "코랄", "노란색", "머스타드", "금색",
-                                "라이트 그린", "민트", "올리브 그린", "네온 블루", "라벤더", "갈색", "로즈 골드",
+                                "라이트 그린", "민트", "올리브 그린", "네온 블루", "라벤더", "갈색", "로즈골드",
                                 "레드 브라운", "카키 베이지", "카멜", "샌드", "베이지색"])
     elif user_personal_color == "summer":
         personal_color.extend(["라이트 핑크", "피치", "라이트 옐로우", "네온 그린", "민트",
@@ -199,7 +199,7 @@ def set_personal_color(user_personal_color):
 
     elif user_personal_color == "fall":
         personal_color.extend(["딥레드", "오렌지 핑크", "카키", "다크 그린", "자주",
-                                "보라색", "다크 바이올렛", "버건디", "갈색", "로즈 골드", "레드 브라운", "카키 베이지",
+                                "보라색", "다크 바이올렛", "버건디", "갈색", "로즈골드", "레드 브라운", "카키 베이지",
                                 "카멜"])
     else:
         personal_color.extend(["은색", "빨간색", "네온 핑크", "분홍색", "라이트 오렌지",
@@ -554,6 +554,7 @@ def temporalRecommend(cody_main, styleDf, temp):
 
         if cody_main["hat"] != 0:
             cody_sub[8] = random.choice(hat_5)
+
     return cody_sub
 
 def weatherRecommend(style, gender, weather, temp):
@@ -596,6 +597,7 @@ def weatherRecommend(style, gender, weather, temp):
     bag_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[7]]['color'].drop_duplicates())
     hat_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[8]]['color'].drop_duplicates())
 
+
     total = {"top": top_color_total, "bottom": bottom_color_total, "outer": outer_color_total,
              "shoes": shoes_color_total,
              "bag": bag_color_total, "hat": hat_color_total}
@@ -634,9 +636,7 @@ def personalRecommend(style, gender, weather ,personal_color):
     styleDf = clothesDF[clothesDF['style'] == style]
 
     cody = mainChoice(gender, weather, styleDf)
-
     cody_sub = seasonRecommend(cody, weather, styleDf)
-
     top_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[1]]['color'].drop_duplicates())
     bottom_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[2]]['color'].drop_duplicates())
     outer_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[5]]['color'].drop_duplicates())
@@ -663,10 +663,6 @@ def personalRecommend(style, gender, weather ,personal_color):
     color["outer"] = color_select(color, outer_color_total, "outer", total)
     color["bag"] = color_select(color, bag_color_total, "bag", total)
     color["hat"] = color_select(color, hat_color_total, "hat", total)
-    print(cody)
-    print(color)
-    print(gender)
-
     top_result = selectDbCody(cody, color, gender, "top").sample(n=1)
     bottom_result = selectDbCody(cody, color, gender, "bottom").sample(n=1)
     shoes_result = selectDbCody(cody, color, gender, "shoes").sample(n=1)
@@ -692,6 +688,7 @@ def selectDbCody(cody, color, gender, category):
     if len(color[category]) > 0:
         color_choice = random.choice(color[category])
     sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B')".format(cody[category], color_choice, gender)
+    print(sql)
     result = pd.read_sql_query(sql, conn)
     return result
 
@@ -701,6 +698,7 @@ def selectDbCodyBySub(cody, color, sub, gender, category):
     if len(color[category]) > 0:
         color_choice = random.choice(color[category])
     sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B') and sub_category='{3}'".format(cody[category], color_choice, gender, sub)
+    print(sql)
     result = pd.read_sql_query(sql, conn)
     return result
 
@@ -740,6 +738,7 @@ def bodyShapeRecommend(gender, main, season, height, weight):
     return "c"
 
 def clothesInfoRecommend(style, gender, weather, clothes_color, main):
+    main = int(main)
     clothesDF = importDB()
     styleDf = clothesDF[clothesDF['style'] == style]
 
@@ -764,22 +763,16 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
         if main != i:
             checkArr[idx] = 0
         if i == 1 and main != 1:
-            print(i)
             top_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
         elif i == 2 and main != 2:
-            print(i)
             bottom_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
         elif i == 5 and main != 5:
-            print(i)
             outer_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
         elif i == 6 and main != 6:
-            print(i)
             shoes_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
         elif i == 7 and main != 7:
-            print(i)
             bag_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
         elif i == 8 and main != 8:
-            print(i)
             hat_color_total = list(styleDf[styleDf["sub_category"] == cody_sub[i]]['color'].drop_duplicates())
 
 
@@ -789,7 +782,6 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
 
     color[mainDict[main]] = [clothes_color]
 
-    print(color[mainDict[main]])
 
     top_result = []
     bottom_result = []
@@ -797,12 +789,8 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
     outer_result = []
     bag_result = []
     hat_result = []
-    print(outer_color_total)
-    print(cody)
-    print(cody_sub)
-
+    print(color[mainDict[main]])
     for i in range(6):
-        print(i)
         if i == 0 and main != 1:
             color_temp = []
             for col in top_bottom:
@@ -810,7 +798,7 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
                     # if col[0] in color_temp:
                     #     continue
                     color_temp.append(col[0])
-            print(color_temp)
+
             while 1:
                 last_color = list(set(random.choice(color_temp)) & set(top_color_total))
                 if len(last_color) > 0:
@@ -819,17 +807,14 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
             top_result = selectDbCody(cody, color, gender, "top").sample(n=1)
             top_result = top_result.to_dict('r')
         elif i == 1 and main != 2:
-            print("bottom")
             color["bottom"] = color_select(color, bottom_color_total, "bottom", total)
             bottom_result = selectDbCody(cody, color, gender, "bottom").sample(n=1)
             bottom_result = bottom_result.to_dict('r')
         elif i == 2 and main != 6:
-            print("shoes")
             color["shoes"] = color_select(color, shoes_color_total, "shoes", total)
             shoes_result = selectDbCody(cody, color, gender, "shoes").sample(n=1)
             shoes_result = shoes_result.to_dict('r')
         elif i == 3 and main != 5:
-            print(color)
             color["outer"] = color_select(color, outer_color_total, "outer", total)
             outer_result = selectDbCody(cody, color, gender, "outer")
             if len(outer_result) > 0:

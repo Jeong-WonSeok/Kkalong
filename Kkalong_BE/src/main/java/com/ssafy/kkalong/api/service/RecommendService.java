@@ -39,19 +39,18 @@ public class RecommendService {
         return personal_recommend;
     }
 
-    public List<HashMap<Object, Object>> recommendWeather(String style, String season, String gender, String temp) {
+    public HashMap<Object, Object> recommendWeather(String style, String season, String gender, String temp) {
         RestTemplate restTemplate = new RestTemplate();
         String url ="http://localhost:8000/api/weather_recommend/"+ style +"/"+ season+ "/" + gender +"/" + temp;
-        List<HashMap<Object, Object>> weather_recommend = restTemplate.getForObject(url, List.class);
+        HashMap<Object, Object> weather_recommend = restTemplate.getForObject(url, HashMap.class);
         System.out.println(weather_recommend.getClass().getName());
         return weather_recommend;
     }
 
-    public List<HashMap<Object, Object>> recommendClothing(String style, String season, String gender, String color) {
+    public List<HashMap<Object, Object>> recommendClothing(String style, String season, String gender, String color, int main) {
         RestTemplate restTemplate = new RestTemplate();
-        String url ="http://localhost:8000/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color;
+        String url ="http://localhost:8000/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color+ "/" + main;
         List<HashMap<Object, Object>> clothes_recommend = restTemplate.getForObject(url, List.class);
-        System.out.println(clothes_recommend.getClass().getName());
         return clothes_recommend;
     }
 }
