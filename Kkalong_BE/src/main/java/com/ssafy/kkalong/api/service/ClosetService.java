@@ -193,4 +193,8 @@ public class ClosetService {
         Clothing clothing= clothingRepository.findById(clothes_id);
         return clothing.getStyle();
     }
+
+    public Closet getClosetsByClosetId(int closet_id) {
+        return closetRepository.findById(closet_id);
+    }
 }

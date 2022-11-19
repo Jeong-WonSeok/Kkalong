@@ -83,6 +83,14 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping("/clothings/{closet_id}")
+    public ResponseEntity<?> getClothingsByClosetId(@PathVariable int closet_id){
+        Map<String, Object> result = new HashMap<>();
+        Closet closet = closetService.getClosetsByClosetId(closet_id);
+        result.put("clothings", closetService.findAllClothingByCloset(closet));
+        return ResponseEntity.ok().body(result);
+    }
+
     @PostMapping(consumes = {"multipart/form-data"}, value ="/cody")
     public ResponseEntity<?> registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
         Map<String, Object> result = new HashMap<>();
