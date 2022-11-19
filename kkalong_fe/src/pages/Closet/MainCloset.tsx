@@ -122,7 +122,9 @@ export default function MainCloset() {
       }
 
       const formData = new FormData();
+
       formData.append("img", e.target.files[0]);
+
       console.log(formData);
       axios
         .post(requests.removeBackground, formData, {
@@ -370,12 +372,14 @@ export default function MainCloset() {
 
           {/* <input
 
+
           <input
             type="file"
             accept="image/*"
             ref={inputRef}
             onChange={onUploadImage}
           />
+
           <button onClick={onUploadImageButtonClick} /> */}
           {/* <input
             type="file"
