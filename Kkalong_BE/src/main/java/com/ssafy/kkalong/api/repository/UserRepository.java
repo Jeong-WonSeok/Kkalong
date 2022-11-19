@@ -21,10 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     boolean existsByNickname(String nickname);
 
+
     List<User> findByNicknameContainingIgnoreCase(String nickname);
 
-    @Transactional
-    @Modifying
-    @Query(nativeQuery = true, value="update user set personal_color = :personal_color where user_id = :user_id")
-    void updatePersonal(int user_id, String personal_color);
 }
