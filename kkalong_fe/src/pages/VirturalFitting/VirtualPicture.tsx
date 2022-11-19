@@ -1,6 +1,7 @@
-import React, {useEffect, useState } from 'react'
+import React, {useEffect, useState, useRef, useCallback} from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Webcam from "react-webcam";
 
 import FooterBar from '../../components/ui/FooterBar';
 import TopNav from '../../components/ui/TopNav';
@@ -24,16 +25,16 @@ export default function VirtualPicture() {
   const [IsSelect, setIsSelect] = useState('')
   const [SendFile, setSendFile] = useState<File>()
 
-  useEffect(()=>{
-    if (IsSelect === 'Picture' && !url) {
-      const app = document.getElementById('App') as HTMLDivElement
-      app.style.margin = '0'
+  useEffect(() => {
+    if (IsSelect === "Picture" && !url) {
+      const app = document.getElementById("App") as HTMLDivElement;
+      app.style.margin = "0";
       if ( !User.body_img ) {
         const fileBtn = document.getElementById('fileBtn') as HTMLDivElement
         fileBtn.style.opacity = '0.7'
       }
-    } 
-    
+    }
+
     return () => {
       const app = document.getElementById('App') as HTMLDivElement
       app.style.marginTop = '60px'
@@ -53,9 +54,9 @@ export default function VirtualPicture() {
 
   // 파일선택
   const SelectFile = () => {
-    const Input = document.getElementById('SelectFile') as HTMLInputElement
-    Input.click()
-  }
+    const Input = document.getElementById("SelectFile") as HTMLInputElement;
+    Input.click();
+  };
 
   const ChangeFile = (e:any) => {
     setUrl(URL.createObjectURL(e.target.files[0]))
@@ -127,7 +128,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const BtnDiv = styled.div`
   display: flex;
@@ -141,7 +142,7 @@ const BtnDiv = styled.div`
   background-color: var(--primary-color-200);
   border-radius: 20px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-`
+`;
 
 const Img = styled.div`
   position: relative;
@@ -149,22 +150,22 @@ const Img = styled.div`
   width: 28px;
   height: 28px;
   margin: 0 6px;
-`
+`;
 
 const SelectImg = styled.img`
   width: 40px;
   height: 40px;
-`
+`;
 
 const SelectP = styled.p`
   margin: 0 10px;
   font-family: var(--base-font-300);
   font-size: 1rem;
-`
+`;
 
-const FileSelect = styled.input`  
+const FileSelect = styled.input`
   display: none;
-`
+`;
 
 const ChangeDisplay = styled.div`
   position: absolute;
@@ -175,13 +176,13 @@ const ChangeDisplay = styled.div`
   background-color: var(--primary-color-900);
   right: 20px;
   bottom: 10px;
-`
+`;
 
 const PreviewImg = styled.img`
   max-width: 300px;
   width: 85%;
   border-radius: 20px;
-`
+`;
 
 const BtnContainer = styled.div`
   width: 100%;
@@ -189,8 +190,7 @@ const BtnContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   margin: 20px 0;
-
-`
+`;
 
 const Button = styled.button`
   border: none;
@@ -199,16 +199,16 @@ const Button = styled.button`
   border-radius: 10px;
   font-family: var(--base-font-400);
   font-size: 1rem;
-`
+`;
 
 const MenuImg = styled.img`
   width: 30px;
   height: 30px;
   margin: auto 0;
-`
+`;
 
 const ModalContainer = styled.div`
-  background-color: rgba(0,0,0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 360px;
   height: 100%;
@@ -219,7 +219,7 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 99999999;
-`
+`;
 
 const ContentDiv = styled.div`
   width: 80%;
@@ -228,10 +228,4 @@ const ContentDiv = styled.div`
   border-radius: 20px;
   background-color: white;
   border: 2px solid var(--primary-color-500);
-`
-
-const Cam = styled.video`
-  width: 100vw;
-  max-width: 360px;
-  height: 100vh;
 `

@@ -32,7 +32,8 @@ class DetectFace:
 
     # return type : np.array
     def detect_face_part(self):
-        face_parts = [[],[],[],[],[],[],[],[]]
+        face_parts = [[], [],[],[],[],[],[],[]]
+        # print("img", self.img)
         # detect faces in the grayscale image
         rect = self.detector(cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY), 1)[0]
 
@@ -43,7 +44,7 @@ class DetectFace:
 
         idx = 0
         # loop over the face parts individually
-        print(face_utils.FACIAL_LANDMARKS_IDXS.items())
+        # print(face_utils.FACIAL_LANDMARKS_IDXS.items())
         for (name, (i, j)) in face_utils.FACIAL_LANDMARKS_IDXS.items():
             # print(idx)
             # print("face", face_parts[idx])

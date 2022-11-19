@@ -1,4 +1,4 @@
-from personal_color_analysis import personal_color
+from ShowMeTheColor.src.personal_color_analysis import personal_color
 import argparse
 import cv2
 import os
@@ -33,5 +33,5 @@ def personalColor(imgpath):
     #
     return result
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

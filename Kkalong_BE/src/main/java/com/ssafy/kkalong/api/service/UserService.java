@@ -46,10 +46,8 @@ public class UserService {
     }
 
     public String sendEmail(String email) {
-
         String code = createCode();
         AuthCode authCode;
-
         if(isAuthEmailDuplicated(email)){
             authCode = authCodeRepository.findByEmail(email);
             authCode.setAuthCode(email,code);
@@ -57,7 +55,6 @@ public class UserService {
             authCode = AuthCode.builder().email(email).code(code).build();
         }
         authCodeRepository.save(authCode);
-
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("깔롱 서비스 회원가입 이메일 인증 번호");
@@ -65,7 +62,6 @@ public class UserService {
         message.setFrom(mailSender);
         message.setReplyTo(email);
         javaMailSender.send(message);
-
         return code;
     }
 
@@ -263,5 +259,9 @@ public class UserService {
 
     public List<User> getUserIncludingNickname(String nickname) {
         return userRepository.findByNicknameContainingIgnoreCase(nickname);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

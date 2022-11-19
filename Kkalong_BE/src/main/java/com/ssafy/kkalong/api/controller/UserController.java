@@ -2,7 +2,6 @@ package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.User;
-import com.ssafy.kkalong.api.service.ClosetService;
 import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.jwt.JwtProvider;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +56,6 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUp(signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
@@ -86,7 +83,6 @@ public class UserController {
     @PostMapping("/signupNext")
     public ResponseEntity<?> signUpNext(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody final SignupDto signupDto) {
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
@@ -114,7 +110,6 @@ public class UserController {
     @PostMapping("/signup/email")
     public ResponseEntity<?> authorizeEmail(@RequestBody final StringDto stringDto){
         Map<String, Object> result = new HashMap<>();
-
         if(userService.isEmailDuplicated(stringDto.getValue())){
             result.put("provider", userService.getProvider(stringDto.getValue()));
         } else{
@@ -137,7 +132,6 @@ public class UserController {
     @GetMapping("/profile/{user_id}")
     public ResponseEntity<?> getProfileByUserId(@PathVariable int user_id){
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.getUserByUserId(user_id);
         if (user != null) {
             ProfileDto profileDto = ProfileDto.builder()
@@ -152,18 +146,9 @@ public class UserController {
         return ResponseEntity.badRequest().body("존재하지 않는 사용자");
     }
 
-    @PostMapping("/profile/img")
-    public ResponseEntity<?> updateProfileImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile profile_img){
-        Map<String, Object> result = new HashMap<>();
-        String profile_img_url = firebaseService.uploadUserProfileImg(userInfo.getId(), profile_img);
-        result.put("profile_img", profile_img_url);
-        return ResponseEntity.ok().body(result);
-    }
-
     @PostMapping("/profile/update")
     public ResponseEntity<?> updateProfileByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody SignupDto signupDto){
         Map<String, Object> result = new HashMap<>();
-
         User user = userService.signUpNext(userInfo.getEmail(), signupDto);
         UserInfoDto userInfoDto = UserInfoDto.builder()
                 .user_id(user.getId())
@@ -184,6 +169,39 @@ public class UserController {
                 .personal_color(user.getPersonal_color())
                 .build();
         result.put("user", userInfoDto);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/profile/img")
+    public ResponseEntity<?> updateProfileImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile profile_img){
+        Map<String, Object> result = new HashMap<>();
+        String profile_img_url = firebaseService.uploadUserProfileImg(userInfo.getId(), profile_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateProfileImg(profile_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("profile_img", savedUser.getProfile_img());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/face/img")
+    public ResponseEntity<?> updateFaceImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile face_img){
+        Map<String, Object> result = new HashMap<>();
+        String face_img_url = firebaseService.uploadUserFaceImg(userInfo.getId(), face_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateFaceImg(face_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("face_img", savedUser.getFace_img());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/body/img")
+    public ResponseEntity<?> updateBodyImgByUserId(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody MultipartFile body_img){
+        Map<String, Object> result = new HashMap<>();
+        String body_img_url = firebaseService.uploadUserBodyImg(userInfo.getId(), body_img);
+        User user = userService.getUserByUserId(userInfo.getId());
+        user.updateBodyImg(body_img_url);
+        User savedUser = userService.saveUser(user);
+        result.put("body_img", savedUser.getBody_img());
         return ResponseEntity.ok().body(result);
     }
 
