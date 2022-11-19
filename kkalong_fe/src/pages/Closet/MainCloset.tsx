@@ -132,7 +132,6 @@ export default function MainCloset() {
         })
         .then((response) => {
           setClothing(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.error(error);
@@ -311,6 +310,7 @@ export default function MainCloset() {
                   </SwiperSlide>
                 );
               })}
+
               <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
@@ -369,6 +369,8 @@ export default function MainCloset() {
           </SortClothesContainer>
 
           {/* <input
+
+          <input
             type="file"
             accept="image/*"
             ref={inputRef}
@@ -390,6 +392,7 @@ export default function MainCloset() {
             onChange={onUploadImage}
           />
           <button onClick={Submit} /> */}
+          {/* <button onClick={onUploadImageButtonClick} /> */}
           <AddClothesContainer>
             <AddClothes
               onClick={() =>

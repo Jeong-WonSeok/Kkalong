@@ -105,6 +105,8 @@ public class User {
         this.profile_img = profile_img;
     }
 
+    public void updatePersonalColor(String personal_color) {this.personal_color = personal_color; }
+
     public void updateFaceImg(String face_img){
         this.face_img = face_img;
     }

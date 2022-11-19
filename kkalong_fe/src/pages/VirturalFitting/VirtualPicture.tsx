@@ -5,10 +5,11 @@ import Webcam from "react-webcam";
 
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
-<<<<<<< HEAD
-=======
+
 // import {CamDiv, ButtonContainer, CaptureButton, ChildCaptureButton} from '../Closet/AddClothes'
->>>>>>> develop
+
+// import {CamDiv, ButtonContainer, CaptureButton, ChildCaptureButton} from '../Closet/AddClothes'
+
 import { CategoryText } from "../Community/MainCommunity";
 import Base64ToFile from "../../hooks/Base64ToFile";
 
@@ -140,7 +141,6 @@ export default function VirtualPicture() {
               />
               <SelectP>촬영하기</SelectP>
             </BtnDiv>
-<<<<<<< HEAD
           </Container>
           <FooterBar />
           {url && (
@@ -244,8 +244,6 @@ export default function VirtualPicture() {
               </Button>
             </BtnContainer>
           </Container>
-=======
-          </Container>
           <FooterBar />
           {url && (
             <ModalContainer>
@@ -345,7 +343,6 @@ export default function VirtualPicture() {
               </Button>
             </BtnContainer>
           </Container>
->>>>>>> develop
         </div>
       )}
     </div>

@@ -65,10 +65,11 @@ public class ClosetService {
         Clothing clothing = Clothing.builder()
                 .main_category(clothingDto.getMainCategory())
                 .sub_category(clothingDto.getSubCategory())
-                .spring(clothingDto.getSpring())
-                .summer(clothingDto.getSummer())
-                .fall(clothingDto.getFall())
-                .winter(clothingDto.getWinter())
+                .spring(clothingDto.isSpring())
+                .summer(clothingDto.isSummer())
+                .fall(clothingDto.isFall())
+                .winter(clothingDto.isWinter())
+                .style(clothingDto.getStyle())
                 .color(clothingDto.getColor())
                 .gender(user.getGender())
                 .img(clothingDto.getImg()) //임시 대처
@@ -76,9 +77,6 @@ public class ClosetService {
                 .build();
         int clothing_id = clothingRepository.save(clothing).getId();
         Clothing savedClothing = clothingRepository.findById(clothing_id);
-//        String imgUrl = firebaseService.uploadClothingImgWithoutBackground(clothing_id, img);
-//        savedClothing.setClothingImgUrl(imgUrl);
-//        clothingRepository.save(clothing);
 
         //옷장과 옷 매핑
         Closet baseCloset = closetRepository.findBaseClosetByUserId(user_id);
@@ -99,11 +97,12 @@ public class ClosetService {
                 .img(clothing.getImg())
                 .mainCategory(clothing.getMain_category())
                 .subCategory(clothing.getSub_category())
-                .spring(clothing.getSpring())
-                .summer(clothing.getSummer())
-                .fall(clothing.getFall())
-                .winter(clothing.getWinter())
+                .spring(clothing.isSpring())
+                .summer(clothing.isSummer())
+                .fall(clothing.isFall())
+                .winter(clothing.isWinter())
                 .color(clothing.getColor())
+                .style(clothing.getStyle())
                 .gender(clothing.getGender())
                 .brand_id(clothing.getBrand().getId())
                 .url(clothing.getUrl())
@@ -111,23 +110,20 @@ public class ClosetService {
         return clothingDto;
     }
 
-    public Cody registerCody(int user_id, CodyDto codyDto, MultipartFile img) {
+    public Cody registerCody(int user_id, CodyDto codyDto) {
         Cody cody = Cody.builder()
                 .creator(codyDto.getCreater_id())
                 .user(userRepository.findById(codyDto.getUser_id()))
                 .name(codyDto.getName())
                 .open(codyDto.getCreater_id()==codyDto.getUser_id()?true:false)
                 .style(codyDto.getStyle())
+                .img(codyDto.getImg())
                 .spring(codyDto.isSpring())
                 .summer(codyDto.isSummer())
                 .fall(codyDto.isFall())
                 .winter(codyDto.isWinter())
                 .build();
-        int cody_id = codyRepository.save(cody).getId();
-        Cody savedCody = codyRepository.findById(cody_id);
-        String imgUrl = firebaseService.uploadCodyImg(cody_id, img);
-        savedCody.setCodyImgUrl(imgUrl);
-        codyRepository.save(savedCody);
+        Cody savedCody =  codyRepository.save(cody);
 
         //코디 옷 매칭
         for(int clothing_id : codyDto.getClothings()){
@@ -188,5 +184,23 @@ public class ClosetService {
         } else{
             return clothingRepository.findMaxClothingId()+1;
         }
+    }
+
+    public int findNextCodyId() {
+        int count = codyRepository.countBy();
+        if(count==0){
+            return 1;
+        } else{
+            return codyRepository.findMaxCodyId()+1;
+        }
+    }
+
+    public String getStyleByClothingId(int clothes_id) {
+        Clothing clothing= clothingRepository.findById(clothes_id);
+        return clothing.getStyle();
+    }
+
+    public Closet getClosetsByClosetId(int closet_id) {
+        return closetRepository.findById(closet_id);
     }
 }

@@ -3,10 +3,17 @@ from fastapi import FastAPI
 import os
 import sys
 import pyrebase
+from PIL import Image
+from fastapi.encoders import jsonable_encoder
+
 import removeBg
 import colorExtract
-sys.path.append("personalColor/src")
-import ShowMeTheColor
+import recommendCodi
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
+
+from ShowMeTheColor.src import personal
 
 app = FastAPI()
 
@@ -47,6 +54,71 @@ def extract_clothing_color(clothing_id: Optional[str] =None):
 
 @app.get("/api/personal_color/{user_id}")
 def personal_color_info(user_id: Optional[str] = None):
-    storage.child("").download("face_"+user_id, "face_img.png")
+    storage.child("").download("face_"+user_id+".png", "face_img.png")
+
     result = personal.personalColor("face_img.png")
-    return str(result)
+    os.remove('face_img.png')
+    return str(result.split('(')[-1].split(')')[0])
+
+@app.get("/api/personal_recommend/{personal_color}/{season}/{gender}/{style}")
+def personal_recommend(personal_color: Optional[str] = None, season: Optional[str] = None,
+                        gender: Optional[str] = None, style: Optional[str] = None):
+
+    print(personal_color, season, gender, style)
+    result_arr = []
+    for i in range(5):
+        while 1:
+            try:
+                result = recommendCodi.personalRecommend(style, gender, season, personal_color)
+                result_arr.append(result)
+                break
+            except:
+                continue
+    return result_arr
+
+@app.get("/api/weather_recommend/{style}/{season}/{gender}/{temp}")
+def personal_recommend(style: Optional[str] = None, season: Optional[str] = None,
+                        gender: Optional[str] = None, temp: Optional[str] = None):
+
+    print(style, season, gender, temp)
+    result_arr = []
+    idx = 0
+    while 1:
+        try:
+            if idx >= 100:
+                result_arr = result_arr["오류"];
+                return result_arr
+    #             print(idx)
+            result = recommendCodi.weatherRecommend(style, gender, season, temp)
+            result_arr.append(result)
+            break
+        except:
+            idx += 1
+            #     continue
+    return result
+
+@app.get("/api/clothesInfo_recommend/{style}/{season}/{gender}/{color}/{main}")
+def clothesInfo_recommend(style: Optional[str] = None, season: Optional[str] = None,
+                        gender: Optional[str] = None, color: Optional[str] = None,
+                        main: Optional[str] = None):
+    print(style, season, gender, color, main)
+    result_arr = []
+    idx = 0
+    for i in range(5):
+        while 1:
+            try:
+                if idx >= 100:
+                    result_arr = result_arr["오류"];
+                    return result_arr
+                print(idx)
+                result = recommendCodi.clothesInfoRecommend(style, gender, season, color, main)
+                result_arr.append(result)
+                break
+            except:
+                idx += 1
+                continue
+    return result_arr
+
+
+
+

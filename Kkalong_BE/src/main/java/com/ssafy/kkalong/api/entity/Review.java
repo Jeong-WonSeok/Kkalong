@@ -30,6 +30,8 @@ public class Review {
 
     private String thickness;
 
+    private String size_review;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="code")
     private Clothing clothing;

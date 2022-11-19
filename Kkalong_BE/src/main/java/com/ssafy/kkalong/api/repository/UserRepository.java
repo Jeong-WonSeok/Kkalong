@@ -2,7 +2,11 @@ package com.ssafy.kkalong.api.repository;
 
 import com.ssafy.kkalong.api.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,4 +22,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByNickname(String nickname);
 
     List<User> findByNicknameContainingIgnoreCase(String nickname);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value="update user set personal_color = :personal_color where user_id = :user_id")
+    void updatePersonal(int user_id, String personal_color);
 }
