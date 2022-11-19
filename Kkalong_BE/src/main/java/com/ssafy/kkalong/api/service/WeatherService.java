@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 public class WeatherService {
-    public Map<String, String> loadTodayWeather(String nx, String ny, String baseDate, String baseTime, String num) throws IOException, JSONException {
+    public Map<String, String> loadTodayWeather(String nx, String ny, String baseDate, String baseTime, String num, String tomorrow, String tomorrowAfter) throws IOException, JSONException {
 
         String time = baseTime.substring(0, 2) + "00";
         System.out.println("time"+time);
@@ -64,45 +64,64 @@ public class WeatherService {
         conn.disconnect();
         String result_json= sb.toString();
         //=======이 밑에 부터는 json에서 데이터 파싱해 오는 부분이다=====//
-        System.out.println(result_json);
+//        System.out.println(result_json);
         // response 키를 가지고 데이터를 파싱
         JSONObject jsonObj_1 = new JSONObject(result_json);
-        String response = jsonObj_1.getString("response");
+        JSONObject response = jsonObj_1.getJSONObject("response");
+//        String response = jsonObj_1.getString("response");
 
         // response 로 부터 body 찾기
-        JSONObject jsonObj_2 = new JSONObject(response);
-        String body = jsonObj_2.getString("body");
+//        JSONObject jsonObj_2 = new JSONObject(response);
+        JSONObject body = response.getJSONObject("body");
+//        String body = jsonObj_2.getString("body");
 
         // body 로 부터 items 찾기
-        JSONObject jsonObj_3 = new JSONObject(body);
-        String items = jsonObj_3.getString("items");
+//        JSONObject jsonObj_3 = new JSONObject(body);
+        JSONObject items = body.getJSONObject("items");
+//        String items = jsonObj_3.getString("items");
 
 
         // items로 부터 itemlist 를 받기
-        JSONObject jsonObj_4 = new JSONObject(items);
-        JSONArray jsonArray = jsonObj_4.getJSONArray("item");
+//        JSONObject jsonObj_4 = new JSONObject(items);
+//        System.out.println(items.toString());
+//        JSONArray jsonArray = jsonObj_4.getJSONArray("item");
+        JSONArray jsonArray = items.getJSONArray("item");
 
         for(int i=0;i<jsonArray.length();i++){
-            jsonObj_4 = jsonArray.getJSONObject(i);
+            JSONObject jsonObj_4 = jsonArray.getJSONObject(i);
+//            jsonObj_4 = jsonArray.getJSONObject(i);
             String fcstValue = jsonObj_4.getString("fcstValue");
             String category = jsonObj_4.getString("category");
             String fcstTime = jsonObj_4.getString("fcstTime");
             String fcstDate = jsonObj_4.getString("fcstDate");
 
             if(category.equals("SKY") && fcstTime.equals(time)){
+                String check = "asd";
+                if(fcstDate.equals(baseDate))
+                    check = "today";
+                else if (fcstDate.equals(tomorrow))
+                    check = "tomorrow";
+                else if (fcstDate.equals(tomorrowAfter))
+                    check = "tomorrowAfter";
+
                 if(fcstValue.equals("1")) {
-                    result.put(fcstDate+" 날씨", "맑음");
+                    result.put(check+" Weather", "맑음");
                 }else if(fcstValue.equals("2")) {
-                    result.put(fcstDate+" 날씨", "비");
+                    result.put(check+" Weather", "비");
                 }else if(fcstValue.equals("3")) {
-                    result.put(fcstDate+" 날씨", "구름");
+                    result.put(fcstDate+" Weather", "구름");
                 }else if(fcstValue.equals("4")) {
-                    result.put(fcstDate+" 날씨", "흐림");
+                    result.put(check+" Weather", "흐림");
                 }
             }
 
             if(category.equals("TMP") || fcstTime.equals(time)){
-                result.put(fcstDate, fcstValue);
+                if(fcstDate.equals(baseDate))
+                    result.put("today", fcstValue);
+                else if (fcstDate.equals(tomorrow))
+                    result.put("tomorrow", fcstValue);
+                else if (fcstDate.equals(tomorrowAfter))
+                    result.put("tomorrowAfter", fcstValue);
             }
 
         }
