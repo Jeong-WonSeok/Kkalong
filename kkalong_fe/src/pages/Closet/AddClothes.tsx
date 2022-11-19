@@ -299,9 +299,6 @@ export default function AddClothes() {
       const formData = new FormData();
       formData.append("img", e.target.files[0]);
       console.log(formData);
-      for (let values of formData.values()) {
-        console.log(values); // 이미지 객체의 정보
-      }
       axios
         .post(requests.removeBackground, formData, {
           headers: {
