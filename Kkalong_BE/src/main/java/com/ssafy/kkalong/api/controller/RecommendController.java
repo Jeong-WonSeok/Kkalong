@@ -29,11 +29,21 @@ public class RecommendController {
     private final RecommendService recommendService;
     private final UserService userService;
     private final ClosetService closetService;
+
+    private final FirebaseService firebaseService;
+
     @PostMapping(consumes = {"multipart/form-data"}, value = "/personal")
-    public ResponseEntity<String> insertPersonal(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart MultipartFile img){
+    public ResponseEntity<?> insertPersonal(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart MultipartFile img){
+
         User user = userService.getUserByUserId(userInfo.getId());
-        String personal = recommendService.insertPersonal(user, img);
-        return ResponseEntity.ok().body(personal);
+
+        String[] personal = recommendService.insertPersonal(user, img);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("faceImg", personal[1]);
+        result.put("personal", personal[0]);
+
+        return ResponseEntity.ok().body(result);
     }
 
 
@@ -42,14 +52,14 @@ public class RecommendController {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter Monthformater = DateTimeFormatter.ofPattern("MM");
-        String month = now.format(Monthformater);
+        int month = Integer.parseInt(now.format(Monthformater));
         String season = "";
-        for(int i = 1 ; i < 13; i++){
-            if(i <= 3 || i ==12) season = "winter";
-            else if (i >= 4 && i <= 5) season = "spring";
-            else if (i >= 6 && i <= 9) season = "summer";
-            else season = "fall";
-        }
+
+        if(month <= 3 || month ==12) season = "winter";
+        else if (month >= 4 && month <= 5) season = "spring";
+        else if (month >= 6 && month <= 9) season = "summer";
+        else season = "fall";
+
 
         User user = userService.getUserByUserId(userInfo.getId());
 
@@ -64,6 +74,7 @@ public class RecommendController {
         result.put("dandy", dandy);
         result.put("hiphop", hiphop);
         result.put("formal", formal);
+        result.put("personal", user.getPersonal_color());
         return ResponseEntity.ok().body(result);
     }
 
