@@ -37,7 +37,7 @@ const requests = {
   closetAdd: "/closet/closet",
 
   // 가상피팅
-  bodyImg: "/aifitting/",
+  bodyImg: "/user/body/img",
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴
 
   // 추천

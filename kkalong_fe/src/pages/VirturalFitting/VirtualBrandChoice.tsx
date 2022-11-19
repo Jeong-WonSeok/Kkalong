@@ -15,78 +15,39 @@ import TopNav from "../../components/ui/TopNav";
 
 import axios from '../../api/axios'
 import requests from '../../api/requests'
+import { useAppDispatch, useAppSelector } from './../../hooks/reduxHook';
+import { getBrand } from "../../redux/modules/Brand";
 
 interface BrandType {
   img: string;
   name: string;
-  brand_id: number;
+  // brand_id: number;
 }
 
 export default function VirtualBrandChoice() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const { Brands } = useAppSelector(state => state.Brand)
   const [Brand, setBrand] = useState(Array<BrandType>);
   const [SearchBrandList, setSearchBrandList] = useState(Array<BrandType>)
+
   const [IsSearch, setIsSearch] = useState(false)
   const [IsModal, setIsModal] = useState(false)
 
 
   useEffect(() => {
-    // axios.get(requests.brand)
-    //   .then(res => {
-    //     setBrand(res.data)
-    //   })
-    //   .catch(err => console.error(err))
-    setBrand([
-      {
-        img: SpaoIcon,
-        name: "spao",
-        brand_id: 1,
-      },
-      {
-        img: HnMIcon,
-        name: "HnM",
-        brand_id: 2,
-      },
-      {
-        img: ZaraIcon,
-        name: "Zara",
-        brand_id: 3,
-      },
-      {
-        img: EightSecondsIcon,
-        name: "EightSeconds",
-        brand_id: 4,
-      },
-      {
-        img: SpaoIcon,
-        name: "spao",
-        brand_id: 1,
-      },
-      {
-        img: HnMIcon,
-        name: "HnM",
-        brand_id: 2,
-      },
-      {
-        img: ZaraIcon,
-        name: "Zara",
-        brand_id: 3,
-      },
-      {
-        img: EightSecondsIcon,
-        name: "EightSeconds",
-        brand_id: 4,
-      },
-    ]);
-  }, []);
+    dispatch(getBrand())
+    setBrand(Brands)
+  }, [Brands]);
 
   // filter 로 구현할 예정임
   const SearchBrand = async(Text: string) => {
+    setIsSearch(true)
     const list = Brand.filter(brand => {
       return brand.name.includes(Text)
     })
     setSearchBrandList(list)
-    setIsSearch(true)
+    
   }
 
   return (
@@ -98,23 +59,23 @@ export default function VirtualBrandChoice() {
       <Search Search={SearchBrand} Open={IsModal} StopSearch={()=>setIsSearch(false)}>브랜드 검색</Search>
       <VirtualBrandButtonDiv>
         {/* 검색중이 아닐때 나옴 */}
-        {!IsSearch && Brand.length && Brand.map((logo) => {
+        {!IsSearch && Brand.length && Brand.map((logo, idx) => {
           return (
-            <VirtualBrandButton
-              src={logo.img}
-              onClick={() => navigate(`${logo.brand_id}`, { state: logo })}
-            ></VirtualBrandButton>
+              <VirtualBrandButton
+                src={logo.img}
+                onClick={() => navigate(`${idx}`, { state: logo })}
+              />
           );
         })}
         
         {/* 검색중 */}
         {IsSearch && SearchBrandList.length &&
-          Brand.map((logo) => {
+          SearchBrandList.map((logo, idx) => {
             return (
-              <VirtualBrandButton
-                src={logo.img}
-                onClick={() => navigate(`${logo.brand_id}`, { state: logo })}
-              ></VirtualBrandButton>
+                <VirtualBrandButton
+                  src={logo.img}
+                  onClick={() => navigate(`${idx}`, { state: logo })}
+                />
             )
           })}
 
@@ -146,11 +107,12 @@ const VirtualBrandButtonDiv = styled.div`
 `;
 
 const VirtualBrandButton = styled.img`
-  width: 100px;
-  height: 40px;
+  width: 90px;
+  height: 50px;
   margin: 9px;
-  border: 1px solid var(--primary-color-900);
-  border-radius: 50px;
+  padding: 5px;
+  border: 1px solid var(--primary-color-500);
+  border-radius: 20px;
 `;
 
 export const NoData = styled.div`

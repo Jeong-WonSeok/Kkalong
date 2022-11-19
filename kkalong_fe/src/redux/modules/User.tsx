@@ -113,7 +113,7 @@ export const ChangeProfile = (data: UpdataProfile) => async (dispatch: Dispatch)
 
 // body_img 등록
 export const ChangeBody = (data: FormData, user_id: number) => async (dispatch: Dispatch) => {
-  const res = await axios.post(requests.bodyImg + String(user_id), data, {headers: {"Content-Type": "multipart/form-data"}})
+  const res = await axios.post(requests.bodyImg, data, {headers: {"Content-Type": "multipart/form-data"}})
   dispatch({type:CHANGE_USER_BODY, payload: res.data.body_img})
 }
 

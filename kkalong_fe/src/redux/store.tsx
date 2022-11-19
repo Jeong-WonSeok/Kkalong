@@ -5,6 +5,8 @@ import storage from 'redux-persist/lib/storage';
 import BestDress, {stateType} from "./modules/BestDress";
 import HelpCodi from './modules/HelpCodi'
 import User from './modules/User'
+import Brand from './modules/Brand'
+import CodyComment from './modules/CodyComment'
 
 // 타입 오류를 위해서 state의 타입을 가져온다.
 export interface rootState {
@@ -15,7 +17,9 @@ export interface rootState {
 const rootReducer = combineReducers({
     BestDress,
     HelpCodi,
-    User
+    User,
+    Brand,
+    CodyComment
 })
 
 const persistConfig = {

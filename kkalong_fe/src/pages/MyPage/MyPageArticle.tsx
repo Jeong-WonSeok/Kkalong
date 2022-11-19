@@ -2,8 +2,6 @@ import React, {useState, useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { BestDresserArticle } from "../Community/MainCommunity";
-import { HelpCodiArticle } from "../Community/MainCommunity";
 import axios from '../../api/axios'
 import requests from '../../api/requests'
 
@@ -15,14 +13,17 @@ import TopNav from "../../components/ui/TopNav";
 import backArrow from "../../assets/icon/Nav/BackArrow.png";
 import { UserType } from "./MyPage";
 import { useAppSelector } from "../../hooks/reduxHook";
-
+import MyBestDresser from "../../components/Community/MyBestDresser";
+import { BestArticle } from './../../components/Community/MyBestDresser';
+import { MyHelpArticle } from "../../components/Community/MyHelpCodi";
+import MyHelpCodi from './../../components/Community/MyHelpCodi';
 
 
 export default function MyPageArticle() {
   const params = useParams()
   const { User, otherUser } = useAppSelector(state => state.User)
-  const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>);
-  const [HelpArticles, setHelpArticles] = useState(Array<HelpCodiArticle>);
+  const [BestArticles, setBestArticles] = useState(Array<BestArticle>);
+  const [HelpArticles, setHelpArticles] = useState(Array<MyHelpArticle>);
 
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ export default function MyPageArticle() {
             {BestArticles.map((BestArticle, index) => {
               return (
                 <div key={index}>
-                  <BestDresser article={BestArticle} />
+                  <MyBestDresser article={BestArticle} />
                 </div>
               );
             })}
@@ -73,7 +74,7 @@ export default function MyPageArticle() {
             {HelpArticles.map((HelpArticle, index) => {
               return (
                 <div key={index}>
-                  <HelpCodi article={HelpArticle} />
+                  <MyHelpCodi article={HelpArticle} />
                 </div>
               );
             })}
