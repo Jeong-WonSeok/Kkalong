@@ -5,6 +5,10 @@ import Webcam from "react-webcam";
 
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
+<<<<<<< HEAD
+=======
+// import {CamDiv, ButtonContainer, CaptureButton, ChildCaptureButton} from '../Closet/AddClothes'
+>>>>>>> develop
 import { CategoryText } from "../Community/MainCommunity";
 import Base64ToFile from "../../hooks/Base64ToFile";
 
@@ -136,6 +140,7 @@ export default function VirtualPicture() {
               />
               <SelectP>촬영하기</SelectP>
             </BtnDiv>
+<<<<<<< HEAD
           </Container>
           <FooterBar />
           {url && (
@@ -239,6 +244,108 @@ export default function VirtualPicture() {
               </Button>
             </BtnContainer>
           </Container>
+=======
+          </Container>
+          <FooterBar />
+          {url && (
+            <ModalContainer>
+              <ContentDiv>
+                <Container style={{ minHeight: "300px", margin: "7px 0" }}>
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "start",
+                    }}
+                  >
+                    <MenuImg
+                      src={Close}
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        marginLeft: "5px",
+                      }}
+                      onClick={() => setUrl("")}
+                    />
+                  </div>
+                  <PreviewImg src={url} />
+                  <BtnContainer>
+                    <Button
+                      style={{ backgroundColor: "var(--primary-color-500)" }}
+                      onClick={() => {
+                        SelectFile();
+                      }}
+                    >
+                      재선택
+                    </Button>
+                    <Button
+                      style={{
+                        backgroundColor: "var(--primary-color-900)",
+                        color: "white",
+                      }}
+                      onClick={Submit}
+                    >
+                      완료
+                    </Button>
+                  </BtnContainer>
+                </Container>
+              </ContentDiv>
+            </ModalContainer>
+          )}
+        </div>
+      )}
+      {/* 
+    {IsSelect === "Picture" && !url && <CamDiv>
+      <Webcam 
+        audio={false}
+        screenshotFormat="image/jpeg"
+        ref={webcam}
+        videoConstraints={videoConstraints}
+        onUserMediaError={() => window.alert('cant access your camera')}/>
+      <ButtonContainer>
+        <CaptureButton onClick={capture}>
+        <ChildCaptureButton></ChildCaptureButton>
+        </CaptureButton>
+        <ChangeDisplay onClick={ModeChange}>
+          <SelectImg src={Change}/>
+        </ChangeDisplay>
+      </ButtonContainer>
+    </CamDiv>} */}
+
+      {IsSelect === "Picture" && url && (
+        <div>
+          <TopNav type={""}>
+            <MenuImg
+              src={BackArrow}
+              onClick={() => {
+                setIsSelect("");
+                setUrl("");
+              }}
+            />
+            <CategoryText>가상피팅</CategoryText>
+            <div style={{ width: "30px", height: "30px" }}></div>
+          </TopNav>
+          <Container>
+            <PreviewImg src={url} />
+            <BtnContainer>
+              <Button
+                style={{ backgroundColor: "var(--primary-color-500)" }}
+                onClick={() => setUrl("")}
+              >
+                다시찍기
+              </Button>
+              <Button
+                style={{
+                  backgroundColor: "var(--primary-color-900)",
+                  color: "white",
+                }}
+                onClick={Submit}
+              >
+                완료
+              </Button>
+            </BtnContainer>
+          </Container>
+>>>>>>> develop
         </div>
       )}
     </div>

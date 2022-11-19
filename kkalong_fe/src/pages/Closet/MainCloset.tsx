@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 
@@ -24,27 +24,34 @@ import img6 from "../../img/img6.png";
 import img7 from "../../img/img7.png";
 import Bar from "../../assets/icon/Closet/Bar.png";
 import camera from "../../assets/icon/Closet/add_clothes.png";
+import FormDataChange from "../../hooks/FormDataChange";
 
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../../components/closet/Carousel";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "./styles.css";
+import { EffectCoverflow, Pagination } from "swiper";
 import SwiperCore from "swiper";
 
 // import required modules
-import { EffectCoverflow, Pagination } from "swiper";
 import add_closet from "../../assets/icon/Closet/add_closet.png";
 import { loadSVGFromString } from "fabric/fabric-impl";
+
 export interface ClothesProps {
   sortclothes: string[];
 }
+
+interface SendType {
+  img: File;
+}
+
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
@@ -81,6 +88,9 @@ export default function MainCloset() {
     codies: any[];
     name: string;
   }
+  interface imgType {
+    img: File;
+  }
   let [closet, setCloset] = useState(Array<dataType>);
 
   // useEffect(() => {
@@ -88,6 +98,11 @@ export default function MainCloset() {
 
   //   ]);
   // }, []);
+  interface imgSetType {
+    color: string;
+    img: string;
+  }
+  const [SendData, setSendData] = useState<SendType>();
   let [sls, setSls] = useState("");
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
@@ -96,18 +111,84 @@ export default function MainCloset() {
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
   const navigate = useNavigate();
   const [closetId, setClosetId] = useState(0);
+  let [clothing, setClothing] = useState<imgSetType>();
   const [swiper, setSwiper] = useState<SwiperCore>();
   // console.log(userId);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const onUploadImage = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("img", e.target.files[0]);
+      console.log(formData);
+      axios
+        .post(requests.removeBackground, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          setClothing(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    []
+  );
+
+  const onUploadImageButtonClick = useCallback(() => {
+    if (!inputRef.current) {
+      return;
+    }
+    inputRef.current.click();
+  }, []);
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
-    navigate("/codi");
-
-    if (params.userId) {
-      navigate("pluscodi");
+    let userProfile: any = localStorage.getItem("userProfile");
+    userProfile = JSON.parse(userProfile);
+    userProfile.user_id = console.log(userProfile);
+    if ((userProfile.user_id = userId)) {
+      navigate("/codi");
     } else {
       navigate("/pluscodi");
     }
+  };
+  const ChangePicture = (e: any) => {
+    setSendData((state) => {
+      return {
+        // undefined 타입 지정 오류 처리
+        ...(state as SendType),
+        post_img: e.target.files[0],
+      };
+    });
+
+    const Picture = document.getElementById("SelectPicture") as HTMLDivElement;
+    // 위에 레이어 모두 삭제후
+    Picture.replaceChildren();
+    const ImgUrl = URL.createObjectURL(e.target.files[0]);
+    Picture.style.backgroundImage = `url(${ImgUrl})`;
+    Picture.style.backgroundPosition = "center";
+    Picture.style.width = "auto";
+  };
+  const Submit = async () => {
+    const result = FormDataChange(SendData);
+    console.log(result);
+    result.get("img");
+    await axios
+      .post(requests.removeBackground, result, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log(res);
+        navigate(`/`);
+      })
+      .catch((err) => console.error(err));
   };
 
   // const start = () => {
@@ -123,13 +204,15 @@ export default function MainCloset() {
   //     console.log(res);
   //   });
   // };
-  console.log(closet);
+  // console.log(closet);
   let [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(requests.closet + userId)
       .then((res) => {
+        closet = res.data.closets;
         setCloset(res.data.closets);
+        console.log(closet);
         setLoading(false);
       })
       .catch((res) => {
@@ -180,7 +263,7 @@ export default function MainCloset() {
   //     setCloset(res);
   //   });
   // }, []);
-
+  console.log(closet);
   return (
     <>
       {loading ? (
@@ -211,7 +294,7 @@ export default function MainCloset() {
               modules={[EffectCoverflow, Pagination]}
               className="mySwiper"
             >
-              {/* {closet.map((a, i) => {
+              {closet.map((a, i) => {
                 return (
                   <SwiperSlide>
                     <SlideButton
@@ -220,13 +303,14 @@ export default function MainCloset() {
                         console.log(closetId);
                       }}
                     >
-                      <img src={closet[i].clothings[i].img} alt="no" />
+                      {closet[i].clothings[i] ? (
+                        <img src={closet[i].clothings[i].img} alt="no" />
+                      ) : null}
                     </SlideButton>
                     <SwiperText>{closet[i].name}</SwiperText>
                   </SwiperSlide>
                 );
-              })} */}
-
+              })}
               <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
@@ -241,7 +325,6 @@ export default function MainCloset() {
               </SwiperSlide>
               {/* </SliderBorder> */}
             </Swiper>
-
             <SelectBtnContainer>
               <SelectBtn
                 onClick={() => {
@@ -269,7 +352,7 @@ export default function MainCloset() {
             })}
           </Category>
           <SortClothesContainer>
-            {/* {closet[0].closet_id === closetId &&
+            {closet[0].closet_id === closetId &&
               closet[0].clothings.map(function (a, i) {
                 return (
                   <SortClothes
@@ -279,15 +362,39 @@ export default function MainCloset() {
                       });
                     }}
                   >
-                    <ClothesImg src={closet[0].clothings[i].img} />
+                    <ClothesImg src={closet[0].clothings[i].img} alt="no" />
                   </SortClothes>
                 );
-              })} */}
+              })}
           </SortClothesContainer>
 
+          {/* <input
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={onUploadImage}
+          />
+          <button onClick={onUploadImageButtonClick} /> */}
+          {/* <input
+            type="file"
+            id="file"
+            onChange={ChangePicture}
+            accept="image/*"
+            required
+          />
+          <button onClick={Submit}>작성</button> */}
+          {/* <input
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={onUploadImage}
+          />
+          <button onClick={Submit} /> */}
           <AddClothesContainer>
             <AddClothes
-              onClick={() => navigate("/closet/add", { state: { closetId } })}
+              onClick={() =>
+                navigate("/closet/add", { state: { closetId, clothing } })
+              }
             >
               <img src={camera} />
             </AddClothes>
