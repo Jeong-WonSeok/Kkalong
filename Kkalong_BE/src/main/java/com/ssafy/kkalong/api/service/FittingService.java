@@ -23,6 +23,7 @@ public class FittingService {
         List<BrandResponseDto> brandDtoList = new ArrayList<>();
         for(Brand b : brandList){
             BrandResponseDto brandDto = new BrandResponseDto();
+            brandDto.setBrand_id(b.getId());
             brandDto.setName(b.getKorean_name());
             brandDto.setImg(b.getImg());
             brandDtoList.add(brandDto);
@@ -40,10 +41,13 @@ public class FittingService {
         Clothing clothes = clothingRepository.findById(clothing_id);
         System.out.println("gege" + clothes.getId());
         ClothesResponseDto clothesDto = new ClothesResponseDto();
+
+        clothesDto.setClothing_id(clothes.getId());
         clothesDto.setImg(clothes.getImg());
         clothesDto.setName(clothes.getName());
         clothesDto.setMainCategory(clothes.getMain_category());
         clothesDto.setUrl(clothes.getUrl());
+
         return clothesDto;
     }
 }

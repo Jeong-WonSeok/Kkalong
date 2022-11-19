@@ -253,9 +253,10 @@ def setBottomByGender(gender, top, df):
 
 def mainChoice(gender, weather, df):
     # gender 입력받고 날씨 입력받아서 출력
-    top = setTopByGender(gender, df)
-    bottom = setBottomByGender(gender, top, df)
-
+    # top = setTopByGender(gender, df)
+    # bottom = setBottomByGender(gender, top, df)
+    top = 1
+    bottom = 2
     c_bag = random.choices([0, 7], weights=[0.6, 0.4])[0]
     hat = random.choices([0, 8], weights=[0.8, 0.2])[0]
 
@@ -624,7 +625,7 @@ def weatherRecommend(style, gender, weather, temp):
         bag_result = bag_result.sample(n=1)
     hat_result = selectDbCodyBySub(cody_main, color, cody_sub[7], gender, "hat")
     if len(hat_result) > 0:
-        hat_result.sample(n=1)
+        hat_result = hat_result.sample(n=1)
 
     result = {"top": top_result.to_dict('r'), "bottom": bottom_result.to_dict('r'),
               "shoes": shoes_result.to_dict('r'), "outer": outer_result.to_dict('r'),

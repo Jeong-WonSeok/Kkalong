@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandResponseDto {
-
+    private int brand_id;
     private String name;
     private String img;
 

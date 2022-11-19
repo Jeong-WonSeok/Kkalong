@@ -37,6 +37,7 @@ public class FittingController {
         for(Clothing clo : clothes){
             Map<String, Object> img = new HashMap<>();
             img.put("img", clo.getImg());
+            img.put("id", clo.getId());
             Map<String,Object> clothes_id = new HashMap<>();
             clothes_id.put("clothes_id", img);
             cloList.add(clothes_id);
