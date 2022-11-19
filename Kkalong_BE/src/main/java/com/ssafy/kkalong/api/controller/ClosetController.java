@@ -3,6 +3,7 @@ package com.ssafy.kkalong.api.controller;
 import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.service.ClosetService;
+import com.ssafy.kkalong.api.service.FirebaseService;
 import com.ssafy.kkalong.api.service.UserService;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class ClosetController {
 
     private final ClosetService closetService;
     private final UserService userService;
+    private final FirebaseService firebaseService;
 
     @GetMapping("/all/{user_id}")
     public ResponseEntity<?> getAllClosetByUserId(@PathVariable int user_id){
@@ -83,12 +85,28 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping(consumes = {"multipart/form-data"}, value ="/cody")
-    public ResponseEntity<?> registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestPart("cody") CodyDto codyDto, @RequestPart("img") MultipartFile img){
+    @GetMapping("/clothings/{closet_id}")
+    public ResponseEntity<?> getClothingsByClosetId(@PathVariable int closet_id){
         Map<String, Object> result = new HashMap<>();
-        Cody cody = closetService.registerCody(userInfo.getId(), codyDto, img);
+        Closet closet = closetService.getClosetsByClosetId(closet_id);
+        result.put("clothings", closetService.findAllClothingByCloset(closet));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping(consumes = {"multipart/form-data"}, value = "/cody/img")
+    public ResponseEntity<?> saveCodyImg(@RequestPart MultipartFile cody_img){
+        Map<String, Object> result = new HashMap<>();
+        int next_cody_id = closetService.findNextCodyId();
+        String cody_img_url = firebaseService.uploadCodyImg(next_cody_id, cody_img);
+        result.put("img", cody_img_url);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/cody")
+    public ResponseEntity<?> registerCody(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody CodyDto codyDto){
+        Map<String, Object> result = new HashMap<>();
+        Cody cody = closetService.registerCody(userInfo.getId(), codyDto);
         result.put("cody_id", cody.getId());
-        result.put("img", cody.getImg());
         return ResponseEntity.ok().body(result);
     }
 
