@@ -122,9 +122,7 @@ export default function MainCloset() {
       }
 
       const formData = new FormData();
-
       formData.append("img", e.target.files[0]);
-
       console.log(formData);
       axios
         .post(requests.removeBackground, formData, {
@@ -134,6 +132,7 @@ export default function MainCloset() {
         })
         .then((response) => {
           setClothing(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.error(error);
@@ -371,15 +370,21 @@ export default function MainCloset() {
           </SortClothesContainer>
 
           {/* <input
+<<<<<<< HEAD
 
 
           <input
+=======
+>>>>>>> develop
             type="file"
             accept="image/*"
             ref={inputRef}
             onChange={onUploadImage}
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
           <button onClick={onUploadImageButtonClick} /> */}
           {/* <input
             type="file"
@@ -396,7 +401,9 @@ export default function MainCloset() {
             onChange={onUploadImage}
           />
           <button onClick={Submit} /> */}
+
           {/* <button onClick={onUploadImageButtonClick} /> */}
+
           <AddClothesContainer>
             <AddClothes
               onClick={() =>
