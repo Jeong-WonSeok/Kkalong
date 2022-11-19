@@ -14,6 +14,7 @@ import MainCloset from "./pages/Closet/MainCloset";
 import AddCloset from "./pages/Closet/AddCloset";
 import CodiPage from "./pages/Closet/CodiPage";
 import PlusCodi from "./pages/Closet/PlusCodi";
+import PlusCodi2 from "./pages/Closet/PlusCodi2";
 import AddClothes from "./pages/Closet/AddClothes";
 import CodiEdit from "./components/closet/CodiEdit";
 import ClosetAsset from "./components/closet/ClosetAsset";
@@ -49,11 +50,11 @@ import MyFollow from "./pages/MyPage/MyFollow";
 
 function App() {
   // 사용자의 화면에 맞춰서 크기조절
-  useEffect(()=>{
-    const windowHeight = window.innerHeight
-    const app = document.getElementById('App') as HTMLDivElement
-    app.style.minHeight = `${windowHeight - 130}px`
-  },[])
+  useEffect(() => {
+    const windowHeight = window.innerHeight;
+    const app = document.getElementById("App") as HTMLDivElement;
+    app.style.minHeight = `${windowHeight - 130}px`;
+  }, []);
   return (
     <div id="container">
       <div id="App">
@@ -67,23 +68,54 @@ function App() {
             <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
             {/* 커뮤니티 */}
             <Route path="/community" element={<MainCommunity />}></Route>
-            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
-            <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/:BestDressId" element={<DetailBestDress />}></Route>
-            <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/:HelpCodiId" element={<DetailHelpCodi />}></Route>
+            <Route
+              path="/community/BestDress"
+              element={<MainBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/Add/"
+              element={<AddBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/Add/:BestDressId"
+              element={<AddBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/:BestDressId"
+              element={<DetailBestDress />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi"
+              element={<MainHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add"
+              element={<AddSelectHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add/:Category/"
+              element={<AddHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add/:Category/:HelpCodiId"
+              element={<AddHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/:HelpCodiId"
+              element={<DetailHelpCodi />}
+            ></Route>
             {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
             <Route path="/closet/:userId" element={<MainCloset />}></Route>
-            <Route path="/closet/:userId/pluscodi" element={<PlusCodi />}></Route>
+            <Route
+              path="/closet/:userId/pluscodi"
+              element={<PlusCodi />}
+            ></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>
+            <Route path="/pluscodi2" element={<PlusCodi2 />}></Route>
             <Route path="/pluscodi/:Category" element={<PlusCodi />}></Route>
             <Route path="/codiedit" element={<CodiEdit />}></Route>
             <Route path="/closetasset" element={<ClosetAsset />}></Route>
@@ -100,13 +132,28 @@ function App() {
             <Route path="/myPage/Following" element={<MyFollow />}></Route>
             <Route path="/myPage/:userId" element={<MyPage />}></Route>
             <Route path="/myPage/:userId/Follow" element={<MyFollow />}></Route>
-            <Route path="/myPage/:userId/Following" element={<MyFollow />}></Route>
-            <Route path="/myPage/:userId/Article/" element={<MyPageArticle />}></Route>
+            <Route
+              path="/myPage/:userId/Following"
+              element={<MyFollow />}
+            ></Route>
+            <Route
+              path="/myPage/:userId/Article/"
+              element={<MyPageArticle />}
+            ></Route>
             {/* 가상피팅 */}
             <Route path="/VirtualFitting/" element={<VirtualPicture />}></Route>
-            <Route path="/VirtualFitting/VirtualBrandChoice/" element={<VirtualBrandChoice />}></Route>
-            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id" element={<VirtualBrand />}></Route>
-            <Route path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id" element={<VirtualBrandProduct />}></Route>
+            <Route
+              path="/VirtualFitting/VirtualBrandChoice/"
+              element={<VirtualBrandChoice />}
+            ></Route>
+            <Route
+              path="/VirtualFitting/VirtualBrandChoice/:brand_id"
+              element={<VirtualBrand />}
+            ></Route>
+            <Route
+              path="/VirtualFitting/VirtualBrandChoice/:brand_id/:clothes_id"
+              element={<VirtualBrandProduct />}
+            ></Route>
           </Routes>
         </Router>
       </div>

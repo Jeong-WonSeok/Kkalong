@@ -15,7 +15,6 @@ import { resolveTypeReferenceDirective } from "typescript";
 export default function AddClothes() {
   const location = useLocation();
   const closetId = location.state.closetId;
-  console.log(closetId);
   interface clothesType {
     closet_id: number;
     mainCategory: number;
@@ -201,6 +200,7 @@ export default function AddClothes() {
     "진청",
     "흑청",
   ];
+  let styleList = ["casual", "dandy", "street", "formal"];
   let [style, setStyle] = useState("");
   let [color, setColor] = useState("");
   let [subid, setSubid] = useState(0);
@@ -213,22 +213,14 @@ export default function AddClothes() {
     false,
   ]);
   let seasonT = ["분류", "색상"];
+
   const [seasonsBoolean, setSeasonsBoolean] = useState<Array<boolean>>([
     false,
     false,
     false,
     false,
   ]);
-  useEffect(() => {
-    const app = document.getElementById("App") as HTMLDivElement;
-    app.style.margin = "0";
-  }, []);
-
-  const videoConstraints = {
-    width: 1024,
-    height: 768,
-    facingMode: "user",
-  };
+  useEffect(() => {}, []);
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
@@ -245,105 +237,6 @@ export default function AddClothes() {
   //   } else {
   //     label.style.backgroundColor = "";
   //     label.style.color = "black";
-  //   }
-  // };
-  console.log(url);
-
-  const capture = useCallback(async () => {
-    const imageSrc = webcam.current?.getScreenshot();
-    console.log(imageSrc);
-    if (imageSrc) {
-      // base64 코드를 File로 변환
-      const byteCharacters = URL.createObjectURL(
-        new Blob([imageSrc], { type: "text/plain" })
-      );
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-
-      let image = new Blob([byteArray], {
-        type: "image/png",
-      });
-
-      const myFile = new File([image], "image.png", {
-        type: image.type,
-      });
-      setUrl(imageSrc);
-      console.log(imageSrc);
-      const formData = new FormData();
-      formData.append("img", myFile);
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      const res = await axios
-        .post(requests.removeBackground, formData, config)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    }
-  }, [webcam]);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("img", e.target.files[0]);
-      console.log(formData);
-      for (let values of formData.values()) {
-        console.log(values); // 이미지 객체의 정보
-      }
-      axios
-        .post(requests.removeBackground, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          setClothing(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    []
-  );
-
-  const onUploadImageButtonClick = useCallback(() => {
-    if (!inputRef.current) {
-      return;
-    }
-    inputRef.current.click();
-  }, []);
-  // const Submit = async () => {
-  //   const result = FormDataChange(SendData);
-  //   result.get("post_img");
-  // FormData의 value 확인
-  //   if (params.BestDressId) {
-  //     await axios.put(requsests.detailBestDress + params.BestDressId, result, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //     navigate(`/community/BestDress/${params.Id}`);
-  //   } else {
-  //     await axios
-  //       .post(requsests.bestDress, result, {
-  //         headers: { "Content-Type": "multipart/form-data" },
-  //       })
-  //       .then((res) => {
-  //         console.log(res);
-  //         navigate(`/community/BestDress/${res.data.Best.id}`);
-  //       })
-  //       .catch((err) => console.error(err));
   //   }
   // };
 
@@ -564,6 +457,32 @@ export default function AddClothes() {
           })}
         </SortContainer> */}
         <SeasonCategory>
+          <SeasonP>스타일</SeasonP>
+          <CheckboxContainer>
+            {styleList.map((a, index) => {
+              return (
+                <div key={index}>
+                  <SeasonBtn
+                    onClick={() => {
+                      setStyle(styleList[index]);
+                    }}
+                  >
+                    {styleList[index]}
+                    {/* <SeasonCheckbox
+                          value={season}
+                          id={season}
+                          onChange={() => ChangeBackground(season)}
+                        /> */}
+                    {/* <SeasonLabel htmlFor={season} id={`label_${season}`}>
+                        {season}
+                      </SeasonLabel> */}
+                  </SeasonBtn>
+                </div>
+              );
+            })}
+          </CheckboxContainer>
+        </SeasonCategory>
+        <SeasonCategory>
           <SeasonP>계절</SeasonP>
           <CheckboxContainer>
             {seasons.map((season, index) => {
@@ -592,13 +511,6 @@ export default function AddClothes() {
             })}
           </CheckboxContainer>
         </SeasonCategory>
-        <input
-          type="file"
-          accept="image/*"
-          ref={inputRef}
-          onChange={onUploadImage}
-        />
-        <button onClick={onUploadImageButtonClick} />
         {/* <SeasonCategory>
               <SeasonP>구분</SeasonP>
             </SeasonCategory> */}
