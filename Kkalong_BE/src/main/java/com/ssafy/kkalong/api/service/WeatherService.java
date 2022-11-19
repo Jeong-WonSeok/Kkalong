@@ -105,13 +105,13 @@ public class WeatherService {
                     check = "tomorrowAfter";
 
                 if(fcstValue.equals("1")) {
-                    result.put(check+" Weather", "맑음");
+                    result.put(check+"_Weather", "맑음");
                 }else if(fcstValue.equals("2")) {
-                    result.put(check+" Weather", "비");
+                    result.put(check+"_Weather", "비");
                 }else if(fcstValue.equals("3")) {
-                    result.put(fcstDate+" Weather", "구름");
+                    result.put(fcstDate+"_Weather", "구름");
                 }else if(fcstValue.equals("4")) {
-                    result.put(check+" Weather", "흐림");
+                    result.put(check+"_Weather", "흐림");
                 }
             }
 
