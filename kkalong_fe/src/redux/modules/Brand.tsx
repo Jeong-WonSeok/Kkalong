@@ -28,6 +28,7 @@ export const getBrand = () => async (dispatch: Dispatch) => {
   dispatch({type: GET_BRAND_PENDING})
 
   const res = await axios.get(requests.brand)
+  console.log(res.data)
   dispatch({type: GET_BRAND_SUCCESS, payload: res.data.brand_id})
 }
 

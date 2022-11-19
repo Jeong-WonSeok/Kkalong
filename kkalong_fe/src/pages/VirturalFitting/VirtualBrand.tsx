@@ -16,9 +16,7 @@ import requests from '../../api/requests'
 import { NoData } from "./VirtualBrandChoice";
 
 interface BrnadClothesType {
-  img: string;
-  name: string;
-  clothes_id: number;
+  clothes_id: {img: string}
 }
 
 export default function VirtualBrand() {
@@ -36,38 +34,6 @@ export default function VirtualBrand() {
       .catch(err => {
         console.error(err)
       })
-    // setBrandClothes([
-    //   {
-    //     img: clothes1,
-    //     name: "네이비 맨투맨",
-    //     clothes_id: 1,
-    //   },
-    //   {
-    //     img: clothes2,
-    //     name: "흰색 긴팔",
-    //     clothes_id: 2,
-    //   },
-    //   {
-    //     img: clothes3,
-    //     name: "청색 셔츠",
-    //     clothes_id: 3,
-    //   },
-    //   {
-    //     img: clothes4,
-    //     name: "여자옷임",
-    //     clothes_id: 4,
-    //   },
-    //   {
-    //     img: clothes5,
-    //     name: "우디 맨투맨",
-    //     clothes_id: 5,
-    //   },
-    //   {
-    //     img: clothes6,
-    //     name: "흰색 가디건",
-    //     clothes_id: 6,
-    //   },
-    // ]);
   }, []);
   return (
     <VirtualBrandDiv>
@@ -81,9 +47,9 @@ export default function VirtualBrand() {
           return (
             <VirtualBrandProduct
               key={idx}
-              src={clothes.img}
+              src={clothes.clothes_id.img}
               onClick={() =>
-                navigate(`${clothes.clothes_id}`, { state: clothes })
+                navigate(`${idx}`)
               }
             ></VirtualBrandProduct>
           );

@@ -7,6 +7,7 @@ import HelpCodi from './modules/HelpCodi'
 import User from './modules/User'
 import Brand from './modules/Brand'
 import CodyComment from './modules/CodyComment'
+import Weather from './modules/Weather'
 
 // 타입 오류를 위해서 state의 타입을 가져온다.
 export interface rootState {
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     HelpCodi,
     User,
     Brand,
-    CodyComment
+    CodyComment,
+    Weather
 })
 
 const persistConfig = {

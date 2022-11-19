@@ -11,13 +11,25 @@ export function TimeChange () {
 }
 
 
-export function nowDate () {
+export function nowDate (day: number) {
   const now = new Date()
 
-  const nowMonth = now.getMonth() + 1
-  const nowDay = now.getDate()
+  let nowMonth = now.getMonth() + 1
+  let nowDay = now.getDate() + day
   const week = ['일', '월', '화', '수', '목', '금', '토']
-  const nowWeek = week[now.getDay()]
+  const nowWeek = week[(now.getDay() + day) % 7]
+
+  const days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+  if (nowMonth === 2 && now.getFullYear() % 4 === 0){
+    days[2] = 29
+  }
+  if (nowDay > days[nowMonth]) {
+    nowMonth += 1
+    // 만약 12월을 넘어가면
+    nowMonth = nowMonth > 12 ? nowMonth %= 12 : nowMonth
+    nowDay = nowDay % days[nowMonth]
+  }
 
   return nowMonth + '월 ' + nowDay + '일 ' + nowWeek + '요일 '
 }

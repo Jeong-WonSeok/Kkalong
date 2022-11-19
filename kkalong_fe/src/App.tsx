@@ -43,6 +43,7 @@ import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
 import MyPageArticle from "./pages/MyPage/MyPageArticle";
 import PersonalInfo from "./pages/PersonalInfo";
 import MyFollow from "./pages/MyPage/MyFollow";
+import PersonalColor from "./pages/Recommend/PersonalColor";
 
 // import Example from "./components/closet/Example";
 // import Scene from "../public/Scene";
@@ -92,6 +93,7 @@ function App() {
             <Route path="/threetest" element={<ThreeTest />}></Route>
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
+            <Route path="/recommend/personal" element={<PersonalColor />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
             {/* 마이페이지 */}
             <Route path="/myPage" element={<MyPage />}></Route>
