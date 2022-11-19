@@ -41,6 +41,7 @@ const requests = {
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴
 
   // 추천
+  faceImg: "/user/body/img",
   weather: "/recommend/weather/",
   body: "/recommend/body",
 };
