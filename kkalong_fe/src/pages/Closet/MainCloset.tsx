@@ -52,7 +52,6 @@ interface SendType {
   img: File;
 }
 
-  
 interface imgSetType {
   color: string;
   img: string;
@@ -72,7 +71,7 @@ interface dataType {
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
-  const { User } = useAppSelector(state => state.User);
+  const { User } = useAppSelector((state) => state.User);
   const navigate = useNavigate();
   const settings = {
     className: "center",
@@ -118,14 +117,12 @@ export default function MainCloset() {
   let userId = userProfile.user_id;
   let [clothings, setClothings] = useState<any[]>([]);
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  const navigate = useNavigate();
   const [closetId, setClosetId] = useState<number>();
   let [clothing, setClothing] = useState<imgSetType>();
   const [swiper, setSwiper] = useState<SwiperCore>();
   let [clothingId, setClothingId] = useState("");
   // console.log(userId);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  let [loading, setLoading] = useState(true);
 
   const onUploadImage = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,12 +164,12 @@ export default function MainCloset() {
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
-    if ((User.user_id === Number(params.userId)) || !params.userId) {
+    if (User.user_id === Number(params.userId) || !params.userId) {
       navigate("/codi");
     } else if (User.loving && User.lover_id === Number(params.userId)) {
       navigate("/codi");
     } else {
-      navigate('/pluscodi')
+      navigate("/pluscodi");
     }
   };
   const ChangePicture = (e: any) => {
@@ -226,14 +223,14 @@ export default function MainCloset() {
   console.log(clothingId);
   return (
     <div>
-      {loading ? 
+      {loading ? (
         <>loading...</>
-       : 
+      ) : (
         <div>
           <TopNav type={"menu"}>
             <CategoryText1>옷장</CategoryText1>
             <div style={{ width: "54px", height: "38px" }}>
-            <MenuIcon src={menu} />
+              <MenuIcon src={menu} />
             </div>
           </TopNav>
           <>
@@ -345,7 +342,7 @@ export default function MainCloset() {
           <FooterBar />
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -528,4 +525,4 @@ const CameraImg = styled.img`
   height: 40px;
   width: 45px;
   margin: 10px 1.5px;
-`
+`;
