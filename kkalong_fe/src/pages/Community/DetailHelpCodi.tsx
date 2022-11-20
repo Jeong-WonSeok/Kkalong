@@ -106,7 +106,7 @@ export default function DetailHelpCodi() {
 
   const ShowCloset = () => {
     // 작성자의 코디 페이지로 이동
-    navigate(`/closet/${Article?.Help.user.user_id}`)
+    navigate(`/closet/${params.HelpCodiId}/${Article?.Help.user.user_id}`)
   }
 
   const goBack = () => {
