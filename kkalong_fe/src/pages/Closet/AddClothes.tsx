@@ -41,6 +41,8 @@ export default function AddClothes() {
     color?: string;
     img?: any;
   }
+  let styleList = ["casual", "dandy", "street", "formal"];
+  let [style, setStyle] = useState("");
   const [btn, setBtn] = useState([false, false, false, false]);
   const [files, setFiles] = useState("");
   const navigate = useNavigate();
@@ -71,9 +73,7 @@ export default function AddClothes() {
         { subId: 105, name: "피케/카라 티셔츠" },
         { subId: 106, name: "맨투맨/스웨트 셔츠" },
         { subId: 107, name: "니트/스웨터" },
-        { subId: 111, name: "미니 원피스" },
-        { subId: 112, name: "미디 원피스" },
-        { subId: 113, name: "맥시 원피스" },
+        { subId: 108, name: "후드 티셔츠" },
       ],
     },
     {
@@ -86,67 +86,82 @@ export default function AddClothes() {
         { subId: 204, name: "트레이닝/조거 팬츠" },
         { subId: 205, name: "숏 팬츠" },
         { subId: 206, name: "기타 바지" },
-        { subId: 211, name: "미니 스커트" },
-        { subId: 212, name: "미디 스커트" },
-        { subId: 213, name: "롱 스커트" },
       ],
     },
     {
       id: 3,
-      name: "아우터",
+      name: "스커트",
       subcategories: [
-        { subId: 301, name: "후드 집업" },
-        { subId: 302, name: "환절기 코트" },
-        { subId: 303, name: "카디건" },
-        { subId: 304, name: "슈트/블레이저" },
-        { subId: 305, name: "재킷" },
-        { subId: 306, name: "블루종/MA-1" },
-        { subId: 307, name: "겨울 코트" },
-        { subId: 308, name: "플리스/뽀글이" },
-        { subId: 309, name: "숏패딩/숏헤비 아우터" },
-        { subId: 310, name: "무스탕/퍼" },
-        { subId: 311, name: "롱패딩/롱헤비 아우터" },
-        { subId: 312, name: "기타 아우터" },
+        { subId: 301, name: "미니 스커트" },
+        { subId: 302, name: "미디 스커트" },
+        { subId: 303, name: "롱 스커트" },
       ],
     },
     {
       id: 4,
-      name: "신발",
+      name: "원피스",
       subcategories: [
-        { subId: 401, name: "구두" },
-        { subId: 402, name: "로퍼" },
-        { subId: 403, name: "모카신/보트 슈즈" },
-        { subId: 404, name: "부츠" },
-        { subId: 405, name: "블로퍼" },
-        { subId: 406, name: "샌들" },
-        { subId: 407, name: "스니커즈" },
-        { subId: 408, name: "슬리퍼" },
-        { subId: 409, name: "캔버스/단화" },
-        { subId: 410, name: "플랫 슈즈" },
-        { subId: 411, name: "힐/펌프스" },
+        { subId: 401, name: "미니 원피스" },
+        { subId: 402, name: "미디 원피스" },
+        { subId: 403, name: "맥시 원피스" },
       ],
     },
     {
       id: 5,
-      name: "가방",
+      name: "아우터",
       subcategories: [
-        { subId: 501, name: "백팩" },
-        { subId: 502, name: "브리프케이스" },
-        { subId: 503, name: "숄더백" },
-        { subId: 504, name: "에코백" },
-        { subId: 505, name: "크로스백" },
-        { subId: 506, name: "클러치백" },
-        { subId: 507, name: "토트백" },
+        { subId: 501, name: "후드 집업" },
+        { subId: 502, name: "환절기 코트" },
+        { subId: 503, name: "카디건" },
+        { subId: 504, name: "슈트/블레이저" },
+        { subId: 505, name: "재킷" },
+        { subId: 506, name: "블루종/MA-1" },
+        { subId: 507, name: "겨울 코트" },
+        { subId: 508, name: "플리스/뽀글이" },
+        { subId: 509, name: "숏패딩/숏헤비 아우터" },
+        { subId: 510, name: "무스탕/퍼" },
+        { subId: 511, name: "롱패딩/롱헤비 아우터" },
+        { subId: 512, name: "기타 아우터" },
       ],
     },
     {
-      id: 2,
+      id: 6,
+      name: "신발",
+      subcategories: [
+        { subId: 601, name: "구두" },
+        { subId: 602, name: "로퍼" },
+        { subId: 603, name: "모카신/보트 슈즈" },
+        { subId: 604, name: "부츠" },
+        { subId: 605, name: "블로퍼" },
+        { subId: 606, name: "샌들" },
+        { subId: 607, name: "스니커즈" },
+        { subId: 608, name: "슬리퍼" },
+        { subId: 609, name: "캔버스/단화" },
+        { subId: 610, name: "플랫 슈즈" },
+        { subId: 611, name: "힐/펌프스" },
+      ],
+    },
+    {
+      id: 7,
+      name: "가방",
+      subcategories: [
+        { subId: 701, name: "백팩" },
+        { subId: 702, name: "브리프케이스" },
+        { subId: 703, name: "숄더백" },
+        { subId: 704, name: "에코백" },
+        { subId: 705, name: "크로스백" },
+        { subId: 706, name: "클러치백" },
+        { subId: 707, name: "토트백" },
+      ],
+    },
+    {
+      id: 8,
       name: "모자",
       subcategories: [
-        { subId: 601, name: "버킷/사파리햇" },
-        { subId: 602, name: "비니" },
-        { subId: 603, name: "캡/야구 모자" },
-        { subId: 604, name: "헌팅캡/베레모" },
+        { subId: 801, name: "버킷/사파리햇" },
+        { subId: 802, name: "비니" },
+        { subId: 803, name: "캡/야구 모자" },
+        { subId: 804, name: "헌팅캡/베레모" },
       ],
     },
   ]);
@@ -201,7 +216,6 @@ export default function AddClothes() {
     "진청",
     "흑청",
   ];
-  let [style, setStyle] = useState("");
   let [color, setColor] = useState("");
   let [subid, setSubid] = useState(0);
   let [id, setId] = useState(0);
@@ -377,6 +391,7 @@ export default function AddClothes() {
           winter: seasonsBoolean[3],
           color: clothing?.color,
           img: clothing?.img,
+          style,
           brand_id: 0,
         });
       });
@@ -397,20 +412,19 @@ export default function AddClothes() {
       <>
         <TopNav type={""}>
           <CloseImg src={Close} onClick={() => navigate("/closet")} />
-          <NavText>옷 추가</NavText>
+          <NavText>옷 등록</NavText>
           <SubmitBtn
             onClick={() => {
               onSubmit();
             }}
           >
-            추가
+            등록
           </SubmitBtn>
         </TopNav>
-
         <Container>
           <ImgContainer>
             <ImagePreview src={clothing?.img} />
-          </ImgContainer>
+          </ImgContainer>{" "}
         </Container>
 
         {/* <SortContainer>
@@ -561,6 +575,24 @@ export default function AddClothes() {
           })}
         </SortContainer> */}
         <SeasonCategory>
+          <SeasonP>스타일</SeasonP>
+          <CheckboxContainer>
+            {styleList.map((a, index) => {
+              return (
+                <div key={index}>
+                  <SeasonBtn
+                    onClick={() => {
+                      setStyle(styleList[index]);
+                    }}
+                  >
+                    {styleList[index]}
+                  </SeasonBtn>
+                </div>
+              );
+            })}
+          </CheckboxContainer>
+        </SeasonCategory>
+        <SeasonCategory>
           <SeasonP>계절</SeasonP>
           <CheckboxContainer>
             {seasons.map((season, index) => {
@@ -589,13 +621,17 @@ export default function AddClothes() {
             })}
           </CheckboxContainer>
         </SeasonCategory>
+        <label className="input-file-button" htmlFor="input-file">
+          이미지 업로드
+        </label>
         <input
           type="file"
           accept="image/*"
           ref={inputRef}
           onChange={onUploadImage}
+          id="input-file"
+          style={{ display: "none" }}
         />
-        <button onClick={onUploadImageButtonClick} />
         {/* <SeasonCategory>
               <SeasonP>구분</SeasonP>
             </SeasonCategory> */}
@@ -661,10 +697,13 @@ const ImagePreview = styled.img`
   max-width: 300px;
   height: 100%;
 `;
-
+const fileSelect = styled.input`
+  width: 100px;
+  height: 100px;
+`;
 const Container = styled.div`
-  width: 100%;
-  max-width: 360px;
+  margin-top: 50px;
+  margin-left: 30px;
 `;
 
 const CloseImg = styled.img`
@@ -690,10 +729,10 @@ const SubmitBtn = styled.button`
 `;
 
 const ImgContainer = styled.div`
-  width: 100%;
-  max-width: 320px;
+  width: 250px;
+  height: 250px;
   padding: 0 10px;
-  margin: 10px auto;
+  margin: 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -708,6 +747,7 @@ const SeasonCategory = styled.div`
   max-width: 320px;
   height: 50px;
   padding: 0 20px;
+  margin-bottom: 20px;
 `;
 
 const SeasonP = styled.p`
@@ -764,6 +804,7 @@ const SortContainer = styled.div`
 const SortButton = styled.button`
   width: 70px;
   /* background-color: grey; */
-  border: none;
+  background-color: white;
+  border: solid 1px grey;
   border-radius: 30px;
 `;

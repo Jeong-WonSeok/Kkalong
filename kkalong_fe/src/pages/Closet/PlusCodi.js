@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -18,7 +18,10 @@ import { fabric } from "fabric";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import axios from "../../api/axios";
 import requests from "../../api/requests";
-
+import domtoimage from "dom-to-image";
+import { saveAs } from "file-saver";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import html2canvas from "html2canvas";
 export default function PlusCodi() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,11 +43,15 @@ export default function PlusCodi() {
       height: 300,
       width: 300,
     });
+  const [imgBase64, setImgBase64] = useState([]);
+  const [imgFile, setImgFile] = useState(null);
+  const [imgList, setImgList] = useState([]);
 
   const { editor, onReady } = useFabricJSEditor();
   const [canvas, setCanvas] = useState("");
 
   useEffect(() => {
+    readImages();
     setCanvas(initCanvas());
     axios
       .get(requests.closet + userId)
@@ -59,8 +66,85 @@ export default function PlusCodi() {
       });
   }, []);
   let [img, setImg] = useState([img1, img2, img3, img4]);
+  let [clothesArray, setClothesArray] = useState([]);
+  const testImageUrl =
+    "codecamp-online/2022/5/19/09411f6f-9f3c-4973-82b3-d48cbeccd4ee.jpeg";
+  const readImages = async () => {
+    await axios
+      .get("closet/clothings/" + closetId)
+      .then((response) => {
+        console.log("======= 이미지 목록 조회 성공 =======");
+        setImgList(response.data.clothings);
+        console.log(response.data.clothings);
+      })
+      .catch((error) => {
+        console.log("======= 이미지 목록 조회 실패 =======");
+        console.log(error);
+      });
+  };
+  console.log(imgList);
+  const downloadImg = async (filename) => {
+    const ext = "png";
+    const url =
+      "http://k7b302.p.ssafy.io/api/v1/file/image/download?filename=" +
+      filename;
+    const download = document.createElement("a");
 
-  const downloadImage = () => {
+    download.href = url;
+    download.download = `eraser_example.${ext}`;
+    // download.setAttribute("download", filename);
+    // download.setAttribute("type", "application/json");
+    download.click();
+  };
+  const down = () => {
+    html2canvas(document.getElementById("canvas"), {
+      logging: true,
+      letterRendering: 1,
+      allowTaint: true,
+      useCORS: true,
+    }).then(function (canvas) {
+      // 캔버스를 이미지로 변환
+      let imgData = canvas.toDataURL("image/png", 1);
+      console.log(imgData);
+      // $("#invoiceData").val(imgData);
+      // $("#testImg").attr("src", imgData);
+
+      return false;
+    });
+  };
+  // 이미지를 다운로드 받을 때 사용할 url
+  // const [downloadUrl, setDownloadUrl] = useState();
+  const cardRef = useRef();
+  const onDownloadBtn = () => {
+    const card = cardRef.current;
+    console.log(card);
+    domtoimage.toBlob(card).then((blob) => {
+      saveAs(blob, "card.png");
+    });
+  };
+  // const getDownloadUrl = () => {
+  //   fetch(
+  //     `https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   )
+  //     .then((res) => {
+  //       return res.blob();
+  //     })
+  //     .then((blob) => {
+  //       const fileReader = new FileReader();
+  //       fileReader.readAsDataURL(blob);
+  //       fileReader.onload = (data) => {
+  //         setDownloadUrl(data.target?.result);
+  //       };
+  //     })
+  //     .catch((e) => {
+  //       console.error(e);
+  //     });
+  // };
+
+  const downloadImage = (url) => {
     const ext = "png";
     const base64 = editor.canvas.toDataURL({
       format: ext,
@@ -70,51 +154,106 @@ export default function PlusCodi() {
     link.href = base64;
     link.download = `eraser_example.${ext}`;
     link.click();
-
-    // var canvas = document.getElementsById("canvas");
-    // img.crossOrigin = "*";
-    // img.src = editor.canvas.toDataURL("image/png");
-    // const imgUrl = editor.canvas.toDataURL("image/png");
-    // const img = new Image();
-    // img.crossOrigin = "Anonymous";
-
-    // img.src = imgUrl;
-    // imgUrl.crossOrigin = "Anonymous";
-    // var decodImg = window.atob(imgUrl.split(",")[1]);
-    // let array = [];
-    // for (let i = 0; i < decodImg.length; i++) {
-    //   array.push(decodImg.charCodeAt(i));
-    // }
-
-    // const myBlob = new Blob([new ArrayBuffer(array)], { type: "image/jpeg" });
-    // var file = new File([myBlob], "blobtofile.png");
-    // console.log(file);
-    // let formData = new FormData();
-    // formData.append("img", file);
-    // axios.post(requests.imgAdd, formData, {
-    //   headers: {
-    //     processData: false,
-    //     contentType: false,
-    //   },
-    // });
-    // console.log(imgUrl);
-    // dataURLtoFile(imgUrl);
-    // console.log(imgUrl);
-    // const base64 = editor.canvas.toDataURL({
-    //   format: ext,
-    //   enableRetinaScaling: true,
-    // });
-
-    // console.log(base64);
-    // const link = document.createElement("a");
-    // link.href = base64;
-    // link.download = `eraser_example.${ext}`;
-    // console.log(link);
-    // img = link;
-    // console.log(img);
-    // link.click();
-    // console.log(link);
   };
+  const onCapture = () => {
+    console.log("onCapture");
+    html2canvas(document.getElementById("captureDiv"), {
+      logging: true,
+      letterRendering: 1,
+      allowTaint: true,
+      useCORS: true,
+      scale: 1,
+    }).then(function (canvas) {
+      // 캔버스를 이미지로 변환
+      let imgData = canvas.toDataURL("image/png", 1);
+      onSaveAs(imgData, "canvas.png");
+      console.log(imgData);
+      // $("#invoiceData").val(imgData);
+      // $("#testImg").attr("src", imgData);
+
+      return false;
+    });
+    // html2canvas(document.getElementById("canvas"), {
+    //   logging: true,
+    //   letterRendering: 1,
+    //   allowTaint: true,
+    //   useCORS: true,
+    // }).then((canvas) => {
+    //   console.log(canvas);
+    //   onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
+    // });
+  };
+
+  const onSaveAs = (uri, filename) => {
+    console.log("onSaveAs");
+    var link = document.createElement("a");
+    document.body.appendChild(link);
+    link.href = uri;
+    link.download = filename;
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // const ext = "png";
+  // const base64 = editor.canvas.toDataURL({
+  //   format: ext,
+  //   enableRetinaScaling: true,
+  // });
+  // url =
+  //   "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media";
+
+  // axios.get(url).then((res) => {
+  //   console.log(res);
+  //   return res.blob();
+  // });
+  // const link = document.createElement("a");
+  // link.href = url;
+  // link.download = `eraser_example.${ext}`;
+  // link.click();
+
+  // var canvas = document.getElementsById("canvas");
+  // img.crossOrigin = "*";
+  // img.src = editor.canvas.toDataURL("image/png");
+  // const imgUrl = editor.canvas.toDataURL("image/png");
+  // const img = new Image();
+  // img.crossOrigin = "Anonymous";
+
+  // img.src = imgUrl;
+  // imgUrl.crossOrigin = "Anonymous";
+  // var decodImg = window.atob(imgUrl.split(",")[1]);
+  // let array = [];
+  // for (let i = 0; i < decodImg.length; i++) {
+  //   array.push(decodImg.charCodeAt(i));
+  // }
+
+  // const myBlob = new Blob([new ArrayBuffer(array)], { type: "image/jpeg" });
+  // var file = new File([myBlob], "blobtofile.png");
+  // console.log(file);
+  // let formData = new FormData();
+  // formData.append("img", file);
+  // axios.post(requests.imgAdd, formData, {
+  //   headers: {
+  //     processData: false,
+  //     contentType: false,
+  //   },
+  // });
+  // console.log(imgUrl);
+  // dataURLtoFile(imgUrl);
+  // console.log(imgUrl);
+  // const base64 = editor.canvas.toDataURL({
+  //   format: ext,
+  //   enableRetinaScaling: true,
+  // });
+
+  // console.log(base64);
+  // const link = document.createElement("a");
+  // link.href = base64;
+  // link.download = `eraser_example.${ext}`;
+  // console.log(link);
+  // img = link;
+  // console.log(img);
+  // link.click();
+  // console.log(link);
   function dataURLtoFile(dataurl) {
     const blobBin = atob(dataurl.split(",")[1]); // base64 데이터 디코딩
     const array = [];
@@ -152,6 +291,7 @@ export default function PlusCodi() {
     "신발",
     "악세서리",
   ]);
+  let [clothings, setClothings] = useState([]);
   let [clothesId, setClothesId] = useState("");
   const onUploadImage = (i) => {
     console.log(i);
@@ -195,6 +335,33 @@ export default function PlusCodi() {
   //   var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
   //   canvas.add(oImg);
   // });
+  const [downloadUrl, setDownloadUrl] = useState();
+  const getDownloadUrl = () => {
+    fetch(
+      "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media",
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => {
+        console.log(res);
+        return res.blob();
+      })
+      .then((blob) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(blob);
+        fileReader.onload = (data) => {
+          setDownloadUrl(data.target?.result);
+        };
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+  console.log(imgList);
+  console.log(downloadUrl);
+  console.log(clothings);
+  console.log(clothesArray);
   return (
     <>
       {loading ? (
@@ -202,7 +369,7 @@ export default function PlusCodi() {
       ) : (
         <div>
           <div>
-            {/* <TopNav type={""}>
+            <TopNav type={""}>
               <BackBtn
                 onClick={() => {
                   navigate(-1);
@@ -211,31 +378,71 @@ export default function PlusCodi() {
                 <img src={left}></img>
               </BackBtn>
 
-              <ClosetName placeholder="이름을 입력해주세요" />
+              <ClosetName />
               <ClosetEnter
                 onClick={() => {
-                  navigate("/pluscodi2", { state: { closetId } });
+                  navigate("/pluscodi2", { state: { closetId, clothesArray } });
                 }}
               >
-                <EnterText>저장</EnterText>
+                <EnterText>다음</EnterText>
               </ClosetEnter>
-            </TopNav> */}
+            </TopNav>
           </div>
+          {/* <div id="captureDiv">
+            <img src={imgList[0].img} crossorigin="anonymous" />
+          </div> */}
           <input type="file" multiple onChange={onUploadImage} />
           <button onClick={removeObjectFromCanvas}>Remove</button>
           <button onClick={downloadImage}>to Image</button>
-          <br />
-          <br />{" "}
+          <button className="downBtn" onClick={getDownloadUrl}>
+            다운로드 버튼
+          </button>
+          <a
+            href={
+              "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media" +
+              downloadUrl
+            }
+            download
+          >
+            다운로드
+          </a>
+          {/* <li ref={cardRef} className="card"> */}
+          {/* <div ref={cardRef} className="card">
+            <h1>카드 컴포넌트</h1> */}
           <FabricJSCanvas
             className="sample-canvas"
             onReady={onReady}
             id="canvas"
+            crossorigin="anonymous"
           />
-          {/* <CodiEdit /> */}
+          {/* </div> */}
+          {/* </li> */}
+          <br />
+          <br /> {/* <CodiEdit /> */}
           {/* <Codi /> */}
           <PlusBtn onClick={modalClose}>
             <BtnText>코디 추가하기</BtnText>
           </PlusBtn>
+          {/* <div>
+            <h2>사진 목록</h2>
+            {imgList.map((item, index) => {
+              return (
+                <div id="captureDiv">
+                  <img
+                    src={imgList[index].img}
+                    alt={"img" + item.pid}
+                    style={{ width: "200px", height: "150px" }}
+                    ref={cardRef}
+                    className="card"
+                  />
+
+                  <button onClick={() => onDownloadBtn(imgList[index].img)}>
+                    다운로드
+                  </button>
+                </div>
+              );
+            })}
+          </div> */}
           {/* <img
         src={
           "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media"
@@ -257,25 +464,25 @@ export default function PlusCodi() {
                 </SortDiv>
                 <ModalBar />
                 <SortBorder>
-                  {closet[0].closet_id === closetId &&
-                    closet[0].clothings.map(function (a, i) {
-                      return (
-                        <SortClothes
-                          onClick={() => {
-                            onUploadImage(i);
-                            console.log(i);
-                            setClothesId(i);
-                          }}
-                        >
-                          {closet[0].clothings ? (
-                            <SortClothesImg
-                              src={closet[0].clothings[i].img}
-                              alt="no"
-                            />
-                          ) : null}
-                        </SortClothes>
-                      );
-                    })}
+                  {imgList.map(function (a, i) {
+                    return (
+                      <SortClothes
+                        onClick={() => {
+                          onUploadImage(i);
+                          console.log(i);
+                          setClothesId(imgList[i].clothing_id);
+                          let cl = [...clothesArray];
+                          cl.push(imgList[i].clothing_id);
+                          console.log(cl);
+                          cl = new Set(cl);
+                          cl = Array.from(cl);
+                          setClothesArray(cl);
+                        }}
+                      >
+                        <SortClothesImg src={imgList[i]?.img} alt="no" />
+                      </SortClothes>
+                    );
+                  })}
                 </SortBorder>
               </Modal>
 

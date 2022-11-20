@@ -15,8 +15,9 @@ import { resolveTypeReferenceDirective } from "typescript";
 export default function AddClothes() {
   const location = useLocation();
   const closetId = location.state.closetId;
-  const clothings = location.state.clothesArray;
-  console.log(clothings);
+  const clothingId = location.state.clothingId;
+  console.log(clothingId);
+  console.log(closetId);
   interface clothesType {
     closet_id: number;
     mainCategory: number;
@@ -42,24 +43,13 @@ export default function AddClothes() {
     color?: string;
     img?: any;
   }
+  let styleList = ["casual", "dandy", "street", "formal"];
+  let [style, setStyle] = useState("");
   const [btn, setBtn] = useState([false, false, false, false]);
   const [files, setFiles] = useState("");
   const navigate = useNavigate();
-  const webcam = useRef<Webcam>(null);
   const [url, setUrl] = useState<string | "">("");
   const seasons = ["봄", "여름", "가을", "겨울"];
-  const [clothes, setClothes] = useState<clothesType>({
-    closet_id: 0,
-    mainCategory: 0,
-    subCategory: 0,
-    spring: false,
-    summer: false,
-    fall: false,
-    winter: false,
-    color: "null",
-    img: "",
-    brand_id: 0,
-  });
   let [category, setCategory] = useState<Array<CategoryType>>([
     {
       id: 1,
@@ -202,8 +192,6 @@ export default function AddClothes() {
     "진청",
     "흑청",
   ];
-  let styleList = ["casual", "dandy", "street", "formal"];
-  let [style, setStyle] = useState("");
   let [color, setColor] = useState("");
   let [subid, setSubid] = useState(0);
   let [id, setId] = useState(0);
@@ -215,50 +203,42 @@ export default function AddClothes() {
     false,
   ]);
   let seasonT = ["분류", "색상"];
-
   const [seasonsBoolean, setSeasonsBoolean] = useState<Array<boolean>>([
     false,
     false,
     false,
     false,
   ]);
-  useEffect(() => {}, []);
+
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
-  let [clothing, setClothing] = useState<imgSetType>();
-  // const ChangeBackground = (season: string) => {
-  //   const check = document.getElementById(season) as HTMLInputElement;
-  //   const label = document.getElementById(
-  //     `label_${season}`
-  //   ) as HTMLLabelElement;
-  //   if (check.checked) {
-  //     label.style.backgroundColor = "#b79b7e";
-  //     label.style.color = "white";
-  //   } else {
-  //     label.style.backgroundColor = "";
-  //     label.style.color = "black";
-  //   }
-  // };
 
-  let [input, setInput] = useState("");
-  const onChangeInput = (e: any) => {
-    setInput(e.target.value);
-  };
+  let [clothing, setClothing] = useState<imgSetType>();
+  let [clothes, setClothes] = useState<any>("");
+  console.log(url);
+
+  useEffect(() => {
+    axios.get("/closet/clothing/" + clothingId).then((res) => {
+      setClothes(res.data.clothing);
+      console.log(res);
+    });
+  }, []);
+  console.log(clothes);
   const onSubmit = () => {
     axios
-      .post(requests.codi, {
-        user_id: closetId,
-        creater_id: userId,
+      .post(requests.addClothes, {
         closet_id: closetId,
-        name: input,
-        style,
+        mainCategory: id,
+        subCategory: subid,
         spring: seasonsBoolean[0],
         summer: seasonsBoolean[1],
         fall: seasonsBoolean[2],
         winter: seasonsBoolean[3],
+        color: clothing?.color,
         img: clothing?.img,
-        clothings,
+        style,
+        brand_id: 0,
       })
       .then((response) => {
         axios.get(requests.closet + userId).then((res) => {
@@ -269,81 +249,50 @@ export default function AddClothes() {
       .catch((res) => {
         console.log(res);
         console.log({
-          closet_id: userId,
-          creater_id: userId,
+          closet_id: closetId,
           mainCategory: id,
           subCategory: subid,
-          name: input,
           spring: seasonsBoolean[0],
           summer: seasonsBoolean[1],
           fall: seasonsBoolean[2],
           winter: seasonsBoolean[3],
+          color: clothing?.color,
           img: clothing?.img,
           style,
-          clothings,
+          brand_id: 0,
         });
       });
   };
-  const ImgSubmit = () => {
-    const formdata = new FormData();
-    formdata.append("uploadImage", files[0]);
-
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    axios.post(requests.addClothes, formdata, config);
-  };
+  let Main = ["상의", "하의", "아우터", "신발", "가방", "모자"];
   return (
     <div>
       <>
         <TopNav type={""}>
           <CloseImg src={Close} onClick={() => navigate("/closet")} />
-          <ClosetName
-            onChange={onChangeInput}
-            placeholder="이름을 입력해주세요"
-          />
-          <SubmitBtn
-            onClick={() => {
-              onSubmit();
-            }}
-          >
-            추가
-          </SubmitBtn>
+          <NavText>옷 상세 페이지</NavText>
+          <div style={{ width: "30px", height: "30px" }}></div>
         </TopNav>
-
         <Container>
           <ImgContainer>
-            <ImagePreview src={clothing?.img} />
+            <ImagePreview src={clothes?.img} />
           </ImgContainer>
         </Container>
-        {/* 
+
         <SortContainer>
           <SortBtn>
-            <SeasonP>{}</SeasonP>
+            <SeasonP>{seasonT[0]}</SeasonP>
+            <SeasonP>{Main[clothes.mainCategory - 1]}</SeasonP>
           </SortBtn>
 
           <SortButton>
-            <SortTxt>{category[0].name}</SortTxt>
+            <SeasonP>{seasonT[1]}</SeasonP>
+            <SeasonP>{clothes.color}</SeasonP>
           </SortButton>
-        </SortContainer> */}
+        </SortContainer>
         <SeasonCategory>
           <SeasonP>스타일</SeasonP>
           <CheckboxContainer>
-            {styleList.map((a, index) => {
-              return (
-                <div key={index}>
-                  <SeasonBtn
-                    onClick={() => {
-                      setStyle(styleList[index]);
-                    }}
-                  >
-                    {styleList[index]}
-                  </SeasonBtn>
-                </div>
-              );
-            })}
+            <SeasonBtn>{clothes.style}</SeasonBtn>
           </CheckboxContainer>
         </SeasonCategory>
         <SeasonCategory>
@@ -361,12 +310,23 @@ export default function AddClothes() {
                     }}
                   >
                     {seasons[index]}
+                    {/* <SeasonCheckbox
+                          value={season}
+                          id={season}
+                          onChange={() => ChangeBackground(season)}
+                        /> */}
+                    {/* <SeasonLabel htmlFor={season} id={`label_${season}`}>
+                        {season}
+                      </SeasonLabel> */}
                   </SeasonBtn>
                 </div>
               );
             })}
           </CheckboxContainer>
         </SeasonCategory>
+        {/* <SeasonCategory>
+              <SeasonP>구분</SeasonP>
+            </SeasonCategory> */}
       </>
     </div>
   );
@@ -441,7 +401,7 @@ const CloseImg = styled.img`
 `;
 
 const NavText = styled.p`
-  margin: 0;
+  margin: 0px;
   font-family: var(--base-font-600);
   font-size: 20px;
 `;
@@ -458,10 +418,10 @@ const SubmitBtn = styled.button`
 `;
 
 const ImgContainer = styled.div`
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  max-width: 320px;
   padding: 0 10px;
-  margin: 20px auto;
+  margin: 10px auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -534,15 +494,4 @@ const SortButton = styled.button`
   /* background-color: grey; */
   border: none;
   border-radius: 30px;
-`;
-
-const ClosetName = styled.input`
-  height: 30px;
-  width: 230px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: solid 1px;
-  margin-left: 50px;
-  margin-top: 10px;
 `;

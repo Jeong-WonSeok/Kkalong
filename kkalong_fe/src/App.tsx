@@ -19,7 +19,9 @@ import AddClothes from "./pages/Closet/AddClothes";
 import CodiEdit from "./components/closet/CodiEdit";
 import ClosetAsset from "./components/closet/ClosetAsset";
 import { OauthRedirect } from "./pages/Signup/OauthRedirect";
+import ClothesDetail from "./pages/Closet/ClothesDetail";
 import ThreeTest from "./pages/Closet/ThreeTest";
+
 // Community
 import MainCommunity from "./pages/Community/MainCommunity";
 import MainBestDress from "./pages/Community/MainBestDress";
@@ -123,6 +125,7 @@ function App() {
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
+            <Route path="/clothes/detail" element={<ClothesDetail />}></Route>
             {/* 마이페이지 */}
             <Route path="/myPage" element={<MyPage />}></Route>
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>
