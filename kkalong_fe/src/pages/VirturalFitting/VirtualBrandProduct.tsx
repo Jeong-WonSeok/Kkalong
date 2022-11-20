@@ -48,7 +48,7 @@ export default function VirtualBrandProduct() {
         <BrandProductImg src={Clothes?.img}></BrandProductImg>
       </BrandProductImgDiv>
       <BrandProductBuyDiv>
-        <BrandProductBuy>구매하기</BrandProductBuy>
+        <BrandProductBuy onClick={()=>window.open(Clothes?.url)}>구매하기</BrandProductBuy>
         <BrandProductFitting>가상피팅하기</BrandProductFitting>
       </BrandProductBuyDiv>
       <FooterBar/>
