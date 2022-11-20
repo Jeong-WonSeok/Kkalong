@@ -52,7 +52,6 @@ interface SendType {
   img: File;
 }
 
-  
 interface imgSetType {
   color: string;
   img: string;
@@ -72,7 +71,7 @@ interface dataType {
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
-  const { User } = useAppSelector(state => state.User);
+  const { User } = useAppSelector((state) => state.User);
   const navigate = useNavigate();
   let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
   let [cltext, setCltext] = useState([
@@ -92,7 +91,7 @@ export default function MainCloset() {
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
-    if ((User.user_id === Number(params.userId)) || !params.userId) {
+    if (User.user_id === Number(params.userId) || !params.userId) {
       navigate("/codi");
     } else if (User.loving && User.lover_id === Number(params.userId)) {
       navigate(`/codi/${params.userId}`);
@@ -128,14 +127,14 @@ export default function MainCloset() {
   console.log(closet);
   return (
     <div>
-      {loading ? 
+      {loading ? (
         <>loading...</>
-       : 
+      ) : (
         <div>
           <TopNav type={"menu"}>
             <CategoryText1>옷장</CategoryText1>
             <div style={{ width: "54px", height: "38px" }}>
-            <MenuIcon src={menu} />
+              <MenuIcon src={menu} />
             </div>
           </TopNav>
           <>
@@ -434,4 +433,4 @@ const CameraImg = styled.img`
   height: 40px;
   width: 45px;
   margin: 10px 1.5px;
-`
+`;
