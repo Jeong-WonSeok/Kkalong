@@ -72,9 +72,9 @@ public class RecommendService {
         return weather_recommend;
     }
 
-    public List<HashMap<Object, Object>> recommendClothing(String style, String season, String gender, String color, int main) {
+    public List<HashMap<Object, Object>> recommendClothing(String style, String season, String gender, String color, int main, int user_id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url ="http://localhost:8000/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color+ "/" + main;
+        String url ="http://localhost:8000/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color+ "/" + main+ "/" + user_id;
         List<HashMap<Object, Object>> clothes_recommend = restTemplate.getForObject(url, List.class);
         return clothes_recommend;
     }
