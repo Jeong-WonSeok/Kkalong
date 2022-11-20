@@ -82,14 +82,23 @@ export default function MainCloset() {
     slidesToShow: 2,
     speed: 500,
   };
-  let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
+  let [clothes, setClothes] = useState([
+    list,
+    shirt,
+    pants,
+    outer,
+    shoes,
+    hat,
+    hat,
+  ]);
   let [cltext, setCltext] = useState([
     "전체",
     "상의",
-    "겉옷",
     "하의",
+    "아우터",
     "신발",
-    "악세서리",
+    "가방",
+    "모자",
   ]);
   let [btn, setBtn] = useState(false);
   let [sortclothes, setSortclothes] = useState([
@@ -104,10 +113,17 @@ export default function MainCloset() {
   let [closet, setCloset] = useState(Array<dataType>);
   const [SendData, setSendData] = useState<SendType>();
   let [sls, setSls] = useState("");
+  let userProfile: any = localStorage.getItem("userProfile");
+  userProfile = JSON.parse(userProfile);
+  let userId = userProfile.user_id;
+  let [clothings, setClothings] = useState<any[]>([]);
   const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  const [closetId, setClosetId] = useState(0);
+  const navigate = useNavigate();
+  const [closetId, setClosetId] = useState<number>();
   let [clothing, setClothing] = useState<imgSetType>();
   const [swiper, setSwiper] = useState<SwiperCore>();
+  let [clothingId, setClothingId] = useState("");
+  // console.log(userId);
   const inputRef = useRef<HTMLInputElement | null>(null);
   let [loading, setLoading] = useState(true);
 
@@ -136,6 +152,11 @@ export default function MainCloset() {
     },
     []
   );
+  useEffect(() => {
+    axios.get("closet/clothings/" + closetId).then((res) => {
+      setClothings(res.data.clothings);
+    });
+  }, [closetId]);
 
   const onUploadImageButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -186,22 +207,7 @@ export default function MainCloset() {
       .catch((err) => console.error(err));
   };
 
-  // const start = () => {
-  // axios
-  //   .get(requests.closet + userId)
-  //   .then((res) => {
-  //     let clo = [...closet];
-  //     [...closet] = res.data.closets;
-  //     setCloset(clo);
-  //     console.log(closet);
-  //   })
-  //   .catch((res) => {
-  //     console.log(res);
-  //   });
-  // };
-  // console.log(closet);
-
-
+  let [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
       .get(requests.closet + User.user_id)
@@ -214,52 +220,10 @@ export default function MainCloset() {
       .catch((res) => {
         console.log(res);
       });
-
-    // const fetchData = async () => {
-    //   // setLoading(true);
-    //   const res = await axios(requests.closet + userId);
-    //   console.log(res);
-    //   let clo = [...closet];
-    //   [...closet] = res.data.closets;
-    //   setCloset(clo);
-    //   console.log(closet);
-    //   setLoading(false);
-    // };
-    // fetchData();
-
-    // setLoading(true)
-    // const result = await axios
-    //     .get(requests.closet + userId)
-    //     .then((res) => {
-    //       closet = res.data.closets;
-    //       console.log(closet);
-    //     })
-    //     .catch((res) => {
-    //       console.log(res);
-    //     });
-    //   setLoading(false);
-    // };
   }, []);
-  // const start = async () => {
-  //   if (params.UserId) {
-  //     // 타인이 볼 때
-  //     const res = await axios.get(requests.closet + params.UserId);
-  //   } else {
-  //     // 자기자신
-  //     const res = await axios.get(requests.closet + params.UserId);
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await axios.get(requests.closet + userId);
-  //     return response.data;
-  //   }
-  //   fetchData().then((res) => {
-  //     setCloset(res);
-  //   });
-  // }, []);
-  console.log(closet);
+  console.log(clothings);
+  console.log(clothingId);
   return (
     <div>
       {loading ? 
@@ -299,9 +263,7 @@ export default function MainCloset() {
                         console.log(closetId);
                       }}
                     >
-                      {closet[i].clothings[i] ? (
-                        <img src={closet[i].clothings[i].img} alt="no" />
-                      ) : null}
+                      <img src={closet[i].clothings[0]?.img} alt="no" />
                     </SlideButton>
                     <SwiperText>{closet[i].name}</SwiperText>
                   </SwiperSlide>
@@ -339,7 +301,7 @@ export default function MainCloset() {
             </SelectBtnContainer>
           </>
           <Category>
-            {clothes.map(function (a, i) {
+            {cltext.map(function (a, i) {
               return (
                 <ClothesBtn>
                   <img src={clothes[i]} />
@@ -349,80 +311,43 @@ export default function MainCloset() {
             })}
           </Category>
           <SortClothesContainer>
-            {closet[0].closet_id === closetId &&
-              closet[0].clothings.map(function (a, i) {
-                return (
-                  <SortClothes
-                    onClick={() => {
-                      axios.get(requests.addClothes + [i]).then((res) => {
+            {clothings.map(function (a, i) {
+              return (
+                <SortClothes
+                  onClick={() => {
+                    clothingId = clothings[i].clothing_id;
+                    navigate("/clothes/detail", {
+                      state: { closetId, clothingId },
+                    });
+                    axios
+                      .get(
+                        requests.addClothes + "/" + [clothings[i].clothing_id]
+                      )
+                      .then((res) => {
                         console.log(res);
                       });
-                    }}
-                  >
-                    <ClothesImg src={closet[0].clothings[i].img} alt="no" />
-                  </SortClothes>
-                );
-              })}
+                  }}
+                >
+                  <ClothesImg src={clothings[i]?.img} />
+                </SortClothes>
+              );
+            })}
           </SortClothesContainer>
-
-        <Carousel sortclothes={sortclothes} />
-        <SelectBtnContainer>
-          <SelectBtn
-            onClick={() => {
-              navigate("/closet");
-            }}
-          >
-            <SelectColor1 />
-            <SelectText>옷장</SelectText>
-          </SelectBtn>
-          <img src={Bar} />
-          <SelectBtn onClick={GoCody}>
-            <SelectColor2 />
-            <SelectText>코디</SelectText>
-          </SelectBtn>
-        </SelectBtnContainer>
-
-      <Category>
-        {clothes.map(function (a, i) {
-          return (
-            <ClothesBtn>
-              <CameraImg src={clothes[i]} />
-              <ClothesText>{cltext[i]}</ClothesText>
-            </ClothesBtn>
-          );
-        })}
-      </Category>
-
-      <SortClothesContainer>
-        {sortclothes.map(function (a, i) {
-          return (
-            <SortClothes>
-              <ClothesImg src={sortclothes[i]} />
-            </SortClothes>
-          );
-        })}
-      </SortClothesContainer>
-
-      <AddClothesContainer>
-        <AddClothes
+          <AddClothesContainer>
+            <AddClothes
               onClick={() =>
                 navigate("/closet/add", { state: { closetId, clothing } })
               }
             >
-          <CameraImg src={camera} />
-        </AddClothes>
-      </AddClothesContainer>
-      <FooterBar />
-    </div>
-  }
-</div>
-)}
-
-// const BestContainer = styled(Container)`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// `;
+              <img src={camera} width="50px" />
+            </AddClothes>
+          </AddClothesContainer>
+          <FooterBar />
+        </div>
+      )}
+    </>
+  );
+}
 
 const CategoryText1 = styled.p`
   margin: auto 0;
@@ -439,10 +364,11 @@ const SelectText = styled.p`
 export const Category = styled.div`
   margin-top: 20px;
   width: 100%;
-  max-width: 360px;
+  /* max-width: 360px; */
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+
+  overflow-x: auto;
 `;
 
 const MenuIcon = styled.img`
@@ -493,7 +419,8 @@ const ClothesBtn = styled.button`
   height: 55px;
   width: 55px;
   border-radius: 50%;
-  border: solid 2px #67564e;
+  margin-left: 5px;
+  border: solid 1px #67564e;
   background-color: white;
 `;
 
