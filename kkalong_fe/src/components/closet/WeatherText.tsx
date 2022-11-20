@@ -1,33 +1,22 @@
-import React from 'react'
-import Slider from "react-slick"
+import React, { useState, useEffect } from 'react'
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export default function WeatherText({message} : {message:String[]}) {
-  console.log(message)
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    vertical: true,
-    verticalSwiping: true,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
-  };
+  const [idx, setIdx] = useState(0)
+  const total = message.length
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIdx((idx + 1) % total)
+    }, 3000)
+  },[idx])
   return (
     <Container>
-        <StyledSlider {...settings}>
-          {message.map(msg => {
-            return (
-              <TextContainer>
-                <TextP>{msg}</TextP>
-              </TextContainer>
-            )
-          })}
-        </StyledSlider>
+        <TextContainer>
+          <TextP>{message[idx]}</TextP>
+        </TextContainer>
     </Container>
   )
 }
@@ -35,20 +24,6 @@ export default function WeatherText({message} : {message:String[]}) {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-`
-
-const StyledSlider = styled(Slider)`
-  .slick-list {
-    width: 220px;
-    height: 30px;
-    padding: 0 10px;
-  }
-  .slick-slide {
-    width: 200px;
-  }
-  .slick-track {
-    overflow-x: hidden;
-  }
 `
 
 const TextContainer = styled.div`
@@ -59,8 +34,40 @@ const TextContainer = styled.div`
   border-radius: 30px;
 `
 
+const titleAnimation = keyframes`
+  0% {
+    color: var(--primary-color-100);
+    transform: translateY(-10px);
+    opacity: 0;
+    -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 80%);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 80%);
+  }
+  20% {
+      color: var(--primary-color-900);
+      transform: translateY(0);
+      opacity: 1;
+      -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+  }
+  80% {
+      color: var(--primary-color-900);
+      transform: translateY(0);
+      opacity: 1;
+      -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+  }
+  100% {
+      color: var(--primary-color-100);
+      transform: translateY(10px);
+      opacity: 0;
+      -webkit-clip-path: polygon(100% 0, 100% -0%, 0 100%, 0 100%);
+      clip-path: polygon(100% 0, 100% -0%, 0 100%, 0 100%);
+  };
+`
+
 const TextP = styled.p`
   font-family: var(--base-font-400);
   font-size: 14px;
-  margin: 0;
+  margin: 0 0 0 10px;
+  animation: ${titleAnimation} 3.01s 3.01s infinite;
 `

@@ -30,6 +30,8 @@ export default function Friend(
     }
 
     if (IsSearch) {
+      setSearchMyFriends([])
+      setSearchFriends([])
       Friend.map(f => {
         if (FriendsId.includes(f.user_id)){
           setSearchMyFriends([...SearchMyFriends, f])
@@ -39,7 +41,7 @@ export default function Friend(
         return
       })
     }
-  }, [])
+  }, [IsSearch])
 
   // 팔로우 로직
   const Follow = (id: number) => {
@@ -63,7 +65,7 @@ export default function Friend(
             </FriendProfileDiv>
             <BtnContainer>
               <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
-              {!person!.isLoving && !NotLove && 
+              {!person!.loving && !NotLove && 
               <LoverBtn src={
                 User?.loving && User?.lover_id === person.user_id ? alreadyLike
                   : !request && User?.lover_id === -1 ? NoLove 
@@ -89,7 +91,7 @@ export default function Friend(
               </FriendProfileDiv>
               <BtnContainer>
                 <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
-                {!person!.isLoving && !NotLove && 
+                {!person!.loving && !NotLove && 
                 <LoverBtn src={
                   User?.loving && User?.lover_id === person.user_id ? alreadyLike
                   : !request && User?.lover_id === -1 ? NoLove 
@@ -115,7 +117,7 @@ export default function Friend(
               </FriendProfileDiv>
               <BtnContainer>
                 <FollowBtn onClick={() => Follow(person?.user_id)}>{User?.followings.includes(person.user_id) ? "언팔로잉" : "팔로잉" }</FollowBtn>
-                {!person!.isLoving && !NotLove && 
+                {!person!.loving && !NotLove && 
                 <LoverBtn src={
                   User?.loving && User?.lover_id === person.user_id ? alreadyLike
                   : !request && User?.lover_id === -1 ? NoLove 
@@ -123,6 +125,7 @@ export default function Friend(
                   : !request && User?.lover_id === person.user_id ? MyLove 
                   : ''} 
                   onClick={()=>postLove(person?.user_id, request)}/>}
+                {person.loving && User?.lover_id === person.user_id && <LoverBtn src={alreadyLike} onClick={()=>postLove(person?.user_id, request)}/>}
               </BtnContainer>
             </FriendDiv>
           )     

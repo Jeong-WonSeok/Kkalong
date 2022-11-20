@@ -16,7 +16,7 @@ import { NickNameP } from "../Signup/Signup";
 import axios from '../../api/axios'
 import requests from '../../api/requests'
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { ChangeProfile } from "../../redux/modules/User";
+import { ChangeProfile, UpdataProfile } from "../../redux/modules/User";
 
 export default function MyPageUpdate() {
   const navigate = useNavigate();
@@ -39,7 +39,14 @@ export default function MyPageUpdate() {
   }
 
   const Submit = async() => {
-    dispatch(ChangeProfile(ChangeUser as UserType))
+    const Data = {
+      nickname: ChangeUser!.nickname,
+      age: ChangeUser!.age,
+      weight: ChangeUser!.weight,
+      height: ChangeUser!.height,
+      gender: ChangeUser!.gender
+    }
+    dispatch(ChangeProfile(Data as UpdataProfile))
     alert('회원정보가 변경되었습니다.') 
     
     navigate('/myPage')

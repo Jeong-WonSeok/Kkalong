@@ -14,13 +14,22 @@ const PROFILE_CHANGE_SUCCESS = 'Profile/PROFILE_CHANGE_SUCCESS'
 const LOVER_ID_SUCCESS = 'Profile/LOVER_ID_SUCCESS'
 const LOVING_SUCCESS = 'Profile/LOVING_SUCCESS'
 const CHANGE_USER_PROFILE = 'Profile/CHANGE_USER_PROFILE'
+const CHANGE_USER_BODY = 'Profile/CHANGE_USER_BODY'
+const CHANGE_USER_FACE = 'Profile/CHANGE_USER_FACE'
+
 
 // 다른유저 정보 조희
 const GET_OTHER_PENDING = 'Profile/GET_OTHER_PENDING' 
 const GET_OTHER_SUCCESS = 'Profile/GET_OTHER_SUCCESS' 
 const GET_OTHER_FAILURE = 'Profile/GET_OTHER_FAILURE' 
 
-
+export interface UpdataProfile {
+  nickname : string
+  gender : string
+  age : number
+  height : number
+  weight : number
+}
 
 export interface stateType {
   pending: boolean,
@@ -61,7 +70,7 @@ export const ProfileChange = (img: File) => async (dispatch: Dispatch) => {
   const formdata = new FormData()
   formdata.append('profile_img', img)
 
-  const res = await axios.post(requests.changeImg, formdata)
+  const res = await axios.post(requests.changeImg, formdata, {headers: {'Context-type': "multipart/form-data"}})
   dispatch({type: PROFILE_CHANGE_SUCCESS, payload: res.data.profile_img})
 }
 
@@ -99,11 +108,21 @@ export const lover = (user_id: string, req: boolean) => async (dispatch:Dispatch
 }
 
 // 유저 정보 변경
-export const ChangeProfile = (data: UserType) => async (dispatch: Dispatch) => {
+export const ChangeProfile = (data: UpdataProfile) => async (dispatch: Dispatch) => {
   const res = await axios.post(requests.updateProfile, data)
   dispatch({type: CHANGE_USER_PROFILE, payload: res.data.user})
 } 
 
+// body_img 등록
+export const ChangeBody = (data: FormData, user_id: number) => async (dispatch: Dispatch) => {
+  const res = await axios.post(requests.bodyImg, data, {headers: {"Content-Type": "multipart/form-data"}})
+  dispatch({type:CHANGE_USER_BODY, payload: res.data.body_img})
+}
+
+export const ChangeFace = (data: FormData) => async (dispatch: Dispatch) => {
+  const res = await axios.post(requests.faceImg, data, {headers: {"Content-Type": "multipart/form-data"}})
+  dispatch({type:CHANGE_USER_BODY, payload: res.data.body_img})
+}
 // 액션에 따른 state 변경 
 export default handleActions({
   [GET_LOGIN_PENDING]: (state, action) => {
@@ -205,5 +224,25 @@ export default handleActions({
         weight: adjust.weight
       }
     }
-  }
+  },
+  [CHANGE_USER_BODY]: (state, {payload}) => {
+    const adjust = payload as unknown as string
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        body_img: adjust
+      }
+    }
+  },
+  [CHANGE_USER_FACE]: (state, {payload}) => {
+    const adjust = payload as unknown as string
+    return {
+      ...state,
+      User: {
+        ...state.User,
+        face_img: adjust
+      }
+    }
+  },
 }, initialState)

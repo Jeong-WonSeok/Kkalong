@@ -9,7 +9,7 @@ export default function Profile({Image, Size, id} : {Image: string, Size: number
   return (
     <ProfileImg 
     style={{width: `${Size}px`, height: `${Size}px`}} 
-    src={Image !== null? Image : defaultProfile}
+    src={Image}
     onClick={()=>{navigate(`/myPage/${id}`)}}/>
   )
 }

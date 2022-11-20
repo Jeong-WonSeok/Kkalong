@@ -28,11 +28,8 @@ export default function AddBestDress() {
   useEffect(() => {
     const Edit = async () => {
       if (params.BestDressId) {
-        const res = await axios.get(
-          requsests.detailBestDress + params.BestDressId
-        );
-        const BestDress = res.data as ArticleType;
-        console.log(res.data);
+        const res = await axios.get(requsests.detailBestDress + params.BestDressId)
+        const BestDress = res.data as ArticleType
         setSendData({
           post_img: BestDress.Best.img,
           content: BestDress.Best.content,
@@ -41,10 +38,9 @@ export default function AddBestDress() {
           "SelectPicture"
         ) as HTMLDivElement;
         // 위에 레이어 모두 삭제후
-        Picture.replaceChildren();
-        Picture.style.backgroundImage = `url(${SendData?.post_img})`;
-        Picture.style.backgroundPosition = "center";
-        Picture.style.width = "auto";
+        Picture.replaceChildren()
+        Picture.style.backgroundImage=`url(${SendData?.post_img})`
+        Picture.style.backgroundPosition="center"
       }
     };
     Edit();
@@ -75,32 +71,28 @@ export default function AddBestDress() {
 
     const Picture = document.getElementById("SelectPicture") as HTMLDivElement;
     // 위에 레이어 모두 삭제후
-    Picture.replaceChildren();
-    const ImgUrl = URL.createObjectURL(e.target.files[0]);
-    Picture.style.backgroundImage = `url(${ImgUrl})`;
-    Picture.style.backgroundPosition = "center";
-    Picture.style.width = "auto";
-  };
+    Picture.replaceChildren()
+    const ImgUrl = URL.createObjectURL(e.target.files[0])
+    Picture.style.backgroundImage=`url(${ImgUrl})`
+    Picture.style.backgroundPosition="center"
+    Picture.style.width="auto"
+    Picture.style.height="auto"
+  }
 
   const Submit = async () => {
-    const result = FormDataChange(SendData);
-    result.get("post_img");
+    const result = FormDataChange(SendData)
     // FormData의 value 확인
     if (params.BestDressId) {
-      await axios.put(requsests.detailBestDress + params.BestDressId, result, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      navigate(`/community/BestDress/${params.Id}`);
+      const res = await axios.post(requsests.detailBestDress + params.BestDressId, result,{headers: {'Content-Type': 'multipart/form-data'}})
+      console.log(res)
+      navigate(`/community/BestDress/true/${params.BestDressId}`)
     } else {
-      await axios
-        .post(requsests.bestDress, result, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          console.log(res);
-          navigate(`/community/BestDress/${res.data.Best.id}`);
-        })
-        .catch((err) => console.error(err));
+      await axios.post(requsests.bestDress, result, {headers: {'Content-Type': 'multipart/form-data'}})
+      .then(res => {
+        console.log(res)
+        navigate(`/community/BestDress/true/${res.data.Best.id}`)
+      })
+      .catch(err => console.error(err))
     }
   };
 

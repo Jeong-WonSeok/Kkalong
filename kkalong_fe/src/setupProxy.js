@@ -11,13 +11,13 @@ module.exports = app => {
                 }
             }
         )
-    ),
-    app.use(
-        createProxyMiddleware('/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst',
-            {
-                target: "https://apis.data.go.kr",
-                changeOrigin: true,
-            }
-        )
     )
+    // app.use(
+    //     createProxyMiddleware('/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst',
+    //         {
+    //             target: "https://apis.data.go.kr",
+    //             changeOrigin: true,
+    //         }
+    //     )
+    // )
 }

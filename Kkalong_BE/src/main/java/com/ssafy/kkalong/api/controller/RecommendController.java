@@ -1,11 +1,11 @@
 package com.ssafy.kkalong.api.controller;
 
 import com.ssafy.kkalong.api.dto.ClothingDto;
+import com.ssafy.kkalong.api.dto.ClothingInfoResponseDto;
 import com.ssafy.kkalong.api.entity.User;
 import com.ssafy.kkalong.api.service.*;
 import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -156,7 +156,7 @@ public class RecommendController {
         else season = "fall";
 
         User user = userService.getUserByUserId(userInfo.getId());
-        ClothingDto clothes = closetService.getClothingInfoByClothingId(clothes_id);
+        ClothingInfoResponseDto clothes = closetService.getClothingInfoByClothingId(clothes_id);
         String style = closetService.getStyleByClothingId(clothes_id);
         List<HashMap<Object,Object>> cody = recommendService.recommendClothing(style, season, user.getGender(), clothes.getColor(), clothes.getMainCategory());
         Map<String, Object> result = new HashMap<>();

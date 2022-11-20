@@ -1,8 +1,6 @@
 package com.ssafy.kkalong.api.service;
 
-import com.ssafy.kkalong.api.dto.ClothingDto;
-import com.ssafy.kkalong.api.dto.CodyDto;
-import com.ssafy.kkalong.api.dto.CodyResponseDto;
+import com.ssafy.kkalong.api.dto.*;
 import com.ssafy.kkalong.api.entity.*;
 import com.ssafy.kkalong.api.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 
 @Service
@@ -90,24 +88,23 @@ public class ClosetService {
         return clothing;
     }
 
-    public ClothingDto getClothingInfoByClothingId(int clothing_id) {
+    public ClothingInfoResponseDto getClothingInfoByClothingId(int clothing_id) {
         Clothing clothing = clothingRepository.findById(clothing_id);
-        ClothingDto clothingDto = ClothingDto.builder()
-//                .closet_id(-1)
+        List<String> season = getStringSeasonsfromClothing(clothing);
+        ClothingInfoResponseDto clothingInfoResponseDto = ClothingInfoResponseDto.builder()
+                .clothing_id(clothing.getId())
                 .img(clothing.getImg())
                 .mainCategory(clothing.getMain_category())
                 .subCategory(clothing.getSub_category())
-                .spring(clothing.isSpring())
-                .summer(clothing.isSummer())
-                .fall(clothing.isFall())
-                .winter(clothing.isWinter())
+                .season(season)
                 .color(clothing.getColor())
+                .personal_color(getPersonalColorByClothingColor(clothing.getColor()))
                 .style(clothing.getStyle())
                 .gender(clothing.getGender())
                 .brand_id(clothing.getBrand().getId())
                 .url(clothing.getUrl())
                 .build();
-        return clothingDto;
+        return clothingInfoResponseDto;
     }
 
     public Cody registerCody(int user_id, CodyDto codyDto) {
@@ -152,29 +149,40 @@ public class ClosetService {
         return codyClothingRepository.findAllByCody(cody);
     }
 
-    public List<ClothingDto> findAllClothingByCloset(Closet closet) {
+    public List<ClothingInfoResponseDto> findAllClothingByCloset(Closet closet) {
         List<ClosetClothing> closetClothings = closetClothingRepository.findAllByCloset(closet);
-        List<ClothingDto> clothingDtos = new ArrayList<>();
+        List<ClothingInfoResponseDto> clothingInfoResponseDtos = new ArrayList<>();
         for (ClosetClothing closetClothing : closetClothings){
-            clothingDtos.add(getClothingInfoByClothingId(closetClothing.getClothing().getId()));
+            clothingInfoResponseDtos.add(getClothingInfoByClothingId(closetClothing.getClothing().getId()));
         }
-        return clothingDtos;
+        return clothingInfoResponseDtos;
     }
 
-    public List<CodyResponseDto> findAllCodybyCloset(Closet closet) {
-
+    public List<CodyInfoResponseDto> findAllCodybyCloset(Closet closet) {
         List<ClosetCody> closetCodies = closetCodyRepository.findAllByCloset(closet);
-        List<CodyResponseDto> codyResponseDtos = new ArrayList<>();
+        List<CodyInfoResponseDto> codyInfoResponseDtos = new ArrayList<>();
         for(ClosetCody closetCody : closetCodies){
-            CodyResponseDto codyResponseDto = CodyResponseDto.builder()
+            CodyInfoResponseDto codyInfoResponseDto = CodyInfoResponseDto.builder()
                     .cody_id(closetCody.getCody().getId())
                     .img(closetCody.getCody().getImg())
                     .name(closetCody.getCody().getName())
                     .open(closetCody.getCody().getOpen())
+                    .style(closetCody.getCody().getStyle())
+                    .season(getStringSeasonsfromCody(closetCody.getCody()))
+                    .clothings(findAllClothingbyCody(closetCody.getCody()))
                     .build();
-            codyResponseDtos.add(codyResponseDto);
+            codyInfoResponseDtos.add(codyInfoResponseDto);
         }
-        return codyResponseDtos;
+        return codyInfoResponseDtos;
+    }
+
+    public List<Integer> findAllClothingbyCody(Cody cody){
+        List<Integer> clothings = new ArrayList<>();
+        List<CodyClothing> codyClothings = findAllCodyClothingByCody(cody);
+        for(CodyClothing codyClothing : codyClothings){
+            clothings.add(codyClothing.getClothing().getId());
+        }
+        return clothings;
     }
 
     public int findNextClothingId() {
@@ -203,4 +211,112 @@ public class ClosetService {
     public Closet getClosetsByClosetId(int closet_id) {
         return closetRepository.findById(closet_id);
     }
+
+    private List<String> getStringSeasonsfromClothing(Clothing clothing) {
+        List<String> seasons = new ArrayList<>();
+        if(clothing.isSpring()){
+            seasons.add("봄");
+        }
+        if(clothing.isSummer()){
+            seasons.add("여름");
+        }
+        if(clothing.isFall()){
+            seasons.add("가을");
+        }
+        if(clothing.isWinter()){
+            seasons.add("겨울");
+        }
+        return seasons;
+    }
+
+    private List<String> getStringSeasonsfromCody(Cody cody) {
+        List<String> seasons = new ArrayList<>();
+        if(cody.isSpring()){
+            seasons.add("봄");
+        }
+        if(cody.isSummer()){
+            seasons.add("여름");
+        }
+        if(cody.isFall()){
+            seasons.add("가을");
+        }
+        if(cody.isWinter()){
+            seasons.add("겨울");
+        }
+        return seasons;
+    }
+
+    private static String getPersonalColorByClothingColor(String color) {
+
+        HashMap<String, String> map = new HashMap<>();
+
+        map.put("라즈베리", "봄 웜");
+        map.put("페일 핑크", "봄 웜");
+        map.put("코랄", "봄 웜");
+        map.put("노란색", "봄 웜");
+        map.put("머스타드", "봄 웜");
+        map.put("금색", "봄 웜");
+        map.put("라이트 그린", "봄 웜");
+        map.put("올리브 그린", "봄 웜");
+        map.put("네온 블루", "봄 웜");
+        map.put("라벤더", "봄 웜");
+        map.put("갈색", "봄 웜");
+        map.put("로즈골드", "봄 웜");
+        map.put("레드 브라운", "봄 웜");
+        map.put("카키 베이지", "봄 웜");
+        map.put("카멜", "봄 웜");
+        map.put("샌드", "봄 웜");
+        map.put("베이지색", "봄 웜");
+
+        map.put("라이트 핑크","여름 쿨");
+        map.put("피치","여름 쿨");
+        map.put("라이트 옐로우","여름 쿨");
+        map.put("네온 그린","여름 쿨");
+        map.put("민트","여름 쿨");
+        map.put("스카이 블루","여름 쿨");
+        map.put("라벤더","여름 쿨");
+        map.put("베이지색","여름 쿨");
+
+        map.put("딥레드","가을 웜");
+        map.put("오렌지 핑크","가을 웜");
+        map.put("카키","가을 웜");
+        map.put("다크 그린","가을 웜");
+        map.put("자주","가을 웜");
+        map.put("보라색","가을 웜");
+        map.put("다크 바이올렛","가을 웜");
+        map.put("버건디","가을 웜");
+        map.put("갈색","가을 웜");
+        map.put("로즈골드","가을 웜");
+        map.put("레드 브라운","가을 웜");
+        map.put("카키 베이지","가을 웜");
+        map.put("카멜","가을 웜");
+
+        map.put("은색", "겨울 쿨");
+        map.put("빨간색", "겨울 쿨");
+        map.put("네온 핑크", "겨울 쿨");
+        map.put("분홍색", "겨울 쿨");
+        map.put("라이트 오렌지", "겨울 쿨");
+        map.put("네온 오렌지", "겨울 쿨");
+        map.put("주황색", "겨울 쿨");
+        map.put("녹색", "겨울 쿨");
+        map.put("네온 블루", "겨울 쿨");
+        map.put("파란색", "겨울 쿨");
+        map.put("샌드", "겨울 쿨");
+
+        map.put("검정색","겨울 쿨");
+        map.put("흰색","겨울 쿨");
+        map.put("회색","겨울 쿨");
+        map.put("라이트 그레이","겨울 쿨");
+        map.put("다크 그레이","겨울 쿨");
+        map.put("아이보리","봄 웜");
+        map.put("네이비","겨울 쿨");
+        map.put("데님","겨울 쿨");
+        map.put("연청","여름 쿨");
+        map.put("중청","겨울 쿨");
+        map.put("진청","가을 웜");
+        map.put("흑청","겨울 쿨");
+        System.out.println(map.get(color));
+        return map.get(color);
+    }
+
 }
