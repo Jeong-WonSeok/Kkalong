@@ -6,8 +6,10 @@ import pyrebase
 from PIL import Image
 from fastapi.encoders import jsonable_encoder
 
-import removeBg
+# import removeBg
 import recommendCodi_Main
+import recommendCodi
+
 import colorExtract
 import recommendCodi
 from fastapi.responses import JSONResponse
@@ -33,18 +35,18 @@ config = {
 firebase_storage = pyrebase.initialize_app(config)
 storage = firebase_storage.storage()
 
-@app.get("/api/remove_clothing_bg/{clothing_id}")
-def remove_clothing_background(clothing_id: Optional[str]=None):
-    storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
-    print("finished downloading file")
-    result = removeBg.remove_clothing_background(clothing_id)
-    print("finished removing background")
-    storage.child(result).put(result)
-    print("finished uploading file")
-    os.remove('clothing_with_background.png')
-    os.remove(result)
-    print("finished deleting file")
-    return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
+# @app.get("/api/remove_clothing_bg/{clothing_id}")
+# def remove_clothing_background(clothing_id: Optional[str]=None):
+#     storage.child("").download("clothing_"+clothing_id+".png", "clothing_with_background.png")
+#     print("finished downloading file")
+#     result = removeBg.remove_clothing_background(clothing_id)
+#     print("finished removing background")
+#     storage.child(result).put(result)
+#     print("finished uploading file")
+#     os.remove('clothing_with_background.png')
+#     os.remove(result)
+#     print("finished deleting file")
+#     return "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/"+result+"?alt=media"
 
 @app.get("/api/clothing_color/{clothing_id}")
 def extract_clothing_color(clothing_id: Optional[str] =None):
@@ -74,7 +76,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
                 if idx >= 99:
                     result_arr.append("코디가 없어요..ㅠ")
                     return result_arr
-                result = recommendCodi_Main.personalRecommend(style, gender, season, personal_color)
+                result = recommendCodi.personalRecommend(style, gender, season, personal_color)
                 result_arr.append(result)
                 break
             except:
@@ -83,7 +85,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
     return result_arr
 
 @app.get("/api/weather_recommend/{style}/{season}/{gender}/{temp}")
-def personal_recommend(style: Optional[str] = None, season: Optional[str] = None,
+def weather_recommend(style: Optional[str] = None, season: Optional[str] = None,
                         gender: Optional[str] = None, temp: Optional[str] = None):
 
     print(style, season, gender, temp)
@@ -95,7 +97,7 @@ def personal_recommend(style: Optional[str] = None, season: Optional[str] = None
                 result_arr.append("코디가 없어요..ㅠ")
                 return result_arr
     #             print(idx)
-            result = recommendCodi_Main.weatherRecommend(style, gender, season, temp)
+            result = recommendCodi.weatherRecommend(style, gender, season, temp)
             result_arr.append(result)
             break
         except:
