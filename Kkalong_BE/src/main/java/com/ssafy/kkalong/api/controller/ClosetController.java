@@ -9,17 +9,8 @@ import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -59,44 +50,84 @@ public class ClosetController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/closet/{closet_id}")
-    public ResponseEntity<?> getClothingImages(@PathVariable int closet_id) throws Exception {
-        Map<String, Object> result = new HashMap<>();
-        Closet closet = closetService.getClosetsByClosetId(closet_id);
-        List<ClothingDto> clothings = closetService.findAllClothingByCloset(closet);
-        String[] s1 = new String[2];
-        String[] s2 = new String[2];
-        for(ClothingDto clothingDto : clothings){
-            String clothing_img_url = clothingDto.getImg();
-            s1 = clothing_img_url.split("\\?");
-            s2 = s1[0].split("/o/");
-            System.out.println(s2[1]);
-            URI url = URI.create(clothing_img_url);
-            // 원격 파일 다운로드
-            RestTemplate           rt     = new RestTemplate();
-            ResponseEntity<byte[]> res    = rt.getForEntity(url, byte[].class);
-            byte[]                 buffer = res.getBody();
-
-            // 로컬 서버에 저장
-//            String fileName = UUID.randomUUID().toString();                    // 파일명 (랜덤생성)
-            String fileName = s2[1];                    // 파일명 (랜덤생성)
-            String ext = "." + StringUtils.getFilenameExtension(clothing_img_url); // 확장자 추출
-            URL r = this.getClass().getResource("");
-            String path = r.getPath();
-            Path target = Paths.get(path, fileName );    // 파일 저장 경로
-
-            try {
-                FileCopyUtils.copy(buffer, target.toFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-//        String url = "http://localhost:8000/api/clothing_img/"+s2[1];
-//        RestTemplate restTemplate = new RestTemplate();
-//        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
-
-        return ResponseEntity.ok().body(result);
-    }
+//    @GetMapping("/closet/{closet_id}")
+//    public Object getClothingImages(HttpServletRequest request, HttpServletResponse response, @PathVariable int closet_id) throws Exception {
+//
+//        FileInputStream fis = null;
+//        BufferedInputStream bis = null;
+//        ServletOutputStream sos = null;
+//        File file = null;
+//
+//        Closet closet = closetService.getClosetsByClosetId(closet_id);
+//        List<ClothingDto> clothings = closetService.findAllClothingByCloset(closet);
+//        if(clothings != null) {
+//            String[] s1 = new String[2];
+//            String[] s2 = new String[2];
+//            for(ClothingDto clothingDto : clothings){
+//                String clothing_img_url = clothingDto.getImg();
+//                s1 = clothing_img_url.split("\\?");
+//                s2 = s1[0].split("/o/");
+//                System.out.println(s2[1]);
+//                URI url = URI.create(clothing_img_url);
+//                // 원격 파일 다운로드
+//                RestTemplate           rt     = new RestTemplate();
+//                ResponseEntity<byte[]> res    = rt.getForEntity(url, byte[].class);
+//                byte[]                 buffer = res.getBody();
+//
+//                // 로컬 서버에 저장
+////            String fileName = UUID.randomUUID().toString();                    // 파일명 (랜덤생성)
+//                String fileName = s2[1];                    // 파일명 (랜덤생성)
+//                String ext = "." + StringUtils.getFilenameExtension(clothing_img_url); // 확장자 추출
+////                URL r = this.getClass().getResource("");
+////                String path = r.getPath();
+////                Path target = Paths.get(path+fileName );    // 파일 저장 경로
+//                URI uri = ClassLoader.getSystemResource("").toURI();
+//                String mainPath = Paths.get(uri).toString();
+//                Path target = Paths.get(mainPath ,fileName);
+//
+//                try {
+//                    FileCopyUtils.copy(buffer, target.toFile());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                try {
+//                    file = new File(String.valueOf(target));
+//
+//                    fis = new FileInputStream(file);
+//                    bis = new BufferedInputStream(fis);
+//                    sos = response.getOutputStream();
+//
+//                    String reFilename = "";
+//                    // IE로 실행한 경우인지 -> IE는 따로 인코딩 작업을 거쳐야 한다. request헤어에 MSIE 또는 Trident가 포함되어 있는지 확인
+//                    boolean isMSIE = request.getHeader("user-agent").indexOf("MSIE") != -1 || request.getHeader("user-agent").indexOf("Trident") != -1;
+//
+//                    if(isMSIE) {
+//                        reFilename = URLEncoder.encode(fileName, "utf-8");
+//                        reFilename = reFilename.replaceAll("\\+", "%20");
+//                    }
+//                    else {
+//                        reFilename = new String(fileName.getBytes("utf-8"), "ISO-8859-1");
+//                    }
+//
+//                    response.setContentType("application/octet-stream;charset=utf-8");
+//                    response.addHeader("Content-Disposition", "attachment;filename=\""+reFilename+"\"");
+//                    response.setContentLength((int)file.length());
+//
+//                    int read = 0;
+//                    while((read = bis.read()) != -1) {
+//                        sos.write(read);
+//                    }
+//
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return ResponseEntity.ok();
+//    }
 
     @PostMapping(consumes = {"multipart/form-data"}, value = "/removeBg")
     public ResponseEntity<?> removeClothingImgBackground(@RequestPart MultipartFile img) {
@@ -125,8 +156,8 @@ public class ClosetController {
     @GetMapping("/clothing/{clothing_id}")
     public ResponseEntity<?> getClothingInfoByClothingId(@PathVariable int clothing_id){
         Map<String, Object> result = new HashMap<>();
-        ClothingDto clothingDto = closetService.getClothingInfoByClothingId(clothing_id);
-        result.put("clothing", clothingDto);
+        ClothingInfoResponseDto clothingInfoResponseDto = closetService.getClothingInfoByClothingId(clothing_id);
+        result.put("clothing", clothingInfoResponseDto);
         return ResponseEntity.ok().body(result);
     }
 
@@ -135,6 +166,14 @@ public class ClosetController {
         Map<String, Object> result = new HashMap<>();
         Closet closet = closetService.getClosetsByClosetId(closet_id);
         result.put("clothings", closetService.findAllClothingByCloset(closet));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/codies/{closet_id}")
+    public ResponseEntity<?> getCodiesByClosetId(@PathVariable int closet_id){
+        Map<String, Object> result = new HashMap<>();
+        Closet closet = closetService.getClosetsByClosetId(closet_id);
+        result.put("codies", closetService.findAllCodybyCloset(closet));
         return ResponseEntity.ok().body(result);
     }
 
@@ -167,12 +206,12 @@ public class ClosetController {
                 .build();
         result.put("cody", codyResponseDto);
         List<CodyClothing> codyClothings = closetService.findAllCodyClothingByCody(cody);
-        ArrayList<ClothingDto> clothings = new ArrayList<>();
+        ArrayList<ClothingInfoResponseDto> clothingInfoResponseDtos = new ArrayList<>();
         for (CodyClothing codyClothing: codyClothings) {
-            ClothingDto clothingDto = closetService.getClothingInfoByClothingId(codyClothing.getClothing().getId());
-            clothings.add(clothingDto);
+            ClothingInfoResponseDto clothingInfoResponseDto = closetService.getClothingInfoByClothingId(codyClothing.getClothing().getId());
+            clothingInfoResponseDtos.add(clothingInfoResponseDto);
         }
-        result.put("clothings", clothings);
+        result.put("clothings", clothingInfoResponseDtos);
         return ResponseEntity.ok().body(result);
     }
 }
