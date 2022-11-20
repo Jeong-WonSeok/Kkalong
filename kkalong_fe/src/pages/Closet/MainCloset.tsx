@@ -250,7 +250,7 @@ export default function MainCloset() {
       </AddClothesContainer>}
       <FooterBar />
     </div>
-  }
+  )}
 </div>
 )}
 
