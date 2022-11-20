@@ -8,6 +8,8 @@ from fastapi.encoders import jsonable_encoder
 
 import removeBg
 import recommendCodi_Main
+import recommendCodi
+
 import colorExtract
 import recommendCodi
 from fastapi.responses import JSONResponse
@@ -74,7 +76,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
                 if idx >= 99:
                     result_arr.append("코디가 없어요..ㅠ")
                     return result_arr
-                result = recommendCodi_Main.personalRecommend(style, gender, season, personal_color)
+                result = recommendCodi.personalRecommend(style, gender, season, personal_color)
                 result_arr.append(result)
                 break
             except:
@@ -83,7 +85,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
     return result_arr
 
 @app.get("/api/weather_recommend/{style}/{season}/{gender}/{temp}")
-def personal_recommend(style: Optional[str] = None, season: Optional[str] = None,
+def weather_recommend(style: Optional[str] = None, season: Optional[str] = None,
                         gender: Optional[str] = None, temp: Optional[str] = None):
 
     print(style, season, gender, temp)
@@ -95,7 +97,7 @@ def personal_recommend(style: Optional[str] = None, season: Optional[str] = None
                 result_arr.append("코디가 없어요..ㅠ")
                 return result_arr
     #             print(idx)
-            result = recommendCodi_Main.weatherRecommend(style, gender, season, temp)
+            result = recommendCodi.weatherRecommend(style, gender, season, temp)
             result_arr.append(result)
             break
         except:
