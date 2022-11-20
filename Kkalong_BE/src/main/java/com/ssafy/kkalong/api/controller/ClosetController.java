@@ -9,12 +9,17 @@ import com.ssafy.kkalong.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 
 @CrossOrigin(origins = {"*"})
@@ -50,6 +55,43 @@ public class ClosetController {
     public ResponseEntity<?> registerCloset(@AuthenticationPrincipal UserDetailsImpl userInfo, @RequestBody StringDto stringDto) throws Exception {
         Map<String, Object> result = new HashMap<>();
         result.put("closet_id", closetService.registerCloset(userInfo.getId(), stringDto.getValue()));
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/closet/{closet_id}")
+    public ResponseEntity<?> getClothingImages(@PathVariable int closet_id) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        Closet closet = closetService.getClosetsByClosetId(closet_id);
+        List<ClothingDto> clothings = closetService.findAllClothingByCloset(closet);
+        String[] s1 = new String[2];
+        String[] s2 = new String[2];
+        for(ClothingDto clothingDto : clothings){
+            String clothing_img_url = clothingDto.getImg();
+            s1 = clothing_img_url.split("\\?");
+            s2 = s1[0].split("/o/");
+            System.out.println(s2[1]);
+            URI url = URI.create(clothing_img_url);
+            // 원격 파일 다운로드
+            RestTemplate           rt     = new RestTemplate();
+            ResponseEntity<byte[]> res    = rt.getForEntity(url, byte[].class);
+            byte[]                 buffer = res.getBody();
+
+            // 로컬 서버에 저장
+//            String fileName = UUID.randomUUID().toString();                    // 파일명 (랜덤생성)
+            String fileName = s2[1];                    // 파일명 (랜덤생성)
+            String ext = "." + StringUtils.getFilenameExtension(clothing_img_url); // 확장자 추출
+            Path target = Paths.get("/PLEASEPLEASE", fileName );    // 파일 저장 경로
+
+            try {
+                FileCopyUtils.copy(buffer, target.toFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//        String url = "http://localhost:8000/api/clothing_img/"+s2[1];
+//        RestTemplate restTemplate = new RestTemplate();
+//        String removedBgImgUrl = restTemplate.getForObject(url,String.class);
+
         return ResponseEntity.ok().body(result);
     }
 
