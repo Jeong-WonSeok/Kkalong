@@ -207,7 +207,7 @@ export default function PlusCodi() {
       ) : (
         <div>
           <div>
-            <TopNav type={""}>
+            {/* <TopNav type={""}>
               <BackBtn
                 onClick={() => {
                   navigate(-1);
@@ -224,7 +224,7 @@ export default function PlusCodi() {
               >
                 <EnterText>저장</EnterText>
               </ClosetEnter>
-            </TopNav>
+            </TopNav> */}
           </div>
           <input type="file" multiple onChange={onUploadImage} />
           <button onClick={removeObjectFromCanvas}>Remove</button>

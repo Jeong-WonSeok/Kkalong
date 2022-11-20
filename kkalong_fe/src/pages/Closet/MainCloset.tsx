@@ -30,9 +30,9 @@ import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../../components/closet/Carousel";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -312,6 +312,7 @@ export default function MainCloset() {
                   </SwiperSlide>
                 );
               })}
+
               <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
@@ -370,11 +371,21 @@ export default function MainCloset() {
           </SortClothesContainer>
 
           {/* <input
+<<<<<<< HEAD
+
+
+          <input
+=======
+>>>>>>> develop
             type="file"
             accept="image/*"
             ref={inputRef}
             onChange={onUploadImage}
           />
+<<<<<<< HEAD
+
+=======
+>>>>>>> develop
           <button onClick={onUploadImageButtonClick} /> */}
           {/* <input
             type="file"
@@ -391,6 +402,9 @@ export default function MainCloset() {
             onChange={onUploadImage}
           />
           <button onClick={Submit} /> */}
+
+          {/* <button onClick={onUploadImageButtonClick} /> */}
+
           <AddClothesContainer>
             <AddClothes
               onClick={() =>
