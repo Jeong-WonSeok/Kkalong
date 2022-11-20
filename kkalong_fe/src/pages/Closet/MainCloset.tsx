@@ -30,9 +30,9 @@ import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Carousel from "../../components/closet/Carousel";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -307,6 +307,7 @@ export default function MainCloset() {
                   </SwiperSlide>
                 );
               })}
+
               <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
@@ -364,29 +365,6 @@ export default function MainCloset() {
               })}
           </SortClothesContainer>
 
-          {/* <input
-            type="file"
-            accept="image/*"
-            ref={inputRef}
-            onChange={onUploadImage}
-          />
-          <button onClick={onUploadImageButtonClick} /> */}
-          {/* <input
-            type="file"
-            id="file"
-            onChange={ChangePicture}
-            accept="image/*"
-            required
-          />
-          <button onClick={Submit}>작성</button> */}
-          {/* <input
-            type="file"
-            accept="image/*"
-            ref={inputRef}
-            onChange={onUploadImage}
-          />
-          <button onClick={Submit} /> */}
-      {/* <>
         <Carousel sortclothes={sortclothes} />
         <SelectBtnContainer>
           <SelectBtn
@@ -403,7 +381,6 @@ export default function MainCloset() {
             <SelectText>코디</SelectText>
           </SelectBtn>
         </SelectBtnContainer>
-      </>
 
       <Category>
         {clothes.map(function (a, i) {
@@ -424,7 +401,7 @@ export default function MainCloset() {
             </SortClothes>
           );
         })}
-      </SortClothesContainer> */}
+      </SortClothesContainer>
 
       <AddClothesContainer>
         <AddClothes
