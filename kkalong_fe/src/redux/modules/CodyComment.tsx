@@ -28,7 +28,7 @@ const initialState: stateType = {
 export const MakeCody = () => async (dispatch: Dispatch) => {
   dispatch({type: GET_CODY_PENDING})
 
-  const res = await axios.post(requests.codl)
+  const res = await axios.post(requests.codi)
   dispatch({type: GET_CODY_SUCCESS, payload: res.data.cody})
 }
 

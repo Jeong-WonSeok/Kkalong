@@ -18,15 +18,7 @@ import cloudy from "../../assets/icon/Closet/cloudy.png";
 import Color from '../../assets/icon/Recommand/color.png'
 
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { getWeather } from "../../redux/modules/Recommend";
 import RecommandCody from "../../components/Recommand/RecommandCody";
-
-type LocationType = {
-  lat: number,
-  lon: number,
-  x: number,
-  y: number
-}
 
 type WeatherType = {
   temp: string,
@@ -39,59 +31,18 @@ export default function WeatherPage() {
   const dispatch = useAppDispatch()
   const {pending, Weather, Recommand} = useAppSelector(state => state.Recommend)
   const navigate = useNavigate();
-  let location: LocationType = {
-    lat: 0,
-    lon: 0,
-    x: 0,
-    y: 0
-  }
   const [imgWeather, setImgWeather] = useState({img: '', text: ''})
   const [WeatherList, setWeatherList] = useState(Array<WeatherType>)
   const [Message, setMessage] = useState(Array<String>)
   useEffect(()=>{
     const nowDay = String(now.getFullYear()) + String(now.getMonth() + 1) + (now.getDate() < 10 ? '0' + String(now.getDate()) : String(now.getDate()))
     const nowTime = TimeChange()
-
-    const start = async() => {
-      await getLocation()
-      await dispatch(getWeather(location.x, location.y)) 
-      setWeatherList([
-        {weather: Weather.today_Weather, temp: Weather.today},
-        {weather: Weather.tomorrow_Weather, temp: Weather.tomorrow},
-        {weather: Weather.tomorrowAfter_Weather, temp: Weather.tomorrowAfter}])
-      HandleWeather()
-    }
-    start()
+    setWeatherList([
+      {weather: Weather.today_Weather, temp: Weather.today},
+      {weather: Weather.tomorrow_Weather, temp: Weather.tomorrow},
+      {weather: Weather.tomorrowAfter_Weather, temp: Weather.tomorrowAfter}])
+    HandleWeather()
   },[Weather])
-
-  const getLocation = async () => {
-    if (navigator.geolocation) { // GPS를 지원하면
-      // 이것으로 현재 위치를 가져온다.
-      var getPosition = function () {
-        return new Promise(function (reslove, reject) {
-          navigator.geolocation.getCurrentPosition(reslove, reject)
-        })
-      }
-      
-      // 위치 변환
-      return await getPosition()
-        .then(async (position: any) => {
-          const result  = new Promise((reslove, reject) => {
-            reslove(dfs_xy_conv('toXY', position.coords.latitude , position.coords.longitude))
-          })
-          
-          await result.then((res: any) => {
-            location = res
-            return res
-          })
-        })
-        .catch((error) => {
-          console.error(error.message)
-        });
-    } else {
-      alert('GPS 정보를 불러드리지 못했습니다.\n 새로고침을 해주세요');
-    }
-  }
 
   // 날씨 이미지 및 메세제 정의
   const HandleWeather = () => {
