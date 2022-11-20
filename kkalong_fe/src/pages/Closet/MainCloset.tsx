@@ -73,154 +73,58 @@ export default function MainCloset() {
   const params = useParams();
   const { User } = useAppSelector((state) => state.User);
   const navigate = useNavigate();
-  const settings = {
-    className: "center",
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 2,
-    speed: 500,
-  };
-  let [clothes, setClothes] = useState([
-    list,
-    shirt,
-    pants,
-    outer,
-    shoes,
-    hat,
-    hat,
-  ]);
+  let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
   let [cltext, setCltext] = useState([
     "전체",
     "상의",
     "하의",
     "아우터",
     "신발",
-    "가방",
-    "모자",
-  ]);
-  let [btn, setBtn] = useState(false);
-  let [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
+    "악세서리",
   ]);
   let [closet, setCloset] = useState(Array<dataType>);
-  const [SendData, setSendData] = useState<SendType>();
-  let [sls, setSls] = useState("");
-  let userProfile: any = localStorage.getItem("userProfile");
-  userProfile = JSON.parse(userProfile);
-  let userId = userProfile.user_id;
+  const [closetId, setClosetId] = useState(0);
   let [clothings, setClothings] = useState<any[]>([]);
-  const [clothesData, setClothesData] = useState<ClothesProps[]>([]);
-  const [closetId, setClosetId] = useState<number>();
   let [clothing, setClothing] = useState<imgSetType>();
-  const [swiper, setSwiper] = useState<SwiperCore>();
-  let [clothingId, setClothingId] = useState("");
-  // console.log(userId);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  let [loading, setLoading] = useState(true);
 
-  const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("img", e.target.files[0]);
-      console.log(formData);
-      axios
-        .post(requests.removeBackground, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          setClothing(response.data);
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    []
-  );
-  useEffect(() => {
-    axios.get("closet/clothings/" + closetId).then((res) => {
-      setClothings(res.data.clothings);
-    });
-  }, [closetId]);
-
-  const onUploadImageButtonClick = useCallback(() => {
-    if (!inputRef.current) {
-      return;
-    }
-    inputRef.current.click();
-  }, []);
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
     if (User.user_id === Number(params.userId) || !params.userId) {
       navigate("/codi");
     } else if (User.loving && User.lover_id === Number(params.userId)) {
-      navigate("/codi");
+      navigate(`/codi/${params.userId}`);
     } else {
-      navigate("/pluscodi");
+      navigate(`/pluscodi/${params.HelpCodiId}/${params.userId}`, { state: { closetId } })
     }
   };
-  const ChangePicture = (e: any) => {
-    setSendData((state) => {
-      return {
-        // undefined 타입 지정 오류 처리
-        ...(state as SendType),
-        post_img: e.target.files[0],
-      };
-    });
 
-    const Picture = document.getElementById("SelectPicture") as HTMLDivElement;
-    // 위에 레이어 모두 삭제후
-    Picture.replaceChildren();
-    const ImgUrl = URL.createObjectURL(e.target.files[0]);
-    Picture.style.backgroundImage = `url(${ImgUrl})`;
-    Picture.style.backgroundPosition = "center";
-    Picture.style.width = "auto";
-  };
-  const Submit = async () => {
-    const result = FormDataChange(SendData);
-    console.log(result);
-    result.get("img");
-    await axios
-      .post(requests.removeBackground, result, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res);
-        navigate(`/`);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  let [loading, setLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get(requests.closet + User.user_id)
-      .then((res) => {
-        closet = res.data.closets;
+    const start = async () => {
+      if (params.userId) {
+        // 타인이 볼 때
+        const res = await axios.get(requests.closet + params.userId);
         setCloset(res.data.closets);
-        console.log(closet);
+        setClosetId(res.data.closets[0].closet_id)
         setLoading(false);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+      } else {
+        // 자기자신
+        const res = await axios.get(requests.closet + User.user_id);
+        setCloset(res.data.closets);
+        setClosetId(res.data.closets[0].closet_id)
+        setLoading(false);
+      }}
+    start()
   }, []);
 
-  console.log(clothings);
-  console.log(clothingId);
+  useEffect(()=>{
+      axios.get("closet/clothings/" + closetId).then((res) => {
+        setClothings(res.data.clothings);
+      });
+    },[closetId])
+
+  console.log(closet);
   return (
     <div>
       {loading ? (
@@ -267,7 +171,7 @@ export default function MainCloset() {
                 );
               })}
 
-              <SwiperSlide>
+              {!params.userId && <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
                     navigate("/addcloset");
@@ -278,7 +182,7 @@ export default function MainCloset() {
                   </ClosetIcon>
                   <BtnText>옷장 추가 하기</BtnText>
                 </SlideButton2>
-              </SwiperSlide>
+              </SwiperSlide>}
               {/* </SliderBorder> */}
             </Swiper>
             <SelectBtnContainer>
@@ -300,7 +204,11 @@ export default function MainCloset() {
           <Category>
             {cltext.map(function (a, i) {
               return (
-                <ClothesBtn>
+                <ClothesBtn onClick={()=>{
+                  closet[0].clothings.filter(cloth => {
+                    return cloth.mainCategory === i
+                  })
+                }}>
                   <img src={clothes[i]} />
                   <ClothesText>{cltext[i]}</ClothesText>
                 </ClothesBtn>
@@ -312,7 +220,7 @@ export default function MainCloset() {
               return (
                 <SortClothes
                   onClick={() => {
-                    clothingId = clothings[i].clothing_id;
+                    let clothingId = clothings[i].clothing_id;
                     navigate("/clothes/detail", {
                       state: { closetId, clothingId },
                     });
@@ -323,28 +231,28 @@ export default function MainCloset() {
                       .then((res) => {
                         console.log(res);
                       });
-                  }}
-                >
-                  <ClothesImg src={clothings[i]?.img} />
-                </SortClothes>
-              );
-            })}
+                    }}
+                  >
+                    <ClothesImg src={closet[0].clothings[i] ? closet[0].clothings[i].img : ''} alt="no" />
+                  </SortClothes>
+                );
+              })}
           </SortClothesContainer>
-          <AddClothesContainer>
-            <AddClothes
+
+      {!params.userId && <AddClothesContainer>
+        <AddClothes
               onClick={() =>
                 navigate("/closet/add", { state: { closetId, clothing } })
               }
             >
-              <img src={camera} width="50px" />
-            </AddClothes>
-          </AddClothesContainer>
-          <FooterBar />
-        </div>
-      )}
+          <CameraImg src={camera} />
+        </AddClothes>
+      </AddClothesContainer>}
+      <FooterBar />
     </div>
-  );
-}
+  )}
+</div>
+)}
 
 const CategoryText1 = styled.p`
   margin: auto 0;
