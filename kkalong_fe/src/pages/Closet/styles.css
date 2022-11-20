@@ -43,3 +43,14 @@ body {
   border-radius: 20px;
   border: solid #67564e 2px;
 }
+
+.input-file-button {
+  margin-top: 20px;
+  margin-left: 100px;
+  padding: 10px 30px;
+  /* background-color: #f9a20c; */
+  border: solid 5px #f9a20c;
+  border-radius: 30px;
+  color: #f9a20c;
+  cursor: pointer;
+}

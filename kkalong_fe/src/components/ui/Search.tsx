@@ -12,13 +12,29 @@ export default function Search({children, Open, Search, StopSearch}: {children: 
   const [FirstNot, setFirstNot] = useState(-1)
 
   useEffect(() => {
+    const app = document.getElementById('App') as HTMLDivElement
+    if (Open) {
+      app.style.marginTop = '144px'
+    } else {
+      app.style.marginTop = '60px'
+    }
+    
     setFirstNot(FirstNot+1)
   
     return () => {
       setFirstNot(0)
+      app.style.marginTop = '60px'
     }
   }, [Open])
   
+  const InputText = (e:any) => {
+    if (e.target.value === '') {
+      StopSearch(false)
+      setSearchText('')
+    } else {
+      setSearchText(e.target.value)
+    }
+  }
 
   const IfEnter = (e:any) => {
     if(e.key === "Enter") {
@@ -40,7 +56,7 @@ export default function Search({children, Open, Search, StopSearch}: {children: 
         <TextP>{children}</TextP>
         <SearchDiv>
           <div style={{position: 'relative', width: '70%'}}>
-            <SearchInput placeholder="검색어를 입력해주세요" value={SearchText} onChange={(e:any)=>setSearchText(e.target.value)} onKeyPress={IfEnter}/>
+            <SearchInput placeholder="검색어를 입력해주세요" value={SearchText} onChange={InputText} onKeyPress={IfEnter}/>
             {SearchText && <StopDiv onClick={Stop}>X</StopDiv>}
           </div>
           <SearchButton onClick={SendText}>검색</SearchButton>
@@ -81,6 +97,12 @@ const ExitSearch = keyframes`
 
 const SearchContainer = styled.div<animationType>`
   margin-bottom: 10px;
+  position: fixed;
+  top: 50px;
+  padding: 10px 0;
+  background-color: white;
+  width: 100%;
+  max-width: 360px;
   display: ${props => props.FirstNot ? '' : 'none'};
   animation: ${props => props.Open ? 
    css `${EnterSearch} 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both` :

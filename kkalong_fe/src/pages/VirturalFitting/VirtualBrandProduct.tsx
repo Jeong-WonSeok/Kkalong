@@ -12,15 +12,14 @@ import axios from '../../api/axios'
 import requests from '../../api/requests'
 
 interface ClothType {
-  clothes_id: number
   img : string
   name : string
-  type : string
+  mainCategory : string
+  subCategory: number
   url : string
 }
 
 export default function VirtualBrandProduct() {
-  const clothes = useLocation();
   const navigate = useNavigate();
   const params = useParams()
   const [Clothes, setClothes] = useState<ClothType>()
@@ -28,6 +27,7 @@ export default function VirtualBrandProduct() {
   useEffect(()=>{
     axios.get(requests.brand + params.brand_id + params.clothes_id)
       .then(res => {
+        console.log(res.data)
         setClothes(res.data)
       })
       .catch(err => {
@@ -43,12 +43,12 @@ export default function VirtualBrandProduct() {
         <div style={{width:"30px", height:"30px"}}></div>
 
       </TopNav>
-      <BrandProductName>{clothes.state.name}</BrandProductName>
+      <BrandProductName>{Clothes?.name}</BrandProductName>
       <BrandProductImgDiv>
-        <BrandProductImg src={clothes.state.img}></BrandProductImg>
+        <BrandProductImg src={Clothes?.img}></BrandProductImg>
       </BrandProductImgDiv>
       <BrandProductBuyDiv>
-        <BrandProductBuy>구매하기</BrandProductBuy>
+        <BrandProductBuy onClick={()=>window.open(Clothes?.url)}>구매하기</BrandProductBuy>
         <BrandProductFitting>가상피팅하기</BrandProductFitting>
       </BrandProductBuyDiv>
       <FooterBar/>

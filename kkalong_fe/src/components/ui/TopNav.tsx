@@ -37,8 +37,8 @@ export default function TopNav({
 const TopContainer = styled.div<styledprops>`
   width: 100%;
   max-width: 360px;
-  height: 40px;
-  padding-top: 10px;
+  height: 45px;
+  padding-top: 5px;
   position: fixed;
   left: auto;
   top: 0;

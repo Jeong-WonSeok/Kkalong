@@ -21,7 +21,7 @@ export interface FriendType {
   user_id : number
   nickname  : string
   profile_img : string
-  isLoving : boolean
+  loving : boolean
   lover_id : number
 }
 

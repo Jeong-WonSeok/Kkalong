@@ -86,6 +86,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
 def personal_recommend(style: Optional[str] = None, season: Optional[str] = None,
                         gender: Optional[str] = None, temp: Optional[str] = None):
 
+    print(style, season, gender, temp)
     result_arr = []
     idx = 0
     while 1:
