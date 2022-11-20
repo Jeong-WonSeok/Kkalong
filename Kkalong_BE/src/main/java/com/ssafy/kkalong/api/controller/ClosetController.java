@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -80,7 +81,9 @@ public class ClosetController {
 //            String fileName = UUID.randomUUID().toString();                    // 파일명 (랜덤생성)
             String fileName = s2[1];                    // 파일명 (랜덤생성)
             String ext = "." + StringUtils.getFilenameExtension(clothing_img_url); // 확장자 추출
-            Path target = Paths.get("/PLEASEPLEASE", fileName );    // 파일 저장 경로
+            URL r = this.getClass().getResource("");
+            String path = r.getPath();
+            Path target = Paths.get(path, fileName );    // 파일 저장 경로
 
             try {
                 FileCopyUtils.copy(buffer, target.toFile());
