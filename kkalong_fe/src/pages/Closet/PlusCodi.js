@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import modalBar from "../../assets/icon/Closet/modalBar.png";
 import img1 from "../../img/img1.png";
 import img2 from "../../img/img2.png";
@@ -24,9 +24,16 @@ import requests from './../../api/requests';
 
 export default function PlusCodi() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const closetId = location.state.closetId;
+  console.log(closetId);
   const params = useParams();
-  const dispatch = useAppDispatch()
-  const { User } = useAppSelector(state => state.User)
+  let [closet, setCloset] = useState(Array);
+  let userProfile = localStorage.getItem("userProfile");
+  userProfile = JSON.parse(userProfile);
+  let userId = userProfile.user_id;
+  let [loading, setLoading] = useState(true);
+
   let [modal, setModal] = useState(false);
 
   const modalClose = () => {
@@ -43,7 +50,19 @@ export default function PlusCodi() {
 
   useEffect(() => {
     setCanvas(initCanvas());
+    axios
+      .get(requests.closet + userId)
+      .then((res) => {
+        closet = res.data.closets;
+        setCloset(res.data.closets);
+        console.log(closet);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   }, []);
+  let [img, setImg] = useState([img1, img2, img3, img4]);
 
   const downloadImage = () => {
     const ext = "png";
@@ -55,17 +74,79 @@ export default function PlusCodi() {
     link.href = base64;
     link.download = `eraser_example.${ext}`;
     link.click();
+
+    // var canvas = document.getElementsById("canvas");
+    // img.crossOrigin = "*";
+    // img.src = editor.canvas.toDataURL("image/png");
+    // const imgUrl = editor.canvas.toDataURL("image/png");
+    // const img = new Image();
+    // img.crossOrigin = "Anonymous";
+
+    // img.src = imgUrl;
+    // imgUrl.crossOrigin = "Anonymous";
+    // var decodImg = window.atob(imgUrl.split(",")[1]);
+    // let array = [];
+    // for (let i = 0; i < decodImg.length; i++) {
+    //   array.push(decodImg.charCodeAt(i));
+    // }
+
+    // const myBlob = new Blob([new ArrayBuffer(array)], { type: "image/jpeg" });
+    // var file = new File([myBlob], "blobtofile.png");
+    // console.log(file);
+    // let formData = new FormData();
+    // formData.append("img", file);
+    // axios.post(requests.imgAdd, formData, {
+    //   headers: {
+    //     processData: false,
+    //     contentType: false,
+    //   },
+    // });
+    // console.log(imgUrl);
+    // dataURLtoFile(imgUrl);
+    // console.log(imgUrl);
+    // const base64 = editor.canvas.toDataURL({
+    //   format: ext,
+    //   enableRetinaScaling: true,
+    // });
+
+    // console.log(base64);
+    // const link = document.createElement("a");
+    // link.href = base64;
+    // link.download = `eraser_example.${ext}`;
+    // console.log(link);
+    // img = link;
+    // console.log(img);
+    // link.click();
+    // console.log(link);
   };
-  const [num, setNum] = useState("");
-  const [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-  ]);
+  function dataURLtoFile(dataurl) {
+    const blobBin = atob(dataurl.split(",")[1]); // base64 데이터 디코딩
+    const array = [];
+    for (let i = 0; i < blobBin.length; i += 1) {
+      array.push(blobBin.charCodeAt(i)); //인코드된 문자들을 0번째부터 끝까지 해독하여 유니코드 값을 array 에 저장한다.
+    }
+
+    const u8arr = new Uint8Array(array); //8비트의 형식화 배열을 생성한다.
+    const file = new Blob([u8arr], { type: "image/png" }); // Blob 생성
+    const formdata = new FormData(); // formData 생성
+    formdata.append("img", file); // file data 추가
+    console.log(formdata);
+    for (let key of formdata.keys()) {
+      console.log(key);
+    }
+
+    /* value 확인하기 */
+    for (let value of formdata.values()) {
+      console.log(value);
+    }
+    // axios 로 서버에 img 파일 보내기
+
+    axios.post(requests.imgAdd, formdata, {
+      headers: { "content-Type": "multipart/form-data" },
+    });
+  }
+  let [num, setNum] = useState("");
+  let [sortclothes, setSortclothes] = useState();
 
   const [sort, setSort] = useState([
     "전체",
@@ -75,16 +156,33 @@ export default function PlusCodi() {
     "신발",
     "악세서리",
   ]);
+  let [clothesId, setClothesId] = useState("");
+  const onUploadImage = (i) => {
+    console.log(i);
+    // const image = closet[clothesId].clothings[clothesId].img;
+    // console.log(image);
+    // console.log(e.target.files[0]);
 
-  const onUploadImage = (e) => {
-    console.log(e);
-    const image = e.target.files[0];
-    console.log(e.target.files[0]);
-    fabric.Image.fromURL(URL.createObjectURL(image), (img) => {
-      var oImg = img.set({ left: 0, top: 0 }).scale(0.25);
+    fabric.Image.fromURL(closet[0].clothings[i].img, (oImg) => {
+      oImg.crossOrigin = "Anonymous";
+      oImg.scaleToWidth(130);
+      oImg.scaleToHeight(130);
       editor.canvas.add(oImg);
-      editor.canvas.renderAll();
     });
+    // const imgElement = document.getElementById("my-image");
+    // var imgInstatnce = new fabric.Image(imgElement, {
+    //   left: 0,
+    //   top: 20,
+    //   scale: 0.25,
+    // });
+    // editor.canvas.add(imgInstatnce);
+    //   fabric.Image.fromURL(URL.createObjectURL(image), (img) => {
+    //     var oImg = img.set({ left: 0, top: 0 }).scale(0.25);
+    //     console.log(oImg);
+    //     editor.canvas.add(oImg);
+    //     editor.canvas.renderAll();
+    //   });
+    // };
   };
 
   const removeObjectFromCanvas = () => {
@@ -98,85 +196,100 @@ export default function PlusCodi() {
   //     canvas.add(oImg);
   //   }
   // );
-
-  fabric.Image.fromURL("../../img/codi1.png", function (img) {
-    var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
-    canvas.add(oImg);
-  });
-
-  const SaveCodi = async () => {
-    const res = await axios.post(requests.codl)
-    // 만약 타인의 옷장이고 커플이 아니라면
-    if (params.userId && !User.loving) {
-      dispatch(res)
-      // 다시 작성된 페이지로 이동
-      navigate(`/community/HelpCodi/${params.HelpCodiId}`)
-    // 타인의 옷장이지만 커플이라면
-    } else if (Number(params.userId) === User.lover_id && User.loving) {
-      navigate(`/community/HelpCodi/${params.HelpCodiId}`)
-    // 자신의 옷장
-    } else {
-      
-    }
-  }
-  
+  // fabric.Image.fromURL("../../img/codi1.png", function (img) {
+  //   var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
+  //   canvas.add(oImg);
+  // });
   return (
-    <div>
-      <div>
-        <TopNav type={""}>
-          <BackBtn
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            <img src={left}></img>
-          </BackBtn>
+    <>
+      {loading ? (
+        <>loading...</>
+      ) : (
+        <div>
+          <div>
+            <TopNav type={""}>
+              <BackBtn
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                <img src={left}></img>
+              </BackBtn>
 
-          <ClosetName placeholder="이름을 입력해주세요" />
-          <ClosetEnter>
-            <EnterText onClick={SaveCodi}>저장</EnterText>
-          </ClosetEnter>
-        </TopNav>
-      </div>
-      <input type="file" multiple onChange={onUploadImage} />
-      <button onClick={removeObjectFromCanvas}>Remove</button>
-      <button onClick={downloadImage}>to Image</button>
-      <br />
-      <br /> <FabricJSCanvas className="sample-canvas" onReady={onReady} />
-      {/* <CodiEdit /> */}
-      {/* <Codi /> */}
-      <PlusBtn onClick={modalClose}>
-        <BtnText>코디 추가하기</BtnText>
-      </PlusBtn>
-      {modal === true ? (
-        <>
-          <Modal>
-            {/* <ClosetTitle>옷장 이름</ClosetTitle> */}
-            <SortDiv>
-              {sort.map(function (a, i) {
-                return (
-                  <Sortbtn>
-                    <SortTxt>{a}</SortTxt>
-                  </Sortbtn>
-                );
-              })}
-            </SortDiv>
-            <ModalBar />
-            <SortBorder>
-              {sortclothes.map(function (a, i) {
-                return (
-                  <SortClothes>
-                    <SortClothesImg src={sortclothes[i]} />
-                  </SortClothes>
-                );
-              })}
-            </SortBorder>
-          </Modal>
+              <ClosetName placeholder="이름을 입력해주세요" />
+              <ClosetEnter
+                onClick={() => {
+                  navigate("/pluscodi2", { state: { closetId } });
+                }}
+              >
+                <EnterText>저장</EnterText>
+              </ClosetEnter>
+            </TopNav>
+          </div>
+          <input type="file" multiple onChange={onUploadImage} />
+          <button onClick={removeObjectFromCanvas}>Remove</button>
+          <button onClick={downloadImage}>to Image</button>
+          <br />
+          <br />{" "}
+          <FabricJSCanvas
+            className="sample-canvas"
+            onReady={onReady}
+            id="canvas"
+          />
+          {/* <CodiEdit /> */}
+          {/* <Codi /> */}
+          <PlusBtn onClick={modalClose}>
+            <BtnText>코디 추가하기</BtnText>
+          </PlusBtn>
+          {/* <img
+        src={
+          "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media"
+        }
+        id="my-image"
+      /> */}
+          {modal === true ? (
+            <>
+              <Modal>
+                {/* <ClosetTitle>옷장 이름</ClosetTitle> */}
+                <SortDiv>
+                  {sort.map(function (a, i) {
+                    return (
+                      <Sortbtn>
+                        <SortTxt>{a}</SortTxt>
+                      </Sortbtn>
+                    );
+                  })}
+                </SortDiv>
+                <ModalBar />
+                <SortBorder>
+                  {closet[0].closet_id === closetId &&
+                    closet[0].clothings.map(function (a, i) {
+                      return (
+                        <SortClothes
+                          onClick={() => {
+                            onUploadImage(i);
+                            console.log(i);
+                            setClothesId(i);
+                          }}
+                        >
+                          {closet[0].clothings ? (
+                            <SortClothesImg
+                              src={closet[0].clothings[i].img}
+                              alt="no"
+                            />
+                          ) : null}
+                        </SortClothes>
+                      );
+                    })}
+                </SortBorder>
+              </Modal>
 
-          {/* <SelectBtn onClick={modalClose}>확인</SelectBtn> */}
-        </>
-      ) : null}
-    </div>
+              {/* <SelectBtn onClick={modalClose}>확인</SelectBtn> */}
+            </>
+          ) : null}
+        </div>
+      )}
+    </>
   );
 }
 

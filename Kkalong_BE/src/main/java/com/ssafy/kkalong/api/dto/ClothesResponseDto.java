@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClothesResponseDto {
+    private int clothing_id;
     private String img;
     private String name;
     private int mainCategory;
