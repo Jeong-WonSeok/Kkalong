@@ -45,6 +45,7 @@ public class UserService {
         return authCodeRepository.existsByEmail(email);
     }
 
+
     public String sendEmail(String email) {
         String code = createCode();
         AuthCode authCode;
@@ -264,4 +265,5 @@ public class UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
 }

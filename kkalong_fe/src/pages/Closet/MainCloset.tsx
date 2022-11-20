@@ -52,9 +52,28 @@ interface SendType {
   img: File;
 }
 
+  
+interface imgSetType {
+  color: string;
+  img: string;
+}
+
+interface imgType {
+  img: File;
+}
+
+interface dataType {
+  closet_id: number;
+  clothings: any[];
+  codies: any[];
+  name: string;
+}
+
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
+  const { User } = useAppSelector(state => state.User);
+  const navigate = useNavigate();
   const settings = {
     className: "center",
     centerMode: true,
@@ -91,26 +110,7 @@ export default function MainCloset() {
     img6,
     img7,
   ]);
-  interface dataType {
-    closet_id: number;
-    clothings: any[];
-    codies: any[];
-    name: string;
-  }
-  interface imgType {
-    img: File;
-  }
   let [closet, setCloset] = useState(Array<dataType>);
-
-  // useEffect(() => {
-  //   setCloset([
-
-  //   ]);
-  // }, []);
-  interface imgSetType {
-    color: string;
-    img: string;
-  }
   const [SendData, setSendData] = useState<SendType>();
   let [sls, setSls] = useState("");
   let userProfile: any = localStorage.getItem("userProfile");
@@ -125,6 +125,8 @@ export default function MainCloset() {
   let [clothingId, setClothingId] = useState("");
   // console.log(userId);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  let [loading, setLoading] = useState(true);
+
   const onUploadImage = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if (!e.target.files) {
@@ -165,13 +167,12 @@ export default function MainCloset() {
 
   const GoCody = () => {
     // 추후 다른유저가 누를시는 바로 코디 제작 페이지로 넘어가게 할 예정
-    let userProfile: any = localStorage.getItem("userProfile");
-    userProfile = JSON.parse(userProfile);
-    userProfile.user_id = console.log(userProfile);
-    if ((userProfile.user_id = userId)) {
+    if ((User.user_id === Number(params.userId)) || !params.userId) {
+      navigate("/codi");
+    } else if (User.loving && User.lover_id === Number(params.userId)) {
       navigate("/codi");
     } else {
-      navigate("/pluscodi");
+      navigate('/pluscodi')
     }
   };
   const ChangePicture = (e: any) => {
@@ -209,7 +210,7 @@ export default function MainCloset() {
   let [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get(requests.closet + userId)
+      .get(requests.closet + User.user_id)
       .then((res) => {
         closet = res.data.closets;
         setCloset(res.data.closets);
@@ -224,15 +225,15 @@ export default function MainCloset() {
   console.log(clothings);
   console.log(clothingId);
   return (
-    <>
-      {loading ? (
+    <div>
+      {loading ? 
         <>loading...</>
-      ) : (
-        <div style={{ marginBottom: "70px" }}>
+       : 
+        <div>
           <TopNav type={"menu"}>
             <CategoryText1>옷장</CategoryText1>
             <div style={{ width: "54px", height: "38px" }}>
-              <MenuIcon src={menu} />
+            <MenuIcon src={menu} />
             </div>
           </TopNav>
           <>
@@ -522,3 +523,9 @@ const ClosetIcon = styled.div`
   display: flex;
   margin: auto;
 `;
+
+const CameraImg = styled.img`
+  height: 40px;
+  width: 45px;
+  margin: 10px 1.5px;
+`

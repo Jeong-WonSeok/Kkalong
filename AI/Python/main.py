@@ -66,13 +66,18 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
 
     print(personal_color, season, gender, style)
     result_arr = []
-    for i in range(5):
+    idx = 0
+    for i in range(4):
         while 1:
             try:
+                if idx >= 99:
+                    result_arr.append("코디가 없어요..ㅠ")
+                    return result_arr
                 result = recommendCodi.personalRecommend(style, gender, season, personal_color)
                 result_arr.append(result)
                 break
             except:
+                idx += 1
                 continue
     return result_arr
 
@@ -85,8 +90,8 @@ def personal_recommend(style: Optional[str] = None, season: Optional[str] = None
     idx = 0
     while 1:
         try:
-            if idx >= 100:
-                result_arr = result_arr["오류"];
+            if idx >= 99:
+                result_arr.append("코디가 없어요..ㅠ")
                 return result_arr
     #             print(idx)
             result = recommendCodi.weatherRecommend(style, gender, season, temp)
@@ -104,11 +109,11 @@ def clothesInfo_recommend(style: Optional[str] = None, season: Optional[str] = N
     print(style, season, gender, color, main)
     result_arr = []
     idx = 0
-    for i in range(5):
+    for i in range(4):
         while 1:
             try:
                 if idx >= 100:
-                    result_arr = result_arr["오류"];
+                    result_arr.append("코디가 없어요..ㅠ")
                     return result_arr
                 print(idx)
                 result = recommendCodi.clothesInfoRecommend(style, gender, season, color, main)

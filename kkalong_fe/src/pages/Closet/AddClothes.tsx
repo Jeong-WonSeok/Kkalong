@@ -236,6 +236,10 @@ export default function AddClothes() {
   useEffect(() => {
     const app = document.getElementById("App") as HTMLDivElement;
     app.style.margin = "0";
+
+    return () => {
+      app.style.margin = "60px 0 70px 0";
+    }
   }, []);
 
   const videoConstraints = {

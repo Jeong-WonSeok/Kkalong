@@ -14,6 +14,7 @@ import left from "../../assets/icon/Closet/arrow-left.png";
 import TopNav from "../../components/ui/TopNav";
 import CodiEdit from "../../components/closet/CodiEdit";
 import CanvasDraw from "react-canvas-draw";
+
 import { fabric } from "fabric";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import axios from "../../api/axios";
@@ -35,6 +36,7 @@ export default function PlusCodi() {
   let [loading, setLoading] = useState(true);
 
   let [modal, setModal] = useState(false);
+
   const modalClose = () => {
     setModal(!modal);
   };
@@ -182,6 +184,7 @@ export default function PlusCodi() {
       editor.canvas.add(oImg);
     });
   };
+
   const removeObjectFromCanvas = () => {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };

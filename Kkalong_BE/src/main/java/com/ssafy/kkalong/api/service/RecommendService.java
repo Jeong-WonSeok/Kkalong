@@ -15,19 +15,44 @@ public class RecommendService {
 
     private final FirebaseService firebaseService;
     private final UserService userService;
-    public String insertPersonal(User user, MultipartFile img) {
+    public String[] insertPersonal(User user, MultipartFile img) {
 
-        String img_url = firebaseService.uploadUserFaceImg(user.getId(), img);
+
+        String face = user.getFace_img();
+        String personal = user.getPersonal_color();
+
+        if(face == "") {
+            System.out.println("a");
+            if (personal == "") {
+                System.out.println("B");
+                return new String[]{user.getPersonal_color(), user.getFace_img()};
+            }else {
+                String url = "http://localhost:8000/api/personal_color/" + user.getId();
+                RestTemplate restTemplate = new RestTemplate();
+                String personal_color = restTemplate.getForObject(url, String.class);
+                personal_color = personal_color.split("\"")[1].split("\"")[0];
+                user.updatePersonalColor(personal_color);
+                userService.saveUser(user);
+
+
+                return new String[]{personal_color, user.getFace_img()};
+            }
+        }
+
+        String face_img = firebaseService.uploadUserFaceImg(user.getId(), img);
+
+        System.out.println(face_img);
 
         String url = "http://localhost:8000/api/personal_color/"+user.getId();
-//        String url = "http://70.12.130.101:8000/api/personal_color/"+user.getId();
         RestTemplate restTemplate = new RestTemplate();
         String personal_color = restTemplate.getForObject(url, String.class);
         personal_color = personal_color.split("\"")[1].split("\"")[0];
+
         user.updatePersonalColor(personal_color);
+        user.updateFaceImg(face_img);
         User savedUser = userService.saveUser(user);
 
-        return personal_color;
+        return new String[] {personal_color, face_img};
 
     }
 

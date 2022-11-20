@@ -13,6 +13,6 @@ import java.util.List;
 public class ClosetInfoDto{
     private int closet_id;
     private String name;
-    private List<ClothingDto> clothings;
-    private List<CodyResponseDto> codies;
+    private List<ClothingInfoResponseDto> clothings;
+    private List<CodyInfoResponseDto> codies;
 }
