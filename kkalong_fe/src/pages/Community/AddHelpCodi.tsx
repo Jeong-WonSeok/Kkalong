@@ -14,6 +14,7 @@ import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
 import { useAppSelector } from '../../hooks/reduxHook'
+import Slider from '../../components/ui/Slider'
 
 
 interface SendType {
@@ -222,16 +223,7 @@ export default function AddHelpCodi() {
 
       {/* 코디 선택 창 */}
       {IsSelectCody &&
-        <CodyContainer id="move">
-          <TopSlider
-          onDragStart={dragStartHandler} 
-          onTouchStart={dragStartHandler}
-          onDrag={dragHandler} 
-          onTouchMove={dragHandler}
-          onDragEnd={dragEndHandler}
-          onTouchEnd={dragEndHandler}>
-            <TopSliderButton></TopSliderButton>
-          </TopSlider>
+        <Slider>
           <CodyListContainer>
             {CodyList.length && CodyList.map((Cody, idx) => {
               return(
@@ -248,7 +240,7 @@ export default function AddHelpCodi() {
               </CodyNone>
             }
           </CodyListContainer>
-        </CodyContainer>
+        </Slider>
       }
 
       <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>

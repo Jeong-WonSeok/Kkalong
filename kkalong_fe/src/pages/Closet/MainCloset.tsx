@@ -85,6 +85,7 @@ export default function MainCloset() {
   ]);
   let [closet, setCloset] = useState(Array<dataType>);
   const [closetId, setClosetId] = useState(0);
+  let [clothings, setClothings] = useState<any[]>([]);
   let [clothing, setClothing] = useState<imgSetType>();
   let [loading, setLoading] = useState(true);
 
@@ -94,17 +95,17 @@ export default function MainCloset() {
     if ((User.user_id === Number(params.userId)) || !params.userId) {
       navigate("/codi");
     } else if (User.loving && User.lover_id === Number(params.userId)) {
-      navigate("/codi");
+      navigate(`/codi/${params.userId}`);
     } else {
-      navigate('/pluscodi')
+      navigate(`/pluscodi/${params.HelpCodiId}/${params.userId}`, { state: { closetId } })
     }
   };
 
   useEffect(() => {
     const start = async () => {
-      if (params.UserId) {
+      if (params.userId) {
         // 타인이 볼 때
-        const res = await axios.get(requests.closet + params.UserId);
+        const res = await axios.get(requests.closet + params.userId);
         setCloset(res.data.closets);
         setClosetId(res.data.closets[0].closet_id)
         setLoading(false);
@@ -114,10 +115,15 @@ export default function MainCloset() {
         setCloset(res.data.closets);
         setClosetId(res.data.closets[0].closet_id)
         setLoading(false);
-      }
-    };
+      }}
     start()
   }, []);
+
+  useEffect(()=>{
+      axios.get("closet/clothings/" + closetId).then((res) => {
+        setClothings(res.data.clothings);
+      });
+    },[closetId])
 
   console.log(closet);
   return (
@@ -166,7 +172,7 @@ export default function MainCloset() {
                 );
               })}
 
-              <SwiperSlide>
+              {!params.userId && <SwiperSlide>
                 <SlideButton2
                   onClick={() => {
                     navigate("/addcloset");
@@ -177,7 +183,7 @@ export default function MainCloset() {
                   </ClosetIcon>
                   <BtnText>옷장 추가 하기</BtnText>
                 </SlideButton2>
-              </SwiperSlide>
+              </SwiperSlide>}
               {/* </SliderBorder> */}
             </Swiper>
             <SelectBtnContainer>
@@ -215,7 +221,7 @@ export default function MainCloset() {
               return (
                 <SortClothes
                   onClick={() => {
-                    clothingId = clothings[i].clothing_id;
+                    let clothingId = clothings[i].clothing_id;
                     navigate("/clothes/detail", {
                       state: { closetId, clothingId },
                     });
@@ -228,7 +234,7 @@ export default function MainCloset() {
                       });
                     }}
                   >
-                    <ClothesImg src={closet[0].clothings[i].img} alt="no" />
+                    <ClothesImg src={closet[0].clothings[i] ? closet[0].clothings[i].img : ''} alt="no" />
                   </SortClothes>
                 );
               })}
