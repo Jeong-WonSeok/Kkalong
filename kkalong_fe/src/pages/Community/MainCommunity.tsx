@@ -79,7 +79,6 @@ export default function MainCommunity() {
       <List>
         <Category>오늘의 깔롱쟁이🏆</Category>
         {Best3.map((Best, index) => {
-          const url = FirebaseUrl(Best)
           if (index === 1) {
             return (
               <div key={index} style={{display: 'inline'}}>
@@ -89,7 +88,7 @@ export default function MainCommunity() {
           } else {
             return (
               <div key={index} style={{display: 'inline'}}>
-                <Best3Container src={url}/>
+                <Best3Container src={Best.Best.img}/>
               </div>
             )
           }

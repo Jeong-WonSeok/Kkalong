@@ -1,28 +1,24 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import dfs_xy_conv from '../../hooks/chagneLatLon'
 import {TimeChange, nowDate} from "../../hooks/TimeChange";
-import weather, { saveType } from "../../hooks/weatherCondition";
 
 import TopNav from "../../components/ui/TopNav";
 import FooterBar from "../../components/ui/FooterBar";
 import WeatherText from "../../components/closet/WeatherText";
 
 import logo from "../../assets/icon/logo/kkalongLogo.png";
-import menu from "../../assets/icon/Nav/menu.png";
 
 import sun from "../../assets/icon/Closet/sun.png";
 import rain from "../../assets/icon/Closet/rainy.png";
 import sunCloud from "../../assets/icon/Closet/sunCloud.png";
 import cloudy from "../../assets/icon/Closet/cloudy.png";
-import snow from '../../assets/icon/Closet/snow.png'
+import Color from '../../assets/icon/Recommand/color.png'
 
-import plus from "../../assets/icon/Closet/plus.png";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { getWeather } from "../../redux/modules/Weather";
+import { getWeather } from "../../redux/modules/Recommend";
 import RecommandCody from "../../components/Recommand/RecommandCody";
 
 type LocationType = {
@@ -41,7 +37,7 @@ export default function WeatherPage() {
   // let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
   const now = new Date()
   const dispatch = useAppDispatch()
-  const {pending, Weather, Recommand} = useAppSelector(state => state.Weather)
+  const {pending, Weather, Recommand} = useAppSelector(state => state.Recommend)
   const navigate = useNavigate();
   let location: LocationType = {
     lat: 0,
@@ -58,19 +54,7 @@ export default function WeatherPage() {
 
     const start = async() => {
       await getLocation()
-      // // env파일 안먹어서 key 그대로 올립니다
-      // const res = await axios.get(`/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=M%2F89Ftol4BdXqnIv25gXvyRHf3V6Mdon4yO0eKKSIQlhdVxg130z7c7%2F0Bi%2Fi7xb3fGcn6hCDOw9f%2B%2Fo2OjfyA%3D%3D`, {
-      //   params: {
-      //     pageNo: 1,
-      //     numOfRows: 1000,
-      //     dataType: "JSON",
-      //     base_date: nowDay,
-      //     base_time: nowTime,
-      //     nx: location.x,
-      //     ny: location.y,
-      //   }
-      // })
-      dispatch(getWeather(location.x, location.y)) 
+      await dispatch(getWeather(location.x, location.y)) 
       setWeatherList([
         {weather: Weather.today_Weather, temp: Weather.today},
         {weather: Weather.tomorrow_Weather, temp: Weather.tomorrow},
@@ -78,7 +62,7 @@ export default function WeatherPage() {
       HandleWeather()
     }
     start()
-  },[])
+  },[Weather])
 
   const getLocation = async () => {
     if (navigator.geolocation) { // GPS를 지원하면
@@ -149,7 +133,10 @@ export default function WeatherPage() {
       <TopNav type={""}>
         <Logo src={logo} />
         <CategoryText1>오늘의 추천</CategoryText1>
-        <div style={{ width: "50px", height: "30px" }}></div>
+        <ImgContainer onClick={()=>navigate('/recommend/personal')}>
+          <ChangeMode src={Color}/>
+          <TextP>컬러추천</TextP>
+        </ImgContainer>
       </TopNav>
       <DateText>{nowDate(0)}</DateText>
       <WeatherContainer>
@@ -168,7 +155,7 @@ export default function WeatherPage() {
         {Recommand.map((cody, idx) => {
           return (
             <div>
-              <DailyText>{nowDate(idx)} {WeatherList[idx]?.weather} {WeatherList[idx]?.temp}°C</DailyText>
+              <DailyText>{nowDate(idx)} - {WeatherList[idx]?.weather} {WeatherList[idx]?.temp}°C</DailyText>
               <CodyList>
                 <RecommandCody Cody={Recommand[idx].casual}/>
                 <RecommandCody Cody={Recommand[idx].dandy}/>
@@ -199,6 +186,7 @@ const WeatherContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 10px;
+  margin-bottom: 20px;
 `
 
 const WeatherInfoP = styled.p`
@@ -219,6 +207,7 @@ const WeatherImg = styled.img`
 `;
 
 const DailyText = styled.p`
+  padding-left: 10px;
   font-family: var(--base-font-400);
   color: #5e5757;
   font-size: 18px;
@@ -226,17 +215,34 @@ const DailyText = styled.p`
 `;
 
 const CodiBack = styled.div`
+  padding-top: 10px;
   min-height: 400px;
   background-color: #e5ddce;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 `;
 
 const CodyList = styled.div`
+  width: auto;
   padding: 10px;
   display: flex;
   flex-direction: row;
+  overflow: scroll;
+`
+
+export const ImgContainer = styled.div`
+  width: 50px;
+  height: 40px;
+`
+
+export const ChangeMode = styled.img`
+  width: 25px;
+  height: 25px;
+`
+
+export const TextP = styled.p`
+  margin: 0;
+  font-size: 0.3rem;
+  line-height: 10px;
+  font-family: var(--base-font-200);
 `
 
 // const PlusBtn = styled.button`

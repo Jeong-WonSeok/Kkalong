@@ -14,7 +14,7 @@ export default function StartPage() {
     app.style.margin = '0'
     
     return () => {
-      app.style.marginTop = '60px'
+      app.style.margin = '60px 0 70px 0'
     }
   }, [])
 

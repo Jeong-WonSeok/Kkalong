@@ -39,7 +39,6 @@ export default function AddBestDress() {
         Picture.replaceChildren()
         Picture.style.backgroundImage=`url(${SendData?.post_img})`
         Picture.style.backgroundPosition="center"
-        Picture.style.width="auto"
       }
     }
     Edit()
@@ -75,6 +74,7 @@ export default function AddBestDress() {
     Picture.style.backgroundImage=`url(${ImgUrl})`
     Picture.style.backgroundPosition="center"
     Picture.style.width="auto"
+    Picture.style.height="auto"
   }
 
   const Submit = async () => {
