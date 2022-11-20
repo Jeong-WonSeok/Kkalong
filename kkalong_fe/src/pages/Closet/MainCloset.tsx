@@ -348,12 +348,6 @@ export default function MainCloset() {
   );
 }
 
-// const BestContainer = styled(Container)`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: wrap;
-// `;
-
 const CategoryText1 = styled.p`
   margin: auto 0;
   font-family: var(--base-font-600);

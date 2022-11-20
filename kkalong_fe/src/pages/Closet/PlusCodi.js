@@ -49,7 +49,22 @@ export default function PlusCodi() {
 
   const { editor, onReady } = useFabricJSEditor();
   const [canvas, setCanvas] = useState("");
+  let [img, setImg] = useState([img1, img2, img3, img4]);
+  let [clothesArray, setClothesArray] = useState([]);
 
+  let [num, setNum] = useState("");
+  let [sortclothes, setSortclothes] = useState();
+
+  let [sort, setSort] = useState([
+    "전체",
+    "상의",
+    "하의",
+    "아우터",
+    "신발",
+    "악세서리",
+  ]);
+  let [clothings, setClothings] = useState([]);
+  let [clothesId, setClothesId] = useState("");
   useEffect(() => {
     readImages();
     setCanvas(initCanvas());
@@ -65,10 +80,6 @@ export default function PlusCodi() {
         console.log(res);
       });
   }, []);
-  let [img, setImg] = useState([img1, img2, img3, img4]);
-  let [clothesArray, setClothesArray] = useState([]);
-  const testImageUrl =
-    "codecamp-online/2022/5/19/09411f6f-9f3c-4973-82b3-d48cbeccd4ee.jpeg";
   const readImages = async () => {
     await axios
       .get("closet/clothings/" + closetId)
@@ -82,36 +93,7 @@ export default function PlusCodi() {
         console.log(error);
       });
   };
-  console.log(imgList);
-  const downloadImg = async (filename) => {
-    const ext = "png";
-    const url =
-      "http://k7b302.p.ssafy.io/api/v1/file/image/download?filename=" +
-      filename;
-    const download = document.createElement("a");
 
-    download.href = url;
-    download.download = `eraser_example.${ext}`;
-    // download.setAttribute("download", filename);
-    // download.setAttribute("type", "application/json");
-    download.click();
-  };
-  const down = () => {
-    html2canvas(document.getElementById("canvas"), {
-      logging: true,
-      letterRendering: 1,
-      allowTaint: true,
-      useCORS: true,
-    }).then(function (canvas) {
-      // 캔버스를 이미지로 변환
-      let imgData = canvas.toDataURL("image/png", 1);
-      console.log(imgData);
-      // $("#invoiceData").val(imgData);
-      // $("#testImg").attr("src", imgData);
-
-      return false;
-    });
-  };
   // 이미지를 다운로드 받을 때 사용할 url
   // const [downloadUrl, setDownloadUrl] = useState();
   const cardRef = useRef();
@@ -122,27 +104,6 @@ export default function PlusCodi() {
       saveAs(blob, "card.png");
     });
   };
-  // const getDownloadUrl = () => {
-  //   fetch(
-  //     `https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media`,
-  //     {
-  //       method: "GET",
-  //     }
-  //   )
-  //     .then((res) => {
-  //       return res.blob();
-  //     })
-  //     .then((blob) => {
-  //       const fileReader = new FileReader();
-  //       fileReader.readAsDataURL(blob);
-  //       fileReader.onload = (data) => {
-  //         setDownloadUrl(data.target?.result);
-  //       };
-  //     })
-  //     .catch((e) => {
-  //       console.error(e);
-  //     });
-  // };
 
   const downloadImage = (url) => {
     const ext = "png";
@@ -173,15 +134,6 @@ export default function PlusCodi() {
 
       return false;
     });
-    // html2canvas(document.getElementById("canvas"), {
-    //   logging: true,
-    //   letterRendering: 1,
-    //   allowTaint: true,
-    //   useCORS: true,
-    // }).then((canvas) => {
-    //   console.log(canvas);
-    //   onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
-    // });
   };
 
   const onSaveAs = (uri, filename) => {
@@ -194,66 +146,6 @@ export default function PlusCodi() {
     document.body.removeChild(link);
   };
 
-  // const ext = "png";
-  // const base64 = editor.canvas.toDataURL({
-  //   format: ext,
-  //   enableRetinaScaling: true,
-  // });
-  // url =
-  //   "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media";
-
-  // axios.get(url).then((res) => {
-  //   console.log(res);
-  //   return res.blob();
-  // });
-  // const link = document.createElement("a");
-  // link.href = url;
-  // link.download = `eraser_example.${ext}`;
-  // link.click();
-
-  // var canvas = document.getElementsById("canvas");
-  // img.crossOrigin = "*";
-  // img.src = editor.canvas.toDataURL("image/png");
-  // const imgUrl = editor.canvas.toDataURL("image/png");
-  // const img = new Image();
-  // img.crossOrigin = "Anonymous";
-
-  // img.src = imgUrl;
-  // imgUrl.crossOrigin = "Anonymous";
-  // var decodImg = window.atob(imgUrl.split(",")[1]);
-  // let array = [];
-  // for (let i = 0; i < decodImg.length; i++) {
-  //   array.push(decodImg.charCodeAt(i));
-  // }
-
-  // const myBlob = new Blob([new ArrayBuffer(array)], { type: "image/jpeg" });
-  // var file = new File([myBlob], "blobtofile.png");
-  // console.log(file);
-  // let formData = new FormData();
-  // formData.append("img", file);
-  // axios.post(requests.imgAdd, formData, {
-  //   headers: {
-  //     processData: false,
-  //     contentType: false,
-  //   },
-  // });
-  // console.log(imgUrl);
-  // dataURLtoFile(imgUrl);
-  // console.log(imgUrl);
-  // const base64 = editor.canvas.toDataURL({
-  //   format: ext,
-  //   enableRetinaScaling: true,
-  // });
-
-  // console.log(base64);
-  // const link = document.createElement("a");
-  // link.href = base64;
-  // link.download = `eraser_example.${ext}`;
-  // console.log(link);
-  // img = link;
-  // console.log(img);
-  // link.click();
-  // console.log(link);
   function dataURLtoFile(dataurl) {
     const blobBin = atob(dataurl.split(",")[1]); // base64 데이터 디코딩
     const array = [];
@@ -280,24 +172,8 @@ export default function PlusCodi() {
       headers: { "content-Type": "multipart/form-data" },
     });
   }
-  let [num, setNum] = useState("");
-  let [sortclothes, setSortclothes] = useState();
-
-  let [sort, setSort] = useState([
-    "전체",
-    "상의",
-    "하의",
-    "아우터",
-    "신발",
-    "악세서리",
-  ]);
-  let [clothings, setClothings] = useState([]);
-  let [clothesId, setClothesId] = useState("");
   const onUploadImage = (i) => {
     console.log(i);
-    // const image = closet[clothesId].clothings[clothesId].img;
-    // console.log(image);
-    // console.log(e.target.files[0]);
 
     fabric.Image.fromURL(closet[0].clothings[i].img, (oImg) => {
       oImg.crossOrigin = "Anonymous";
@@ -305,36 +181,11 @@ export default function PlusCodi() {
       oImg.scaleToHeight(130);
       editor.canvas.add(oImg);
     });
-    // const imgElement = document.getElementById("my-image");
-    // var imgInstatnce = new fabric.Image(imgElement, {
-    //   left: 0,
-    //   top: 20,
-    //   scale: 0.25,
-    // });
-    // editor.canvas.add(imgInstatnce);
-    //   fabric.Image.fromURL(URL.createObjectURL(image), (img) => {
-    //     var oImg = img.set({ left: 0, top: 0 }).scale(0.25);
-    //     console.log(oImg);
-    //     editor.canvas.add(oImg);
-    //     editor.canvas.renderAll();
-    //   });
-    // };
   };
   const removeObjectFromCanvas = () => {
     editor.canvas.remove(editor.canvas.getActiveObject());
   };
 
-  // fabric.Image.fromURL(
-  //   "http://k7b302.p.ssafy.io/api/v1/user/social/login",
-  //   function (img) {
-  //     var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
-  //     canvas.add(oImg);
-  //   }
-  // );
-  // fabric.Image.fromURL("../../img/codi1.png", function (img) {
-  //   var oImg = img.set({ left: 0, top: 0 }).scale(0.3);
-  //   canvas.add(oImg);
-  // });
   const [downloadUrl, setDownloadUrl] = useState();
   const getDownloadUrl = () => {
     fetch(
@@ -358,10 +209,6 @@ export default function PlusCodi() {
         console.error(e);
       });
   };
-  console.log(imgList);
-  console.log(downloadUrl);
-  console.log(clothings);
-  console.log(clothesArray);
   return (
     <>
       {loading ? (
@@ -443,12 +290,6 @@ export default function PlusCodi() {
               );
             })}
           </div> */}
-          {/* <img
-        src={
-          "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_bg_1.png?alt=media"
-        }
-        id="my-image"
-      /> */}
           {modal === true ? (
             <>
               <Modal>

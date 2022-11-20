@@ -88,28 +88,6 @@ export default function AddCloset() {
           <EnterText>저장</EnterText>
         </ClosetEnter>
       </TopNav>
-
-      {/* <ClosetImg src={sortclothes[0]} /> */}
-
-      {/* <Category>
-      {clothes.map(function (a, i) {
-        return (
-          <ClothesBtn>
-            <img src={clothes[i]} />
-            <ClothesText>{cltext[i]}</ClothesText>
-          </ClothesBtn>
-        );
-      })}
-    </Category>
-    <SortClothesContainer>
-      {sortclothes.map(function (a, i) {
-        return (
-          <SortClothes>
-            <ClothesImg src={sortclothes[i]} />
-          </SortClothes>
-        );
-      })}
-    </SortClothesContainer> */}
     </div>
   );
 }

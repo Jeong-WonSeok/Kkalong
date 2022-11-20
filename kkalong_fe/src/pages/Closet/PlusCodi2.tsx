@@ -227,20 +227,6 @@ export default function AddClothes() {
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
   let [clothing, setClothing] = useState<imgSetType>();
-  // const ChangeBackground = (season: string) => {
-  //   const check = document.getElementById(season) as HTMLInputElement;
-  //   const label = document.getElementById(
-  //     `label_${season}`
-  //   ) as HTMLLabelElement;
-  //   if (check.checked) {
-  //     label.style.backgroundColor = "#b79b7e";
-  //     label.style.color = "white";
-  //   } else {
-  //     label.style.backgroundColor = "";
-  //     label.style.color = "black";
-  //   }
-  // };
-
   let [input, setInput] = useState("");
   const onChangeInput = (e: any) => {
     setInput(e.target.value);
@@ -284,17 +270,6 @@ export default function AddClothes() {
         });
       });
   };
-  const ImgSubmit = () => {
-    const formdata = new FormData();
-    formdata.append("uploadImage", files[0]);
-
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
-    axios.post(requests.addClothes, formdata, config);
-  };
   return (
     <div>
       <>
@@ -318,16 +293,6 @@ export default function AddClothes() {
             <ImagePreview src={clothing?.img} />
           </ImgContainer>
         </Container>
-        {/* 
-        <SortContainer>
-          <SortBtn>
-            <SeasonP>{}</SeasonP>
-          </SortBtn>
-
-          <SortButton>
-            <SortTxt>{category[0].name}</SortTxt>
-          </SortButton>
-        </SortContainer> */}
         <SeasonCategory>
           <SeasonP>스타일</SeasonP>
           <CheckboxContainer>

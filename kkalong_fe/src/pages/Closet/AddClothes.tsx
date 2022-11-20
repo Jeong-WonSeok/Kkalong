@@ -426,40 +426,6 @@ export default function AddClothes() {
             <ImagePreview src={clothing?.img} />
           </ImgContainer>{" "}
         </Container>
-
-        {/* <SortContainer>
-            <SortBtn
-              onClick={() => {
-                let btnb = [...btn];
-                btnb[0] = !btn[0];
-                setBtn(btnb);
-              }}
-            >
-              <SeasonP>{seasonT[0]}</SeasonP>
-            </SortBtn>
-            {btn[0] === true (
-              <>
-                <SortButton
-                  onClick={() => {
-                    let sortA = [...categoryBtn];
-                    sortA[i] = !categoryBtn[i];
-                    setCategoryBtn(sortA);
-                  }}
-                >
-                  <SortTxt>{category[i].name}</SortTxt>
-                </SortButton>
-                <SortButton
-                  onClick={() => {
-                    let sortA = [...categoryBtn];
-                    sortA[i + 1] = !categoryBtn[i + 1];
-                    setCategoryBtn(sortA);
-                  }}
-                >
-                  <SortTxt>{category[i + 1].name}</SortTxt>
-                </SortButton>
-              </>
-            ) : null}
-          </SortContainer> */}
         {seasonT.map((a, i) => {
           return (
             <>
@@ -523,57 +489,7 @@ export default function AddClothes() {
             </>
           );
         })}
-        {/* <SortContainer>
-            <SortBtn
-              onClick={() => {
-                let btnb = [...btn];
-                btnb[i] = !btn[i];
-                setBtn(btnb);
-              }}
-            >
-              <SeasonP>{seasonT[0]}</SeasonP>
-            </SortBtn>
-          </SortContainer> */}
 
-        {/* {btn[0] === true ? (
-              <>
-                <SortButton
-                  onClick={() => {
-                    let sortA = [...categoryBtn];
-                    sortA[0] = !categoryBtn[0];
-                    setCategoryBtn(sortA);
-                  }}
-                >
-                  <SortTxt>상의</SortTxt>
-                </SortButton>
-                {categoryBtn[0] === true ? (
-                  <>
-                    <SortBtn onClick={() => {}}>
-                      {category[0].subcategories[1].name}
-                    </SortBtn>
-                    <SortBtn>{category[0].subcategories[0].name}</SortBtn>
-                  </>
-                ) : null}
-              </>
-            ) : null} */}
-        {/* <SortContainer>
-          {btn.map((a, i) => {
-            return (
-              <SortBtn
-                onClick={() => {
-                  let btnb = [...btn];
-                  btnb[i] = !btn[i];
-                  setBtn(btnb);
-                }}
-              >
-                <SeasonP>{seasonT[i]}</SeasonP>
-                {btn[i] === true ? (
-                  <SortTxt>{category[0].pants[i]}</SortTxt>
-                ) : null}
-              </SortBtn>
-            );
-          })}
-        </SortContainer> */}
         <SeasonCategory>
           <SeasonP>스타일</SeasonP>
           <CheckboxContainer>
