@@ -78,8 +78,8 @@ export default function MainCloset() {
   let [cltext, setCltext] = useState([
     "전체",
     "상의",
-    "겉옷",
     "하의",
+    "아우터",
     "신발",
     "악세서리",
   ]);
@@ -159,9 +159,7 @@ export default function MainCloset() {
                         console.log(closetId);
                       }}
                     >
-                      {closet[i].clothings[i] ? (
-                        <img src={closet[i].clothings[i].img} alt="no" />
-                      ) : null}
+                      <img src={closet[i].clothings[0]?.img} alt="no" />
                     </SlideButton>
                     <SwiperText>{closet[i].name}</SwiperText>
                   </SwiperSlide>
@@ -199,7 +197,7 @@ export default function MainCloset() {
             </SelectBtnContainer>
           </>
           <Category>
-            {clothes.map(function (a, i) {
+            {cltext.map(function (a, i) {
               return (
                 <ClothesBtn onClick={()=>{
                   closet[0].clothings.filter(cloth => {
@@ -213,12 +211,19 @@ export default function MainCloset() {
             })}
           </Category>
           <SortClothesContainer>
-            {closet[0].closet_id === closetId &&
-              closet[0].clothings.map(function (a, i) {
-                return (
-                  <SortClothes
-                    onClick={() => {
-                      axios.get(requests.addClothes + [i]).then((res) => {
+            {clothings.map(function (a, i) {
+              return (
+                <SortClothes
+                  onClick={() => {
+                    clothingId = clothings[i].clothing_id;
+                    navigate("/clothes/detail", {
+                      state: { closetId, clothingId },
+                    });
+                    axios
+                      .get(
+                        requests.addClothes + "/" + [clothings[i].clothing_id]
+                      )
+                      .then((res) => {
                         console.log(res);
                       });
                     }}
@@ -259,10 +264,11 @@ const SelectText = styled.p`
 export const Category = styled.div`
   margin-top: 20px;
   width: 100%;
-  max-width: 360px;
+  /* max-width: 360px; */
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+
+  overflow-x: auto;
 `;
 
 const MenuIcon = styled.img`
@@ -313,7 +319,8 @@ const ClothesBtn = styled.button`
   height: 55px;
   width: 55px;
   border-radius: 50%;
-  border: solid 2px #67564e;
+  margin-left: 5px;
+  border: solid 1px #67564e;
   background-color: white;
 `;
 
