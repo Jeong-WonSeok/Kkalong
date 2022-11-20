@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { commentType } from '../../pages/Community/DetailHelpCodi'
 import Profile from './Profile'
 
@@ -12,6 +12,10 @@ import Trash from '../../assets/icon/Community/Trash.png'
 import { useParams } from 'react-router-dom'
 import { UserType } from '../../pages/MyPage/MyPage'
 import { useAppSelector } from '../../hooks/reduxHook'
+
+type writtenType = {
+  wirtten: boolean
+}
 
 export default function CommentMessage({comment, category, creator, CommentsDelete, CommentsEdit}: {comment: commentType, category: string, creator:number, CommentsDelete:(idx: number) => void,  CommentsEdit:(idx: number, data: commentType) => void}) {
   const { User } = useAppSelector(state => state.User)
@@ -47,22 +51,28 @@ export default function CommentMessage({comment, category, creator, CommentsDele
     axios.put(requests.detailHelpCodi + `${params.HelpCodiId}/` + comment!.cody.cody_id)
   }
 
+  const EnterPress = (e:any, idx: number) => {
+    if (e.key === "Enter") {
+      EditMessage(idx)
+    }
+  }
+
   return (
-    <Container>
-      <MessageContextContainer>
+    <Container wirtten={comment.user.user_id === creator}>
+      <MessageContextContainer wirtten={comment.user.user_id === creator}>
         <MessageContainer style={{justifyContent: 'start'}}>
-          <Profile Image={comment.user.profile_image} Size={30} id={comment.user.user_id}/>
+          <Profile Image={comment.user.profile_img} Size={30} id={comment.user.user_id}/>
         </MessageContainer>
-        <MessageContainer>
-          <NickName>{comment.user.nickname}</NickName>
-          <MessageContextContainer>
+        <MessageContainer style={{marginRight: '6px'}}>
+          <NickName wirtten={comment.user.user_id === creator}>{comment.user.nickname}</NickName>
+          <MessageContextContainer wirtten={comment.user.user_id === creator}>
             {!IsEdit && 
-            <MessageContextContainer>
+            <MessageContextContainer wirtten={comment.user.user_id === creator}>
               <Message>
                 {category === "closet"  && comment?.cody.cody_img? <CodiImg src={comment!.cody.cody_img} alt="코디"/> : null}
                 {comment.content}
               </Message>
-              <MessageContainer style={{justifyContent: 'flex-end', marginLeft: '4px'}}>
+              <MessageContainer style={{justifyContent: 'flex-end', margin: '0 4px'}}>
                 {category === "closet" && comment?.cody.cody_id && creator === User.user_id ? <CodiSave src={codiSave} onClick={Codisave}/> : null}
                 <Date>
                   {comment.createAt.slice(11,16)}
@@ -72,8 +82,8 @@ export default function CommentMessage({comment, category, creator, CommentsDele
 
             {/* 수정 취소 버튼 추가해야됨 */}
             {IsEdit && 
-            <MessageContextContainer style={{alignItems: 'center', justifyContent: 'space-between'}}>
-              <EditMessageInput value={EditContent} onChange={(e: any)=> setEditContent(e.target.value)}/>
+            <MessageContextContainer wirtten={comment.user.user_id === creator} style={{alignItems: 'center', justifyContent: 'space-between'}}>
+              <EditMessageInput value={EditContent} onChange={(e: any)=> setEditContent(e.target.value)} onKeyPress={(e:any)=>EnterPress(e, comment.comment_id)}/>
               <Button onClick={()=> EditMessage(comment.comment_id)}>수정</Button>
             </MessageContextContainer>
             }
@@ -83,7 +93,7 @@ export default function CommentMessage({comment, category, creator, CommentsDele
       </MessageContextContainer>
       {/* 추후 작성한 유저만 수정 삭제 할 수 있도록 */}
       {comment.user.user_id === User.user_id && 
-      <MessageContextContainer>
+      <MessageContextContainer wirtten={comment.user.user_id === creator}>
         <UpdateImg src={Edit} onClick={()=> setIsEdit(true)}/>
         <UpdateImg src={Trash} onClick={()=> CommentDelete(comment.comment_id)}/>
       </MessageContextContainer>}
@@ -91,9 +101,9 @@ export default function CommentMessage({comment, category, creator, CommentsDele
   )
 }
 
-const Container = styled.div`
+const Container = styled.div<writtenType>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${props => props.wirtten ? css`row-reverse` : css`row`};
   margin-bottom: 5px;
   justify-content: space-between;
 `
@@ -103,15 +113,16 @@ const MessageContainer = styled.div`
   flex-direction: column;
 `
 
-const NickName = styled.p`
+const NickName = styled.p<writtenType>`
   margin: 0;
   font-size: 7px;
+  text-align: ${props => props.wirtten ? css`end` : css`start`};
   font-family: var(--base-font-300);
 `
 
-const MessageContextContainer = styled.div`
+const MessageContextContainer = styled.div<writtenType>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${props => props.wirtten ? css`row-reverse` : css`row`};
   background-color: white;
 `
 

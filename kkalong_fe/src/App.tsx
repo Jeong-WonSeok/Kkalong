@@ -44,6 +44,8 @@ import MyPageUpdate from "./pages/MyPage/MyPageUpdate";
 import MyPageArticle from "./pages/MyPage/MyPageArticle";
 import PersonalInfo from "./pages/PersonalInfo";
 import MyFollow from "./pages/MyPage/MyFollow";
+import PersonalColor from "./pages/Recommend/PersonalColor";
+import PersonalColorRecommend from "./pages/Recommend/PersonalColorRecommend";
 
 // import Example from "./components/closet/Example";
 // import Scene from "../public/Scene";
@@ -68,50 +70,22 @@ function App() {
             <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
             {/* 커뮤니티 */}
             <Route path="/community" element={<MainCommunity />}></Route>
-            <Route
-              path="/community/BestDress"
-              element={<MainBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/Add/"
-              element={<AddBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/Add/:BestDressId"
-              element={<AddBestDress />}
-            ></Route>
-            <Route
-              path="/community/BestDress/:BestDressId"
-              element={<DetailBestDress />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi"
-              element={<MainHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/Add"
-              element={<AddSelectHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/Add/:Category/"
-              element={<AddHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/Add/:Category/:HelpCodiId"
-              element={<AddHelpCodi />}
-            ></Route>
-            <Route
-              path="/community/HelpCodi/:HelpCodiId"
-              element={<DetailHelpCodi />}
-            ></Route>
+            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
+            <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
+            <Route path="/community/BestDress/:IsAdd/:BestDressId" element={<DetailBestDress />}></Route>
+            <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
+            <Route path="/community/HelpCodi/:IsAdd/:HelpCodiId" element={<DetailHelpCodi />}></Route>
             {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
             <Route path="/closet/:userId" element={<MainCloset />}></Route>
-            <Route
-              path="/closet/:userId/pluscodi"
-              element={<PlusCodi />}
-            ></Route>
+            <Route path="/closet/:HelpCodiId/:userId" element={<MainCloset />}></Route>
+            <Route path="/closet/:userId/pluscodi" element={<PlusCodi />}></Route>
+            <Route path="/closet/:HelpCodiId/:userId/pluscodi" element={<PlusCodi />}></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/pluscodi" element={<PlusCodi />}></Route>
@@ -122,6 +96,8 @@ function App() {
             <Route path="/threetest" element={<ThreeTest />}></Route>
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
+            <Route path="/recommend/personal" element={<PersonalColor />}></Route>
+            <Route path="/recommend/personal/Color" element={<PersonalColorRecommend />}></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
             {/* 마이페이지 */}
             <Route path="/myPage" element={<MyPage />}></Route>

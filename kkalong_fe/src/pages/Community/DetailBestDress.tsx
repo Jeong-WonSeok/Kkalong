@@ -101,6 +101,7 @@ export default function DetailBestDress() {
 
   // 게시글 좋아요
   const PostLike = async () => {
+    console.log('좋아요')
     const res = await axios.post(requests.detailBestDress + Article?.Best.id)
     setLike(!Like)
     if (!Like) {
@@ -110,6 +111,7 @@ export default function DetailBestDress() {
         newArticle.Best.likeCount = newArticle.like.length
         return newArticle
       })
+      setLikeCount(LikeCount+1)
     } else {
       setArticle((current) => {
         let newArticle = current as ArticleType
@@ -120,13 +122,22 @@ export default function DetailBestDress() {
         newArticle.Best.likeCount = result.length
         return newArticle
       })
+      setLikeCount(LikeCount-1)
+    }
+  }
+
+  const goBack = () => {
+    if (params.IsAdd === "true") {
+      navigate('/Community/BestDress')
+    } else {
+      navigate(-1)
     }
   }
 
   return (
     <div>
       <TopNav type="">
-        <IconImg src={BackArrow} onClick={()=>navigate(-1)}/>
+        <IconImg src={BackArrow} onClick={goBack}/>
         <NavText>도전! 베스트 드레서✨</NavText>
         {User?.user_id === Article?.user.user_id ? <IconImg src={Menu} onClick={()=> setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
       </TopNav>
@@ -146,12 +157,12 @@ export default function DetailBestDress() {
           <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '0 15px'}}>
             {Article?.user && 
             <ProfileContainer>
-              <Profile Image={Article!.user.profile_image} Size={30} id={Article!.user.user_id}/>
+              <Profile Image={Article!.user.profile_img} Size={30} id={Article!.user.user_id}/>
               <CustomText>{Article!.user.nickname}</CustomText>
             </ProfileContainer>}
-            <LikeContainer>
-              {!!!Like && <Likeimg Like={Like} src={LikeImg} onClick={()=>{PostLike(); setLikeCount(LikeCount+1)}}/>}
-              {Like && <Likeimg Like={Like} src={AlreadyLike} onClick={()=>{PostLike(); setLikeCount(LikeCount-1)}}/>}
+            <LikeContainer onClick={PostLike}>
+              {!!!Like && <Likeimg Like={Like} src={LikeImg}/>}
+              {Like && <Likeimg Like={Like} src={AlreadyLike}/>}
               <CustomText style={{fontSize: '13px'}}>{LikeCount}</CustomText>
             </LikeContainer>
           </div>

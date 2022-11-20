@@ -37,7 +37,7 @@ export default function AddCloset() {
     app.style.marginBottom = "0";
 
     return () => {
-      app.style.marginTop = "60px";
+      app.style.marginBottom = "70px";
     };
   }, []);
 

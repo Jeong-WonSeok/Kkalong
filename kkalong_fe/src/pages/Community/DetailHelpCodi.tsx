@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import axios from '../../api/axios'
 import requests from '../../api/requests'
 
@@ -24,7 +24,7 @@ export interface commentType {
   user: {
     user_id: number,
     nickname: string,
-    profile_image: string,
+    profile_img: string,
     email: string,
   },
   content: string,
@@ -43,19 +43,20 @@ export interface ArticleType extends HelpCodiArticle{
 export default function DetailHelpCodi() {
   const navigate = useNavigate()
   const params = useParams()
+  const location = useLocation()
   const { User } = useAppSelector(state=> state.User)
   const [IsMenu, setIsMenu] = useState(false)
   const [IsModal, setIsModal] = useState(false)
   const defaultComment: Array<commentType> = []
   const [Article, setArticle] = useState<ArticleType>()
+  
 
   useEffect(()=>{
     const start = async () => {
       const res = await axios.get(requests.detailHelpCodi + params.HelpCodiId)
-      console.log(res.data)
       setArticle(res.data)
+      console.log(document.referrer)
     }
-
     start()
 
   },[])
@@ -108,11 +109,18 @@ export default function DetailHelpCodi() {
     navigate(`/closet/${Article?.Help.user.user_id}`)
   }
 
+  const goBack = () => {
+    if (params.IsAdd === 'true') {
+      navigate('/community/HelpCodi')
+    } else {
+      navigate(-1)
+    }
+  }
 
   return (
     <div>
       <TopNav type={''}>
-        <MenuImg src={BackArrow} onClick={()=>navigate('/community/HelpCodi')}/>
+        <MenuImg src={BackArrow} onClick={goBack}/>
         <NavText>도와주세요 패알못😂</NavText>
         {User?.user_id === Article?.Help.user.user_id ? <MenuImg src={Menu} onClick={()=>setIsMenu(!IsMenu)}/> : <div style={{width: '30px', height: '30px'}}></div>}
         
@@ -132,7 +140,7 @@ export default function DetailHelpCodi() {
           {!!!Article?.Help?.open &&<CodiImg src={Article?.Help?.help_img}/>}
           <ProfileContainer>
             <div style={{display: 'flex' ,flexDirection: 'row'}}>
-              <Profile Image={Article?.Help?.user.profile_image ? Article?.Help?.user.profile_image : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
+              <Profile Image={Article?.Help?.user.profile_img ? Article?.Help?.user.profile_img : ''} Size={30} id={Article?.Help?.user.user_id ? Article?.Help?.user.user_id : 1}/>
               <ProfileName>{Article?.Help?.user.nickname}</ProfileName>
             </div>
             {Article?.Help?.open && <ClosetButton onClick={ShowCloset}>

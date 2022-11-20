@@ -52,6 +52,7 @@ export default function AddHelpCodi() {
           content: res.data.Help.content,
           range: res.data.Help.range,
         })
+        
 
         const Picture = document.getElementById("SelectPicture") as HTMLDivElement
         // 위에 레이어 모두 삭제후
@@ -153,11 +154,11 @@ export default function AddHelpCodi() {
     } else {
       if (params.HelpCodiId) {
         await axios.put(requests.detailHelpCodi + params.HelpCodiId, SendData)
-        navigate(`/community/HelpCodi/${params.HelpCodiId}`)
+        navigate(`/community/HelpCodi/true/${params.HelpCodiId}`)
       } else {
         const res = await axios.post(requests.helpCodi, SendData)
         console.log(res)
-        navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+        navigate(`/community/HelpCodi/true/${res.data.Help.help_id}`)
       } 
     }
   }

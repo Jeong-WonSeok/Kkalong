@@ -55,6 +55,7 @@ interface SendType {
 export default function MainCloset() {
   const dispatch = useAppDispatch();
   const params = useParams();
+  const { User } = useAppSelector(state => state.User)
   const settings = {
     className: "center",
     centerMode: true,
@@ -156,7 +157,7 @@ export default function MainCloset() {
     if ((userProfile.user_id = userId)) {
       navigate("/codi");
     } else {
-      navigate("/pluscodi");
+      navigate('/pluscodi')
     }
   };
   const ChangePicture = (e: any) => {
@@ -401,8 +402,55 @@ export default function MainCloset() {
           </AddClothesContainer>
           <FooterBar />
         </div>
-      )}
-    </>
+      </TopNav>
+
+      <>
+        <Carousel sortclothes={sortclothes} />
+        <SelectBtnContainer>
+          <SelectBtn
+            onClick={() => {
+              navigate("/closet");
+            }}
+          >
+            <SelectColor1 />
+            <SelectText>옷장</SelectText>
+          </SelectBtn>
+          <img src={Bar} />
+          <SelectBtn onClick={GoCody}>
+            <SelectColor2 />
+            <SelectText>코디</SelectText>
+          </SelectBtn>
+        </SelectBtnContainer>
+      </>
+
+      <Category>
+        {clothes.map(function (a, i) {
+          return (
+            <ClothesBtn>
+              <img src={clothes[i]} />
+              <ClothesText>{cltext[i]}</ClothesText>
+            </ClothesBtn>
+          );
+        })}
+      </Category>
+
+      <SortClothesContainer>
+        {sortclothes.map(function (a, i) {
+          return (
+            <SortClothes>
+              <ClothesImg src={sortclothes[i]} />
+            </SortClothes>
+          );
+        })}
+      </SortClothesContainer>
+
+      <AddClothesContainer>
+        <AddClothes onClick={() => navigate("/closet/add")}>
+          <img src={camera} />
+        </AddClothes>
+      </AddClothesContainer>
+      <FooterBar />
+    </div>
   );
 }
 

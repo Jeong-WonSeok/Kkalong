@@ -4,20 +4,31 @@ import { HelpCodiArticle } from '../../pages/Community/MainCommunity'
 import Profile from './Profile'
 import defaultImg from '../../assets/icon/Community/defaultImg.png'
 
-export default function HelpCodi({article} : {article: HelpCodiArticle}) {
+export interface MyHelpArticle {
+  help_id: number,
+  help_img: string | null,
+  nickname: string,
+  open: boolean,
+  profile_img: string,
+  range: string,
+  title: string,
+  user_id: number
+}
+
+export default function HelpCodi({article} : {article: MyHelpArticle}) {
   const navigate = useNavigate()
   console.log(article)
   return (
-    <div onClick={()=>navigate(`/community/HelpCodi/false/${article.Help.help_id}`)}>
-    <Container style={{backgroundImage: `url(${article.Help.help_img ? article.Help.help_img : defaultImg})`}}>
+    <div onClick={()=>navigate(`/community/HelpCodi/false/${article.help_id}`)}>
+    <Container style={{backgroundImage: `url(${article.help_img ? article.help_img : defaultImg})`}}>
       <ProfileContainer>
-      <Profile Image={article.Help.user.profile_img} Size={17} id={article.Help.user.user_id}/>
-        <span>{article.Help.user.nickname}</span>
+      <Profile Image={article.profile_img} Size={17} id={article.user_id}/>
+        <span>{article.nickname}</span>
       </ProfileContainer>
       
     </Container>
     <TitleContainer>
-      Q. {article.Help.title.length < 15 ? article.Help.title : article.Help.title.slice(0, 15) + '...'}
+      Q. {article.title.length < 15 ? article.title : article.title.slice(0, 15) + '...'}
     </TitleContainer>
     </div>
   )
@@ -64,3 +75,4 @@ const TitleContainer = styled.div`
   padding: 3px 9px;
   border-radius: 0 0 20px 20px; 
 `
+

@@ -9,7 +9,7 @@ const requests = {
   signupNext: "/user/signupNext",
 
   // 마이페이지
-  myWrite: "/user/write",
+  myWrite: "/user/write/",
   myFriend: "/user/friends",
   searchFriend: "/user/friend/", // 이건 어떻게 구현될지 모르겠음
   updateProfile: "/user/profile/update",
@@ -38,11 +38,14 @@ const requests = {
   imgAdd: "closet/cody/img",
 
   // 가상피팅
+  bodyImg: "/user/body/img",
   brand: "/aifitting/brand/", // brand_id를 넣으면 해당 브랜드의 제품이 나옴
 
   // 추천
-  weather: "/recommand/weather",
-  body: "/recommand/body",
+  faceImg: "/recommend/personal",
+  weather: "/recommend/weather/",
+  personalColor: '/recommend/personalColor',
+  body: "/recommend/body",
 };
 
 export default requests;
