@@ -11,12 +11,11 @@ import requests from "../../api/requests";
 import { SortClothes } from "./MainCloset";
 import { ObjValueTuple } from "reselect/es/types";
 import { resolveTypeReferenceDirective } from "typescript";
-
 export default function AddClothes() {
   const location = useLocation();
   const closetId = location.state.closetId;
-  const clothingId = location.state.clothingId;
-  console.log(clothingId);
+  const codiId = location.state.codiId;
+  console.log(codiId);
   console.log(closetId);
   interface clothesType {
     closet_id: number;
@@ -36,10 +35,10 @@ export default function AddClothes() {
     name: string;
     subcategories: subCategoryType[];
   }
-  interface imgSetType {
-    color?: string;
-    img?: any;
-  }
+  //   interface imgSetType {
+  //     color?: string;
+  //     img?: any;
+  //   }
   let styleList = ["casual", "dandy", "street", "formal"];
   let [style, setStyle] = useState("");
   const [btn, setBtn] = useState([false, false, false, false]);
@@ -210,81 +209,49 @@ export default function AddClothes() {
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
-
-  let [clothing, setClothing] = useState<imgSetType>();
+  let [clothings, setClothings] = useState<any[]>([]);
+  let [codi, setCodi] = useState<any>();
   let [clothes, setClothes] = useState<any>("");
   console.log(url);
-
+  console.log(codi);
   useEffect(() => {
-    axios.get("/closet/clothing/" + clothingId).then((res) => {
-      setClothes(res.data.clothing);
-      setSeason(res.data.clothing.season);
-      console.log(res);
+    axios.get(requests.codi + codiId).then((res) => {
+      setCodi(res.data);
+      setClothings(res.data.clothings);
     });
   }, []);
   console.log(clothes);
-  const onSubmit = () => {
-    axios
-      .post(requests.addClothes, {
-        closet_id: closetId,
-        mainCategory: id,
-        subCategory: subid,
-        spring: seasonsBoolean[0],
-        summer: seasonsBoolean[1],
-        fall: seasonsBoolean[2],
-        winter: seasonsBoolean[3],
-        color: clothing?.color,
-        img: clothing?.img,
-        style,
-        brand_id: 0,
-      })
-      .then((response) => {
-        axios.get(requests.closet + userId).then((res) => {
-          console.log(res);
-          navigate("/closet");
-        });
-      })
-      .catch((res) => {
-        console.log(res);
-        console.log({
-          closet_id: closetId,
-          mainCategory: id,
-          subCategory: subid,
-          spring: seasonsBoolean[0],
-          summer: seasonsBoolean[1],
-          fall: seasonsBoolean[2],
-          winter: seasonsBoolean[3],
-          color: clothing?.color,
-          img: clothing?.img,
-          style,
-          brand_id: 0,
-        });
-      });
-  };
+
   let Main = ["상의", "하의", "아우터", "신발", "가방", "모자"];
   return (
     <div>
       <>
         <TopNav type={""}>
           <CloseImg src={Close} onClick={() => navigate("/closet")} />
-          <NavText>옷 상세 페이지</NavText>
+          <NavText>코디 상세 페이지</NavText>
           <div style={{ width: "30px", height: "30px" }}></div>
         </TopNav>
         <Container>
           <ImgContainer>
-            <ImagePreview src={clothes?.img} />
+            <ImagePreview src={codi?.cody.img} />
           </ImgContainer>
         </Container>
         <Box></Box>
+        <CategoryTxt>코디 정보 </CategoryTxt>
+        <Category>
+          {clothings.map((a, i) => {
+            return (
+              <ClothesBtn onClick={() => {}}>
+                <img src={clothings[i]?.img} width="80px" />
+              </ClothesBtn>
+            );
+          })}
+        </Category>
+        <Box></Box>
         <SortContainer>
           <SortBtn>
-            <SeasonP>{seasonT[0]}</SeasonP>
-            <SeasonP2>{Main[clothes.mainCategory - 1]}</SeasonP2>
-          </SortBtn>
-
-          <SortBtn>
-            <SeasonP>{seasonT[1]}</SeasonP>
-            <SeasonP2>{clothes.color}</SeasonP2>
+            <SeasonP>분류</SeasonP>
+            <SeasonP2></SeasonP2>
           </SortBtn>
         </SortContainer>
         <SeasonCategory>
@@ -353,7 +320,7 @@ const SeasonBtn2 = styled.button`
   text-align: center;
   border-radius: 20px;
   line-height: 30px;
-  background: white;
+  background: #fae6c0;
 `;
 const ImagePreview = styled.img`
   width: 100%;
@@ -421,7 +388,7 @@ const SeasonCategory = styled.div`
 const SeasonP = styled.p`
   font-family: var(--base-font-400);
   font-size: 16px;
-  margin: 0px 0px 0px 25px;
+  margin: 0px 0px 0px 15px;
   font-family: var(--base-font-400);
 `;
 
@@ -434,31 +401,24 @@ const SeasonP2 = styled.p`
 const SeasonP3 = styled.p`
   font-family: var(--base-font-400);
   font-size: 16px;
-  margin: 0px 0px 0px 25px;
+  margin: 0px 10px 0px 15px;
   font-family: var(--base-font-400);
 `;
 const SeasonP4 = styled.p`
   font-family: var(--base-font-400);
   font-size: 16px;
-  margin: 0px 10px 0px 30px;
+  margin: 0px 10px 0px 20px;
   font-family: var(--base-font-400);
 `;
 
 const CheckboxContainer = styled.div`
   display: flex;
   flex-direction: row;
-  background-color: white;
+  background-color: #fae6c0;
   border-radius: 50px;
   align-items: center;
   margin: auto;
 `;
-export const Box = styled.div`
-  width: 360px;
-  height: 15px;
-  margin-bottom: 40px;
-  background-color: #f2f2f2;
-`;
-const BoxBtn = styled.div``;
 const CheckboxContainer2 = styled.div`
   display: flex;
   flex-direction: row;
@@ -504,4 +464,47 @@ const SortButton = styled.button`
   /* border: solid 1px #67564e; */
   border-radius: 30px;
   font-family: var(--base-font-400);
+`;
+export const Category = styled.div`
+  margin-top: 10px;
+  width: 100%;
+  /* max-width: 360px; */
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+  overflow-x: auto;
+`;
+const CategoryTxt = styled.p`
+  font-family: var(--base-font-500);
+  font-size: 16px;
+  margin: 0px 0px 0px 10px;
+  position: relative;
+  top: 0px;
+`;
+const ClothesBtn = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  border-radius: 30px;
+  margin-left: 5px;
+  border: solid 1px #67564e;
+  background-color: white;
+`;
+
+const ClothesText = styled.p`
+  width: 170px;
+  line-height: 1;
+  margin: 0;
+  font-family: var(--base-font-500);
+  font-size: 10px;
+  color: var(--primary-color-900);
+`;
+const Box = styled.div`
+  width: 360px;
+  height: 15px;
+  margin-bottom: 20px;
+  background-color: #f2f2f2;
 `;

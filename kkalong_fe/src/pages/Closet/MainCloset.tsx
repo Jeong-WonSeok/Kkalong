@@ -99,6 +99,7 @@ export default function MainCloset() {
     "가방",
     "모자",
   ]);
+  let [sortId, setSortId] = useState<number>();
   let [btn, setBtn] = useState(false);
   let [sortclothes, setSortclothes] = useState([
     img1,
@@ -121,6 +122,25 @@ export default function MainCloset() {
   let [clothing, setClothing] = useState<imgSetType>();
   const [swiper, setSwiper] = useState<SwiperCore>();
   let [clothingId, setClothingId] = useState("");
+  let [slideBtn, setSlideBtn] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   // console.log(userId);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -212,15 +232,17 @@ export default function MainCloset() {
         closet = res.data.closets;
         setCloset(res.data.closets);
         console.log(closet);
+        setClosetId(closet[0].closet_id);
         setLoading(false);
       })
       .catch((res) => {
         console.log(res);
       });
   }, []);
-
+  console.log(closet);
   console.log(clothings);
   console.log(clothingId);
+  console.log(sortId);
   return (
     <div>
       {loading ? (
@@ -229,9 +251,7 @@ export default function MainCloset() {
         <div>
           <TopNav type={"menu"}>
             <CategoryText1>옷장</CategoryText1>
-            <div style={{ width: "54px", height: "38px" }}>
-              <MenuIcon src={menu} />
-            </div>
+            <div style={{ width: "54px", height: "38px" }}></div>
           </TopNav>
           <>
             {/* <Carousel sortclothes={sortclothes} /> */}
@@ -255,8 +275,33 @@ export default function MainCloset() {
                 return (
                   <SwiperSlide>
                     <SlideButton
+                      style={{
+                        background:
+                          slideBtn[i] === true ? "#E5DDCE" : "#F7F8F8",
+                      }}
                       onClick={() => {
                         setClosetId(closet[i].closet_id);
+                        let slideB = [
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                        ];
+                        slideB[i] = !slideBtn[i];
+                        setSlideBtn(slideB);
                         console.log(closetId);
                       }}
                     >
@@ -300,7 +345,11 @@ export default function MainCloset() {
           <Category>
             {cltext.map(function (a, i) {
               return (
-                <ClothesBtn>
+                <ClothesBtn
+                  onClick={() => {
+                    setSortId(i);
+                  }}
+                >
                   <img src={clothes[i]} />
                   <ClothesText>{cltext[i]}</ClothesText>
                 </ClothesBtn>
@@ -310,33 +359,85 @@ export default function MainCloset() {
           <SortClothesContainer>
             {clothings.map(function (a, i) {
               return (
-                <SortClothes
-                  onClick={() => {
-                    clothingId = clothings[i].clothing_id;
-                    navigate("/clothes/detail", {
-                      state: { closetId, clothingId },
-                    });
-                    axios
-                      .get(
-                        requests.addClothes + "/" + [clothings[i].clothing_id]
-                      )
-                      .then((res) => {
-                        console.log(res);
-                      });
-                  }}
-                >
-                  <ClothesImg src={clothings[i]?.img} />
-                </SortClothes>
+                <>
+                  {closetId !== 0 && sortId === clothings[i].mainCategory ? (
+                    <>
+                      <SortClothes
+                        onClick={() => {
+                          clothingId = clothings[i].clothing_id;
+                          navigate("/clothes/detail", {
+                            state: { closetId, clothingId },
+                          });
+                          axios
+                            .get(
+                              requests.addClothes +
+                                "/" +
+                                [clothings[i].clothing_id]
+                            )
+                            .then((res) => {
+                              console.log(res);
+                            });
+                        }}
+                      >
+                        <ClothesImg src={clothings[i]?.img} />
+                      </SortClothes>
+                    </>
+                  ) : (
+                    <>
+                      <SortClothes
+                        onClick={() => {
+                          clothingId = clothings[i].clothing_id;
+                          navigate("/clothes/detail", {
+                            state: { closetId, clothingId },
+                          });
+                          axios
+                            .get(
+                              requests.addClothes +
+                                "/" +
+                                [clothings[i].clothing_id]
+                            )
+                            .then((res) => {
+                              console.log(res);
+                            });
+                        }}
+                      >
+                        <ClothesImg src={clothings[i]?.img} />
+                      </SortClothes>
+                    </>
+                  )}
+                </>
               );
+
+              // if (closetId && sortId === clothings[i].mainCategory)
+              //   return (
+              //     <SortClothes
+              //       onClick={() => {
+              //         clothingId = clothings[i].clothing_id;
+              //         navigate("/clothes/detail", {
+              //           state: { closetId, clothingId },
+              //         });
+              //         axios
+              //           .get(
+              //             requests.addClothes + "/" + [clothings[i].clothing_id]
+              //           )
+              //           .then((res) => {
+              //             console.log(res);
+              //           });
+              //       }}
+              //     >
+              //       <ClothesImg src={clothings[i]?.img} />
+              //     </SortClothes>
+              //   );
             })}
           </SortClothesContainer>
+
           <AddClothesContainer>
             <AddClothes
               onClick={() =>
                 navigate("/closet/add", { state: { closetId, clothing } })
               }
             >
-              <img src={camera} width="50px" />
+              <img src={camera} width="40px" />
             </AddClothes>
           </AddClothesContainer>
           <FooterBar />
@@ -482,10 +583,10 @@ const AddClothes = styled.button`
 
 let SwiperText = styled.p`
   color: black;
-  display: flex;
-  margin-left: 40px;
+  margin-top: 5px;
   font-family: var(--base-font-400);
   font-size: 18px;
+  text-align: center;
 `;
 
 // let SliderBorder = styled.button`
@@ -523,6 +624,6 @@ const ClosetIcon = styled.div`
 
 const CameraImg = styled.img`
   height: 40px;
-  width: 45px;
+  width: 30px;
   margin: 10px 1.5px;
 `;

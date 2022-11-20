@@ -49,18 +49,6 @@ export default function AddClothes() {
   const webcam = useRef<Webcam>(null);
   const [url, setUrl] = useState<string | "">("");
   const seasons = ["봄", "여름", "가을", "겨울"];
-  const [clothes, setClothes] = useState<clothesType>({
-    closet_id: 0,
-    mainCategory: 0,
-    subCategory: 0,
-    spring: false,
-    summer: false,
-    fall: false,
-    winter: false,
-    color: "null",
-    img: "",
-    brand_id: 0,
-  });
   let [category, setCategory] = useState<Array<CategoryType>>([
     {
       id: 1,
@@ -216,10 +204,65 @@ export default function AddClothes() {
     "진청",
     "흑청",
   ];
+  const [colorBtn, setColorBtn] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
   let [color, setColor] = useState("");
   let [subid, setSubid] = useState(0);
   let [id, setId] = useState(0);
   let [categoryBtn, setCategoryBtn] = useState<Array<boolean>>([
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -233,13 +276,23 @@ export default function AddClothes() {
     false,
     false,
   ]);
+  let [sortBtn, setSortBtn] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   useEffect(() => {
     const app = document.getElementById("App") as HTMLDivElement;
     app.style.margin = "0";
 
     return () => {
       app.style.margin = "60px 0 70px 0";
-    }
+    };
   }, []);
 
   const videoConstraints = {
@@ -250,7 +303,17 @@ export default function AddClothes() {
   let userProfile: any = localStorage.getItem("userProfile");
   userProfile = JSON.parse(userProfile);
   let userId = userProfile.user_id;
-
+  let [cate, setCate] = useState([
+    "상의",
+    "하의",
+    "스커트",
+    "원피스",
+    "아우터",
+    "신발",
+    "가방",
+    "모자",
+  ]);
+  let [subCate, setSubCate] = useState("");
   let [clothing, setClothing] = useState<imgSetType>();
   // const ChangeBackground = (season: string) => {
   //   const check = document.getElementById(season) as HTMLInputElement;
@@ -266,47 +329,13 @@ export default function AddClothes() {
   //   }
   // };
   console.log(url);
+  let [styleBtn, setStyleBtn] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
 
-  const capture = useCallback(async () => {
-    const imageSrc = webcam.current?.getScreenshot();
-    console.log(imageSrc);
-    if (imageSrc) {
-      // base64 코드를 File로 변환
-      const byteCharacters = URL.createObjectURL(
-        new Blob([imageSrc], { type: "text/plain" })
-      );
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-
-      let image = new Blob([byteArray], {
-        type: "image/png",
-      });
-
-      const myFile = new File([image], "image.png", {
-        type: image.type,
-      });
-      setUrl(imageSrc);
-      console.log(imageSrc);
-      const formData = new FormData();
-      formData.append("img", myFile);
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      const res = await axios
-        .post(requests.removeBackground, formData, config)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    }
-  }, [webcam]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const onUploadImage = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -411,6 +440,7 @@ export default function AddClothes() {
     };
     axios.post(requests.addClothes, formdata, config);
   };
+
   return (
     <div>
       <>
@@ -422,9 +452,10 @@ export default function AddClothes() {
               onSubmit();
             }}
           >
-            등록
+            <SubmitTxt>등록</SubmitTxt>
           </SubmitBtn>
         </TopNav>
+        <MarginDiv></MarginDiv>
         <Container>
           <ImgContainer>
             <ImagePreview src={clothing?.img} />
@@ -442,17 +473,37 @@ export default function AddClothes() {
                   }}
                 >
                   <SeasonP>{seasonT[i]}</SeasonP>
+                  {seasonT[i] === "분류" && (
+                    <>
+                      <SeasonP2>{cate[id - 1]}</SeasonP2>/
+                      <SeasonP2>{subCate}</SeasonP2>
+                    </>
+                  )}
+                  {seasonT[i] === "색상" && <SeasonP2>{color}</SeasonP2>}
                 </SortBtn>
-
                 {btn[i] &&
                   seasonT[i] === "분류" &&
                   category.map((a, index) => (
                     <>
                       <SortButton
+                        style={{
+                          background:
+                            categoryBtn[index] === true ? "#FAE6C0" : "#F7F8F8",
+                        }}
                         onClick={() => {
-                          let sortA = [...categoryBtn];
-                          sortA[index] = !categoryBtn[index];
-                          setCategoryBtn(sortA);
+                          let sortB = [
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                          ];
+                          sortB[index] = !categoryBtn[index];
+                          setCategoryBtn(sortB);
+                          console.log(categoryBtn);
                           setId(category[index].id);
                         }}
                       >
@@ -465,6 +516,9 @@ export default function AddClothes() {
                               onClick={() => {
                                 setSubid(
                                   category[index].subcategories[i].subId
+                                );
+                                setSubCate(
+                                  category[index].subcategories[i].name
                                 );
                                 console.log(subid);
                               }}
@@ -480,9 +534,66 @@ export default function AddClothes() {
                   colorPalette.map((a, index) => (
                     <>
                       <SortButton
+                        style={{
+                          background:
+                            colorBtn[index] === true ? "#FAE6C0" : "#F7F8F8",
+                        }}
                         onClick={() => {
+                          console.log(colorBtn);
                           setColor(colorPalette[index]);
-                          console.log(color);
+                          let colorB = [
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                          ];
+                          colorB[index] = !colorBtn[index];
+                          setColorBtn(colorB);
                         }}
                       >
                         <SortTxt>{colorPalette[index]}</SortTxt>
@@ -495,14 +606,21 @@ export default function AddClothes() {
         })}
 
         <SeasonCategory>
-          <SeasonP>스타일</SeasonP>
+          <SeasonP3>스타일</SeasonP3>
           <CheckboxContainer>
             {styleList.map((a, index) => {
               return (
                 <div key={index}>
                   <SeasonBtn
+                    style={{
+                      background:
+                        styleBtn[index] === true ? "#FAE6C0" : "#F7F8F8",
+                    }}
                     onClick={() => {
                       setStyle(styleList[index]);
+                      let styleB = [false, false, false, false];
+                      styleB[index] = !styleBtn[index];
+                      setStyleBtn(styleB);
                     }}
                   >
                     {styleList[index]}
@@ -513,12 +631,16 @@ export default function AddClothes() {
           </CheckboxContainer>
         </SeasonCategory>
         <SeasonCategory>
-          <SeasonP>계절</SeasonP>
-          <CheckboxContainer>
+          <SeasonP4>계절</SeasonP4>
+          <CheckboxContainer2>
             {seasons.map((season, index) => {
               return (
                 <div key={index}>
                   <SeasonBtn
+                    style={{
+                      background:
+                        seasonsBoolean[index] === true ? "#FAE6C0" : "#F7F8F8",
+                    }}
                     onClick={() => {
                       let seasonB = [...seasonsBoolean];
                       seasonB[index] = !seasonsBoolean[index];
@@ -539,7 +661,7 @@ export default function AddClothes() {
                 </div>
               );
             })}
-          </CheckboxContainer>
+          </CheckboxContainer2>
         </SeasonCategory>
         <label className="input-file-button" htmlFor="input-file">
           이미지 업로드
@@ -560,53 +682,13 @@ export default function AddClothes() {
   );
 }
 
-const CamDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-`;
-
-const ButtonContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: auto;
-  width: 100%;
-  height: 70px;
-  max-width: 360px;
-  display: flex;
-  justify-content: center;
-`;
-
-const CaptureButton = styled.div`
-  background-color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 3px solid black;
-  position: relative;
-  z-index: 5;
-`;
-
-const ChildCaptureButton = styled.div`
-  left: -7.5px;
-  top: -7.5px;
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid black;
-  z-index: 3;
-`;
-
 const SeasonBtn = styled.button`
   border: none;
   display: block;
   font-family: var(--base-font-400);
   font-size: 14px;
   margin: 0 5px;
-  width: 40px;
+  width: 50px;
   height: 30px;
   text-align: center;
   border-radius: 20px;
@@ -636,44 +718,69 @@ const NavText = styled.p`
   font-family: var(--base-font-600);
   font-size: 20px;
 `;
-
+export const MarginDiv = styled.div`
+  width: 360px;
+  height: 30px;
+`;
 const SubmitBtn = styled.button`
   width: 60px;
   height: 30px;
   border: none;
   border-radius: 10px;
-  background-color: var(--primary-color-500);
+  background-color: #67564e;
   text-align: center;
   font-family: var(--base-font-300);
   font-size: 12px;
 `;
 
+const SubmitTxt = styled.span`
+  color: white;
+`;
 const ImgContainer = styled.div`
   width: 250px;
   height: 250px;
   padding: 0 10px;
-  margin: 10px 20px;
+  margin: 20px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 30px;
 `;
 
 const SeasonCategory = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 320px;
+  /* border: solid 1px black; */
+  width: 350px;
   height: 50px;
-  padding: 0 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const SeasonP = styled.p`
   font-family: var(--base-font-400);
   font-size: 16px;
-  margin: 0;
+  margin: 0px 0px 0px 15px;
+  font-family: var(--base-font-400);
+`;
+
+const SeasonP2 = styled.p`
+  font-family: var(--base-font-400);
+  font-size: 15px;
+  margin: 0px auto;
+  font-family: var(--base-font-400);
+`;
+const SeasonP3 = styled.p`
+  font-family: var(--base-font-400);
+  font-size: 16px;
+  margin: 0px 30px 0px 18px;
+  font-family: var(--base-font-400);
+`;
+const SeasonP4 = styled.p`
+  font-family: var(--base-font-400);
+  font-size: 16px;
+  margin: 0px 30px 0px 20px;
+  font-family: var(--base-font-400);
 `;
 
 const CheckboxContainer = styled.div`
@@ -683,38 +790,37 @@ const CheckboxContainer = styled.div`
   border-radius: 50px;
   align-items: center;
 `;
-
-const SeasonLabel = styled.label`
-  display: block;
-  font-family: var(--base-font-400);
-  font-size: 14px;
-  margin: 0 5px;
-  width: 40px;
-  height: 30px;
-  text-align: center;
-  border-radius: 20px;
-  line-height: 30px;
+const CheckboxContainer2 = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: var(--primary-color-100);
+  border-radius: 50px;
+  align-items: center;
+  margin-left: 13px;
 `;
 
-const SeasonCheckbox = styled.input.attrs({
-  type: "checkbox",
-})`
-  display: none;
+const SortDiv = styled.div`
+  width: 360px;
+  border: solid black 1px;
+  /* display: row; */
 `;
 
 const SortTxt = styled.p`
   font-size: 12px;
+  font-family: var(--base-font-400);
+  color: #1b1818;
 `;
 
 const SortBtn = styled.button`
   width: 360px;
   height: 50px;
-  border: #221c1c solid 1px;
+  border: none;
   border-top: none;
   border-left: none;
   border-right: none;
   background-color: white;
   display: flex;
+  font-family: var(--base-font-400);
 `;
 
 const SortContainer = styled.div`
@@ -725,6 +831,8 @@ const SortButton = styled.button`
   width: 70px;
   /* background-color: grey; */
   background-color: white;
-  border: solid 1px grey;
+  border: none;
+  /* border: solid 1px #67564e; */
   border-radius: 30px;
+  font-family: var(--base-font-400);
 `;
