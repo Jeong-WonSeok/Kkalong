@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
@@ -53,54 +53,38 @@ interface dataType {
 export default function CodiPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const params = useParams()
+  const {User } = useAppSelector(state => state.User)
   const [closetId, setClosetId] = useState(0);
-  let [closet, setCloset] = useState(Array<dataType>);
-  let [loading, setLoading] = useState(true);
-  let userProfile: any = localStorage.getItem("userProfile");
-  userProfile = JSON.parse(userProfile);
-  let userId = userProfile.user_id;
-  const settings = {
-    className: "center",
-    dots: true,
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 2,
-    speed: 500,
-  };
-  let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
-  let [cltext, setCltext] = useState([
-    "전체",
-    "상의",
-    "겉옷",
-    "하의",
-    "신발",
-    "악세서리",
-  ]);
-  let [sortclothes, setSortclothes] = useState([
-    img1,
-    img2,
-    img3,
-    img4,
-    img5,
-    img6,
-    img7,
-  ]);
-  let [btn, setBtn] = useState(false);
-  let [codi, setCodi] = useState([codi1, codi2, codi3, codi1]);
+  const [closet, setCloset] = useState(Array<dataType>);
+  const [loading, setLoading] = useState(true);
+  const [index, setIndex] = useState(0)
+
   useEffect(() => {
-    axios
-      .get(requests.closet + userId)
-      .then((res) => {
-        closet = res.data.closets;
-        setCloset(res.data.closets);
-        console.log(closet);
-        setLoading(false);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+    if (params.userId) {
+      axios.get(requests.closet + params.userId)
+        .then((res) => {
+          setCloset(res.data.closets);
+          setLoading(false);
+        })
+    } else {
+      axios.get(requests.closet + User.user_id)
+        .then((res) => {
+          setCloset(res.data.closets);
+          setLoading(false);
+        })
+    }
   }, []);
+
+  const PlusCody = () => {
+    if (params.userId) {
+      navigate(`/pluscodi/${params.userId}`, { state: { closetId } });
+    } else if (params.HelpCodiId) {
+      navigate(`/pluscodi/${params.userId}/${params.HelpCodiId}`, { state: { closetId } });
+    } else {
+      navigate(`/pluscodi`, { state: { closetId } });
+    }
+  }
 
   return (
     <div>
@@ -132,7 +116,7 @@ export default function CodiPage() {
               <SlideButton
                 onClick={() => {
                   setClosetId(closet[i].closet_id);
-                  console.log(closetId);
+                  setIndex(i);
                 }}
               >
                 {closet[i].codies[i] ? (
@@ -143,7 +127,7 @@ export default function CodiPage() {
             </SwiperSlide>
           );
         })}
-        <SwiperSlide>
+        {!params.userId && <SwiperSlide>
           <SlideButton2
             onClick={() => {
               navigate("/addcloset");
@@ -154,7 +138,7 @@ export default function CodiPage() {
             </ClosetIcon>
             <BtnText>옷장 추가 하기</BtnText>
           </SlideButton2>
-        </SwiperSlide>
+        </SwiperSlide>}
         {/* </SliderBorder> */}
       </Swiper>
       <>
@@ -176,27 +160,21 @@ export default function CodiPage() {
         </SelectBtnContainer>
       </>
       <>
-        {/* <CodiContainer>
-          {closet[0].closet_id === closetId &&
-            closet[0].codies.map(function (a, i) {
+        <CodiContainer>
+          {closet[index] &&closet[index].codies.map((cody, idx) => {
+            if (cody.open) {
               return (
-                <ClothesCodi>
-                  {closet[i].codies[i] ? (
-                    <CodiImg src={closet[i].codies[i].img} alt="no" />
-                  ) : null} */}
-        {/* <CodiImg src={closet[i].codies[i].img} alt="no" /> */}
-        {/* </ClothesCodi>
-              );
-            })} */}
-
-        <CodiPlus
-          onClick={() => {
-            navigate("/pluscodi", { state: { closetId } });
-          }}
-        >
-          <img src={add_codi} />
-        </CodiPlus>
-        {/* </CodiContainer> */}
+                <ClothesCodi key={idx}>
+                  <CodiImg src={cody.img}/>
+                </ClothesCodi>
+              )
+            } else { return }
+            
+          })}
+          <CodiPlus onClick={PlusCody} >
+            <img src={add_codi} />
+          </CodiPlus>
+        </CodiContainer>
 
         <FooterBar />
       </>

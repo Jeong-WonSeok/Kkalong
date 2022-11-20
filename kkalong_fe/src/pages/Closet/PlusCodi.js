@@ -23,20 +23,17 @@ import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import html2canvas from "html2canvas";
+import { useAppSelector } from "../../hooks/reduxHook";
+
 export default function PlusCodi() {
   const navigate = useNavigate();
+  const { User } = useAppSelector(state => state.User)
   const location = useLocation();
   const closetId = location.state.closetId;
-  console.log(closetId);
   const params = useParams();
   let [closet, setCloset] = useState(Array);
-  let userProfile = localStorage.getItem("userProfile");
-  userProfile = JSON.parse(userProfile);
-  let userId = userProfile.user_id;
   let [loading, setLoading] = useState(true);
-
   let [modal, setModal] = useState(false);
-
   const modalClose = () => {
     setModal(!modal);
   };
@@ -45,33 +42,19 @@ export default function PlusCodi() {
       height: 300,
       width: 300,
     });
-  const [imgBase64, setImgBase64] = useState([]);
-  const [imgFile, setImgFile] = useState(null);
   const [imgList, setImgList] = useState([]);
 
   const { editor, onReady } = useFabricJSEditor();
   const [canvas, setCanvas] = useState("");
-  let [img, setImg] = useState([img1, img2, img3, img4]);
   let [clothesArray, setClothesArray] = useState([]);
 
-  let [num, setNum] = useState("");
-  let [sortclothes, setSortclothes] = useState();
-
-  let [sort, setSort] = useState([
-    "전체",
-    "상의",
-    "하의",
-    "아우터",
-    "신발",
-    "악세서리",
-  ]);
-  let [clothings, setClothings] = useState([]);
+  const sort = ["전체","상의","하의","아우터","신발", "악세서리"];
   let [clothesId, setClothesId] = useState("");
   useEffect(() => {
     readImages();
     setCanvas(initCanvas());
     axios
-      .get(requests.closet + userId)
+      .get(requests.closet + User.user_id)
       .then((res) => {
         closet = res.data.closets;
         setCloset(res.data.closets);
@@ -82,6 +65,7 @@ export default function PlusCodi() {
         console.log(res);
       });
   }, []);
+
   const readImages = async () => {
     await axios
       .get("closet/clothings/" + closetId)
@@ -96,17 +80,6 @@ export default function PlusCodi() {
       });
   };
 
-  // 이미지를 다운로드 받을 때 사용할 url
-  // const [downloadUrl, setDownloadUrl] = useState();
-  const cardRef = useRef();
-  const onDownloadBtn = () => {
-    const card = cardRef.current;
-    console.log(card);
-    domtoimage.toBlob(card).then((blob) => {
-      saveAs(blob, "card.png");
-    });
-  };
-
   const downloadImage = (url) => {
     const ext = "png";
     const base64 = editor.canvas.toDataURL({
@@ -118,71 +91,14 @@ export default function PlusCodi() {
     link.download = `eraser_example.${ext}`;
     link.click();
   };
-  const onCapture = () => {
-    console.log("onCapture");
-    html2canvas(document.getElementById("captureDiv"), {
-      logging: true,
-      letterRendering: 1,
-      allowTaint: true,
-      useCORS: true,
-      scale: 1,
-    }).then(function (canvas) {
-      // 캔버스를 이미지로 변환
-      let imgData = canvas.toDataURL("image/png", 1);
-      onSaveAs(imgData, "canvas.png");
-      console.log(imgData);
-      // $("#invoiceData").val(imgData);
-      // $("#testImg").attr("src", imgData);
 
-      return false;
-    });
-  };
 
-  const onSaveAs = (uri, filename) => {
-    console.log("onSaveAs");
-    var link = document.createElement("a");
-    document.body.appendChild(link);
-    link.href = uri;
-    link.download = filename;
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  function dataURLtoFile(dataurl) {
-    const blobBin = atob(dataurl.split(",")[1]); // base64 데이터 디코딩
-    const array = [];
-    for (let i = 0; i < blobBin.length; i += 1) {
-      array.push(blobBin.charCodeAt(i)); //인코드된 문자들을 0번째부터 끝까지 해독하여 유니코드 값을 array 에 저장한다.
-    }
-
-    const u8arr = new Uint8Array(array); //8비트의 형식화 배열을 생성한다.
-    const file = new Blob([u8arr], { type: "image/png" }); // Blob 생성
-    const formdata = new FormData(); // formData 생성
-    formdata.append("img", file); // file data 추가
-    console.log(formdata);
-    for (let key of formdata.keys()) {
-      console.log(key);
-    }
-
-    /* value 확인하기 */
-    for (let value of formdata.values()) {
-      console.log(value);
-    }
-    // axios 로 서버에 img 파일 보내기
-
-    axios.post(requests.imgAdd, formdata, {
-      headers: { "content-Type": "multipart/form-data" },
-    });
-  }
   const onUploadImage = (i) => {
-    console.log(i);
-
     fabric.Image.fromURL(closet[0].clothings[i].img, (oImg) => {
-      oImg.crossOrigin = "Anonymous";
       oImg.scaleToWidth(130);
       oImg.scaleToHeight(130);
       editor.canvas.add(oImg);
-    });
+    }, { crossOrigin: 'Anonymous' });
   };
 
   const removeObjectFromCanvas = () => {
@@ -212,6 +128,7 @@ export default function PlusCodi() {
         console.error(e);
       });
   };
+
   return (
     <>
       {loading ? (
@@ -433,11 +350,7 @@ const SortBorder = styled.div`
   overflow-y: auto;
   padding-top: 50px;
 `;
-const ClosetTitle = styled.p`
-  font-size: 15px;
-  position: absolute;
-  bottom: 160px;
-`;
+
 const SortDiv = styled.div`
   width: 320px;
   height: 60px;

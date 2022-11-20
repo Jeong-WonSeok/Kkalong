@@ -13,10 +13,13 @@ module.exports = app => {
         )
     )
     // app.use(
-    //     createProxyMiddleware('/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst',
+    //     createProxyMiddleware('kkalong-b4cec.appspot.com/o/',
     //         {
-    //             target: "https://apis.data.go.kr",
+    //             target: 'https://firebasestorage.googleapis.com/v0/b/',
     //             changeOrigin: true,
+    //             pathRewrite: {
+    //                 '^/kkalong-b4cec.appspot.com/o/': '' // URL ^/api -> 공백 변경
+    //             }
     //         }
     //     )
     // )
