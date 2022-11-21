@@ -27,7 +27,7 @@ public class RecommendService {
                 System.out.println("B");
                 return new String[]{user.getPersonal_color(), user.getFace_img()};
             }else {
-                String url = "http://localhost:8000/api/personal_color/" + user.getId();
+                String url = "http://localhost:8001/api/personal_color/" + user.getId();
                 RestTemplate restTemplate = new RestTemplate();
                 String personal_color = restTemplate.getForObject(url, String.class);
                 personal_color = personal_color.split("\"")[1].split("\"")[0];
@@ -43,7 +43,7 @@ public class RecommendService {
 
         System.out.println(face_img);
 
-        String url = "http://localhost:8000/api/personal_color/"+user.getId();
+        String url = "http://localhost:8001/api/personal_color/"+user.getId();
         RestTemplate restTemplate = new RestTemplate();
         String personal_color = restTemplate.getForObject(url, String.class);
         personal_color = personal_color.split("\"")[1].split("\"")[0];
@@ -58,7 +58,7 @@ public class RecommendService {
 
     public List<HashMap<Object, Object>> recommendPersonal(String personal_color, String season, String gender, String style) {
         RestTemplate restTemplate = new RestTemplate();
-        String url ="http://localhost:8000/api/personal_recommend/"+personal_color +"/"+ season+ "/" + gender +"/" + style;
+        String url ="http://localhost:8001/api/personal_recommend/"+personal_color +"/"+ season+ "/" + gender +"/" + style;
         List<HashMap<Object, Object>> personal_recommend = restTemplate.getForObject(url, List.class);
         System.out.println(personal_recommend.getClass().getName());
         return personal_recommend;
@@ -66,7 +66,7 @@ public class RecommendService {
 
     public HashMap<Object, Object> recommendWeather(String style, String season, String gender, String temp) {
         RestTemplate restTemplate = new RestTemplate();
-        String url ="http://localhost:8000/api/weather_recommend/"+ style +"/"+ season+ "/" + gender +"/" + temp;
+        String url ="http://localhost:8001/api/weather_recommend/"+ style +"/"+ season+ "/" + gender +"/" + temp;
         HashMap<Object, Object> weather_recommend = restTemplate.getForObject(url, HashMap.class);
         System.out.println(weather_recommend.getClass().getName());
         return weather_recommend;
@@ -74,7 +74,7 @@ public class RecommendService {
 
     public List<HashMap<Object, Object>> recommendClothing(String style, String season, String gender, String color, int main, int user_id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url ="http://localhost:8000/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color+ "/" + main+ "/" + user_id;
+        String url ="http://localhost:8001/api/clothesInfo_recommend/"+ style +"/"+ season+ "/" + gender +"/" + color+ "/" + main+ "/" + user_id;
         List<HashMap<Object, Object>> clothes_recommend = restTemplate.getForObject(url, List.class);
         return clothes_recommend;
     }
