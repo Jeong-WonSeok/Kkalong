@@ -226,12 +226,16 @@ export default function AddHelpCodi() {
         <Slider>
           <CodyListContainer>
             {CodyList.length && CodyList.map((Cody, idx) => {
-              return(
-                <CodyInfoContainer key={idx} onClick={()=>ChangePicture(idx)}>
-                  <CodyImg src={Cody.img}/>
-                  <CodyP>{Cody.name}</CodyP>
-                </CodyInfoContainer>
-              )
+              if (Cody.open) {
+                return(
+                  <CodyInfoContainer key={idx} onClick={()=>ChangePicture(idx)}>
+                    <CodyImg src={Cody.img}/>
+                    <CodyP>{Cody.name}</CodyP>
+                  </CodyInfoContainer>
+                  )
+              } else { return ()}
+              
+              
             })}
             {!CodyList.length && 
               <CodyNone>
