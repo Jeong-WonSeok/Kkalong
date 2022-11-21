@@ -60,14 +60,25 @@ export default function PlusCody() {
   )
 
   const readImages = async () => {
-    await axios
-      .get("closet/clothings/" + closetId)
+    if (params.userId) {
+      await axios
+      .get(requests.closet + params.userId)
       .then((response) => {
-        setClothList(response.data.clothings);
+        setClothList(response.data.closets[0].clothings);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    } else {
+    await axios
+      .get(requests.closet + User.user_id)
+      .then((response) => {
+        setClothList(response.data.closets[0].clothings);
       })
       .catch((error) => {
         console.log(error);
       });
+    }
   };
 
   const onUploadImage = (i: number) => {

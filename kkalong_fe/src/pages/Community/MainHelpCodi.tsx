@@ -30,6 +30,7 @@ export default function MainHelpCodi() {
   const [ IsCloset, setIsCloset] = useState(false)
 
   useEffect(() => {
+    dispatch(getHelpCodi())
     setHelpCloset(HelpCody.filter(Help => {
       return Help.Help.open
     }))

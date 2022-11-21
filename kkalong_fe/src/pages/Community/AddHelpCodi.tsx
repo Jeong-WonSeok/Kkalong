@@ -147,7 +147,6 @@ export default function AddHelpCodi() {
   
   const Submit = async () => {
     // 코디 피드백
-    console.log(SendData)
     if (params.Category === "Codi") {
       const res = await axios.post(requests.helpCodi, SendData)
       console.log(res)
