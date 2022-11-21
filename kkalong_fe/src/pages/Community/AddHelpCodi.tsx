@@ -36,7 +36,13 @@ export default function AddHelpCodi() {
   const params = useParams()
   const navigate = useNavigate()
   const { User } = useAppSelector(state => state.User)
-  const [SendData, setSendData]= useState<SendType>()
+  const [SendData, setSendData]= useState<SendType>({
+    img: '',
+    title: '',
+    content: '',
+    open: false,
+    range: "모두",
+  })
   const [CodyList ,setCodyList] = useState(Array<CodyType>)
   const [IsSelectCody, setIsSelectCody] = useState(false)
   const SelectOptions = ['친구', '모두']
@@ -89,12 +95,6 @@ export default function AddHelpCodi() {
       setCodyList(res.data.closets[0].codies)
     }
     
-    // setCodyList([{
-    //   img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAA0YOa2BQN1ttzmrK1Bdfnw_Y4u_oMD3vpA&usqp=CAU',
-    //   name: '여름코디',
-    //   creater: 1,
-    //   open: true
-    // }])
     setIsSelectCody(true)
   }
 
@@ -147,10 +147,11 @@ export default function AddHelpCodi() {
   
   const Submit = async () => {
     // 코디 피드백
+    console.log(SendData)
     if (params.Category === "Codi") {
       const res = await axios.post(requests.helpCodi, SendData)
       console.log(res)
-      navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+      navigate(`/community/HelpCodi/true/${res.data.Help.help_id}`)
     // 코디 추천
     } else {
       if (params.HelpCodiId) {
