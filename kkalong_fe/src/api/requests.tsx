@@ -33,9 +33,10 @@ const requests = {
   closet: "/closet/all/", // ${} 으로 동적 라우팅
   removeBackground: "/closet/removeBg",
   addClothes: "/closet/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
-  codi: "/closet/cody",
+  codi: "/closet/cody/",
   closetAdd: "/closet/closet",
   imgAdd: "closet/cody/img",
+  codiDetail: "closet/codies/",
 
   // 가상피팅
   bodyImg: "/user/body/img",
@@ -44,7 +45,7 @@ const requests = {
   // 추천
   faceImg: "/recommend/personal",
   weather: "/recommend/weather/",
-  personalColor: '/recommend/personalColor',
+  personalColor: "/recommend/personalColor",
   body: "/recommend/body",
 };
 

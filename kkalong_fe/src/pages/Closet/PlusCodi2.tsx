@@ -243,7 +243,7 @@ export default function AddClothes() {
         summer: seasonsBoolean[1],
         fall: seasonsBoolean[2],
         winter: seasonsBoolean[3],
-        img: clothing?.img,
+        img: "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_1.png?alt=media",
         clothings,
       })
       .then((response) => {

@@ -80,14 +80,16 @@ export default function AddCloset() {
         >
           <img src={left}></img>
         </BackBtn>
+      </TopNav>
+      <Modal>
         <ClosetName
           onChange={onChangeInput}
-          placeholder="이름을 입력해주세요"
+          placeholder="옷장 제목을 입력해주세요"
         />
         <ClosetEnter onClick={onSubmit}>
           <EnterText>저장</EnterText>
         </ClosetEnter>
-      </TopNav>
+      </Modal>
     </div>
   );
 }
@@ -129,22 +131,39 @@ const ClosetImg = styled.img`
 const ClosetName = styled.input`
   height: 30px;
   width: 200px;
+  margin-top: 50px;
+  margin-left: 25px;
   border-top: none;
   border-left: none;
   border-right: none;
   border-bottom: solid 1px;
+  &:active, // &는 this를 의미한다
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    left: 20px;
+  }
 `;
 
 const ClosetEnter = styled.button`
-  height: 30px;
-  width: 60px;
-  background-color: var(--primary-color-400);
+  height: 40px;
+  width: 250px;
+  background-color: #67564e;
   border: none;
-  border-radius: 30px;
-  position: relative;
-  top: 3px;
+  border-radius: 0px 0px 30px 30px;
+  margin-top: 70px;
 `;
 
 const EnterText = styled.span`
   color: white;
+`;
+
+const Modal = styled.div`
+  width: 250px;
+  height: 180px;
+  border: solid 1px #67564e;
+  display: row;
+  margin: 100px auto;
+  border-radius: 30px;
 `;
