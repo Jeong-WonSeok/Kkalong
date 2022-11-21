@@ -8,7 +8,7 @@ const ThreeTest = () => {
   const navigate = useNavigate();
 
   const SkipHandler = () => {
-    navigate("/")
+    navigate("/closet")
   }
 
   return (
