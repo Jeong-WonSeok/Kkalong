@@ -13,9 +13,9 @@ const Example = () => {
 
   const navigate = useNavigate();
   setTimeout(() => {
-    // navigate('/VirtualFitting/VirtualBrandChoice/')
+    navigate('/closet')
     
-  }, 7500)
+  }, 12000)
   
   // const updateHandler = (e) => {
   //   // console.log("업뎃핸들러")
