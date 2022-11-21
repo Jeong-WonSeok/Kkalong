@@ -80,7 +80,9 @@ public class RecommendController {
 
     @GetMapping("/weather/{x}/{y}")
     public ResponseEntity<?> getWeather(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable String x, @PathVariable String y) throws JSONException, IOException {
-        System.out.println(x);
+
+        x = "60";
+        y = "127";
         LocalDate now = LocalDate.now();
         LocalDate tomorrow = now.plusDays(1);
         LocalDate afterTwoDay = now.plusDays(2);
