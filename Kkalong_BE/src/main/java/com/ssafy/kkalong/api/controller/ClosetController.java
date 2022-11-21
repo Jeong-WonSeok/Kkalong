@@ -136,12 +136,15 @@ public class ClosetController {
         Map<String, Object> result = new HashMap<>();
         int next_clothing_id = closetService.findNextClothingId();
         System.out.println(next_clothing_id);
-        String img_url = closetService.removeClothingImgBackground(next_clothing_id, img);
-        img_url = img_url.substring(1, img_url.length()-1);
-        String color = closetService.getColorInfos(next_clothing_id);
-        color = color.substring(1, color.length()-1);
-        result.put("img", img_url);
-        result.put("color", color);
+//        String img_url = closetService.removeClothingImgBackground(next_clothing_id, img);
+//        img_url = img_url.substring(1, img_url.length()-1);
+//        String color = closetService.getColorInfos(next_clothing_id);
+//        color = color.substring(1, color.length()-1);
+        String mainCategory = closetService.getCategoryInfos(next_clothing_id);
+        mainCategory = mainCategory.substring(1, mainCategory.length()-1);
+//        result.put("img", img_url);
+//        result.put("color", color);
+        result.put("mainCategory", Integer.parseInt(mainCategory));
         return ResponseEntity.ok().body(result);
     }
 
@@ -198,13 +201,15 @@ public class ClosetController {
     public ResponseEntity<?> getCodyInfoByCodyId(@PathVariable int cody_id){
         Map<String, Object> result = new HashMap<>();
         Cody cody = closetService.getCodyInfoByCodyId(cody_id);
-        CodyResponseDto codyResponseDto = CodyResponseDto.builder()
+        CodyInfoResponseDto codyInfoResponseDto = CodyInfoResponseDto.builder()
                 .cody_id(cody.getId())
                 .img(cody.getImg())
                 .name(cody.getName())
                 .open(cody.getOpen())
+                .style(cody.getStyle())
+                .season(closetService.getStringSeasonsfromCody(cody))
                 .build();
-        result.put("cody", codyResponseDto);
+        result.put("cody", codyInfoResponseDto);
         List<CodyClothing> codyClothings = closetService.findAllCodyClothingByCody(cody);
         ArrayList<ClothingInfoResponseDto> clothingInfoResponseDtos = new ArrayList<>();
         for (CodyClothing codyClothing: codyClothings) {
