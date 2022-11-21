@@ -75,8 +75,6 @@ export default function AddBestDress() {
     const ImgUrl = URL.createObjectURL(e.target.files[0])
     Picture.style.backgroundImage=`url(${ImgUrl})`
     Picture.style.backgroundPosition="center"
-    Picture.style.width="auto"
-    Picture.style.height="auto"
   }
 
   const Submit = async () => {
