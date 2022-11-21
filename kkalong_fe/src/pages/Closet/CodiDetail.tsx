@@ -11,6 +11,7 @@ import requests from "../../api/requests";
 import { SortClothes } from "./MainCloset";
 import { ObjValueTuple } from "reselect/es/types";
 import { resolveTypeReferenceDirective } from "typescript";
+import { request } from "https";
 export default function AddClothes() {
   const location = useLocation();
   const closetId = location.state.closetId;
@@ -215,7 +216,7 @@ export default function AddClothes() {
   console.log(url);
   console.log(codi);
   useEffect(() => {
-    axios.get(requests.codi + codiId).then((res) => {
+    axios.get("/closet/cody/" + codiId).then((res) => {
       setCodi(res.data);
       setClothings(res.data.clothings);
     });
@@ -242,22 +243,16 @@ export default function AddClothes() {
           {clothings.map((a, i) => {
             return (
               <ClothesBtn onClick={() => {}}>
-                <img src={clothings[i]?.img} width="80px" />
+                <img src={clothings[i]?.img} width="80px" height="90px" />
               </ClothesBtn>
             );
           })}
         </Category>
         <Box></Box>
-        <SortContainer>
-          <SortBtn>
-            <SeasonP>분류</SeasonP>
-            <SeasonP2></SeasonP2>
-          </SortBtn>
-        </SortContainer>
         <SeasonCategory>
           <SeasonP3>스타일</SeasonP3>
           <CheckboxContainer>
-            <SeasonBtn>{clothes.style}</SeasonBtn>
+            <SeasonBtn>{codi?.cody.style}</SeasonBtn>
           </CheckboxContainer>
         </SeasonCategory>
         <SeasonCategory>
@@ -274,7 +269,7 @@ export default function AddClothes() {
                       console.log(seasonsBoolean);
                     }}
                   >
-                    {clothes.season}
+                    {codi?.cody.season}
                     {/* <SeasonCheckbox
                           value={season}
                           id={season}

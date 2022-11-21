@@ -294,6 +294,16 @@ export default function AddClothes() {
           </CheckboxContainer>
         </SeasonCategory>
         <SeasonCategory>
+          <SeasonP3>퍼스널 컬러</SeasonP3>
+        </SeasonCategory>
+        <CheckboxContainer>
+          이 옷은
+          <SeasonBtn3>
+            <Personaltxt>"{clothes.personal_color}"</Personaltxt>
+          </SeasonBtn3>
+          에 어울리는 옷입니다
+        </CheckboxContainer>
+        <SeasonCategory>
           <SeasonP4>계절</SeasonP4>
           <CheckboxContainer>
             {season?.map((season, index) => {
@@ -333,14 +343,14 @@ const SeasonBtn = styled.button`
   border: none;
   display: block;
   font-family: var(--base-font-400);
-  font-size: 14px;
+  font-size: 18px;
   width: 70px;
   margin: 0 5px;
   height: 40px;
   text-align: center;
   border-radius: 20px;
   line-height: 30px;
-  background: #fae6c0;
+  background: white;
 `;
 const SeasonBtn2 = styled.button`
   border: none;
@@ -354,6 +364,19 @@ const SeasonBtn2 = styled.button`
   border-radius: 20px;
   line-height: 30px;
   background: white;
+`;
+const SeasonBtn3 = styled.button`
+  border: none;
+  display: flex;
+  font-family: var(--base-font-400);
+  font-size: 14px;
+  margin: 0 5px;
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  border-radius: 20px;
+  line-height: 30px;
+  background: #fae6c0;
 `;
 const ImagePreview = styled.img`
   width: 100%;
@@ -451,6 +474,9 @@ const CheckboxContainer = styled.div`
   border-radius: 50px;
   align-items: center;
   margin: auto;
+  text-align: center;
+  padding: 5px 40px;
+  margin-bottom: 30px;
 `;
 export const Box = styled.div`
   width: 360px;
@@ -504,4 +530,10 @@ const SortButton = styled.button`
   /* border: solid 1px #67564e; */
   border-radius: 30px;
   font-family: var(--base-font-400);
+`;
+
+const Personaltxt = styled.p`
+  font-family: var(--base-font-400);
+  color: #f55409;
+  margin: auto;
 `;
