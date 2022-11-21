@@ -630,6 +630,7 @@ def weatherRecommend(style, gender, weather, temp):
     result = {"top": top_result.to_dict('r'), "bottom": bottom_result.to_dict('r'),
               "shoes": shoes_result.to_dict('r'), "outer": outer_result.to_dict('r'),
               "bag": bag_result.to_dict('r'), "hat": hat_result.to_dict('r')}
+
     return result
 
 def personalRecommend(style, gender, weather ,personal_color):
@@ -639,6 +640,7 @@ def personalRecommend(style, gender, weather ,personal_color):
     cody = mainChoice(gender, weather, styleDf)
     cody_sub = seasonRecommend(cody, weather, styleDf)
     top_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[1]]['color'].drop_duplicates())
+    print(top_color_total)
     bottom_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[2]]['color'].drop_duplicates())
     outer_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[5]]['color'].drop_duplicates())
     shoes_color_total = list(styleDf[styleDf["sub_category"] ==cody_sub[6]]['color'].drop_duplicates())
@@ -657,6 +659,7 @@ def personalRecommend(style, gender, weather ,personal_color):
     for top in color_top:
         if len(set(top) & top_total) > 0:
             temp_top.append(list(set(top) & top_total))
+    print(temp_top)
 
     color["top"] = random.choice(temp_top)
     color["bottom"] = color_select(color, bottom_color_total, "bottom", total)
@@ -689,7 +692,7 @@ def selectDbCody(cody, color, gender, category):
     if len(color[category]) > 0:
         color_choice = random.choice(color[category])
     sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B')".format(cody[category], color_choice, gender)
-    print(sql)
+    # print(sql)
     result = pd.read_sql_query(sql, conn)
     return result
 
@@ -698,8 +701,10 @@ def selectDbCodyBySub(cody, color, sub, gender, category):
     color_choice = []
     if len(color[category]) > 0:
         color_choice = random.choice(color[category])
+
     sql = "select * from clothing where main_category={0} and color='{1}' and (gender='{2}' or gender='B') and sub_category='{3}'".format(cody[category], color_choice, gender, sub)
-    print(sql)
+
+    # print(sql)
     result = pd.read_sql_query(sql, conn)
     return result
 
@@ -738,9 +743,9 @@ def bodyShapeRecommend(gender, main, season, height, weight):
 
     return "c"
 
-def clothesInfoRecommend(style, gender, weather, clothes_color, main):
+def importDBcloset(style, gender, weather, clothes_color, main):
     main = int(main)
-    clothesDF = importDB()
+    clothesDF = importDBcloset()
     styleDf = clothesDF[clothesDF['style'] == style]
 
     cody = mainChoice(gender, weather, styleDf)
@@ -838,4 +843,11 @@ def clothesInfoRecommend(style, gender, weather, clothes_color, main):
     result = {"top": top_result, "bottom": bottom_result,
               "shoes": shoes_result, "outer": outer_result,
               "bag": bag_result, "hat": hat_result}
+    return result
+
+def importDBcloset(user_id):
+    conn = create_engine('mysql+pymysql://b302:ssafy@k7b302.p.ssafy.io:3306/kkalong')
+    sql = "select c.* from clothing c join closet_clothing cc on c.clothing_id = cc.clothing_id " \
+                "where cc.closet_id in (select closet_id from closet where user_id = {0} and base = 1)".format(user_id)
+    result = pd.read_sql_query(sql, conn)
     return result

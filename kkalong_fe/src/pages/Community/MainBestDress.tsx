@@ -9,16 +9,18 @@ import { BestDresserArticle, Container } from './MainCommunity'
 
 import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddArticle from '../../assets/icon/Community/addArticle.png'
-import { useAppSelector } from '../../hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook'
+import { getBestDress } from '../../redux/modules/BestDress'
 
 export default function MainBestDress() {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { BestDress } = useAppSelector(store => store.BestDress)
   const [BestArticles, setBestArticles] = useState(Array<BestDresserArticle>)
 
   useEffect(() => {
+    dispatch(getBestDress())
     setBestArticles(BestDress)
-    console.log(BestDress)
   }, [])
 
   return (

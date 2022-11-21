@@ -14,6 +14,7 @@ import backArrow from '../../assets/icon/Nav/BackArrow.png'
 import AddCodi from '../../assets/icon/Community/addCodi.png'
 import { SubmitBtn } from './AddBestDress'
 import { useAppSelector } from '../../hooks/reduxHook'
+import Slider from '../../components/ui/Slider'
 
 
 interface SendType {
@@ -35,7 +36,13 @@ export default function AddHelpCodi() {
   const params = useParams()
   const navigate = useNavigate()
   const { User } = useAppSelector(state => state.User)
-  const [SendData, setSendData]= useState<SendType>()
+  const [SendData, setSendData]= useState<SendType>({
+    img: '',
+    title: '',
+    content: '',
+    open: false,
+    range: "모두",
+  })
   const [CodyList ,setCodyList] = useState(Array<CodyType>)
   const [IsSelectCody, setIsSelectCody] = useState(false)
   const SelectOptions = ['친구', '모두']
@@ -88,12 +95,6 @@ export default function AddHelpCodi() {
       setCodyList(res.data.closets[0].codies)
     }
     
-    // setCodyList([{
-    //   img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAA0YOa2BQN1ttzmrK1Bdfnw_Y4u_oMD3vpA&usqp=CAU',
-    //   name: '여름코디',
-    //   creater: 1,
-    //   open: true
-    // }])
     setIsSelectCody(true)
   }
 
@@ -149,7 +150,7 @@ export default function AddHelpCodi() {
     if (params.Category === "Codi") {
       const res = await axios.post(requests.helpCodi, SendData)
       console.log(res)
-      navigate(`/community/HelpCodi/${res.data.Help.help_id}`)
+      navigate(`/community/HelpCodi/true/${res.data.Help.help_id}`)
     // 코디 추천
     } else {
       if (params.HelpCodiId) {
@@ -222,16 +223,7 @@ export default function AddHelpCodi() {
 
       {/* 코디 선택 창 */}
       {IsSelectCody &&
-        <CodyContainer id="move">
-          <TopSlider
-          onDragStart={dragStartHandler} 
-          onTouchStart={dragStartHandler}
-          onDrag={dragHandler} 
-          onTouchMove={dragHandler}
-          onDragEnd={dragEndHandler}
-          onTouchEnd={dragEndHandler}>
-            <TopSliderButton></TopSliderButton>
-          </TopSlider>
+        <Slider>
           <CodyListContainer>
             {CodyList.length && CodyList.map((Cody, idx) => {
               return(
@@ -248,7 +240,7 @@ export default function AddHelpCodi() {
               </CodyNone>
             }
           </CodyListContainer>
-        </CodyContainer>
+        </Slider>
       }
 
       <TitleInput placeholder="제목을 입력해주세요" type="text" value={SendData?.title} onChange={HandleTitle}/>

@@ -53,7 +53,7 @@ export default function Login() {
     if (error) { 
       setAlert(true)
     } else {
-      navigate('/closet')
+      navigate('/threetest')
     }
     // console.log(email);
     // console.log(password);

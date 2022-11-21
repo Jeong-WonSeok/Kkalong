@@ -7,6 +7,9 @@ from PIL import Image
 from fastapi.encoders import jsonable_encoder
 
 import removeBg
+import recommendCodi_Main
+import recommendCodi
+
 import colorExtract
 import recommendCodi
 from fastapi.responses import JSONResponse
@@ -82,7 +85,7 @@ def personal_recommend(personal_color: Optional[str] = None, season: Optional[st
     return result_arr
 
 @app.get("/api/weather_recommend/{style}/{season}/{gender}/{temp}")
-def personal_recommend(style: Optional[str] = None, season: Optional[str] = None,
+def weather_recommend(style: Optional[str] = None, season: Optional[str] = None,
                         gender: Optional[str] = None, temp: Optional[str] = None):
 
     print(style, season, gender, temp)
@@ -102,11 +105,11 @@ def personal_recommend(style: Optional[str] = None, season: Optional[str] = None
             #     continue
     return result
 
-@app.get("/api/clothesInfo_recommend/{style}/{season}/{gender}/{color}/{main}")
+@app.get("/api/clothesInfo_recommend/{style}/{season}/{gender}/{color}/{main}/{user_id}")
 def clothesInfo_recommend(style: Optional[str] = None, season: Optional[str] = None,
                         gender: Optional[str] = None, color: Optional[str] = None,
-                        main: Optional[str] = None):
-    print(style, season, gender, color, main)
+                        main: Optional[str] = None, user_id: Optional[str] = None):
+    print(style, season, gender, color, main, user_id)
     result_arr = []
     idx = 0
     for i in range(4):
@@ -115,8 +118,8 @@ def clothesInfo_recommend(style: Optional[str] = None, season: Optional[str] = N
                 if idx >= 100:
                     result_arr.append("코디가 없어요..ㅠ")
                     return result_arr
-                print(idx)
-                result = recommendCodi.clothesInfoRecommend(style, gender, season, color, main)
+                # print(idx)
+                result = recommendCodi_Main.clothesInfoRecommend(style, gender, season, color, main, user_id)
                 result_arr.append(result)
                 break
             except:

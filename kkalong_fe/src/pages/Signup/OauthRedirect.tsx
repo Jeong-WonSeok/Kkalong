@@ -41,7 +41,7 @@ export const OauthRedirect = () => {
         })
         .then((res) => {
           localStorage.setItem("userProfile", JSON.stringify(res.data.user));
-          navigate("/closet");
+          navigate("/threetest");
         })
         .catch((err) => {
           console.log(err);

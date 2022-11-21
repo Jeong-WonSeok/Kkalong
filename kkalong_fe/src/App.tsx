@@ -52,6 +52,7 @@ import PersonalColor from "./pages/Recommend/PersonalColor";
 import PersonalColorRecommend from "./pages/Recommend/PersonalColorRecommend";
 import { useAppDispatch } from "./hooks/reduxHook";
 import dfs_xy_conv from "./hooks/chagneLatLon";
+import PlusCody from "./pages/Closet/PlusCody";
 
 type LocationType = {
   lat: number;
@@ -174,19 +175,21 @@ function App() {
               path="/closet/:HelpCodiId/:userId"
               element={<MainCloset />}
             ></Route>
+            <Route path="/pluscodi" element={<PlusCody />}></Route>
+            <Route path="/pluscodi/:userId/" element={<PlusCody />}></Route>
             <Route
-              path="/closet/:userId/pluscodi"
-              element={<PlusCodi />}
+              path="/pluscodi/:HelpCodiId/:userId/"
+              element={<PlusCody />}
             ></Route>
+            <Route path="/pluscodi2" element={<PlusCodi2 />}></Route>
+            <Route path="/pluscodi2/:userId" element={<PlusCodi2 />}></Route>
             <Route
-              path="/closet/:HelpCodiId/:userId/pluscodi"
-              element={<PlusCodi />}
+              path="/pluscodi2/:HelpCodiId/:userId/"
+              element={<PlusCodi2 />}
             ></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
-            <Route path="/pluscodi" element={<PlusCodi />}></Route>
-            <Route path="/pluscodi2" element={<PlusCodi2 />}></Route>
-            <Route path="/pluscodi/:Category" element={<PlusCodi />}></Route>
+            <Route path="/codi/:userId" element={<CodiPage />}></Route>
             <Route path="/codiedit" element={<CodiEdit />}></Route>
             <Route path="/closetasset" element={<ClosetAsset />}></Route>
             <Route path="/threetest" element={<ThreeTest />}></Route>

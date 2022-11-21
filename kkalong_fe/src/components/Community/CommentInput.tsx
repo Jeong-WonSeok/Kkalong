@@ -3,14 +3,15 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import axios from '../../api/axios'
 import requests from '../../api/requests'
-import { useAppSelector } from '../../hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook'
 import { commentType } from '../../pages/Community/DetailHelpCodi'
+import { CodyReset } from '../../redux/modules/CodyComment'
 
 export default function CommentInput({article_id, category, CommentsInput} :{article_id: number, category:string, CommentsInput: (data: commentType) => void}) {
+  const dispatch = useAppDispatch()
   const [Message, setMessage] = useState('')
   const [CodiImg, setCodiImg] = useState(null as null | number)
   const { cody } = useAppSelector(state=>state.CodyComment)
-
   const SendMessage = async () => {
     if (!Message) {
       return
@@ -22,12 +23,12 @@ export default function CommentInput({article_id, category, CommentsInput} :{art
         codi_id: cody.cody_id
       }
       const res = await axios.post(requests.detailHelpCodi + article_id + requests.comment , data)
-      console.log(res.data)
       CommentsInput(res.data)
+      dispatch(CodyReset())
+      
     } else {
       const data = {content: Message}
       const res = await axios.post(requests.detailBestDress + article_id + requests.comment, data)
-      console.log(res.data)
       CommentsInput(res.data)
     }
     setMessage('')
@@ -42,22 +43,25 @@ export default function CommentInput({article_id, category, CommentsInput} :{art
   return (
     <ColumnContainer>
       {/* 코디가 있을 때만 보임 */}
-      {cody && <div>
-        <CodyImg src={cody.cody_img}/>
-      </div>}
-      <Container>
-        <Input placeholder='댓글을 입력해주세요' value={Message} onChange={(e: any) => setMessage(e.target.value)} onKeyPress={EnterInput}/>
-        <Button onClick={SendMessage}>작성</Button>
-      </Container>  
+        {Object.keys(cody).length !== 0 && <CodyImg src={cody.cody_img}/>}
+        <Container>
+          <Input placeholder='댓글을 입력해주세요' value={Message} onChange={(e: any) => setMessage(e.target.value)} onKeyPress={EnterInput}/>
+          <Button onClick={SendMessage}>작성</Button>
+        </Container> 
     </ColumnContainer>
 
   )
 }
 
 const ColumnContainer = styled.div`
+  position: fixed;
+  left: auto;
+  bottom: 70px;
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-top: 5px;
+  background-color: white;
 `
 
 const Container = styled.div`
@@ -67,9 +71,6 @@ const Container = styled.div`
   background-color: white;
   display: flex;
   flex-direction: row;
-  position: fixed;
-  left: auto;
-  bottom: 70px;
   font-family: var(--base-font-400);
 `
 
@@ -94,6 +95,9 @@ const Button = styled.button`
 `
 
 const CodyImg = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  border: 2px solid var(--primary-color-500);
+  margin-bottom: 5px;
 `

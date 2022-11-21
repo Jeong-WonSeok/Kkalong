@@ -66,9 +66,9 @@ public class RecommendController {
 
         List<HashMap<Object, Object>> casual = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "casual");
         //데이터 넣고 바꿈
-        List<HashMap<Object, Object>> dandy = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "casual");
+        List<HashMap<Object, Object>> dandy = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "formal");
         List<HashMap<Object, Object>> hiphop = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "casual");
-        List<HashMap<Object, Object>> formal = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "casual");
+        List<HashMap<Object, Object>> formal = recommendService.recommendPersonal(user.getPersonal_color(), season, user.getGender(), "formal");
         Map<String, Object> result = new HashMap<>();
         result.put("casual", casual);
         result.put("dandy", dandy);
@@ -80,6 +80,9 @@ public class RecommendController {
 
     @GetMapping("/weather/{x}/{y}")
     public ResponseEntity<?> getWeather(@AuthenticationPrincipal UserDetailsImpl userInfo, @PathVariable String x, @PathVariable String y) throws JSONException, IOException {
+
+        x = "60";
+        y = "127";
         LocalDate now = LocalDate.now();
         LocalDate tomorrow = now.plusDays(1);
         LocalDate afterTwoDay = now.plusDays(2);
@@ -92,6 +95,7 @@ public class RecommendController {
         DateTimeFormatter timeFormatter =DateTimeFormatter.ofPattern("HHmm");
         String time = timeNow.format(timeFormatter);
         DateTimeFormatter Monthformater = DateTimeFormatter.ofPattern("MM");
+
         int month = Integer.parseInt(now.format(Monthformater));
         String season = "";
 
@@ -102,24 +106,25 @@ public class RecommendController {
 
         User user = userService.getUserByUserId(userInfo.getId());
         Map<String, String> weather = weatherService.loadTodayWeather(x, y, today, time, "700", tomorrowDay, twoDay);
+
         HashMap<Object, Object> casual1 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("today"));
         //데이터 전처리하고 바꿀것
-        HashMap<Object, Object>  dandy1 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("today"));
+        HashMap<Object, Object>  dandy1 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("today"));
         HashMap<Object, Object>  hiphop1 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("today"));
-        HashMap<Object, Object>  formal1 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("today"));
+        HashMap<Object, Object>  formal1 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("today"));
 
         HashMap<Object, Object>  casual2 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrow"));
         //데이터 전처리하고 바꿀것
-        HashMap<Object, Object>  dandy2 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrow"));
+        HashMap<Object, Object>  dandy2 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("tomorrow"));
         HashMap<Object, Object>  hiphop2 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrow"));
-        HashMap<Object, Object>  formal2 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrow"));
+        HashMap<Object, Object>  formal2 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("tomorrow"));
 
         HashMap<Object, Object>  casual3 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrowAfter"));
         //데이터 전처리하고 바꿀것
-        HashMap<Object, Object>  dandy3 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrowAfter"));
+        HashMap<Object, Object>  dandy3 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("tomorrowAfter"));
         HashMap<Object, Object>  hiphop3 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrowAfter"));
-        HashMap<Object, Object>  formal3 = recommendService.recommendWeather("casual", season, user.getGender(), weather.get("tomorrowAfter"));
-        
+        HashMap<Object, Object>  formal3 = recommendService.recommendWeather("formal", season, user.getGender(), weather.get("tomorrowAfter"));
+//
         Map<String, Object> first = new HashMap<>();
         Map<String, Object> second = new HashMap<>();
         Map<String, Object> third = new HashMap<>();
@@ -158,7 +163,7 @@ public class RecommendController {
         User user = userService.getUserByUserId(userInfo.getId());
         ClothingInfoResponseDto clothes = closetService.getClothingInfoByClothingId(clothes_id);
         String style = closetService.getStyleByClothingId(clothes_id);
-        List<HashMap<Object,Object>> cody = recommendService.recommendClothing(style, season, user.getGender(), clothes.getColor(), clothes.getMainCategory());
+        List<HashMap<Object,Object>> cody = recommendService.recommendClothing(style, season, user.getGender(), clothes.getColor(), clothes.getMainCategory(),user.getId());
         Map<String, Object> result = new HashMap<>();
         result.put("cody", cody);
 

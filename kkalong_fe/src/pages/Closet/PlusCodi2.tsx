@@ -1,275 +1,110 @@
-import { useEffect, useState, useRef, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import Webcam from "react-webcam";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import TopNav from "../../components/ui/TopNav";
+import FooterBar from "../../components/ui/FooterBar";
 
 import Close from "../../assets/icon/Nav/close.png";
+
 import axios from "../../api/axios";
 import requests from "../../api/requests";
-import { SortClothes } from "./MainCloset";
-import { ObjValueTuple } from "reselect/es/types";
-import { resolveTypeReferenceDirective } from "typescript";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { MakeCody } from "../../redux/modules/CodyComment";
+
+interface clothesType {
+  closet_id: number;
+  mainCategory: number;
+  subCategory: number;
+  spring: boolean;
+  summer: boolean;
+  fall: boolean;
+  winter: boolean;
+  color: string;
+  img: string;
+  brand_id: number;
+}
+interface subCategoryType {
+  subId: number;
+  name: string;
+}
+interface CategoryType {
+  id: number;
+  name: string;
+  subcategories: subCategoryType[];
+}
+interface imgSetType {
+  color?: string;
+  img?: any;
+}
 
 export default function AddClothes() {
   const location = useLocation();
+  const params = useParams();
+  const dispatch = useAppDispatch();
   const closetId = location.state.closetId;
-  const clothings = location.state.clothesArray;
-  console.log(clothings);
-  interface clothesType {
-    closet_id: number;
-    mainCategory: number;
-    subCategory: number;
-    spring: boolean;
-    summer: boolean;
-    fall: boolean;
-    winter: boolean;
-    color: string;
-    img: string;
-    brand_id: number;
-  }
-  interface subCategoryType {
-    subId: number;
-    name: string;
-  }
-  interface CategoryType {
-    id: number;
-    name: string;
-    subcategories: subCategoryType[];
-  }
-  interface imgSetType {
-    color?: string;
-    img?: any;
-  }
-  const [btn, setBtn] = useState([false, false, false, false]);
-  const [files, setFiles] = useState("");
+  const clothings = location.state.SelectClothes;
+  const { CodyImg } = useAppSelector((state) => state.CodyComment);
+  const { User } = useAppSelector((state) => state.User);
   const navigate = useNavigate();
-  const webcam = useRef<Webcam>(null);
-  const [url, setUrl] = useState<string | "">("");
   const seasons = ["봄", "여름", "가을", "겨울"];
-  const [clothes, setClothes] = useState<clothesType>({
-    closet_id: 0,
-    mainCategory: 0,
-    subCategory: 0,
-    spring: false,
-    summer: false,
-    fall: false,
-    winter: false,
-    color: "null",
-    img: "",
-    brand_id: 0,
-  });
-  let [category, setCategory] = useState<Array<CategoryType>>([
-    {
-      id: 1,
-      name: "상의",
-      subcategories: [
-        { subId: 101, name: "민소매 티셔츠" },
-        { subId: 102, name: "반소매 티셔츠" },
-        { subId: 103, name: "긴소매 티셔츠" },
-        { subId: 104, name: "셔츠/블라우스" },
-        { subId: 105, name: "피케/카라 티셔츠" },
-        { subId: 106, name: "맨투맨/스웨트 셔츠" },
-        { subId: 107, name: "니트/스웨터" },
-        { subId: 111, name: "미니 원피스" },
-        { subId: 112, name: "미디 원피스" },
-        { subId: 113, name: "맥시 원피스" },
-      ],
-    },
-    {
-      id: 2,
-      name: "하의",
-      subcategories: [
-        { subId: 201, name: "데님 팬츠" },
-        { subId: 202, name: "코튼 팬츠" },
-        { subId: 203, name: "슈트 팬츠/슬랙스" },
-        { subId: 204, name: "트레이닝/조거 팬츠" },
-        { subId: 205, name: "숏 팬츠" },
-        { subId: 206, name: "기타 바지" },
-        { subId: 211, name: "미니 스커트" },
-        { subId: 212, name: "미디 스커트" },
-        { subId: 213, name: "롱 스커트" },
-      ],
-    },
-    {
-      id: 3,
-      name: "아우터",
-      subcategories: [
-        { subId: 301, name: "후드 집업" },
-        { subId: 302, name: "환절기 코트" },
-        { subId: 303, name: "카디건" },
-        { subId: 304, name: "슈트/블레이저" },
-        { subId: 305, name: "재킷" },
-        { subId: 306, name: "블루종/MA-1" },
-        { subId: 307, name: "겨울 코트" },
-        { subId: 308, name: "플리스/뽀글이" },
-        { subId: 309, name: "숏패딩/숏헤비 아우터" },
-        { subId: 310, name: "무스탕/퍼" },
-        { subId: 311, name: "롱패딩/롱헤비 아우터" },
-        { subId: 312, name: "기타 아우터" },
-      ],
-    },
-    {
-      id: 4,
-      name: "신발",
-      subcategories: [
-        { subId: 401, name: "구두" },
-        { subId: 402, name: "로퍼" },
-        { subId: 403, name: "모카신/보트 슈즈" },
-        { subId: 404, name: "부츠" },
-        { subId: 405, name: "블로퍼" },
-        { subId: 406, name: "샌들" },
-        { subId: 407, name: "스니커즈" },
-        { subId: 408, name: "슬리퍼" },
-        { subId: 409, name: "캔버스/단화" },
-        { subId: 410, name: "플랫 슈즈" },
-        { subId: 411, name: "힐/펌프스" },
-      ],
-    },
-    {
-      id: 5,
-      name: "가방",
-      subcategories: [
-        { subId: 501, name: "백팩" },
-        { subId: 502, name: "브리프케이스" },
-        { subId: 503, name: "숄더백" },
-        { subId: 504, name: "에코백" },
-        { subId: 505, name: "크로스백" },
-        { subId: 506, name: "클러치백" },
-        { subId: 507, name: "토트백" },
-      ],
-    },
-    {
-      id: 2,
-      name: "모자",
-      subcategories: [
-        { subId: 601, name: "버킷/사파리햇" },
-        { subId: 602, name: "비니" },
-        { subId: 603, name: "캡/야구 모자" },
-        { subId: 604, name: "헌팅캡/베레모" },
-      ],
-    },
-  ]);
-  const colorPalette = [
-    "흰색",
-    "라이트그레이",
-    "회색",
-    "다크 그레이",
-    "검정색",
-    "딥레드",
-    "빨간색",
-    "라즈베리",
-    "네온 핑크",
-    "분홍색",
-    "라이트 핑크",
-    "페일 핑크",
-    "피치",
-    "코랄",
-    "라이트 오렌지",
-    "네온 오렌지",
-    "오렌지 핑크",
-    "주황색",
-    "아이보리",
-    "라이트 옐로우",
-    "노란색",
-    "머스타드",
-    "네온 그린",
-    "라이트 그린",
-    "민트",
-    "녹색",
-    "올리브 그린",
-    "카키",
-    "다크 그린",
-    "스카이 블루",
-    "네온 블루",
-    "파란색",
-    "네이비",
-    "자주",
-    "라벤더",
-    "보라색",
-    "버건디",
-    "갈색",
-    "로즈골드",
-    "레드 브라운",
-    "카키 베이지",
-    "카멜",
-    "샌드",
-    "베이지색",
-    "데님",
-    "연청",
-    "중청",
-    "진청",
-    "흑청",
-  ];
   let styleList = ["casual", "dandy", "street", "formal"];
-  let [style, setStyle] = useState("");
-  let [color, setColor] = useState("");
-  let [subid, setSubid] = useState(0);
-  let [id, setId] = useState(0);
-  let [categoryBtn, setCategoryBtn] = useState<Array<boolean>>([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  let seasonT = ["분류", "색상"];
-
-  const [seasonsBoolean, setSeasonsBoolean] = useState<Array<boolean>>([
-    false,
-    false,
-    false,
-    false,
-  ]);
-  useEffect(() => {}, []);
-  let userProfile: any = localStorage.getItem("userProfile");
-  userProfile = JSON.parse(userProfile);
-  let userId = userProfile.user_id;
-  let [clothing, setClothing] = useState<imgSetType>();
+  let style = "";
+  let seasonsBoolean = [false, false, false, false];
   let [input, setInput] = useState("");
   const onChangeInput = (e: any) => {
     setInput(e.target.value);
   };
-  const onSubmit = () => {
-    axios
-      .post(requests.codi, {
-        user_id: closetId,
-        creater_id: userId,
-        closet_id: closetId,
-        name: input,
-        style,
-        spring: seasonsBoolean[0],
-        summer: seasonsBoolean[1],
-        fall: seasonsBoolean[2],
-        winter: seasonsBoolean[3],
-        img: "https://firebasestorage.googleapis.com/v0/b/kkalong-b4cec.appspot.com/o/clothing_1.png?alt=media",
-        clothings,
-      })
-      .then((response) => {
-        axios.get(requests.closet + userId).then((res) => {
-          console.log(res);
-          navigate("/closet");
-        });
-      })
-      .catch((res) => {
-        console.log(res);
-        console.log({
-          closet_id: userId,
-          creater_id: userId,
-          mainCategory: id,
-          subCategory: subid,
-          name: input,
-          spring: seasonsBoolean[0],
-          summer: seasonsBoolean[1],
-          fall: seasonsBoolean[2],
-          winter: seasonsBoolean[3],
-          img: clothing?.img,
-          style,
-          clothings,
-        });
-      });
+
+  const onSubmit = async () => {
+    const data = {
+      user_id: params.userId ? Number(params.userId) : User.user_id,
+      creater_id: User.user_id,
+      closet_id: closetId,
+      name: input,
+      style: style,
+      spring: seasonsBoolean[0],
+      summer: seasonsBoolean[1],
+      fall: seasonsBoolean[2],
+      winter: seasonsBoolean[3],
+      img: CodyImg,
+      clothings: clothings,
+    };
+    console.log(data);
+    const res = await axios.post(requests.codi, data);
+
+    if (params.HelpCodiId) {
+      dispatch(MakeCody(res.data));
+      navigate(`/community/HelpCodi/true/${params.HelpCodiId}`);
+    } else {
+      navigate("/codi");
+    }
   };
+
+  const ChangeSelect = () => {
+    const styleBtn = document.getElementsByClassName(
+      "Style"
+    ) as HTMLCollectionOf<HTMLButtonElement>;
+    styleBtn[0].style.backgroundColor = "";
+    styleBtn[1].style.backgroundColor = "";
+    styleBtn[2].style.backgroundColor = "";
+    styleBtn[3].style.backgroundColor = "";
+
+    const selectBtn = document.getElementById(style) as HTMLButtonElement;
+    selectBtn.style.backgroundColor = "var(--primary-color-500)";
+  };
+
+  const ChangeSeason = () => {
+    seasonsBoolean.map((season, idx) => {
+      const btn = document.getElementById(String(idx)) as HTMLButtonElement;
+      if (season) {
+        btn.style.backgroundColor = "var(--primary-color-500)";
+      } else {
+        btn.style.backgroundColor = "var(--primary-color-100)";
+      }
+    });
+  };
+
   return (
     <div>
       <>
@@ -290,7 +125,7 @@ export default function AddClothes() {
 
         <Container>
           <ImgContainer>
-            <ImagePreview src={clothing?.img} />
+            <ImagePreview src={CodyImg} />
           </ImgContainer>
         </Container>
         <SeasonCategory>
@@ -300,8 +135,11 @@ export default function AddClothes() {
               return (
                 <div key={index}>
                   <SeasonBtn
+                    id={styleList[index]}
+                    className="Style"
                     onClick={() => {
-                      setStyle(styleList[index]);
+                      style = styleList[index];
+                      ChangeSelect();
                     }}
                   >
                     {styleList[index]}
@@ -318,11 +156,12 @@ export default function AddClothes() {
               return (
                 <div key={index}>
                   <SeasonBtn
+                    id={String(index)}
                     onClick={() => {
                       let seasonB = [...seasonsBoolean];
                       seasonB[index] = !seasonsBoolean[index];
-                      setSeasonsBoolean(seasonB);
-                      console.log(seasonsBoolean);
+                      seasonsBoolean = [...seasonB];
+                      ChangeSeason();
                     }}
                   >
                     {seasons[index]}
@@ -333,57 +172,19 @@ export default function AddClothes() {
           </CheckboxContainer>
         </SeasonCategory>
       </>
+      <FooterBar />
     </div>
   );
 }
 
-const CamDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-`;
-
-const ButtonContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: auto;
-  width: 100%;
-  height: 70px;
-  max-width: 360px;
-  display: flex;
-  justify-content: center;
-`;
-
-const CaptureButton = styled.div`
-  background-color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 3px solid black;
-  position: relative;
-  z-index: 5;
-`;
-
-const ChildCaptureButton = styled.div`
-  left: -7.5px;
-  top: -7.5px;
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 3px solid black;
-  z-index: 3;
-`;
-
 const SeasonBtn = styled.button`
   border: none;
   display: block;
+  background-color: var(--primary-color-100);
   font-family: var(--base-font-400);
   font-size: 14px;
   margin: 0 5px;
-  width: 40px;
+  min-width: 50px;
   height: 30px;
   text-align: center;
   border-radius: 20px;
@@ -403,12 +204,6 @@ const Container = styled.div`
 const CloseImg = styled.img`
   width: 30px;
   height: 30px;
-`;
-
-const NavText = styled.p`
-  margin: 0;
-  font-family: var(--base-font-600);
-  font-size: 20px;
 `;
 
 const SubmitBtn = styled.button`
@@ -457,57 +252,9 @@ const CheckboxContainer = styled.div`
   align-items: center;
 `;
 
-const SeasonLabel = styled.label`
-  display: block;
-  font-family: var(--base-font-400);
-  font-size: 14px;
-  margin: 0 5px;
-  width: 40px;
-  height: 30px;
-  text-align: center;
-  border-radius: 20px;
-  line-height: 30px;
-`;
-
-const SeasonCheckbox = styled.input.attrs({
-  type: "checkbox",
-})`
-  display: none;
-`;
-
-const SortTxt = styled.p`
-  font-size: 12px;
-`;
-
-const SortBtn = styled.button`
-  width: 360px;
-  height: 50px;
-  border: #221c1c solid 1px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  background-color: white;
-  display: flex;
-`;
-
-const SortContainer = styled.div`
-  width: 360px;
-`;
-
-const SortButton = styled.button`
-  width: 70px;
-  /* background-color: grey; */
-  border: none;
-  border-radius: 30px;
-`;
-
 const ClosetName = styled.input`
   height: 30px;
   width: 230px;
-  border-top: none;
-  border-left: none;
-  border-right: none;
+  border: none;
   border-bottom: solid 1px;
-  margin-left: 50px;
-  margin-top: 10px;
 `;

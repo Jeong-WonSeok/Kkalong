@@ -407,27 +407,6 @@ export default function MainCloset() {
                   )}
                 </>
               );
-
-              // if (closetId && sortId === clothings[i].mainCategory)
-              //   return (
-              //     <SortClothes
-              //       onClick={() => {
-              //         clothingId = clothings[i].clothing_id;
-              //         navigate("/clothes/detail", {
-              //           state: { closetId, clothingId },
-              //         });
-              //         axios
-              //           .get(
-              //             requests.addClothes + "/" + [clothings[i].clothing_id]
-              //           )
-              //           .then((res) => {
-              //             console.log(res);
-              //           });
-              //       }}
-              //     >
-              //       <ClothesImg src={clothings[i]?.img} />
-              //     </SortClothes>
-              //   );
             })}
           </SortClothesContainer>
 

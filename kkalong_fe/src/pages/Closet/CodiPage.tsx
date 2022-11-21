@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import FooterBar from "../../components/ui/FooterBar";
 import TopNav from "../../components/ui/TopNav";
@@ -53,7 +53,10 @@ interface dataType {
 export default function CodiPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const params = useParams()
+  const {User } = useAppSelector(state => state.User)
   const [closetId, setClosetId] = useState(0);
+<<<<<<< HEAD
   let [closet, setCloset] = useState(Array<dataType>);
   let [loading, setLoading] = useState(true);
   let userProfile: any = localStorage.getItem("userProfile");
@@ -109,19 +112,28 @@ export default function CodiPage() {
     false,
   ]);
   let [codiId, setCodiId] = useState();
+=======
+  const [closet, setCloset] = useState(Array<dataType>);
+  const [loading, setLoading] = useState(true);
+  const [index, setIndex] = useState(0)
+
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
   useEffect(() => {
-    axios
-      .get(requests.closet + userId)
-      .then((res) => {
-        closet = res.data.closets;
-        setCloset(res.data.closets);
-        console.log(closet);
-        setLoading(false);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+    if (params.userId) {
+      axios.get(requests.closet + params.userId)
+        .then((res) => {
+          setCloset(res.data.closets);
+          setLoading(false);
+        })
+    } else {
+      axios.get(requests.closet + User.user_id)
+        .then((res) => {
+          setCloset(res.data.closets);
+          setLoading(false);
+        })
+    }
   }, []);
+<<<<<<< HEAD
   useEffect(() => {
     axios
       .get(requests.codiDetail + closetId)
@@ -150,6 +162,19 @@ export default function CodiPage() {
   }, []);
   console.log(codi[0]?.cody_id);
   // console.log(codi[0].cody_id);
+=======
+
+  const PlusCody = () => {
+    if (params.userId) {
+      navigate(`/pluscodi/${params.userId}`, { state: { closetId } });
+    } else if (params.HelpCodiId) {
+      navigate(`/pluscodi/${params.userId}/${params.HelpCodiId}`, { state: { closetId } });
+    } else {
+      navigate(`/pluscodi`, { state: { closetId } });
+    }
+  }
+
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
   return (
     <div>
       <TopNav type={"menu"}>
@@ -183,6 +208,7 @@ export default function CodiPage() {
                 }}
                 onClick={() => {
                   setClosetId(closet[i].closet_id);
+<<<<<<< HEAD
                   let slideB = [
                     false,
                     false,
@@ -213,7 +239,7 @@ export default function CodiPage() {
             </SwiperSlide>
           );
         })}
-        <SwiperSlide>
+        {!params.userId && <SwiperSlide>
           <SlideButton2
             onClick={() => {
               navigate("/addcloset");
@@ -224,7 +250,7 @@ export default function CodiPage() {
             </ClosetIcon>
             <BtnText>옷장 추가 하기</BtnText>
           </SlideButton2>
-        </SwiperSlide>
+        </SwiperSlide>}
         {/* </SliderBorder> */}
       </Swiper>
       <>
@@ -246,10 +272,11 @@ export default function CodiPage() {
         </SelectBtnContainer>
       </>
       <>
-        {/* <CodiContainer>
-          {closet[0].closet_id === closetId &&
-            closet[0].codies.map(function (a, i) {
+        <CodiContainer>
+          {closet[index] &&closet[index].codies.map((cody, idx) => {
+            if (cody.open) {
               return (
+<<<<<<< HEAD
                 <ClothesCodi>
                   {closet[i].codies[i] ? (
                     <CodiImg src={closet[i].codies[i].img} alt="no" />
@@ -335,6 +362,19 @@ export default function CodiPage() {
           <img src={add_codi} />
         </CodiPlus>
         {/* </CodiContainer> */}
+=======
+                <ClothesCodi key={idx}>
+                  <CodiImg src={cody.img}/>
+                </ClothesCodi>
+              )
+            } else { return }
+            
+          })}
+          <CodiPlus onClick={PlusCody} >
+            <img src={add_codi} />
+          </CodiPlus>
+        </CodiContainer>
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
 
         <FooterBar />
       </>

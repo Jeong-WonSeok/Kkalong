@@ -35,8 +35,12 @@ const requests = {
   addClothes: "/closet/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
   codi: "/closet/cody/",
   closetAdd: "/closet/closet",
+<<<<<<< HEAD
   imgAdd: "closet/cody/img",
   codiDetail: "closet/codies/",
+=======
+  imgAdd: "/closet/cody/img",
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
 
   // 가상피팅
   bodyImg: "/user/body/img",
