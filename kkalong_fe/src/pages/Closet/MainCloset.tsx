@@ -187,9 +187,9 @@ export default function MainCloset() {
     if (User.user_id === Number(params.userId) || !params.userId) {
       navigate("/codi");
     } else if (User.loving && User.lover_id === Number(params.userId)) {
-      navigate("/codi");
-    } else {
-      navigate("/pluscodi");
+      navigate(`/codi/${params.userId}`);
+    } else if (params.HelpCodiId) {
+      navigate(`/pluscodi/${params.HelpCodiId}/${params.userId}`, { state: { closetId } })
     }
   };
   const ChangePicture = (e: any) => {
