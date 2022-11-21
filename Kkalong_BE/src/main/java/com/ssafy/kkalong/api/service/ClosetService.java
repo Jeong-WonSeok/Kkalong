@@ -43,7 +43,7 @@ public class ClosetService {
 
     public String removeClothingImgBackground(int next_clothing_id, MultipartFile file) {
         firebaseService.uploadClothingImgWithBackground(next_clothing_id, file);
-        String url = "http://localhost:8000/api/remove_clothing_bg/"+next_clothing_id;
+        String url = "http://localhost:8001/api/remove_clothing_bg/"+next_clothing_id;
 //        String url = "http://70.12.130.101:8000/api/remove_clothing_bg/"+next_clothing_id;
         RestTemplate restTemplate = new RestTemplate();
         String removedBgImgUrl = restTemplate.getForObject(url,String.class);
@@ -51,11 +51,18 @@ public class ClosetService {
     }
 
     public String getColorInfos(int next_clothing_id) {
-        String url = "http://localhost:8000/api/clothing_color/"+next_clothing_id;
+        String url = "http://localhost:8001/api/clothing_color/"+next_clothing_id;
 //        String url = "http://70.12.130.101:8000/api/clothing_color/"+next_clothing_id;
         RestTemplate restTemplate = new RestTemplate();
         String color = restTemplate.getForObject(url,String.class);
         return color;
+    }
+
+    public String getCategoryInfos(int next_clothing_id) {
+        String url = "http://70.12.130.101:8000/api/clothing_type/"+next_clothing_id;
+        RestTemplate restTemplate = new RestTemplate();
+        String mainCategory = restTemplate.getForObject(url,String.class);
+        return mainCategory;
     }
 
     public Clothing registerClothing(int user_id, ClothingDto clothingDto) {
@@ -229,7 +236,7 @@ public class ClosetService {
         return seasons;
     }
 
-    private List<String> getStringSeasonsfromCody(Cody cody) {
+    public List<String> getStringSeasonsfromCody(Cody cody) {
         List<String> seasons = new ArrayList<>();
         if(cody.isSpring()){
             seasons.add("봄");

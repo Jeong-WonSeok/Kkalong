@@ -425,7 +425,7 @@ public class CommunityController {
         commentUser.put("profile_img", null);
         comment.put("comment_id", null);
         comment.put("user", commentUser);
-        codi.put("cody_img", null);
+        codi.put("cody_img", helpInfo.getImg());
 
         comment.put("cody", codi);
 
