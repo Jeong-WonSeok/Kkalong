@@ -156,6 +156,7 @@ public class CommunityService {
                 .title(helpDto.getTitle())
                 .open(helpDto.getOpen())
                 .user(user)
+                .img(helpDto.getImg())
                 .build();
         helpRepository.save(help);
         return help.getId();
