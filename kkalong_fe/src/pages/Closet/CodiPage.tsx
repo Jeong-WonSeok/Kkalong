@@ -56,10 +56,68 @@ export default function CodiPage() {
   const params = useParams()
   const {User } = useAppSelector(state => state.User)
   const [closetId, setClosetId] = useState(0);
+<<<<<<< HEAD
+  let [closet, setCloset] = useState(Array<dataType>);
+  let [loading, setLoading] = useState(true);
+  let userProfile: any = localStorage.getItem("userProfile");
+  userProfile = JSON.parse(userProfile);
+  let userId = userProfile.user_id;
+  const settings = {
+    className: "center",
+    dots: true,
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 2,
+    speed: 500,
+  };
+  let [clothes, setClothes] = useState([list, shirt, hat, outer, pants, shoes]);
+  let [cltext, setCltext] = useState([
+    "전체",
+    "상의",
+    "겉옷",
+    "하의",
+    "신발",
+    "악세서리",
+  ]);
+  let [sortclothes, setSortclothes] = useState([
+    img1,
+    img2,
+    img3,
+    img4,
+    img5,
+    img6,
+    img7,
+  ]);
+  let [sortId, setSortId] = useState<number>();
+  let [btn, setBtn] = useState(false);
+  let [codi, setCodi] = useState<any[]>([]);
+  let [slideBtn, setSlideBtn] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  let [codiId, setCodiId] = useState();
+=======
   const [closet, setCloset] = useState(Array<dataType>);
   const [loading, setLoading] = useState(true);
   const [index, setIndex] = useState(0)
 
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
   useEffect(() => {
     if (params.userId) {
       axios.get(requests.closet + params.userId)
@@ -75,6 +133,36 @@ export default function CodiPage() {
         })
     }
   }, []);
+<<<<<<< HEAD
+  useEffect(() => {
+    axios
+      .get(requests.codiDetail + closetId)
+      .then((res) => {
+        console.log(res);
+        setCodi(res.data.codies);
+        console.log(codi);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, [closetId]);
+  useEffect(() => {
+    axios
+      .get(requests.codiDetail + closetId)
+      .then((res) => {
+        console.log(res);
+        setCodi(res.data.codies);
+        console.log(codi);
+        setLoading(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
+  console.log(codi[0]?.cody_id);
+  // console.log(codi[0].cody_id);
+=======
 
   const PlusCody = () => {
     if (params.userId) {
@@ -86,12 +174,13 @@ export default function CodiPage() {
     }
   }
 
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
   return (
     <div>
       <TopNav type={"menu"}>
         <CategoryText1>코디</CategoryText1>
         <div style={{ width: "54px", height: "38px" }}>
-          <MenuIcon src={menu} />
+          {/* <MenuIcon src={menu} /> */}
         </div>
       </TopNav>
       <Swiper
@@ -114,16 +203,39 @@ export default function CodiPage() {
           return (
             <SwiperSlide>
               <SlideButton
+                style={{
+                  background: slideBtn[i] === true ? "#E5DDCE" : "#F7F8F8",
+                }}
                 onClick={() => {
                   setClosetId(closet[i].closet_id);
-                  setIndex(i);
+<<<<<<< HEAD
+                  let slideB = [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                  ];
+                  slideB[i] = !slideBtn[i];
+                  setSlideBtn(slideB);
+                  console.log(closetId);
                 }}
               >
-                {closet[i].codies[i] ? (
-                  <img src={closet[i].codies[i].img} alt="no" />
-                ) : null}
+                <img src={codi[0]?.img} />
               </SlideButton>
-              <SwiperText>{closet[i].name}</SwiperText>
+              <SwiperText>{closet[i]?.name}</SwiperText>
             </SwiperSlide>
           );
         })}
@@ -164,6 +276,93 @@ export default function CodiPage() {
           {closet[index] &&closet[index].codies.map((cody, idx) => {
             if (cody.open) {
               return (
+<<<<<<< HEAD
+                <ClothesCodi>
+                  {closet[i].codies[i] ? (
+                    <CodiImg src={closet[i].codies[i].img} alt="no" />
+                  ) : null} */}
+        {/* <CodiImg src={closet[i].codies[i].img} alt="no" /> */}
+        {/* </ClothesCodi>
+              );
+            })} */}
+        <SortClothesContainer>
+          {codi.map(function (a, i) {
+            return (
+              <>
+                {closetId != null ? (
+                  <>
+                    <SortClothes
+                      onClick={() => {
+                        codiId = codi[i].cody_id;
+                        setCodiId(codi[i].cody_id);
+                        navigate("/codi/detail", {
+                          state: { closetId, codiId },
+                        });
+                        axios
+                          .get(requests.codi + "/" + [codi[i]?.cody_id])
+                          .then((res) => {
+                            console.log(res);
+                          });
+                      }}
+                    >
+                      <ClothesImg src={codi[i]?.img} />
+                    </SortClothes>
+                  </>
+                ) : (
+                  <>
+                    <SortClothes
+                      onClick={() => {
+                        codiId = codi[i].cody_id;
+                        setCodiId(codi[i].cody_id);
+                        console.log(codiId);
+                        navigate("/codi/detail", {
+                          state: { closetId, codiId },
+                        });
+                        axios
+                          .get(requests.codi + "/" + [codi[i]?.cody_id])
+                          .then((res) => {
+                            console.log(res);
+                          });
+                      }}
+                    >
+                      <ClothesImg src={codi[i]?.img} />
+                    </SortClothes>
+                  </>
+                )}
+              </>
+            );
+
+            // if (closetId && sortId === clothings[i].mainCategory)
+            //   return (
+            //     <SortClothes
+            //       onClick={() => {
+            //         clothingId = clothings[i].clothing_id;
+            //         navigate("/clothes/detail", {
+            //           state: { closetId, clothingId },
+            //         });
+            //         axios
+            //           .get(
+            //             requests.addClothes + "/" + [clothings[i].clothing_id]
+            //           )
+            //           .then((res) => {
+            //             console.log(res);
+            //           });
+            //       }}
+            //     >
+            //       <ClothesImg src={clothings[i]?.img} />
+            //     </SortClothes>
+            //   );
+          })}
+        </SortClothesContainer>
+        <CodiPlus
+          onClick={() => {
+            navigate("/pluscodi", { state: { closetId } });
+          }}
+        >
+          <img src={add_codi} />
+        </CodiPlus>
+        {/* </CodiContainer> */}
+=======
                 <ClothesCodi key={idx}>
                   <CodiImg src={cody.img}/>
                 </ClothesCodi>
@@ -175,6 +374,7 @@ export default function CodiPage() {
             <img src={add_codi} />
           </CodiPlus>
         </CodiContainer>
+>>>>>>> 3ddf7fadf6cb066c5c1999c2a6bfc43430c2da79
 
         <FooterBar />
       </>
@@ -258,9 +458,10 @@ const AddClothes = styled.button`
 `;
 
 const CodiPlus = styled.button`
-  height: 140px;
-  width: 140px;
-  margin: 20px;
+  padding: 0;
+  height: 90px;
+  width: 90px;
+  margin: 15px;
   background-color: white;
   border-radius: 20px;
   border: dotted 2px #e5ddce;
@@ -278,10 +479,10 @@ const BtnBar = styled.div`
 
 let SwiperText = styled.p`
   color: black;
-  display: flex;
-  margin-left: 40px;
+  margin-top: 5px;
   font-family: var(--base-font-400);
   font-size: 18px;
+  text-align: center;
 `;
 
 // let SliderBorder = styled.button`
@@ -315,4 +516,29 @@ const ClosetIcon = styled.div`
   height: 80px;
   display: flex;
   margin: auto;
+`;
+
+export const SortClothesContainer = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+`;
+
+export const SortClothes = styled.button`
+  padding: 0;
+  height: 90px;
+  width: 90px;
+  margin: 15px;
+  background-color: white;
+  border-radius: 20px;
+  border: solid 2px #e5ddce;
+`;
+
+export const ClothesImg = styled.img`
+  max-width: 80px;
+  max-height: 80px;
 `;

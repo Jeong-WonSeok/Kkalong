@@ -35,6 +35,8 @@ const requests = {
   addClothes: "/closet/clothing", // requests.closet + ${} + requests.addClothes 이런식으로 써야할듯
   codi: "/closet/cody",
   closetAdd: "/closet/closet",
+  codiDetail: "closet/codies/",
+
   imgAdd: "/closet/cody/img",
 
   // 가상피팅
@@ -44,7 +46,7 @@ const requests = {
   // 추천
   faceImg: "/recommend/personal",
   weather: "/recommend/weather/",
-  personalColor: '/recommend/personalColor',
+  personalColor: "/recommend/personalColor",
   body: "/recommend/body",
 };
 

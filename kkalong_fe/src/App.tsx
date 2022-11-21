@@ -22,6 +22,7 @@ import ClosetAsset from "./components/closet/ClosetAsset";
 import { OauthRedirect } from "./pages/Signup/OauthRedirect";
 import ClothesDetail from "./pages/Closet/ClothesDetail";
 import ThreeTest from "./pages/Closet/ThreeTest";
+import CodiDetail from "./pages/Closet/CodiDetail";
 
 // Community
 import MainCommunity from "./pages/Community/MainCommunity";
@@ -54,63 +55,69 @@ import dfs_xy_conv from "./hooks/chagneLatLon";
 import PlusCody from "./pages/Closet/PlusCody";
 
 type LocationType = {
-  lat: number,
-  lon: number,
-  x: number,
-  y: number
-}
-
+  lat: number;
+  lon: number;
+  x: number;
+  y: number;
+};
 
 function App() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   let location: LocationType = {
     lat: 0,
     lon: 0,
     x: 0,
-    y: 0
-  }
+    y: 0,
+  };
   // 사용자의 화면에 맞춰서 크기조절
   useEffect(() => {
     const windowHeight = window.innerHeight;
     const app = document.getElementById("App") as HTMLDivElement;
     app.style.minHeight = `${windowHeight - 130}px`;
 
-    const start = async() => {
-      await getLocation()
-      await dispatch(getWeather(location.x, location.y)) 
-    }
-  start()
+    const start = async () => {
+      await getLocation();
+      await dispatch(getWeather(location.x, location.y));
+    };
+    start();
   }, []);
 
   const getLocation = async () => {
-    if (navigator.geolocation) { // GPS를 지원하면
+    if (navigator.geolocation) {
+      // GPS를 지원하면
       // 이것으로 현재 위치를 가져온다.
       var getPosition = function () {
         return new Promise(function (reslove, reject) {
-          navigator.geolocation.getCurrentPosition(reslove, reject)
-        })
-      }
-      
+          navigator.geolocation.getCurrentPosition(reslove, reject);
+        });
+      };
+
       // 위치 변환
       return await getPosition()
         .then(async (position: any) => {
-          const result  = new Promise((reslove, reject) => {
-            reslove(dfs_xy_conv('toXY', position.coords.latitude , position.coords.longitude))
-          })
-          
+          const result = new Promise((reslove, reject) => {
+            reslove(
+              dfs_xy_conv(
+                "toXY",
+                position.coords.latitude,
+                position.coords.longitude
+              )
+            );
+          });
+
           await result.then((res: any) => {
-            location = res
-            return res
-          })
+            location = res;
+            return res;
+          });
         })
         .catch((error) => {
-          console.error(error.message)
+          console.error(error.message);
         });
     } else {
-      alert('GPS 정보를 불러드리지 못했습니다.\n 새로고침을 해주세요');
+      alert("GPS 정보를 불러드리지 못했습니다.\n 새로고침을 해주세요");
     }
-  }
-  
+  };
+
   return (
     <div id="container">
       <div id="App">
@@ -124,26 +131,62 @@ function App() {
             <Route path="/PersonalInfo" element={<PersonalInfo />}></Route>
             {/* 커뮤니티 */}
             <Route path="/community" element={<MainCommunity />}></Route>
-            <Route path="/community/BestDress" element={<MainBestDress />}></Route>
-            <Route path="/community/BestDress/Add/" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/Add/:BestDressId" element={<AddBestDress />}></Route>
-            <Route path="/community/BestDress/:IsAdd/:BestDressId" element={<DetailBestDress />}></Route>
-            <Route path="/community/HelpCodi" element={<MainHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add" element={<AddSelectHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add/:Category/" element={<AddHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/Add/:Category/:HelpCodiId" element={<AddHelpCodi />}></Route>
-            <Route path="/community/HelpCodi/:IsAdd/:HelpCodiId" element={<DetailHelpCodi />}></Route>
+            <Route
+              path="/community/BestDress"
+              element={<MainBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/Add/"
+              element={<AddBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/Add/:BestDressId"
+              element={<AddBestDress />}
+            ></Route>
+            <Route
+              path="/community/BestDress/:IsAdd/:BestDressId"
+              element={<DetailBestDress />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi"
+              element={<MainHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add"
+              element={<AddSelectHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add/:Category/"
+              element={<AddHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/Add/:Category/:HelpCodiId"
+              element={<AddHelpCodi />}
+            ></Route>
+            <Route
+              path="/community/HelpCodi/:IsAdd/:HelpCodiId"
+              element={<DetailHelpCodi />}
+            ></Route>
             {/* 옷장 */}
             <Route path="/closet" element={<MainCloset />}></Route>
             <Route path="/closet/Add" element={<AddClothes />}></Route>
             <Route path="/closet/:userId" element={<MainCloset />}></Route>
-            <Route path="/closet/:HelpCodiId/:userId" element={<MainCloset />}></Route>
+            <Route
+              path="/closet/:HelpCodiId/:userId"
+              element={<MainCloset />}
+            ></Route>
             <Route path="/pluscodi" element={<PlusCody />}></Route>
             <Route path="/pluscodi/:userId/" element={<PlusCody />}></Route>
-            <Route path="/pluscodi/:HelpCodiId/:userId/" element={<PlusCody />}></Route>
+            <Route
+              path="/pluscodi/:HelpCodiId/:userId/"
+              element={<PlusCody />}
+            ></Route>
             <Route path="/pluscodi2" element={<PlusCodi2 />}></Route>
             <Route path="/pluscodi2/:userId" element={<PlusCodi2 />}></Route>
-            <Route path="/pluscodi2/:HelpCodiId/:userId/" element={<PlusCodi2 />}></Route>
+            <Route
+              path="/pluscodi2/:HelpCodiId/:userId/"
+              element={<PlusCodi2 />}
+            ></Route>
             <Route path="/addcloset" element={<AddCloset />}></Route>
             <Route path="/codi" element={<CodiPage />}></Route>
             <Route path="/codi/:userId" element={<CodiPage />}></Route>
@@ -152,10 +195,17 @@ function App() {
             <Route path="/threetest" element={<ThreeTest />}></Route>
             <Route path="/oauth2/redirect" element={<OauthRedirect />} />
             <Route path="/recommend/weather" element={<WeatherPage />}></Route>
-            <Route path="/recommend/personal" element={<PersonalColor />}></Route>
-            <Route path="/recommend/personal/Color" element={<PersonalColorRecommend />}></Route>
+            <Route
+              path="/recommend/personal"
+              element={<PersonalColor />}
+            ></Route>
+            <Route
+              path="/recommend/personal/Color"
+              element={<PersonalColorRecommend />}
+            ></Route>
             <Route path="/recommend/daily" element={<DailyRecommend />}></Route>
             <Route path="/clothes/detail" element={<ClothesDetail />}></Route>
+            <Route path="/codi/detail" element={<CodiDetail />}></Route>
             {/* 마이페이지 */}
             <Route path="/myPage" element={<MyPage />}></Route>
             <Route path="/myPage/Friend/" element={<MyPageFriend />}></Route>

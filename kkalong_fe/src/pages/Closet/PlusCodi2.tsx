@@ -12,7 +12,6 @@ import requests from "../../api/requests";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { MakeCody } from "../../redux/modules/CodyComment";
 
-
 interface clothesType {
   closet_id: number;
   mainCategory: number;
@@ -42,20 +41,21 @@ interface imgSetType {
 export default function AddClothes() {
   const location = useLocation();
   const params = useParams();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const closetId = location.state.closetId;
   const clothings = location.state.SelectClothes;
-  const { CodyImg } = useAppSelector(state => state.CodyComment)
-  const { User } = useAppSelector(state => state.User)
+  const { CodyImg } = useAppSelector((state) => state.CodyComment);
+  const { User } = useAppSelector((state) => state.User);
   const navigate = useNavigate();
   const seasons = ["봄", "여름", "가을", "겨울"];
   let styleList = ["casual", "dandy", "street", "formal"];
   let style = "";
-  let seasonsBoolean = [ false,false,false,false ]
+  let seasonsBoolean = [false, false, false, false];
   let [input, setInput] = useState("");
   const onChangeInput = (e: any) => {
     setInput(e.target.value);
   };
+
   const onSubmit = async () => {
     const data = {
       user_id: params.userId ? Number(params.userId) : User.user_id,
@@ -69,48 +69,58 @@ export default function AddClothes() {
       winter: seasonsBoolean[3],
       img: CodyImg,
       clothings: clothings,
-    }
-    console.log(data)
-    const res = await axios.post(requests.codi, data)
+    };
+    console.log(data);
+    const res = await axios.post(requests.codi, data);
 
     if (params.HelpCodiId) {
-      dispatch(MakeCody(res.data))
-      navigate(`/community/HelpCodi/true/${params.HelpCodiId}`)
+      dispatch(MakeCody(res.data));
+      navigate(`/community/HelpCodi/true/${params.HelpCodiId}`);
     } else {
       navigate("/codi");
     }
-    
   };
 
   const ChangeSelect = () => {
-    const styleBtn = document.getElementsByClassName('Style') as HTMLCollectionOf<HTMLButtonElement>
-    styleBtn[0].style.backgroundColor = ''
-    styleBtn[1].style.backgroundColor = ''
-    styleBtn[2].style.backgroundColor = ''
-    styleBtn[3].style.backgroundColor = ''
+    const styleBtn = document.getElementsByClassName(
+      "Style"
+    ) as HTMLCollectionOf<HTMLButtonElement>;
+    styleBtn[0].style.backgroundColor = "";
+    styleBtn[1].style.backgroundColor = "";
+    styleBtn[2].style.backgroundColor = "";
+    styleBtn[3].style.backgroundColor = "";
 
-    const selectBtn = document.getElementById(style) as HTMLButtonElement
-    selectBtn.style.backgroundColor = 'var(--primary-color-500)'
-  }
+    const selectBtn = document.getElementById(style) as HTMLButtonElement;
+    selectBtn.style.backgroundColor = "var(--primary-color-500)";
+  };
 
   const ChangeSeason = () => {
     seasonsBoolean.map((season, idx) => {
-      const btn = document.getElementById(String(idx)) as HTMLButtonElement
+      const btn = document.getElementById(String(idx)) as HTMLButtonElement;
       if (season) {
-        btn.style.backgroundColor = 'var(--primary-color-500)'
+        btn.style.backgroundColor = "var(--primary-color-500)";
       } else {
-        btn.style.backgroundColor = 'var(--primary-color-100)'
+        btn.style.backgroundColor = "var(--primary-color-100)";
       }
-    })
-  }
+    });
+  };
 
   return (
     <div>
       <>
         <TopNav type={""}>
           <CloseImg src={Close} onClick={() => navigate("/closet")} />
-          <ClosetName onChange={onChangeInput} placeholder="이름을 입력해주세요"/>
-          <SubmitBtn onClick={() => {onSubmit();}}>추가</SubmitBtn>
+          <ClosetName
+            onChange={onChangeInput}
+            placeholder="이름을 입력해주세요"
+          />
+          <SubmitBtn
+            onClick={() => {
+              onSubmit();
+            }}
+          >
+            추가
+          </SubmitBtn>
         </TopNav>
 
         <Container>
@@ -124,7 +134,9 @@ export default function AddClothes() {
             {styleList.map((a, index) => {
               return (
                 <div key={index}>
-                  <SeasonBtn id={styleList[index]} className="Style"
+                  <SeasonBtn
+                    id={styleList[index]}
+                    className="Style"
                     onClick={() => {
                       style = styleList[index];
                       ChangeSelect();
@@ -143,7 +155,8 @@ export default function AddClothes() {
             {seasons.map((season, index) => {
               return (
                 <div key={index}>
-                  <SeasonBtn id={String(index)}
+                  <SeasonBtn
+                    id={String(index)}
                     onClick={() => {
                       let seasonB = [...seasonsBoolean];
                       seasonB[index] = !seasonsBoolean[index];
@@ -159,7 +172,7 @@ export default function AddClothes() {
           </CheckboxContainer>
         </SeasonCategory>
       </>
-      <FooterBar/>
+      <FooterBar />
     </div>
   );
 }
@@ -238,7 +251,6 @@ const CheckboxContainer = styled.div`
   border-radius: 50px;
   align-items: center;
 `;
-
 
 const ClosetName = styled.input`
   height: 30px;

@@ -45,12 +45,12 @@ body {
 }
 
 .input-file-button {
-  margin-top: 20px;
+  margin-top: 50px;
   margin-left: 100px;
   padding: 10px 30px;
   /* background-color: #f9a20c; */
-  border: solid 5px #f9a20c;
+  border: solid 5px #67564e;
   border-radius: 30px;
-  color: #f9a20c;
+  color: #67564e;
   cursor: pointer;
 }
