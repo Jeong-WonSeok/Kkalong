@@ -16,16 +16,14 @@ import { BackArrowImg, SignupText } from "../Signup/Signup";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { login } from "../../redux/modules/User";
 
-
 export default function Login() {
   const LOGIN = "user/LOGIN";
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
-  const {error, User} = useAppSelector(state => state.User)
+  const dispatch = useAppDispatch();
+  const { error, User } = useAppSelector((state) => state.User);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let [alert, setAlert] = useState(false);
-  
 
   // 화면의 상하단 margin 제거
   useEffect(() => {
@@ -34,9 +32,8 @@ export default function Login() {
 
     return () => {
       app.style.margin = "60px 0 70px 0";
-    }
+    };
   }, []);
-
 
   const onChangeEmail = (e: any) => {
     setEmail(e.target.value);
@@ -49,87 +46,55 @@ export default function Login() {
   const onLoginButton = async (e: any) => {
     e.preventDefault();
 
-    await dispatch(login(email, password))
-    if (error) { 
-      setAlert(true)
+    await dispatch(login(email, password));
+    if (error) {
+      setAlert(true);
     } else {
-      navigate('/threetest')
+      navigate("/threetest");
     }
-    // console.log(email);
-    // console.log(password);
-    // axios
-    //   .post(
-    //     requests.login,
-    //     {
-    //       email: email,
-    //       password: password,
-    //     },
-    //     {
-    //       headers: { "Content-type": `application/json` },
-    //     }
-    //   )
-    //   .then((response) => {
-    //     const token = response.data.result;
-    //     console.log(response.data.result);
-    //     localStorage.setItem("token", JSON.stringify(token.token));
-    //     localStorage.setItem("userProfile", JSON.stringify(token.user));
-
-    //     navigate("/closet");
-    //     const decode: any = jwtDecode(token);
-    //     const email = decode.email;
-    //     const id = decode.id;
-
-    //     // dispatch({ type: LOGIN, email: email, id: id });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setAlert((alert = true));
-    //     console.log(alert);
-    //   });
   };
 
-  const EnterInput = (e:any) => {
+  const EnterInput = (e: any) => {
     if (e.key === "Enter") {
-      onLoginButton(e)
+      onLoginButton(e);
     }
-  }
+  };
 
   return (
     <div>
-    <TopNav type={"Line"}>
-      <BackArrowImg src={BackArrow} onClick={() => navigate('/')} />
-      <SignupText>로그인</SignupText>
-      <div style={{ width: "30px", height: "30px" }}></div>
-    </TopNav>
+      <TopNav type={"Line"}>
+        <BackArrowImg src={BackArrow} onClick={() => navigate("/")} />
+        <SignupText>로그인</SignupText>
+        <div style={{ width: "30px", height: "30px" }}></div>
+      </TopNav>
 
-    <LoginDiv>
-      {/* <LogoImg src={Logo} alt="our service logo"></LogoImg> */}
-      <LoginInputDiv>
-        <LoginInputImg src={EmailLogo} />
-        <EmailInput
-          placeholder="이메일"
-          type="email"
-          onChange={onChangeEmail}
-        ></EmailInput>
-      </LoginInputDiv>
-      <LoginInputDiv>
-        <LoginInputImg src={PasswordLogo} />
-        <PasswordInput
-          placeholder="비밀번호"
-          type="password"
-          onChange={onChangePassword}
-          onKeyPress={EnterInput}
-        ></PasswordInput>
-      </LoginInputDiv>
-      {alert === false ? null : (
-        <LoginAlert>
-          <LoginAlertText>회원정보를 확인해주세요</LoginAlertText>
-        </LoginAlert>
-      )}
+      <LoginDiv>
+        {/* <LogoImg src={Logo} alt="our service logo"></LogoImg> */}
+        <LoginInputDiv>
+          <LoginInputImg src={EmailLogo} />
+          <EmailInput
+            placeholder="이메일"
+            type="email"
+            onChange={onChangeEmail}
+          ></EmailInput>
+        </LoginInputDiv>
+        <LoginInputDiv>
+          <LoginInputImg src={PasswordLogo} />
+          <PasswordInput
+            placeholder="비밀번호"
+            type="password"
+            onChange={onChangePassword}
+            onKeyPress={EnterInput}
+          ></PasswordInput>
+        </LoginInputDiv>
+        {alert === false ? null : (
+          <LoginAlert>
+            <LoginAlertText>회원정보를 확인해주세요</LoginAlertText>
+          </LoginAlert>
+        )}
 
-      <LoginButton onClick={onLoginButton}>로그인</LoginButton>
-      
-    </LoginDiv>
+        <LoginButton onClick={onLoginButton}>로그인</LoginButton>
+      </LoginDiv>
     </div>
   );
 }
@@ -181,8 +146,11 @@ const EmailInput = styled.input`
   width: 100%;
   height: 30px;
   text-indent: 10px;
-
   border-radius: 10px;
+  &:active,
+  &:focus {
+    outline: none;
+  }
 `;
 
 //패스워드 입력
@@ -195,6 +163,10 @@ const PasswordInput = styled.input`
   height: 30px;
   text-indent: 10px;
   border-radius: 10px;
+  &:active,
+  &:focus {
+    outline: none;
+  }
 `;
 //로그인 버튼
 const LoginButton = styled.button`
@@ -212,7 +184,6 @@ const LoginButton = styled.button`
     background-color: #67564e;
   }
 `;
-
 
 //회원 정보가 잘 못 된 경우
 const LoginAlertText = styled.p`
