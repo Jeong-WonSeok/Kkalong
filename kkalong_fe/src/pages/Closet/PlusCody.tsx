@@ -15,69 +15,68 @@ import FooterBar from "../../components/ui/FooterBar";
 import { CategoryText } from "../Community/MainCommunity";
 
 interface ClothType {
-  brand_id: number,
-  closet_id: number,
-  clothing_id: number,
-  color: string,
-  gender: string,
-  img: string,
-  mainCategory: number,
-  subCategory: number,
-  personal_color: string,
-  style: string,
-  season: Array<string>,
-  url: null | string
+  brand_id: number;
+  closet_id: number;
+  clothing_id: number;
+  color: string;
+  gender: string;
+  img: string;
+  mainCategory: number;
+  subCategory: number;
+  personal_color: string;
+  style: string;
+  season: Array<string>;
+  url: null | string;
 }
 
 export default function PlusCody() {
   const navigate = useNavigate();
   const params = useParams();
   const location = useLocation();
-  const dispatch = useAppDispatch()
-  const { User } = useAppSelector(state => state.User)
+  const dispatch = useAppDispatch();
+  const { User } = useAppSelector((state) => state.User);
 
   const [canvas, setCanvas] = useState({} as fabric.Canvas);
   const [ClothList, setClothList] = useState(Array<ClothType>);
   const [IsModal, setIsModal] = useState(false);
-  const [SelectClothes, setSelectClothes] = useState(Array<number>)
-  
-  const sort = ["전체", "상의", "하의", "아우터", "신발", "악세서리"]
+  const [SelectClothes, setSelectClothes] = useState(Array<number>);
 
-  const closetId = location.state.closetId
+  const sort = ["전체", "상의", "하의", "아우터", "신발", "악세서리"];
+
+  const closetId = location.state.closetId;
 
   // 캔버스 설정
 
-  useEffect(()=>{
+  useEffect(() => {
     readImages();
-    setCanvas(initCanvas())
-  },[])
+    setCanvas(initCanvas());
+  }, []);
 
-  const initCanvas = () => (
-    new fabric.Canvas('canvas', { 
+  const initCanvas = () =>
+    new fabric.Canvas("canvas", {
       height: 500,
       width: 350,
-     })
-  )
+    });
 
   const readImages = async () => {
     if (params.userId) {
       await axios
-      .get(requests.closet + params.userId)
-      .then((response) => {
-        setClothList(response.data.closets[0].clothings);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        .get(requests.closet + params.userId)
+        .then((response) => {
+          setClothList(response.data.closets[0].clothings);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
-    await axios
-      .get(requests.closet + User.user_id)
-      .then((response) => {
-        setClothList(response.data.closets[0].clothings);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      await axios
+        .get(requests.closet + User.user_id)
+        .then((response) => {
+          setClothList(response.data.closets[0].clothings);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -85,22 +84,22 @@ export default function PlusCody() {
     var imgObj = new Image();
 
     imgObj.crossOrigin = "*";
-    imgObj.src = ClothList[i].img
+    imgObj.src = ClothList[i].img;
 
     imgObj.onload = function () {
-      imgObj.width = 100
-      imgObj.height = 100
+      imgObj.width = 10;
+      imgObj.height = 10;
 
       var image = new fabric.Image(imgObj);
       image.set({
-          top: 0,
-          left: 0 ,
-          padding: 10,
-          selectable: true,
+        top: 0,
+        left: 0,
+        padding: 10,
+        selectable: true,
       });
 
       canvas.add(image);
-    }
+    };
   };
 
   const downloadImage = async () => {
@@ -108,10 +107,9 @@ export default function PlusCody() {
       format: "png",
       enableRetinaScaling: true,
     });
-    console.log(base64)
-    await dispatch(AddCody(base64))
+    console.log(base64);
+    await dispatch(AddCody(base64));
   };
-
 
   const removeObjectFromCanvas = () => {
     canvas.remove(canvas.getActiveObject());
@@ -119,78 +117,86 @@ export default function PlusCody() {
 
   const NextPage = () => {
     if (params.HelpCodiId) {
-      navigate(`/pluscodi2/${params.HelpCodiId}/${params.userId}/`, { state: { closetId , SelectClothes,  } });
+      navigate(`/pluscodi2/${params.HelpCodiId}/${params.userId}/`, {
+        state: { closetId, SelectClothes },
+      });
     } else if (params.userId) {
-      navigate(`/pluscodi2/${params.userId}`, { state: { closetId , SelectClothes,  } });
+      navigate(`/pluscodi2/${params.userId}`, {
+        state: { closetId, SelectClothes },
+      });
     } else {
-      navigate(`/pluscodi2`, { state: { closetId , SelectClothes } });
+      navigate(`/pluscodi2`, { state: { closetId, SelectClothes } });
     }
-  }
-
+  };
 
   return (
     <div>
-          <div>
-            <TopNav type={""}>
-              <BackBtn onClick={() => {navigate(-1);}}>
-                <img src={left}/>
-              </BackBtn>
-              <CategoryText>코디 만들기</CategoryText>
-              <ClosetEnter
-                onClick={() => {
-                  downloadImage();
-                  NextPage();
-                }}
-              >
-                <EnterText>다음</EnterText>
-              </ClosetEnter>
-            </TopNav>
-          </div>
-          {/* <input type="file" multiple onChange={onUploadImage} /> */}
-          <button onClick={removeObjectFromCanvas}>Remove</button>
-          <CanvasDiv id="canvas"/>
-          <br />
-          <br /> 
-          <PlusBtn onClick={()=> setIsModal(!IsModal)}>
-            <BtnText>코디 추가하기</BtnText>
-          </PlusBtn>
-          
-          {IsModal && 
-              <Slider>
-                <SortDiv>
-                  {sort.map(function (a, i) {
-                    return (
-                      <Sortbtn>
-                        <SortTxt>{a}</SortTxt>
-                      </Sortbtn>
-                    );
-                  })}
-                </SortDiv>
-                <SortBorder>
-                  {ClothList.map(function (cloth, i) {
-                    return (
-                      <SortClothes
-                        onClick={() => {
-                          onUploadImage(i);
-                          setSelectClothes([...SelectClothes, cloth.clothing_id])
-                        }}
-                      >
-                        <SortClothesImg src={cloth.img} alt="no" />
-                      </SortClothes>
-                    );
-                  })}
-                </SortBorder>
-                </Slider>}
-      <FooterBar/>
-  </div>
-  )
+      <div>
+        <TopNav type={""}>
+          <BackBtn
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <img src={left} />
+          </BackBtn>
+          <CategoryText>코디 만들기</CategoryText>
+          <ClosetEnter
+            onClick={() => {
+              downloadImage();
+              NextPage();
+            }}
+          >
+            <EnterText>다음</EnterText>
+          </ClosetEnter>
+        </TopNav>
+      </div>
+      {/* <input type="file" multiple onChange={onUploadImage} /> */}
+      <button onClick={removeObjectFromCanvas}>Remove</button>
+      <CanvasDiv id="canvas" />
+      <br />
+      <br />
+      <PlusBtn onClick={() => setIsModal(!IsModal)}>
+        <BtnText>코디 추가하기</BtnText>
+      </PlusBtn>
+
+      {IsModal && (
+        <Slider>
+          <SortDiv>
+            {sort.map(function (a, i) {
+              return (
+                <Sortbtn>
+                  <SortTxt>{a}</SortTxt>
+                </Sortbtn>
+              );
+            })}
+          </SortDiv>
+          <SortBorder>
+            {ClothList.map(function (cloth, i) {
+              return (
+                <SortClothes
+                  onClick={() => {
+                    onUploadImage(i);
+                    setSelectClothes([...SelectClothes, cloth.clothing_id]);
+                  }}
+                >
+                  <SortClothesImg src={cloth.img} alt="no" />
+                </SortClothes>
+              );
+            })}
+          </SortBorder>
+        </Slider>
+      )}
+      <FooterBar />
+    </div>
+  );
 }
 
 const CanvasDiv = styled.canvas`
   border: 3px solid var(--primary-color-900);
   border-radius: 10px;
   margin: 0 auto;
-`
+`;
 
 const BackBtn = styled.button`
   height: 30px;
@@ -213,7 +219,6 @@ const ClosetEnter = styled.button`
 const EnterText = styled.span`
   color: white;
 `;
-
 
 const ModalBar = styled.div`
   width: 60px;
@@ -319,4 +324,4 @@ const ClosetName = styled.input`
   border-bottom: solid 1px;
   margin-left: 50px;
   margin-top: 10px;
-`
+`;
