@@ -118,10 +118,10 @@ kkalong_fe
       │   ├── Signup
       │   └── VirtualFitting
       ├── Redux
-			│		├── store.tsx
-			│		└── modules
-			└── styles
-					└── common.scss
+      │		├── store.tsx
+      │		└── modules
+      └── styles
+      └── common.scss
 ```
 
 ### BackEnd
@@ -148,3 +148,14 @@ KKalong_BE
     │        └── static
     └── test.java.com.ssafy.kkalong
 ```
+
+
+
+## 참고
+
+AI model의 용량이 너무커서 github에 업로드가 불가하고 저작권 문제로 인해서 다음주소에서 clone을 받아 사용하기를 권장합니다.
+
+- [2D-Human-Parsing](https://github.com/fyviezhao/2D-Human-Parsing)
+- [carvekit](https://github.com/OPHoperHPO/image-background-remove-tool)
+- [openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
+- [ShowMetheColor](https://github.com/starbucksdolcelatte/ShowMeTheColor)

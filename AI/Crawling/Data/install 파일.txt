@@ -1,9 +1,0 @@
-pip install -f https://download.pytorch.org/whl/cu110/torch_stable.html torch==1.7.1 torchvision==0.8.2
-
-numpy
-pillow
-torch==1.7.1
-torchvision==0.8.2
-opencv-python
-networkx
-scipy
