@@ -1,0 +1,3 @@
+AI/Python/2D-Human-Parsing/pretrained/deeplabv3plus-xception-vocNov14_20-51-38_epoch-89.pth filter=lfs diff=lfs merge=lfs -text
+AI/Python/openpose/models/face/pose_iter_116000.caffemodel filter=lfs diff=lfs merge=lfs -text
+AI/Python/openpose/models/hand/pose_iter_102000.caffemodel filter=lfs diff=lfs merge=lfs -text
